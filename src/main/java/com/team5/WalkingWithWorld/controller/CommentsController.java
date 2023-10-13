@@ -13,12 +13,8 @@ import java.util.List;
 public class CommentsController {
     @Autowired
     CommentsMapper dao;
-    @RequestMapping("/comments")
-    public String gogo(){
-        return "commentsView";
-    }
 
-    @RequestMapping("/comments/List")
+    @RequestMapping("/comments")
     public ModelAndView list() {
         List<CommentsDTO> list = dao.list();
         ModelAndView mav = new ModelAndView();
@@ -26,5 +22,6 @@ public class CommentsController {
         mav.setViewName("commentsView");
         return mav;
     }
+
 
 }
