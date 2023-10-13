@@ -25,10 +25,12 @@ public class UserController {
                                   HttpSession session){
         ModelAndView modelAndView = new ModelAndView();
         Users user = userService.getUserInfo(loginDto);
+        int auth =user.getId();
 
         System.out.println("로그인 성공");
 
-        session.setAttribute("Authorization",user);
+        session.setAttribute("Authorization",auth);
+
         modelAndView.addObject("user", user);
         modelAndView.setViewName("login");
         return modelAndView;
