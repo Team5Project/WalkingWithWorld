@@ -14,7 +14,7 @@ public interface UserMapper {
 
     //로그인
     @Select("select * from users where email = #{email} and password=#{password}")
-    public Users getUser(LoginDto loginDto);
+    public UsersDto getUser(LoginDto loginDto);
 
     @Select("select * from users")
     public List<UsersDto> getUsers();
