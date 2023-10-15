@@ -23,15 +23,9 @@ public class UserController {
         this.userService = userService;
     }
 
-
-    @GetMapping("/login")
-    public String login(){
-        return "login";
-    }
-
     @GetMapping("/signup")
     public String index(){
-        return "signup";
+        return "signupForm";
     }
 
     @GetMapping("/login")
@@ -75,7 +69,7 @@ public class UserController {
         userService.createUser(usersDto);
 
         modelAndView.addObject("list", userList);
-        modelAndView.setViewName("login");
+        modelAndView.setViewName("loginForm");
         return modelAndView;
     }
 
