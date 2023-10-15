@@ -1,5 +1,6 @@
 package com.team5.WalkingWithWorld.controller;
 
+import com.team5.WalkingWithWorld.dao.UserMapper;
 import com.team5.WalkingWithWorld.domain.LoginDto;
 import com.team5.WalkingWithWorld.domain.Users;
 import com.team5.WalkingWithWorld.domain.UsersDto;
@@ -36,6 +37,11 @@ public class UserController {
         return modelAndView;
     }
 
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+
     @GetMapping("/signup")
     public String index(){
         return "signup";
@@ -51,4 +57,5 @@ public class UserController {
         modelAndView.setViewName("login");
         return modelAndView;
     }
+
 }

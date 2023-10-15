@@ -3,8 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>walking-path</title>
+    <style>
+        a {
+          text-decoration : none;
+        }
+    </style>
 </head>
 <body>
-    <h1 th:text="${walkingPathList}"></h1>
+    <ul th:each="walkingPath:${walkingPathList}">
+        <a th:href="@{|/walking-path/${walkingPath.id}|}" th:text="${walkingPath}"></a>
+    </ul>
+<hr>
+<form method="post" action="/walking-path">
+    <label>제목 : <input type="text" name="title"></label>
+    <label>주소 : <input type="text" name="addr"></label>
+    <input type="submit" value="작성하기">
+</form>
 </body>
 </html>

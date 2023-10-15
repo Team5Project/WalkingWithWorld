@@ -1,5 +1,6 @@
 package com.team5.WalkingWithWorld.controller;
 
+import com.team5.WalkingWithWorld.dao.UserMapper;
 import com.team5.WalkingWithWorld.dao.WalkingPathsMapper;
 import com.team5.WalkingWithWorld.domain.WalkingPathsDTO;
 import jakarta.servlet.http.HttpSession;
@@ -17,8 +18,9 @@ import java.util.List;
 public class WalkingPathsController {
     @Autowired
     WalkingPathsMapper dao;
+    @Autowired
+    UserMapper userDao;
 
-    /*
     @GetMapping("/walking-path")
     public ModelAndView readAllWalkingPath() {
         ModelAndView mav = new ModelAndView();
@@ -27,34 +29,28 @@ public class WalkingPathsController {
         mav.setViewName("walking-path");
         return mav;
     }
-    */
-    //@PostMapping("/walking-path")
-    @GetMapping("/walking-path")
 
-    public ModelAndView createWalkingPath() {
+    @PostMapping("/walking-path")
+    public ModelAndView createWalkingPath(WalkingPathsDTO dto, HttpSession session) {
         ModelAndView mav = new ModelAndView();
+        int userId = (int) session.getAttribute("Authorization");
+        System.out.println("유저 아이디 : " + userId); // 확인용
 
-        // 임시 데이터
-        WalkingPathsDTO dto = new WalkingPathsDTO();
-
-        dto.setUsers_id(2);
-        dto.setAddr("올림픽대로 5");
-        dto.setTitle("올림픽 공원 산책로");
-        dto.setCreated_by("개굴이"); // 이 부분을 userDTO 사용??
+        dto.setUsers_id(userId);
+        dto.setCreated_by(userDao.getUserById(userId).getName()); // 이 부분을 userDTO 사용??
 
         // 추후 결과 따른 msg 추가
         boolean updateResult = dao.addWalkingPath(dto);
         System.out.println(updateResult); // 확인용
         List<WalkingPathsDTO> walkingPathList = dao.readAll();
         mav.addObject("walkingPathList", walkingPathList);
-        mav.setViewName("walking-path");
+        mav.setViewName("redirect:/walking-path");
         return mav;
     }
 
     @GetMapping("/walking-path/{walking-path-id}")
     @ResponseBody
     public WalkingPathsDTO getWalkingPathById(@PathVariable("walking-path-id") int id) {
-        return dao.readOne(id);
-
+        return dao.readWalkingPath(id);
     }
 }
