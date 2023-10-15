@@ -14,7 +14,7 @@ import java.util.Map;
 @Service
 public class FileUpload {
     public Map<String, String> upload(FileVo files) {
-        String path = "C:/kosaStudy/WalkingWithWorld/WalkingWithWorld/WalkingWithWorld/src/main/resources/static/images/";
+        String path = "C:/kosaStudy/WalkingWithWorld/WalkingWithWorld/src/main/resources/static/images/";
         Map<String, String> filesName = new HashMap<>();
 
         for (MultipartFile mfile : files.getFiles()) {
