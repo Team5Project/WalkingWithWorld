@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class WalkingPathsController {
@@ -35,7 +35,11 @@ public class WalkingPathsController {
         ModelAndView mav = new ModelAndView();
         List<WalkingPathsDTO> walkingPathList = dao.readAll();
 
-        mav.addObject("walkingPathList", walkingPathList);
+        Map<Object, Object> listOfwalkingPath = new HashMap<>();
+        for(WalkingPathsDTO dto : walkingPathList)
+            listOfwalkingPath.put(dto, photoDao.readPhotos(dto.getId()));
+
+        mav.addObject("listOfwalkingPath", listOfwalkingPath);
         mav.setViewName("walking-path");
         return mav;
     }

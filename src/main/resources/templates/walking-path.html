@@ -10,10 +10,12 @@
     </style>
 </head>
 <body>
-    <ul th:each="walkingPath:${walkingPathList}">
-<!--        ${imgName}-->
+<h5 th:text="${listOfwalkingPath}"></h5>
+    <ul th:each="walkingPath:${listOfwalkingPath}">
+        <li th:text="${walkingPath}"></li>
+<!--        ${imgName}
         <img src="/images/265640500fall-1_1280.jpg"  style="width:200px; height:200px;"/><br>
-        <a th:href="@{|/walking-path/${walkingPath.id}|}" th:text="${walkingPath}"></a>
+        <a th:href="@{|/walking-path/${walkingPath.id}|}" th:text="${walkingPath}"></a>-->
     </ul>
 <hr>
 <form method="post" action="/walking-path" enctype="multipart/form-data">
