@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="get" action="/search">
+    <input type="text"/>
+    <input type="submit" value="검색">
+</form>
+<th:block th:if="${session.auth !=null}">
+    <div>
+        <span th:text="${session.auth.name}">로그인 유저 이름</span>
+        <a  href="/logout">로그아웃</a>
+    </div>
+</th:block>
+
+</body>
+</html>
