@@ -8,10 +8,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.net.http.HttpRequest;
 import java.util.List;
 
 @Controller
@@ -25,11 +27,13 @@ public class UserController {
 
     @GetMapping("/signup")
     public String index(){
-        return "signup";
+        return "signupForm";
     }
 
     @GetMapping("/login")
-    public String loginIndex(){
+    public String loginIndex(@RequestParam(defaultValue = "/") String redirectURL,
+                                   Model model){
+        model.addAttribute("redirectURL", redirectURL);
         return "loginForm";
     }
 
@@ -37,13 +41,12 @@ public class UserController {
     public String loginUser(@ModelAttribute LoginDto loginDto,
                             HttpSession session,
                             BindingResult bindingResult,
-                            @RequestParam(defaultValue = "/") String redirectURL
+                            HttpServletRequest requet
                              ){
 
         if(bindingResult.hasErrors()){
             return "loginForm";
         }
-
 
         UsersDto user = userService.getUserInfo(loginDto);
         if(user == null){
@@ -54,7 +57,8 @@ public class UserController {
 
         session.setAttribute(SessionConst.LONGIN_USERS,user);
 
-        if(redirectURL != null){
+        if(requet.getParameter("redirectURL") != null){
+            String redirectURL = requet.getParameter("redirectURL");
             System.out.println("리다이렉트 확인" + redirectURL);
             return "redirect:"+redirectURL;
         }
@@ -62,14 +66,10 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ModelAndView signUpUser(UsersDto usersDto){
-        ModelAndView modelAndView = new ModelAndView();
+    public String signUpUser(UsersDto usersDto){
         List<UsersDto> userList = userService.getAllUsers();
-
-        userService.createUser(usersDto);
-
-        modelAndView.addObject("list", userList);
-        modelAndView.setViewName("login");
-        return modelAndView;
+        boolean user = userService.createUser(usersDto);
+        System.out.println(user);
+        return "loginForm";
     }
 }
