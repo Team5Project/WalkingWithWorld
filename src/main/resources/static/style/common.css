@@ -1,0 +1,73 @@
+@import url("https://font.elice.io/css?family=Elice+Digital+Baeum");
+
+
+html,
+body {
+    font-family: "Elice Digital Baeum", sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+.container {}
+
+header {
+    width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 107px;
+}
+
+.logo {
+    display: inline-block;
+    background-image: url(/images/logo.png);
+    background-size: cover;
+    width: 124px;
+    height: 61px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 386px;
+}
+
+nav a {
+    font-size: 32px;
+    color: #000;
+}
+
+.member {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    width: 273px;
+}
+
+.profile_image {
+    display: inline-block;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background-color: #ccc;
+    margin-right: 10px;
+}
+
+.member span {
+    margin-right: 20px;
+}
+
+/* 버튼 */
+.btn_logout {
+    display: block;
+    border-radius: 25px;
+    width: 80px;
+    line-height: 32px;
+    text-align: center;
+    background-color: #d4d9b4;
+    color: #000;
+}
