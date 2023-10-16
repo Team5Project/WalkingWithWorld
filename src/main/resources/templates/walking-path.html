@@ -3,8 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>walking-path</title>
+    <style>
+        a {
+          text-decoration : none;
+        }
+    </style>
 </head>
 <body>
-    <h1 th:text="${walkingPathList}"></h1>
+<h5 th:text="${listOfwalkingPath}"></h5>
+    <ul th:each="walkingPath:${listOfwalkingPath}">
+        <li th:text="${walkingPath}"></li>
+<!--        ${imgName}
+        <img src="/images/265640500fall-1_1280.jpg"  style="width:200px; height:200px;"/><br>
+        <a th:href="@{|/walking-path/${walkingPath.id}|}" th:text="${walkingPath}"></a>-->
+    </ul>
+<hr>
+<form method="post" action="/walking-path" enctype="multipart/form-data">
+    <label>제목 : <input type="text" name="title"></label>
+    <label>주소 : <input type="text" name="addr"></label><br>
+    <label>사진 선택 : <input type="file" name="files" multiple></label>
+    <input type="submit" value="작성하기">
+</form>
 </body>
 </html>
