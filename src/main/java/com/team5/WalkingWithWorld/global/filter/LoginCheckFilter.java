@@ -14,6 +14,7 @@ import java.io.IOException;
 public class LoginCheckFilter implements Filter {
 
     //TODO 로그인이 필요 없는 URL 추가
+
     private static final String[] whiteList = {"/favicon.ico","/login","/signup","/signupForm","/walking-path","/walking-path/*","/images/*","/css/*",};
 
     @Override
