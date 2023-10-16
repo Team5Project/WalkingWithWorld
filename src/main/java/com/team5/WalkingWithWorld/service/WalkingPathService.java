@@ -21,7 +21,7 @@ public class WalkingPathService {
         this.fileUpload = fileUpload;
     }
 
-    public boolean createWalkingPath(WalkingPathsDTO walkingPathsDTO, FileVo multipartFile) {
+    public int createWalkingPath(WalkingPathsDTO walkingPathsDTO, FileVo multipartFile) {
         //산책로
         walkingPathsMapper.addWalkingPath(walkingPathsDTO);
         //산책로 이미지
@@ -33,6 +33,6 @@ public class WalkingPathService {
             photosDTO.setImgPath(entry.getValue());
             photosMapper.addPhotos(photosDTO);
         }
-        return true;
+        return walkingPathsDTO.getId();
     }
 }

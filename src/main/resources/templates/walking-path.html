@@ -10,13 +10,12 @@
     </style>
 </head>
 <body>
-<h5 th:text="${listOfwalkingPath}"></h5>
-    <ul th:each="walkingPath:${listOfwalkingPath}">
-        <li th:text="${walkingPath}"></li>
-<!--        ${imgName}
-        <img src="/images/265640500fall-1_1280.jpg"  style="width:200px; height:200px;"/><br>
-        <a th:href="@{|/walking-path/${walkingPath.id}|}" th:text="${walkingPath}"></a>-->
+    <ul th:each="walkingPath:${walkingPathList}">
+        <img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}" th:src="@{|${walkingPath.getPhotosList().get(0).getImgPath()}|}" style='width:200px;'/>
+        <a th:href="@{|/walking-path/${walkingPath.getId()}|}" th:text="${walkingPath}"></a>
     </ul>
+<hr>
+<button onclick="">게시글 작성</button>
 <hr>
 <form method="post" action="/walking-path" enctype="multipart/form-data">
     <label>제목 : <input type="text" name="title"></label>

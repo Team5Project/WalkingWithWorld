@@ -35,11 +35,11 @@ public class WalkingPathsController {
         ModelAndView mav = new ModelAndView();
         List<WalkingPathsDTO> walkingPathList = dao.readAll();
 
-        Map<Object, Object> listOfwalkingPath = new HashMap<>();
-        for(WalkingPathsDTO dto : walkingPathList)
-            listOfwalkingPath.put(dto, photoDao.readPhotos(dto.getId()));
+        for(WalkingPathsDTO dto : walkingPathList) {
+           dto.setPhotosList(photoDao.readPhotos(dto.getId()));
+        }
 
-        mav.addObject("listOfwalkingPath", listOfwalkingPath);
+        mav.addObject("walkingPathList", walkingPathList);
         mav.setViewName("walking-path");
         return mav;
     }
@@ -49,22 +49,28 @@ public class WalkingPathsController {
                                           @Login UsersDto loginUser, FileVo files) {
         ModelAndView mav = new ModelAndView();
 
-        dto.setUsers_id(loginUser.getId());
-        dto.setCreated_by(loginUser.getName());
+        dto.setUsersId(loginUser.getId());
+        dto.setCreatedBy(loginUser.getName());
 
         // 추후 결과 따른 msg 추가
-        boolean uploadResult = walkingPathService.createWalkingPath(dto, files);
-        System.out.println("게시글 생성 완료 : " + uploadResult); // 확인용
-        List<WalkingPathsDTO> walkingPathList = dao.readAll();
-        mav.addObject("walkingPathList", walkingPathList);
-        mav.setViewName("redirect:/walking-path");
+        int walkingPathId = walkingPathService.createWalkingPath(dto, files);
+        System.out.println("게시글 생성 완료 : " + walkingPathId);
+
+        mav.setViewName("redirect:/walking-path/" + walkingPathId);
         return mav;
     }
 
     @GetMapping("/walking-path/{walking-path-id}")
     @ResponseBody
-    public WalkingPathsDTO getWalkingPathById(@PathVariable("walking-path-id") int id) {
-        return dao.readWalkingPath(id);
+    public ModelAndView getWalkingPathById(@PathVariable("walking-path-id") int id) {
+        ModelAndView mav = new ModelAndView();
+        WalkingPathsDTO walkingPaths = dao.readWalkingPath(id);
+        List<PhotosDTO> photosList = photoDao.readPhotos(walkingPaths.getId());
+        walkingPaths.setPhotosList(photosList);
+
+        mav.addObject("walkingPaths", walkingPaths);
+        mav.setViewName("walking-path_detail");
+        return mav;
     }
 
     @GetMapping("/walking-path/photos/{walking-path-id}")

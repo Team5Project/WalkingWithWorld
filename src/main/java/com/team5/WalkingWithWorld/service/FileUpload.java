@@ -23,7 +23,7 @@ public class FileUpload {
                 File f = new File(path + fileName);
                 System.out.println(f.getPath()); ///
                 mfile.transferTo(f);
-                filesName.put(fileName, path + fileName);
+                filesName.put(fileName, "/images/" + fileName);
                 System.out.println("파일이 저장되었어요!!");
             } catch (IOException e) {
                 e.printStackTrace();
