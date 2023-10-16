@@ -2,10 +2,7 @@ package com.team5.WalkingWithWorld.controller;
 
 import com.team5.WalkingWithWorld.dao.PhotosMapper;
 import com.team5.WalkingWithWorld.dao.WalkingPathsMapper;
-import com.team5.WalkingWithWorld.domain.FileVo;
-import com.team5.WalkingWithWorld.domain.PhotosDTO;
-import com.team5.WalkingWithWorld.domain.UsersDto;
-import com.team5.WalkingWithWorld.domain.WalkingPathsDTO;
+import com.team5.WalkingWithWorld.domain.*;
 import com.team5.WalkingWithWorld.global.Login;
 import com.team5.WalkingWithWorld.service.WalkingPathService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,8 +40,9 @@ public class WalkingPathsController {
     }
 
     @PostMapping("/walking-path")
-    public ModelAndView createWalkingPath(WalkingPathsDTO dto,
+    public ModelAndView createWalkingPath(WalkingPathsMapDTO dto,
                                           @Login UsersDto loginUser, FileVo files) {
+        System.out.println(dto.getCourse()); ////////////////////////////
         ModelAndView mav = new ModelAndView();
         dto.setUsersId(loginUser.getId());
         dto.setCreatedBy(loginUser.getName());
@@ -67,12 +65,11 @@ public class WalkingPathsController {
     @ResponseBody
     public ModelAndView getWalkingPathById(@PathVariable("walking-path-id") int id, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
-        WalkingPathsDTO walkingPaths = dao.readWalkingPath(id);
+        WalkingPathsMapDTO walkingPaths = dao.readWalkingPath(id);
         List<PhotosDTO> photosList = photoDao.readPhotos(walkingPaths.getId());
         walkingPaths.setPhotosList(photosList);
 
         mav.addObject("walkingPaths", walkingPaths);
-        mav.addObject("referer", request.getHeader("referer"));
         mav.setViewName("walking-path_detail");
         return mav;
     }

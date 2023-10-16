@@ -1,31 +1,10 @@
-//---------------------------------------------------------------------
-//
-//
-// 그릴 맵
-//
-//
-//---------------------------------------------------------------------
-var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div
     mapOption = {
         center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
         level: 3 // 지도의 확대 레벨
     };
 
 var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-//---------------------------------------------------------------------
-//
-//
-// 받을 맵
-//
-//
-//---------------------------------------------------------------------
-var readMapContainer = document.getElementById('readMap'), // 지도를 표시할 div
-    readMapOption = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
-    };
-
-var readMap = new kakao.maps.Map(readMapContainer, readMapOption); // 지도를 생성합니다
 
 //---------------------------------------------------------------------
 //
@@ -149,7 +128,8 @@ kakao.maps.event.addListener(map, 'rightclick', function (mouseEvent) {
 
         // 마우스 클릭으로 그린 선의 좌표 배열을 얻어옵니다
         var path = clickLine.getPath();
-
+        // 수정사항 ---------------------------------------------------------
+        document.getElementById("course").value=path;
         // 선을 구성하는 좌표의 개수가 2개 이상이면
         if (path.length > 1) {
 
@@ -162,9 +142,9 @@ kakao.maps.event.addListener(map, 'rightclick', function (mouseEvent) {
             var distance = Math.round(clickLine.getLength()), // 선의 총 거리를 계산합니다
                 content = getTimeHTML(distance); // 커스텀오버레이에 추가될 내용입니다
 
-            fullDistance = distance;
-            console.log(fullDistance);
-
+            console.log(distance);
+            document.getElementById("distance").value = distance;
+            document.getElementById("time").value = distance / 67 | 0;
             // 그려진 선의 거리정보를 지도에 표시합니다
             showDistance(content, path[path.length - 1]);
 
@@ -191,7 +171,7 @@ function deleteClickLine() {
     }
 }
 
-// 마우스 드래그로 그려지고 있는 선의 총거리 정보를 표시하거
+// 마우스 드래그로 그려지고 있는 선의 총거리 정보를 표시하기
 // 마우스 오른쪽 클릭으로 선 그리가 종료됐을 때 선의 정보를 표시하는 커스텀 오버레이를 생성하고 지도에 표시하는 함수입니다
 function showDistance(content, position) {
 
@@ -278,14 +258,14 @@ function deleteCircleDot() {
 function getTimeHTML(distance) {
 
     // 도보의 시속은 평균 4km/h 이고 도보의 분속은 67m/min입니다
-    var walkkTime = distance / 67 | 0;
+    var walkTime = distance / 67 | 0;
     var walkHour = '', walkMin = '';
 
     // 계산한 도보 시간이 60분 보다 크면 시간으로 표시합니다
-    if (walkkTime > 60) {
-        walkHour = '<span class="number">' + Math.floor(walkkTime / 60) + '</span>시간 '
+    if (walkTime > 60) {
+        walkHour = '<span class="number">' + Math.floor(walkTime / 60) + '</span>시간 '
     }
-    walkMin = '<span class="number">' + walkkTime % 60 + '</span>분'
+    walkMin = '<span class="number">' + walkTime % 60 + '</span>분'
 
     // 거리와 도보 시간, 자전거 시간을 가지고 HTML Content를 만들어 리턴합니다
     var content = '<ul class="dotOverlay distanceInfo">';
