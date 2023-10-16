@@ -33,11 +33,13 @@ public class CommentsController {
         mav.setViewName("redirect:/comments");
         return mav;
     }
+
     @RequestMapping(value = "/comments/updateComments", produces = "application/json; charset=utf-8")
     @ResponseBody
     public CommentsDTO updateComments(int id) {
         return dao.updateComments(id);
     }
+
     @RequestMapping("/comments/update")
     public ModelAndView update(CommentsDTO dto){
         boolean result = dao.update(dto);
