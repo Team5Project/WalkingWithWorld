@@ -1,5 +1,6 @@
 package com.team5.WalkingWithWorld.controller;
 
+import com.team5.WalkingWithWorld.dao.UserMapper;
 import com.team5.WalkingWithWorld.domain.LoginDto;
 import com.team5.WalkingWithWorld.domain.UsersDto;
 import com.team5.WalkingWithWorld.global.Login;
@@ -25,9 +26,8 @@ public class UserController {
         this.userService = userService;
     }
 
-
     @GetMapping("/signup")
-    public String index() {
+    public String index(){
         return "signupForm";
     }
 
@@ -46,7 +46,7 @@ public class UserController {
         if (usersDto != null) {
             session.invalidate();
         }
-        return "redirect:/";
+        return "";
     }
 
     @PostMapping("/login")
@@ -80,8 +80,18 @@ public class UserController {
     @PostMapping("/signup")
     public String signUpUser(UsersDto usersDto) {
         List<UsersDto> userList = userService.getAllUsers();
+<<<<<<<<< Temporary merge branch 1
+
+        userService.createUser(usersDto);
+
+        modelAndView.addObject("list", userList);
+        modelAndView.setViewName("loginForm");
+        return modelAndView;
+=========
         boolean user = userService.createUser(usersDto);
         System.out.println(user);
         return "loginForm";
+>>>>>>>>> Temporary merge branch 2
     }
+
 }

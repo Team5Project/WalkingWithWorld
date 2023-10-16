@@ -3,7 +3,6 @@ package com.team5.WalkingWithWorld.domain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class WalkingPathsDTO {
+public class WalkingPathsMapDTO {
     private int id;
     private int usersId;
     private String title;
@@ -21,4 +20,7 @@ public class WalkingPathsDTO {
     private LocalDateTime modifiedAt;
     private String modifiedBy;
     private List<PhotosDTO> photosList;
+    private int distance;
+    private int time;
+    private String course;
 }
