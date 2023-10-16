@@ -65,7 +65,7 @@ public class WalkingPathsController {
     @ResponseBody
     public ModelAndView getWalkingPathById(@PathVariable("walking-path-id") int id, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
-        WalkingPathsMapDTO walkingPaths = dao.readWalkingPath(id);
+        WalkingPathsMapDTO walkingPaths = walkingPathService.readWalkingPathById(id);
         List<PhotosDTO> photosList = photoDao.readPhotos(walkingPaths.getId());
         walkingPaths.setPhotosList(photosList);
 

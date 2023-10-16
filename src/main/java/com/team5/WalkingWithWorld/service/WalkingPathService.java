@@ -41,4 +41,15 @@ public class WalkingPathService {
         }
         return walkingPathsMapDTO.getId();
     }
+
+    public WalkingPathsMapDTO readWalkingPathById(int id) {
+        WalkingPathsMapDTO walkingPathsMapDTO = walkingPathsMapper.readWalkingPath(id);
+        WalkingPathsMapDTO mapDTO = mapMapper.ReadMap(id);
+        if(mapDTO != null) {
+            walkingPathsMapDTO.setTime(mapDTO.getTime());
+            walkingPathsMapDTO.setDistance(mapDTO.getDistance());
+            walkingPathsMapDTO.setCourse(mapDTO.getCourse());
+        }
+        return walkingPathsMapDTO;
+    }
 }
