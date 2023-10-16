@@ -46,7 +46,7 @@ public class UserController {
         if (usersDto != null) {
             session.invalidate();
         }
-        return "";
+        return "redirect:/";
     }
 
     @PostMapping("/login")
