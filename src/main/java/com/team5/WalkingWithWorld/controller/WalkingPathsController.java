@@ -55,11 +55,4 @@ public class WalkingPathsController {
         mav.setViewName("walking-path");
         return mav;
     }
-
-    @GetMapping("/walking-path/{walking-path-id}")
-    @ResponseBody
-    public WalkingPathsDTO getWalkingPathById(@PathVariable("walking-path-id") int id) {
-        return dao.readOne(id);
-
-    }
 }
