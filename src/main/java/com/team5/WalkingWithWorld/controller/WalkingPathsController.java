@@ -1,12 +1,13 @@
 package com.team5.WalkingWithWorld.controller;
 
+import com.team5.WalkingWithWorld.dao.PhotosMapper;
 import com.team5.WalkingWithWorld.dao.WalkingPathsMapper;
-import com.team5.WalkingWithWorld.domain.LoginDto;
+import com.team5.WalkingWithWorld.domain.FileVo;
+import com.team5.WalkingWithWorld.domain.PhotosDTO;
 import com.team5.WalkingWithWorld.domain.UsersDto;
 import com.team5.WalkingWithWorld.domain.WalkingPathsDTO;
 import com.team5.WalkingWithWorld.global.Login;
-import jakarta.servlet.http.HttpSession;
-import org.apache.catalina.User;
+import com.team5.WalkingWithWorld.service.WalkingPathService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,45 +22,61 @@ import java.util.List;
 public class WalkingPathsController {
     @Autowired
     WalkingPathsMapper dao;
+    @Autowired
+    PhotosMapper photoDao;
+    @Autowired
+    WalkingPathService walkingPathService;
 
-    /*
     @GetMapping("/walking-path")
-    public ModelAndView readAllWalkingPath() {
+    public ModelAndView readAllWalkingPath(@Login UsersDto loginUser) {
         ModelAndView mav = new ModelAndView();
         List<WalkingPathsDTO> walkingPathList = dao.readAll();
+
+        for(WalkingPathsDTO dto : walkingPathList) {
+           dto.setPhotosList(photoDao.readPhotos(dto.getId()));
+        }
+
         mav.addObject("walkingPathList", walkingPathList);
         mav.setViewName("walking-path");
         return mav;
     }
-    */
-    //@PostMapping("/walking-path")
 
-    @GetMapping("/walking-path")
-    public ModelAndView createWalkingPath(@Login UsersDto loginUser) {
+    @PostMapping("/walking-path")
+    public ModelAndView createWalkingPath(WalkingPathsDTO dto,
+                                          @Login UsersDto loginUser, FileVo files) {
         ModelAndView mav = new ModelAndView();
-
-        System.out.println(loginUser.getId());
-        // 임시 데이터
-        WalkingPathsDTO dto = new WalkingPathsDTO();
-        dto.setUsers_id(2);
-        dto.setAddr("올림픽대로 5");
-        dto.setTitle("올림픽 공원 산책로");
-        dto.setCreated_by("개굴이"); // 이 부분을 userDTO 사용??
-
+        dto.setUsersId(loginUser.getId());
+        dto.setCreatedBy(loginUser.getName());
 
         // 추후 결과 따른 msg 추가
-//        boolean updateResult = dao.addWalkingPath(dto);
-//        System.out.println(updateResult); // 확인용
-        List<WalkingPathsDTO> walkingPathList = dao.readAll();
-        mav.addObject("walkingPathList", walkingPathList);
-        mav.setViewName("walking-path");
+        int walkingPathId = walkingPathService.createWalkingPath(dto, files);
+        System.out.println("게시글 생성 완료 : " + walkingPathId);
+
+        mav.setViewName("redirect:/walking-path/" + walkingPathId);
+
         return mav;
+    }
+    @GetMapping("/walking-path/write")
+    public String goToWrite() {
+        return "walking-path_write";
     }
 
     @GetMapping("/walking-path/{walking-path-id}")
     @ResponseBody
-    public WalkingPathsDTO getWalkingPathById(@PathVariable("walking-path-id") int id) {
-        return dao.readOne(id);
+    public ModelAndView getWalkingPathById(@PathVariable("walking-path-id") int id) {
+        ModelAndView mav = new ModelAndView();
+        WalkingPathsDTO walkingPaths = dao.readWalkingPath(id);
+        List<PhotosDTO> photosList = photoDao.readPhotos(walkingPaths.getId());
+        walkingPaths.setPhotosList(photosList);
 
+        mav.addObject("walkingPaths", walkingPaths);
+        mav.setViewName("walking-path_detail");
+        return mav;
+    }
+
+    @GetMapping("/walking-path/photos/{walking-path-id}")
+    @ResponseBody
+    public List<PhotosDTO> getPhotosByWalkingPathId(@PathVariable("walking-path-id") int id) {
+        return photoDao.readPhotos(id);
     }
 }

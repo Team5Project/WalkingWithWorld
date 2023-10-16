@@ -6,15 +6,15 @@ import com.team5.WalkingWithWorld.global.Login;
 import com.team5.WalkingWithWorld.global.SessionConst;
 import com.team5.WalkingWithWorld.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.net.http.HttpRequest;
 import java.util.List;
 
 @Controller
@@ -25,9 +25,8 @@ public class UserController {
         this.userService = userService;
     }
 
-
     @GetMapping("/signup")
-    public String index() {
+    public String index(){
         return "signupForm";
     }
 
@@ -84,4 +83,5 @@ public class UserController {
         System.out.println(user);
         return "loginForm";
     }
+
 }
