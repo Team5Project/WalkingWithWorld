@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a th:href="@{/reviews}">first</a>
+<a th:href="@{/reviewslist}">reviewslist</a><br>
+
+<th:block th:if="${list}">
+    <hr>
+    <ul>
+        <li th:block th:each="reviews : ${list}">
+            [[${reviews}]]
+            <a th:href="@{/reviews/delete(id=${reviews.id})}">삭제</a>
+            <a th:href="@{/reviews/update(id=${reviews.id})}">수정</a>
+        </li>
+
+
+    </ul>
+</th:block>
+
+<hr>
+<form method = "post" action = "/reviews">
+    content : <input type="text" name="content" required>
+    <input type="submit" value="저장">
+</form>
+</body>
+</html>
