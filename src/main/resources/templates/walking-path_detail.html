@@ -9,5 +9,6 @@
 <th:block th:each="photo:${walkingPaths.getPhotosList()}">
     <img th:src="${photo.getImgPath()}" style="width:200px;"></img>
 </th:block>
+<a th:href="${referer}">목록</a>
 </body>
 </html>

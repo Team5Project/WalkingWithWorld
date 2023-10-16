@@ -8,6 +8,7 @@ import com.team5.WalkingWithWorld.domain.UsersDto;
 import com.team5.WalkingWithWorld.domain.WalkingPathsDTO;
 import com.team5.WalkingWithWorld.global.Login;
 import com.team5.WalkingWithWorld.service.WalkingPathService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,29 +48,31 @@ public class WalkingPathsController {
         ModelAndView mav = new ModelAndView();
         dto.setUsersId(loginUser.getId());
         dto.setCreatedBy(loginUser.getName());
-
         // 추후 결과 따른 msg 추가
         int walkingPathId = walkingPathService.createWalkingPath(dto, files);
+
         System.out.println("게시글 생성 완료 : " + walkingPathId);
-
         mav.setViewName("redirect:/walking-path/" + walkingPathId);
-
         return mav;
     }
     @GetMapping("/walking-path/write")
-    public String goToWrite() {
-        return "walking-path_write";
+    public ModelAndView goToWrite(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("referer", request.getHeader("referer"));
+        mav.setViewName("walking-path_form");
+        return mav;
     }
 
     @GetMapping("/walking-path/{walking-path-id}")
     @ResponseBody
-    public ModelAndView getWalkingPathById(@PathVariable("walking-path-id") int id) {
+    public ModelAndView getWalkingPathById(@PathVariable("walking-path-id") int id, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         WalkingPathsDTO walkingPaths = dao.readWalkingPath(id);
         List<PhotosDTO> photosList = photoDao.readPhotos(walkingPaths.getId());
         walkingPaths.setPhotosList(photosList);
 
         mav.addObject("walkingPaths", walkingPaths);
+        mav.addObject("referer", request.getHeader("referer"));
         mav.setViewName("walking-path_detail");
         return mav;
     }
