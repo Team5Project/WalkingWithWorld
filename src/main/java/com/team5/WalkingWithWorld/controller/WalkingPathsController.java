@@ -1,33 +1,21 @@
 package com.team5.WalkingWithWorld.controller;
 
 import com.team5.WalkingWithWorld.dao.PhotosMapper;
-import com.team5.WalkingWithWorld.dao.UserMapper;
 import com.team5.WalkingWithWorld.dao.WalkingPathsMapper;
-<<<<<<<<< Temporary merge branch 1
-import com.team5.WalkingWithWorld.domain.FileVo;
-import com.team5.WalkingWithWorld.domain.PhotosDTO;
-import com.team5.WalkingWithWorld.domain.UsersDto;
-import com.team5.WalkingWithWorld.domain.WalkingPathsDTO;
+import com.team5.WalkingWithWorld.domain.*;
 import com.team5.WalkingWithWorld.global.Login;
 import com.team5.WalkingWithWorld.service.WalkingPathService;
-=========
-import com.team5.WalkingWithWorld.domain.LoginDto;
-import com.team5.WalkingWithWorld.domain.UsersDto;
-import com.team5.WalkingWithWorld.domain.WalkingPathsDTO;
-import com.team5.WalkingWithWorld.global.Login;
->>>>>>>>> Temporary merge branch 2
-import jakarta.servlet.http.HttpSession;
-import org.apache.catalina.User;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.*;
+import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class WalkingPathsController {
@@ -54,7 +42,8 @@ public class WalkingPathsController {
 
     @PostMapping("/walking-path")
     public ModelAndView createWalkingPath(WalkingPathsMapDTO dto,
-                                          @Login UsersDto loginUser, FileVo files) {
+                                          @Login UsersDto loginUser,
+                                          FileVo files) throws IOException {
         System.out.println(dto.getCourse()); ////////////////////////////
         ModelAndView mav = new ModelAndView();
         dto.setUsersId(loginUser.getId());

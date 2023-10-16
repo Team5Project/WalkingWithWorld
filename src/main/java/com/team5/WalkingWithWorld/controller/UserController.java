@@ -80,18 +80,9 @@ public class UserController {
     @PostMapping("/signup")
     public String signUpUser(UsersDto usersDto) {
         List<UsersDto> userList = userService.getAllUsers();
-<<<<<<<<< Temporary merge branch 1
-
-        userService.createUser(usersDto);
-
-        modelAndView.addObject("list", userList);
-        modelAndView.setViewName("loginForm");
-        return modelAndView;
-=========
         boolean user = userService.createUser(usersDto);
         System.out.println(user);
         return "loginForm";
->>>>>>>>> Temporary merge branch 2
     }
 
 }

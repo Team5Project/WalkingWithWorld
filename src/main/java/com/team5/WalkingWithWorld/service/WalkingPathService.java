@@ -8,6 +8,7 @@ import com.team5.WalkingWithWorld.domain.PhotosDTO;
 import com.team5.WalkingWithWorld.domain.WalkingPathsMapDTO;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Map;
 
 @Service
@@ -24,7 +25,7 @@ public class WalkingPathService {
         this.mapMapper = mapMapper;
     }
 
-    public int createWalkingPath(WalkingPathsMapDTO walkingPathsMapDTO, FileVo multipartFile) {
+    public int createWalkingPath(WalkingPathsMapDTO walkingPathsMapDTO, FileVo multipartFile) throws IOException {
         //산책로
         walkingPathsMapper.addWalkingPath(walkingPathsMapDTO);
         //지도
