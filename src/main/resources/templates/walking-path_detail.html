@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>walking-path detail</title>
+</head>
+<body>
+<h2 th:text="${walkingPaths}"></h2>
+<th:block th:each="photo:${walkingPaths.getPhotosList()}">
+    <img th:src="${photo.getImgPath()}" style="width:200px;"></img>
+</th:block>
+</body>
+</html>
