@@ -15,13 +15,8 @@
         <a th:href="@{|/walking-path/${walkingPath.getId()}|}" th:text="${walkingPath}"></a>
     </ul>
 <hr>
-<button onclick="">게시글 작성</button>
-<hr>
-<form method="post" action="/walking-path" enctype="multipart/form-data">
-    <label>제목 : <input type="text" name="title"></label>
-    <label>주소 : <input type="text" name="addr"></label><br>
-    <label>사진 선택 : <input type="file" name="files" multiple></label>
-    <input type="submit" value="작성하기">
-</form>
+    <th:block th:if="${session.auth != null}">
+        <a th:href="@{/walking-path/write}">게시글 작성하기</a>
+    </th:block>
 </body>
 </html>
