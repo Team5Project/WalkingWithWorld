@@ -105,14 +105,15 @@
     // 지도에 클릭 이벤트를 등록합니다
     // 지도를 클릭하면 선 그리기가 시작됩니다 그려진 선이 있으면 지우고 다시 그립니다
     window.onload = function(mouseEvent) {
-        var inputString = [[${walkingPaths.course}]];
-        var input = inputString.split(',');
+      var input = [[${walkingPaths.mapList}]];
 
       // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
       var linePath = [];
-      for(let i = 0; i < input.length; i += 2) {
-        linePath.push(new kakao.maps.LatLng(input[i + 1], input[i]));
-      }
+      input.forEach(function(map){
+      console.log(map["coordinateX"]);
+      console.log(map["coordinateY"]);
+        linePath.push(new kakao.maps.LatLng(map["coordinateY"], map["coordinateX"]));
+      });
 
       // 지도에 표시할 선을 생성합니다
       var polyline = new kakao.maps.Polyline({

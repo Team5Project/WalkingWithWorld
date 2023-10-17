@@ -1,5 +1,6 @@
 package com.team5.WalkingWithWorld.controller;
 
+import com.team5.WalkingWithWorld.dao.MapMapper;
 import com.team5.WalkingWithWorld.dao.PhotosMapper;
 import com.team5.WalkingWithWorld.dao.WalkingPathsMapper;
 import com.team5.WalkingWithWorld.domain.*;
@@ -23,6 +24,8 @@ public class WalkingPathsController {
     @Autowired
     PhotosMapper photoDao;
     @Autowired
+    MapMapper mapDao;
+    @Autowired
     WalkingPathService walkingPathService;
 
     @GetMapping("/walking-path")
@@ -40,14 +43,13 @@ public class WalkingPathsController {
     }
 
     @PostMapping("/walking-path")
-    public ModelAndView createWalkingPath(WalkingPathsMapDTO dto,
-                                          @Login UsersDto loginUser, FileVo files) {
-        System.out.println(dto.getCourse()); ////////////////////////////
+    public ModelAndView createWalkingPath(WalkingPathsDTO dto,
+                                          @Login UsersDto loginUser, FileVo files, MapDTO mapDTO, String course) {
         ModelAndView mav = new ModelAndView();
         dto.setUsersId(loginUser.getId());
         dto.setCreatedBy(loginUser.getName());
         // 추후 결과 따른 msg 추가
-        int walkingPathId = walkingPathService.createWalkingPath(dto, files);
+        int walkingPathId = walkingPathService.createWalkingPath(dto, files, mapDTO, course);
 
         System.out.println("게시글 생성 완료 : " + walkingPathId);
         mav.setViewName("redirect:/walking-path/" + walkingPathId);
@@ -68,6 +70,8 @@ public class WalkingPathsController {
         WalkingPathsMapDTO walkingPaths = walkingPathService.readWalkingPathById(id);
         List<PhotosDTO> photosList = photoDao.readPhotos(walkingPaths.getId());
         walkingPaths.setPhotosList(photosList);
+        List<MapDTO> mapList = mapDao.ReadMap(walkingPaths.getId());
+        walkingPaths.setMapList(mapList);
 
         mav.addObject("walkingPaths", walkingPaths);
         mav.setViewName("walking-path_detail");

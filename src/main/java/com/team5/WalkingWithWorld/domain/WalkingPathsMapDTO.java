@@ -20,7 +20,5 @@ public class WalkingPathsMapDTO {
     private LocalDateTime modifiedAt;
     private String modifiedBy;
     private List<PhotosDTO> photosList;
-    private int distance;
-    private int time;
-    private String course;
+    private List<MapDTO> mapList;
 }
