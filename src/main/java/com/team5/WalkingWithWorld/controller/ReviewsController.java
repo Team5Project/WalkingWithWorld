@@ -1,29 +1,38 @@
 package com.team5.WalkingWithWorld.controller;
 
+import com.team5.WalkingWithWorld.dao.PhotosMapper;
 import com.team5.WalkingWithWorld.dao.ReviewsMapper;
+import com.team5.WalkingWithWorld.dao.WalkingPathsMapper;
+import com.team5.WalkingWithWorld.domain.PhotosDTO;
 import com.team5.WalkingWithWorld.domain.ReviewsDTO;
-import jakarta.servlet.http.HttpSession;
+import com.team5.WalkingWithWorld.domain.UsersDto;
+import com.team5.WalkingWithWorld.global.Login;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class ReviewsController {
     @Autowired
     ReviewsMapper dao;
+    @Autowired
+    WalkingPathsMapper pathsMapper;
+    @Autowired
+    PhotosMapper photoDao;
 
-/*    @GetMapping("/reviews")
-    public String reviews(){
+    @GetMapping("/reviews/{reviews-id}")
+    public String reviews(@PathVariable("reviews-id") int id,
+                          Model model){
+
+        model.addAttribute("walkingPaths", pathsMapper.readWalkingPath(id));
 
         return "reviewsPage";
-    }*/
+    }
 
     @GetMapping("/reviewslist")
     public ModelAndView reviewslist(){
@@ -34,27 +43,28 @@ public class ReviewsController {
         return mav;
     }
 
-    @PostMapping("/reviews")
+
+    @PostMapping("/reviews/{walking_paths_id}")
     @ResponseBody
-    public List<ReviewsDTO> createReview(HttpSession session, ReviewsDTO reviewsDTO){
-//        int id = Integer.parseInt(session.getAttribute("Authorization"));
+    public ReviewsDTO createReview(@Login UsersDto loginUser,
+                                         @PathVariable("walking_paths_id") int id,
+                                         ReviewsDTO reviewsDTO){
 
-        ReviewsDTO review = reviewsDTO;
+        reviewsDTO.setUsersId(loginUser.getId());
+        reviewsDTO.setWalkingPathsId(id);
 
-        review.setUsersId(1);
-        review.setWalkingPathsId(1);
-        review.setCreatedAt(LocalDateTime.now());
-        review.setCreatedBy("test");
+        System.out.println("산책로 id : " + id);
+        reviewsDTO.setCreatedAt(LocalDateTime.now());
+        reviewsDTO.setCreatedBy(loginUser.getName());
 
-        System.out.println(review);
+        List<PhotosDTO> photosList = photoDao.readPhotos(loginUser.getId());
+        reviewsDTO.setPhotosList(photosList);
+        System.out.println(reviewsDTO);
 
-        dao.insertReviews(review);
+        dao.insertReviews(reviewsDTO);
 
-        List<ReviewsDTO> list = dao.reviewslist();
-//        list = dao.reviewslist();
 
-        System.out.println(list);
-        return list;
+        return reviewsDTO;
     }
 
     @GetMapping("/reviews/delete")
@@ -66,6 +76,13 @@ public class ReviewsController {
         }
         mav.setViewName("reviewsPage");
         return mav;
+    }
+
+    @RequestMapping(value="/reviews/UpdatePage")
+    @ResponseBody
+    public ReviewsDTO updateReviews(ReviewsDTO dto){
+        dao.updateReviews(dto);
+        return dto;
     }
 
     @GetMapping("/reviews/update")
