@@ -75,7 +75,7 @@ public class WalkingPathsController {
         walkingPathsDTO.setId(walkingPathsDTO.getId());
         int result = dao.updateWalkingPath(walkingPathsDTO);
         System.out.println("수정 결과 : " + result);
-        return "redirect:/walking-path";
+        return "redirect:/walking-path/"  + walkingPathsDTO.getId();
     }
     @GetMapping("/walking-path/{walking-path-id}")
     public ModelAndView getWalkingPathById(@PathVariable("walking-path-id") int id, HttpServletRequest request) {
