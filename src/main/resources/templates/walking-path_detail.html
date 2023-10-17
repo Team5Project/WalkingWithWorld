@@ -88,6 +88,10 @@
     <img th:src="${photo.getImgPath()}" style="width:200px;"></img>
 </th:block>
 <a th:href="@{/walking-path}">목록</a>
+<th:block th:if="${session.auth != null && session.auth.id == walkingPaths.usersId}">
+    <a th:href="@{|/walking-path/modify/${walkingPaths.id}|}">게시글 수정하기</a>
+    <a th:href="@{|/walking-path/delete/${walkingPaths.id}|}">게시글 삭제하기</a>
+</th:block>
 <div class="map_wrap">
     <div class="readMap" id="map"></div>
 </div>
@@ -110,8 +114,6 @@
       // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
       var linePath = [];
       input.forEach(function(map){
-      console.log(map["coordinateX"]);
-      console.log(map["coordinateY"]);
         linePath.push(new kakao.maps.LatLng(map["coordinateY"], map["coordinateX"]));
       });
 

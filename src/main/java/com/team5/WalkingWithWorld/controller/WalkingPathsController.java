@@ -63,6 +63,14 @@ public class WalkingPathsController {
         mav.setViewName("walking-path_form");
         return mav;
     }
+    @GetMapping("/walking-path/modify/{walking-path-id}")
+    public ModelAndView goToModify(@PathVariable("walking-path-id") int walkingPathId, HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("referer", request.getHeader("referer"));
+        mav.addObject("walkingPathId", walkingPathId);
+        mav.setViewName("walking-path_form");
+        return mav;
+    }
 
     @GetMapping("/walking-path/{walking-path-id}")
     @ResponseBody
@@ -83,5 +91,11 @@ public class WalkingPathsController {
     @ResponseBody
     public List<PhotosDTO> getPhotosByWalkingPathId(@PathVariable("walking-path-id") int id) {
         return photoDao.readPhotos(id);
+    }
+    @GetMapping("/walking-path/delete/{walking-path-id}")
+    public String deleteWalkingPathById(@PathVariable("walking-path-id") int id) {
+        int result = dao.deleteWalkingPath(id);
+        System.out.println(result);
+        return "redirect:/walking-path";
     }
 }
