@@ -56,6 +56,7 @@ public class WalkingPathsController {
 
         return mav;
     }
+
     @GetMapping("/walking-path/write")
     public String goToWrite() {
         return "walking-path_write";

@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,4 +19,5 @@ public class ReviewsDTO {
     private String createdBy; // userMapper.getUserById(id).getName();
     private LocalDateTime modifiedAt; //null
     private String modifiedBy; //null
+    private List<PhotosDTO> photosList;
 }
