@@ -85,10 +85,9 @@
 <body>
 <h2 th:text="${walkingPaths}"></h2>
 <th:block th:each="photo:${walkingPaths.getPhotosList()}">
-    <img th:src="|/ex_images/${photo.getImgName()}|" style="width:200px;"></img>
+    <img th:src="|/ex_images/${photo.getImgName()}|" style="width:200px;"/>
 </th:block>
 
-<a th:href="@{/walking-path}">목록</a>
 <th:block th:if="${session.auth != null && session.auth.id == walkingPaths.usersId}">
     <a th:href="@{|/walking-path/modify/${walkingPaths.id}|}">게시글 수정하기</a>
     <a th:href="@{|/walking-path/delete/${walkingPaths.id}|}">게시글 삭제하기</a>
@@ -130,11 +129,11 @@
       // 지도에 선을 표시합니다
       polyline.setMap(map);
     }
+</script>
 <br>
 <a th:href="@{/walking-path}">목록</a>
 
 <br>
-
 
 <!--댓글 영역-->
 <br>
