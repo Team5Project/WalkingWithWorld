@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    #left{
+        width: 50%;
+        float:left
+
+    }
+
+    #right{
+        width: 50%;
+        float:right
+    }
+</style>
+<body>
+    <div id="left" style="background-color: cadetblue;">
+
+    </div>
+
+    <div id="right">
+        <img th:src=@{/images/login_logo.png}>
+        <form method="post" action="/login">
+            <input type="hidden" name="redirectURL" th:value="${redirectURL}">
+         <input type ="text" name="email" placeholder="이메일을 입력해주세요."> <br>
+         <input type="password" name="password" placeholder="비밀번호를 입력해주세요."> <br>
+        <input type="submit" value="LOGIN">
+        </form>
+        <div>
+            아이디찾기<br>
+            비밀번호 찾기<br>
+        </div>
+        <div>
+            아직 회원이 아니신가요?</br>
+            <a href="/signup">지금 가입하세요.</a>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

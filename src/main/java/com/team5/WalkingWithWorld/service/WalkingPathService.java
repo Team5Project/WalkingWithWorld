@@ -24,6 +24,7 @@ public class WalkingPathService {
         this.mapMapper = mapMapper;
     }
 
+
     public int createWalkingPath(WalkingPathsDTO walkingPathsDTO, FileVo multipartFile, MapDTO mapDTO, String course) {
         //산책로
         walkingPathsMapper.addWalkingPath(walkingPathsDTO);
@@ -36,17 +37,18 @@ public class WalkingPathService {
             mapDTO.setCoordinateY(courseSplit[i + 1]);
             mapMapper.addMap(mapDTO);
         }
+
         //산책로 이미지
         Map<String, String> filesName = fileUpload.upload(multipartFile);
 
         PhotosDTO photosDTO = new PhotosDTO();
-        photosDTO.setWalkingPathsId(walkingPathsDTO.getId());
+        photosDTO.setWalkingPathsId(walkingPathsMapDTO.getId());
         for(Map.Entry<String, String> entry : filesName.entrySet()) {
             photosDTO.setImgName(entry.getKey());
             photosDTO.setImgPath(entry.getValue());
             photosMapper.addPhotos(photosDTO);
         }
-        return walkingPathsDTO.getId();
+        return walkingPathsMapDTO.getId();
     }
 
     public WalkingPathsMapDTO readWalkingPathById(int id) {

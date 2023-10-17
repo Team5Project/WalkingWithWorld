@@ -8,7 +8,7 @@
 <a th:href="@{/reviews}">first</a>
 <th:block th:if="${walkingPaths != null}">
     [[${walkingPaths}]]
-    <form method = "post" th:action = "@{/reviews/{id}(id=${1})}">
+    <form method = "post" th:action = "@{/reviews/{id}(id=${walkingPaths.getId()})}">
         content : <input type="text" name="content" required>
         사진 선택 : <input type="file" name="files" multiple>
         <input type="submit" value="저장">

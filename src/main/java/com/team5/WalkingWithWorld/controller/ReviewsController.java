@@ -34,37 +34,32 @@ public class ReviewsController {
         return "reviewsPage";
     }
 
-    @GetMapping("/reviewslist")
-    public ModelAndView reviewslist(){
-        ModelAndView mav = new ModelAndView();
+    @PostMapping("/reviews")
+    public String getReviewList(Model model, ReviewsDTO reviewsDTO){
+
         List<ReviewsDTO> list = dao.reviewslist();
-        mav.addObject("list", list);
-        mav.setViewName("reviewsPage");
-        return mav;
+        model.addAttribute("reviewList", list);
+
+        return "reviews :: #reviews";
     }
 
 
-    @PostMapping("/reviews/{walking_paths_id}")
-    @ResponseBody
-    public ReviewsDTO createReview(@Login UsersDto loginUser,
-                                         @PathVariable("walking_paths_id") int id,
+    @PostMapping("/reviews/{walking-paths-id}")
+    public String createReview(@Login UsersDto loginUser,
+                                         @PathVariable("walking-paths-id") int id,
                                          ReviewsDTO reviewsDTO){
 
         reviewsDTO.setUsersId(loginUser.getId());
         reviewsDTO.setWalkingPathsId(id);
-
-        System.out.println("산책로 id : " + id);
         reviewsDTO.setCreatedAt(LocalDateTime.now());
         reviewsDTO.setCreatedBy(loginUser.getName());
 
         List<PhotosDTO> photosList = photoDao.readPhotos(loginUser.getId());
         reviewsDTO.setPhotosList(photosList);
-        System.out.println(reviewsDTO);
 
         dao.insertReviews(reviewsDTO);
 
-
-        return reviewsDTO;
+        return "reviews";
     }
 
     @GetMapping("/reviews/delete")
