@@ -1,6 +1,7 @@
 package com.team5.WalkingWithWorld.dao;
 
 import com.team5.WalkingWithWorld.domain.WalkingPathsDTO;
+import com.team5.WalkingWithWorld.domain.WalkingPathsMapDTO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -17,10 +18,8 @@ public interface WalkingPathsMapper {
     Boolean addWalkingPath(WalkingPathsDTO dto);
 
     @Select("select id, users_id, title, addr, created_at, created_by from walking_paths where id = #{walkingPathId}")
-    WalkingPathsDTO readWalkingPath(int WalkingPathId);
+    WalkingPathsMapDTO readWalkingPath(int WalkingPathId);
 
-    @Select("select id from walking_paths where users_id = #{users_id} and title = #{title}")
-    int getWalkingPathIdByDetails(WalkingPathsDTO dto);
 
     //@Select("select id,title,addr,created_at,created_by from walking_paths where users_id=#{userId}")
     //List<WalkingPathsDTO> realWithUserId(int userId);

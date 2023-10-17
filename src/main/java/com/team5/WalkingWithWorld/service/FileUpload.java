@@ -18,6 +18,8 @@ public class FileUpload {
         Map<String, String> filesName = new HashMap<>();
 
         for (MultipartFile mfile : files.getFiles()) {
+            if(mfile.isEmpty())
+                return filesName;
             String fileName = LocalDateTime.now().getNano() + mfile.getOriginalFilename();
             try {
                 File f = new File(path + fileName);
