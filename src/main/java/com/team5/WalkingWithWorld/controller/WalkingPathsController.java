@@ -47,7 +47,7 @@ public class WalkingPathsController {
     //산책로 등록
     @PostMapping("/walking-path")
     public ModelAndView createWalkingPath(WalkingPathsDTO dto,
-                                          @Login UsersDto loginUser, FileVo files, MapDTO mapDTO, String course) {
+                                          @Login UsersDto loginUser, FileVo files, MapDTO mapDTO, String course) throws IOException {
         ModelAndView mav = new ModelAndView();
         dto.setUsersId(loginUser.getId());
         dto.setCreatedBy(loginUser.getName());

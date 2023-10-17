@@ -6,6 +6,7 @@ import com.team5.WalkingWithWorld.dao.WalkingPathsMapper;
 import com.team5.WalkingWithWorld.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class WalkingPathService {
     }
 
 
-    public int createWalkingPath(WalkingPathsDTO walkingPathsDTO, FileVo multipartFile, MapDTO mapDTO, String course) {
+    public int createWalkingPath(WalkingPathsDTO walkingPathsDTO, FileVo multipartFile, MapDTO mapDTO, String course) throws IOException {
         //산책로
         walkingPathsMapper.addWalkingPath(walkingPathsDTO);
         //지도
@@ -42,13 +43,13 @@ public class WalkingPathService {
         Map<String, String> filesName = fileUpload.upload(multipartFile);
 
         PhotosDTO photosDTO = new PhotosDTO();
-        photosDTO.setWalkingPathsId(walkingPathsMapDTO.getId());
+        photosDTO.setWalkingPathsId(walkingPathsDTO.getId());
         for(Map.Entry<String, String> entry : filesName.entrySet()) {
             photosDTO.setImgName(entry.getKey());
             photosDTO.setImgPath(entry.getValue());
             photosMapper.addPhotos(photosDTO);
         }
-        return walkingPathsMapDTO.getId();
+        return walkingPathsDTO.getId();
     }
 
     public WalkingPathsMapDTO readWalkingPathById(int id) {
