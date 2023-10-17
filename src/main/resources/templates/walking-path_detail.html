@@ -103,26 +103,25 @@
 <div>
     <h3>댓글 확인</h3>
     <div id="comments"></div>
-
 </div>
-<!--댓글 작성 하기-->
-<a th:href="@{|comments/${walkingPaths.getId()}|}">댓글 작성하기</a>
 
-리뷰 영역
-<!--<div th:replace="/reviews :: reviews">-->
-<!--</div>-->
+<!--댓글 작성 하기-->
+    <input type="text" id="comment_content" name="content" placeholder="댓글을 입력해주세요"/>
+    <input type="button" th:if="${session.auth !=null}" th:onclick="|writeComment(${walkingPaths.getId()})|" value="등록"/>
+    <input type="button" th:if="${session.auth == null}" th:onclick="|location.href='@{/login?redirectURL=/walking-path/{id}(id=${walkingPaths.getId()})}'|" value="등록">
+
+
 <div>
     <h3>리뷰 확인</h3>
     <div id="reviews"></div>
-
 </div>
 
 
 <!--리뷰 작성-->
-<!--<th:block th:if="${session.auth != null}">-->
-<!--    <a th:href="@{|/walking-path/${walkingPath.getId()}|}" ></a>-->
 <a th:href="@{|/reviews/${walkingPaths.getId()}|}">리뷰 작성하기</a>
 
+
+<!--맵 API-->
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d753200077e444dd40df1e458903dfd3"></script>
 <script th:inline="javascript">
@@ -169,7 +168,6 @@
         })
             .then((response) => response.text())
             .then((data) => {
-                console.log('성공 : ', data);
                 document.getElementById("reviews").innerHTML = `${data}`;
             });
     }
@@ -180,7 +178,25 @@
         })
             .then((response) => response.text())
             .then((data) => {
-                console.log('성공 : ', data);
+                document.getElementById("comments").innerHTML = `${data}`;
+            });
+    }
+
+    function writeComment(id){
+        var CommentsDTO = new Object();
+        CommentsDTO.content = document.getElementById("comment_content").value;
+        console.log(CommentsDTO);
+        fetch("/comments/" + id, {
+            method: "POST",
+            headers:{
+                'content-type':'application/json'
+            },
+            body : JSON.stringify({
+                content : CommentsDTO.content
+            })
+        })
+            .then((response) => response.text())
+            .then((data) => {
                 document.getElementById("comments").innerHTML = `${data}`;
             });
     }
