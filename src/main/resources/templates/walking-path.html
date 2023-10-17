@@ -17,6 +17,5 @@
 <hr>
         <a th:if="${session.auth != null}" th:href="@{/walking-path/write}">게시글 작성하기</a>
         <a th:if="${session.auth == null}" th:href="@{'/login?redirectURL=/walking-path'}">게시글 작성하기</a>
-
 </body>
 </html>
