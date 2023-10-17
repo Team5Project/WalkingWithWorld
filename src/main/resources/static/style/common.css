@@ -8,15 +8,40 @@ a {
     text-decoration: none;
 }
 
-/* .container {} */
+h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+input {
+    /* 모든 기본 스타일을 초기화합니다. */
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    /* 선택 시 파란 테두리 제거 */
+    /* 기타 스타일 속성을 필요에 따라 추가할 수 있습니다. */
+}
+
+/* ----- 헤더 스타일 ----- */
 
 header {
     width: 1440px;
     margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     height: 107px;
+    /* display: flex;
+    justify-content: space-between;
+    align-items: center; */
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    /* 수직 가운데 정렬 */
+    /* 세 개의 열을 만듭니다. */
+    text-align: center;
+    /* 모든 요소의 텍스트를 가운데 정렬합니다. */
 }
 
 .logo {
@@ -31,7 +56,8 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 386px;
+    text-align: center;
+    gap: 60px;
 }
 
 nav a {
@@ -43,9 +69,9 @@ nav a {
     display: flex;
     justify-content: end;
     align-items: center;
-    width: 280px;
 }
 
+/* 로그인 상태 */
 .profile_image {
     display: inline-block;
     border-radius: 50%;
@@ -63,6 +89,23 @@ nav a {
 .date {
     color: #888;
     font-size: 16px;
+}
+
+/* 비로그인 상태 */
+.header_sign {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+}
+
+/* ----- 메인 관련 ----- */
+
+main {
+    width: 1440px;
+    margin: 0 auto;
+
 }
 
 footer {
@@ -93,14 +136,31 @@ footer {
     height: 98px;
 }
 
-/* ----- 메인 관련 ----- */
-main {
-    width: 1440px;
-    margin: 0 auto;
-
+/* ----- 버튼 ----- */
+.btn_signin {
+    display: block;
+    border-radius: 25px;
+    width: 120px;
+    line-height: 40px;
+    text-align: center;
+    background-color: #97bf04;
+    color: #fff;
 }
 
-/* ----- 버튼 ----- */
+.btn_signup {
+    display: block;
+    border-radius: 25px;
+    width: 200px;
+    line-height: 40px;
+    text-align: center;
+    background-color: #d4d9b4;
+    color: #666;
+}
+
+.sign_icon {
+    margin-right: 5px;
+}
+
 .btn_logout {
     display: block;
     border-radius: 25px;
@@ -120,4 +180,14 @@ main {
     background-color: #97bf04;
     color: #fff;
     font-size: 24px;
+}
+
+.btn_comments {
+    display: inline-block;
+    border-radius: 25px;
+    width: 80px;
+    line-height: 32px;
+    text-align: center;
+    background-color: #97bf04;
+    color: #000;
 }

@@ -7,10 +7,16 @@
 }
 
 
-/* ----- 페이지 헤더 ----- */
 section {
     padding: 0 90px;
 }
+
+section:nth-child(3),
+section:nth-child(4) {
+    margin-top: 120px;
+}
+
+/* ----- 페이지 헤더 ----- */
 
 .detail_header {
     margin-bottom: 20px;
@@ -94,13 +100,24 @@ section {
     margin-bottom: 47px;
 }
 
+#comments_write {
+    display: flex;
+    justify-content: space-between;
+}
+
+.comments_input {
+    width: 450px;
+    border-bottom: 1px solid #9D9393;
+}
+
+
 /* ----- 리뷰 관련 스타일 ----- */
 
 .review_container {
     position: relative;
     margin: 0 auto;
     border-radius: 20px;
-    border: 1px solid #000;
+    border: 1px solid #f5d666;
     padding: 40px;
 }
 
