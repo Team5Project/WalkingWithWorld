@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<div id="comments">
+    <th:block th:if="${commentList}">
+        <ul th:each=" comment : ${commentList}">
+            <li>
+                <span th:text="${comment.getName()}"></span> : [[${comment.getContent()}]]
+                <span th:text="${#temporals.format(comment.created_at,'yyyy-MM-dd')}"></span>
+                <span th:onclick="|UpdateAct(${comment.id})|">수정</span>
+                <a th:href="@{/comments/delete(id=${comment.id})}">삭제</a>
+            </li>
+        </ul>
+    </th:block>
+</div>
+</body>
+</html>
