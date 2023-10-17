@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/ex_images/**")
-                .addResourceLocations("file:///C:/iotest/images");
+                .addResourceLocations("file:///C:/iotest/images/");
     }
 
     //로그인 필터 빈 등록
