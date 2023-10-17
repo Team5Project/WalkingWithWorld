@@ -2,83 +2,266 @@
 <html xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WWW - review </title>
-    <link rel="stylesheet" href="/style/reset.css">
+    <title>walking-path detail</title>
+    <link th:href="@{/style/reset.css}" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
           integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/style/common.css">
-    <link rel="stylesheet" href="/style/waking_path_detail.css">
+
+    <link th:href="@{/style/common.css}" rel="stylesheet" >
+
+    <link th:href="@{/style/waking_path_detail.css}" rel="stylesheet">
+
+    <style>
+        .readMap {
+            margin-top: 10px;
+            width: 100%;
+            height: 350px;
+        }
+
+        /* #readMap {
+            position: relative;
+        }
+
+        #pathLoad {
+            position: absolute;
+            bottom: -30px;
+        } */
+
+
+        /*--------- 오버레이 ------------*/
+
+        .dot {
+            overflow: hidden;
+            float: left;
+            width: 12px;
+            height: 12px;
+            background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/mini_circle.png');
+        }
+
+        .dotOverlay {
+            position: relative;
+            bottom: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            border-bottom: 2px solid #ddd;
+            float: left;
+            font-size: 12px;
+            padding: 5px;
+            background: #fff;
+        }
+
+        .dotOverlay:nth-of-type(n) {
+            border: 0;
+            box-shadow: 0px 1px 2px #888;
+        }
+
+        .number {
+            font-weight: bold;
+            color: #ee6152;
+        }
+
+        .dotOverlay:after {
+            content: '';
+            position: absolute;
+            margin-left: -6px;
+            left: 50%;
+            bottom: -8px;
+            width: 11px;
+            height: 8px;
+            background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white_small.png')
+        }
+
+        .distanceInfo {
+            position: relative;
+            top: 5px;
+            left: 5px;
+            list-style: none;
+            margin: 0;
+        }
+
+        .distanceInfo .label {
+            display: inline-block;
+            width: 50px;
+        }
+
+        .distanceInfo:after {
+            content: none;
+        }
+    </style>
 </head>
 <body>
-<h2 th:text="${walkingPaths}"></h2>
-<th:block th:each="photo:${walkingPaths.getPhotosList()}">
-    <img th:src="|/ex_images/${photo.getImgName()}|" style="width:200px;"/>
-</th:block>
+<p th:text="${walkingPaths}"></p>
 
-<th:block th:if="${session.auth != null && session.auth.id == walkingPaths.usersId}">
-    <a th:href="@{|/walking-path/modify/${walkingPaths.id}|}">게시글 수정하기</a>
-    <a th:href="@{|/walking-path/delete/${walkingPaths.id}|}">게시글 삭제하기</a>
-</th:block>
+<main>
+<section class="detail_header">
+    <div class="detail_title">
+        <h2 th:text="${walkingPaths.title}">청계천</h2>
+        <div class="up_del">
+            <span class="info_modi">수정</span>
+            <span class="info_del">삭제</span>
+        </div>
+    </div>
+    <p>
+        <span class="star_score">★★★★★</span> <i></i>리뷰 <b>8</b> <i>|</i> 댓글 <b>22</b> <i>|</i> 거리 <b>10</b> Km
+        <i>|</i> 시간 <b>3</b> 시간
+    </p>
+    <address th:text="${walkingPaths.addr}">서울 도봉구</address>
+</section>
+<section class="infoAndcomments">
+    <div class="iac_wrapper">
+        <article class="detail_info">
+            <aside class="images">
+                <figure class="viewer">
+                </figure>
+
+                <div class="img_list" th:each="walkingPath:${walkingPathList}">
+<!--                    <figcaption class="thumb" style="background-image: url(/images/sample/1.jpg);">-->
+<!--                    </figcaption>-->
+                    <img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}" th:src="@{|/images/${walkingPath.getPhotosList().get(0).getImgName()}|}" style='width:200px;'/>
+                </div>
+            </aside>
+            <div class="review_write">
+                <p>
+                    이 산책로는 어땠나요?<br>
+                    리뷰를 남겨주세요!
+                </p>
+                <div>
+                    <a href="" class="btn_write_big">
+                        리뷰작성
+                    </a>
+                </div>
+            </div>
+        </article>
+        <div class="comments_wrapper">
+            <div class="comments_content">
+                <article class="comments">
+                    <div class="comments_info">
+                        <div class="review_info">
+                            <div class="detail_member">
+                                <a href="" class="profile_image"></a>
+                                <span class="name">산책마니아1</span>
+                                <span class="date">2023.10.15</span>
+                            </div>
+                            <div class="up_del" style="visibility:visible;">
+                                <span class="info_modi">수정</span>
+                                <span class="info_del">삭제</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p>조용조용히 아이와 걸으며 산책하기 좋습니다.</p>
+                </article>
+                <article class="comments">
+                    <div class="comments_info">
+                        <div class="review_info">
+                            <div class="detail_member">
+                                <a href="" class="profile_image"></a>
+                                <span class="name">李世民</span>
+                                <span class="date">2023.10.15</span>
+                            </div>
+                            <div class="up_del" style="visibility: hidden;">
+                                <span class="info_modi">수정</span>
+                                <span class="info_del">삭제</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p>이 장소의 음료와 음식을 강력히 추천합니다. </p>
+                </article>
+                <article class="comments">
+                    <div class="comments_info">
+                        <div class="review_info">
+                            <div class="detail_member">
+                                <a href="" class="profile_image"></a>
+                                <span class="name">Keunkyoung Lee</span>
+                                <span class="date">2023.10.15</span>
+                            </div>
+                            <div class="up_del" style="visibility: hidden;">
+                                <span class="info_modi">수정</span>
+                                <span class="info_del">삭제</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p>주차는 정독도서관에 했습니다. </p>
+                </article>
+                <article class="comments">
+                    <div class="comments_info">
+                        <div class="review_info">
+                            <div class="detail_member">
+                                <a href="" class="profile_image"></a>
+                                <span class="name">아롱다롱</span>
+                                <span class="date">2023.10.15</span>
+                            </div>
+                            <div class="up_del" style="visibility: hidden;">
+                                <span class="info_modi">수정</span>
+                                <span class="info_del">삭제</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p>조용조용히 아이와 걸으며 산책하기 좋습니다. </p>
+                </article>
+                <article class="comments">
+                    <div class="comments_info">
+                        <div class="review_info">
+                            <div class="detail_member">
+                                <a href="" class="profile_image"></a>
+                                <span class="name">햇살론</span>
+                                <span class="date">2023.10.15</span>
+                            </div>
+                            <div class="up_del" style="visibility: hidden;">
+                                <span class="info_modi">수정</span>
+                                <span class="info_del">삭제</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p>초고속신속즉시대출일수가능 </p>
+                </article>
+            </div>
+
+            <form action="" method="post" id="comments_write">
+                <input type="text" name="content" class="comments_input" placeholder="댓글 등록하기" required>
+                <input type="submit" value="등록" class="btn_comments">
+            </form>
+        </div>
+    </div>
+    </div>
+</section>
+
 <div class="map_wrap">
     <div class="readMap" id="map"></div>
 </div>
 
-    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-
-    // 지도에 클릭 이벤트를 등록합니다
-    // 지도를 클릭하면 선 그리기가 시작됩니다 그려진 선이 있으면 지우고 다시 그립니다
-    window.onload = function(mouseEvent) {
-      var input = [[${walkingPaths.mapList}]];
-
-      // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
-      var linePath = [];
-      input.forEach(function(map){
-        linePath.push(new kakao.maps.LatLng(map["coordinateY"], map["coordinateX"]));
-      });
-
-      // 지도에 표시할 선을 생성합니다
-      var polyline = new kakao.maps.Polyline({
-          path: linePath, // 선을 구성하는 좌표배열 입니다
-          strokeWeight: 5, // 선의 두께 입니다
-          strokeColor: '#FFAE00', // 선의 색깔입니다
-          strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-          strokeStyle: 'solid' // 선의 스타일입니다
-      });
-
-      // 지도에 선을 표시합니다
-      polyline.setMap(map);
-    }
 <br>
 <a th:href="@{/walking-path}">목록</a>
 
 <br>
+
 
 <!--댓글 영역-->
 <br>
 <div>
     <h3>댓글 확인</h3>
     <div id="comments"></div>
+
 </div>
-
 <!--댓글 작성 하기-->
-    <input type="text" id="comment_content" name="content" placeholder="댓글을 입력해주세요"/>
-    <input type="button" th:if="${session.auth !=null}" th:onclick="|writeComment(${walkingPaths.getId()})|" value="등록"/>
-    <input type="button" th:if="${session.auth == null}" th:onclick="|location.href='@{/login?redirectURL=/walking-path/{id}(id=${walkingPaths.getId()})}'|" value="등록">
+<a th:href="@{|comments/${walkingPaths.getId()}|}">댓글 작성하기</a>
 
-
+리뷰 영역
+<!--<div th:replace="/reviews :: reviews">-->
+<!--</div>-->
 <div>
     <h3>리뷰 확인</h3>
     <div id="reviews"></div>
-</div>
 
+</div>
+</main>
 
 <!--리뷰 작성-->
+<!--<th:block th:if="${session.auth != null}">-->
+<!--    <a th:href="@{|/walking-path/${walkingPath.getId()}|}" ></a>-->
 <a th:href="@{|/reviews/${walkingPaths.getId()}|}">리뷰 작성하기</a>
 
-
-<!--맵 API-->
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d753200077e444dd40df1e458903dfd3"></script>
 <script th:inline="javascript">
@@ -116,7 +299,6 @@
         polyline.setMap(map);
     }
 </script>
-
 <script th:inline="javascript">
     function getReviewList() {
         fetch("/reviews", {
@@ -124,6 +306,7 @@
         })
             .then((response) => response.text())
             .then((data) => {
+                console.log('성공 : ', data);
                 document.getElementById("reviews").innerHTML = `${data}`;
             });
     }
@@ -134,25 +317,7 @@
         })
             .then((response) => response.text())
             .then((data) => {
-                document.getElementById("comments").innerHTML = `${data}`;
-            });
-    }
-
-    function writeComment(id){
-        var CommentsDTO = new Object();
-        CommentsDTO.content = document.getElementById("comment_content").value;
-        console.log(CommentsDTO);
-        fetch("/comments/" + id, {
-            method: "POST",
-            headers:{
-                'content-type':'application/json'
-            },
-            body : JSON.stringify({
-                content : CommentsDTO.content
-            })
-        })
-            .then((response) => response.text())
-            .then((data) => {
+                console.log('성공 : ', data);
                 document.getElementById("comments").innerHTML = `${data}`;
             });
     }
