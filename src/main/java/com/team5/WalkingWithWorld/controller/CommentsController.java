@@ -4,10 +4,10 @@ import com.team5.WalkingWithWorld.dao.CommentsMapper;
 import com.team5.WalkingWithWorld.domain.CommentsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -15,22 +15,20 @@ public class CommentsController {
     @Autowired
     CommentsMapper dao;
 
-    @RequestMapping("/comments")
-    public ModelAndView list() {
+    @PostMapping("/comments")
+    public String list(Model model) {
         List<CommentsDTO> list = dao.list();
-        ModelAndView mav = new ModelAndView();
-        mav.addObject("list", list);
-        mav.setViewName("commentsView");
-        System.out.println(dao.list());
-        return mav;
+        model.addAttribute("commentList", list);
+        return "comments :: #comments";
     }
-    @RequestMapping(value = "/comments/write",
-            method = RequestMethod.POST)
-    public ModelAndView write(CommentsDTO dto){
+
+    @PostMapping("/comments/{walking-paths-id}")
+    public ModelAndView write(CommentsDTO dto,
+                              @PathVariable("walking-paths-id") int id){
         boolean result = dao.write(dto);
         ModelAndView mav = new ModelAndView();
         mav.addObject("list",dao.list());
-        mav.setViewName("redirect:/comments");
+        mav.setViewName("redirect:/comment");
         return mav;
     }
 
@@ -45,7 +43,7 @@ public class CommentsController {
         boolean result = dao.update(dto);
         ModelAndView mav = new ModelAndView();
         mav.addObject("list",dao.list());
-        mav.setViewName("redirect:/comments");
+        mav.setViewName("redirect:/comment");
         return mav;
     }
 
@@ -54,7 +52,7 @@ public class CommentsController {
         boolean result = dao.delete(id);
         ModelAndView mav = new ModelAndView();
         mav.addObject("list",dao.list());
-        mav.setViewName("redirect:/comments");
+        mav.setViewName("redirect:/comment");
         return mav;
     }
 

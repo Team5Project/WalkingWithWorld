@@ -1,6 +1,7 @@
 package com.team5.WalkingWithWorld.service;
 
 import com.team5.WalkingWithWorld.domain.FileVo;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,11 +14,17 @@ import java.util.Map;
 //이미지 업로드 구현
 @Service
 public class FileUpload {
-    public Map<String, String> upload(FileVo files) {
-        String path = "C:/kosaStudy/WalkingWithWorld/src/main/resources/static/images/";
+
+    @Value("${file.path}")
+    private String path;
+
+    public Map<String, String> upload(FileVo files) throws IOException {
+
         Map<String, String> filesName = new HashMap<>();
 
         for (MultipartFile mfile : files.getFiles()) {
+            if(mfile.isEmpty())
+                return filesName;
             String fileName = LocalDateTime.now().getNano() + mfile.getOriginalFilename();
             try {
                 File f = new File(path + fileName);

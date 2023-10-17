@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Getter
 @AllArgsConstructor
 public class FileVo {
-    private MultipartFile[] files;
+    private List<MultipartFile> files;
 }
