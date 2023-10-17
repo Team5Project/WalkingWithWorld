@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -28,6 +29,7 @@ public class WalkingPathsController {
     @Autowired
     WalkingPathService walkingPathService;
 
+    //리스트
     @GetMapping("/walking-path")
     public ModelAndView readAllWalkingPath(@Login UsersDto loginUser) {
         ModelAndView mav = new ModelAndView();
@@ -42,6 +44,7 @@ public class WalkingPathsController {
         return mav;
     }
 
+    //산책로 등록
     @PostMapping("/walking-path")
     public ModelAndView createWalkingPath(WalkingPathsDTO dto,
                                           @Login UsersDto loginUser, FileVo files, MapDTO mapDTO, String course) {
@@ -49,7 +52,9 @@ public class WalkingPathsController {
         dto.setUsersId(loginUser.getId());
         dto.setCreatedBy(loginUser.getName());
         // 추후 결과 따른 msg 추가
+
         int walkingPathId = walkingPathService.createWalkingPath(dto, files, mapDTO, course);
+
 
         System.out.println("게시글 생성 완료 : " + walkingPathId);
         mav.setViewName("redirect:/walking-path/" + walkingPathId);

@@ -23,6 +23,7 @@ var dots = {}; // 선이 그려지고 있을때 클릭할 때마다 클릭 지�
 let clickLa = [];
 let clickMa = [];
 let fullDistance;
+
 // 수정사항=====================================================================
 let resultLat = [];
 
@@ -35,6 +36,7 @@ kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
 
     clickLa.push(clickPosition.La);
     clickMa.push(clickPosition.Ma);
+
     // 수정사항===============================================================
     let dot = [];
     dot.push(clickPosition.La);
@@ -84,6 +86,7 @@ kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
 
         // 좌표 배열에 클릭한 위치를 추가합니다
         path.push(clickPosition);
+
         //console.log(clickPosition);
         // 다시 선에 좌표 배열을 설정하여 클릭 위치까지 선을 그리도록 설정합니다
         clickLine.setPath(path);
@@ -117,6 +120,7 @@ kakao.maps.event.addListener(map, 'mousemove', function (mouseEvent) {
 
         // 거리정보를 지도에 표시합니다
         showDistance(content, mousePosition);
+
         //console.log(content);
         //console.log(mousePosition);
     }
@@ -167,8 +171,10 @@ kakao.maps.event.addListener(map, 'rightclick', function (mouseEvent) {
         // 상태를 false로, 그리지 않고 있는 상태로 변경합니다
         drawingFlag = false;
     }
+
     // 수정사항=====================================================================
     document.getElementById("course").value = resultLat;
+
 });
 
 // 클릭으로 그려진 선을 지도에서 제거하는 함수입니다
@@ -177,6 +183,7 @@ function deleteClickLine() {
         clickLine.setMap(null);
         clickLine = null;
         resultLat = [];
+
     }
 }
 

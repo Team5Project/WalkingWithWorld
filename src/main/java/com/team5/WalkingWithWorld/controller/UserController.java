@@ -10,10 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,10 +22,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/signup")
-    public String index(){
-        return "signupForm";
-    }
 
     @GetMapping("/login")
     public String loginIndex(@RequestParam(defaultValue = "/") String redirectURL,
@@ -36,7 +29,7 @@ public class UserController {
                              HttpSession session) {
         model.addAttribute("redirectURL", redirectURL);
 
-        return "loginForm";
+        return "login_Form";
     }
 
     @GetMapping("/logout")
@@ -45,7 +38,7 @@ public class UserController {
         if (usersDto != null) {
             session.invalidate();
         }
-        return "";
+        return "redirect:/";
     }
 
     @PostMapping("/login")
@@ -56,14 +49,14 @@ public class UserController {
     ) {
 
         if (bindingResult.hasErrors()) {
-            return "loginForm";
+            return "login_Form";
         }
 
         UsersDto user = userService.getUserInfo(loginDto);
         if (user == null) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
             System.out.println("아이디 또는 패스워드 오류");
-            return "loginForm";
+            return "login_Form";
         }
 
         session.setAttribute(SessionConst.LONGIN_USERS, user);
@@ -76,12 +69,17 @@ public class UserController {
         return "redirect:/";
     }
 
+    @GetMapping("/signup")
+    public String index(){
+        return "signup_Form";
+    }
+
     @PostMapping("/signup")
     public String signUpUser(UsersDto usersDto) {
         List<UsersDto> userList = userService.getAllUsers();
         boolean user = userService.createUser(usersDto);
         System.out.println(user);
-        return "loginForm";
+        return "login_Form";
     }
 
 }

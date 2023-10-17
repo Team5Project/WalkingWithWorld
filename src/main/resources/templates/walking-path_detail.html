@@ -85,8 +85,9 @@
 <body>
 <h2 th:text="${walkingPaths}"></h2>
 <th:block th:each="photo:${walkingPaths.getPhotosList()}">
-    <img th:src="${photo.getImgPath()}" style="width:200px;"></img>
+    <img th:src="|/ex_images/${photo.getImgName()}|" style="width:200px;"></img>
 </th:block>
+
 <a th:href="@{/walking-path}">목록</a>
 <th:block th:if="${session.auth != null && session.auth.id == walkingPaths.usersId}">
     <a th:href="@{|/walking-path/modify/${walkingPaths.id}|}">게시글 수정하기</a>
@@ -129,6 +130,63 @@
       // 지도에 선을 표시합니다
       polyline.setMap(map);
     }
+<br>
+<a th:href="@{/walking-path}">목록</a>
+
+<br>
+
+
+<!--댓글 영역-->
+<br>
+<div>
+    <h3>댓글 확인</h3>
+    <div id="comments"></div>
+
+</div>
+<!--댓글 작성 하기-->
+<a th:href="@{|comments/${walkingPaths.getId()}|}">댓글 작성하기</a>
+
+리뷰 영역
+<!--<div th:replace="/reviews :: reviews">-->
+<!--</div>-->
+<div>
+    <h3>리뷰 확인</h3>
+    <div id="reviews"></div>
+
+</div>
+
+
+<!--리뷰 작성-->
+<!--<th:block th:if="${session.auth != null}">-->
+<!--    <a th:href="@{|/walking-path/${walkingPath.getId()}|}" ></a>-->
+<a th:href="@{|/reviews/${walkingPaths.getId()}|}">리뷰 작성하기</a>
+
+
+<script th:inline="javascript">
+    function getReviewList() {
+        fetch("/reviews", {
+            method: "POST"
+        })
+            .then((response) => response.text())
+            .then((data) => {
+                console.log('성공 : ', data);
+                document.getElementById("reviews").innerHTML = `${data}`;
+            });
+    }
+
+    function getCommentList() {
+        fetch("/comments", {
+            method: "POST"
+        })
+            .then((response) => response.text())
+            .then((data) => {
+                console.log('성공 : ', data);
+                document.getElementById("comments").innerHTML = `${data}`;
+            });
+    }
+
+    window.addEventListener('onload', getReviewList());
+    window.addEventListener('onload', getCommentList());
 </script>
 </body>
 </html>

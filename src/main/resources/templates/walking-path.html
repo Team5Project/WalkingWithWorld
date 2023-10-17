@@ -11,13 +11,11 @@
 </head>
 <body>
     <ul th:each="walkingPath:${walkingPathList}">
-        <img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}" th:src="@{|${walkingPath.getPhotosList().get(0).getImgPath()}|}" style='width:200px;'/>
+        <img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}" th:src="@{|/ex_images/${walkingPath.getPhotosList().get(0).getImgName()}|}" style='width:200px;'/>
         <a th:href="@{|/walking-path/${walkingPath.getId()}|}" th:text="${walkingPath}"></a>
     </ul>
 <hr>
-    <th:block th:if="${session.auth != null}">
-        <a th:href="@{/walking-path/write}">게시글 작성하기</a>
-    </th:block>
-
+        <a th:if="${session.auth != null}" th:href="@{/walking-path/write}">게시글 작성하기</a>
+        <a th:if="${session.auth == null}" th:href="@{'/login?redirectURL=/walking-path'}">게시글 작성하기</a>
 </body>
 </html>
