@@ -1,7 +1,5 @@
 @import url("https://font.elice.io/css?family=Elice+Digital+Baeum");
 
-
-html,
 body {
     font-family: "Elice Digital Baeum", sans-serif;
 }
@@ -10,7 +8,7 @@ a {
     text-decoration: none;
 }
 
-.container {}
+/* .container {} */
 
 header {
     width: 1440px;
@@ -45,7 +43,7 @@ nav a {
     display: flex;
     justify-content: end;
     align-items: center;
-    width: 273px;
+    width: 280px;
 }
 
 .profile_image {
@@ -57,11 +55,52 @@ nav a {
     margin-right: 10px;
 }
 
-.member span {
+.name {
     margin-right: 20px;
+    font-size: 24px;
 }
 
-/* 버튼 */
+.date {
+    color: #888;
+    font-size: 16px;
+}
+
+footer {
+    width: 100%;
+    height: 180px;
+    background-color: #665956;
+    margin: 0 auto;
+}
+
+.foot_ctn {
+    display: flex;
+    width: 1440px;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.foot_ctn p {
+    color: #fff;
+    line-height: 1.5;
+}
+
+.foot_logo {
+    background-image: url(/images/logo_white.png);
+    background-size: cover;
+    width: 199px;
+    height: 98px;
+}
+
+/* ----- 메인 관련 ----- */
+main {
+    width: 1440px;
+    margin: 0 auto;
+
+}
+
+/* ----- 버튼 ----- */
 .btn_logout {
     display: block;
     border-radius: 25px;
@@ -70,4 +109,15 @@ nav a {
     text-align: center;
     background-color: #d4d9b4;
     color: #000;
+}
+
+.btn_write_big {
+    display: block;
+    border-radius: 25px;
+    width: 200px;
+    line-height: 50px;
+    text-align: center;
+    background-color: #97bf04;
+    color: #fff;
+    font-size: 24px;
 }
