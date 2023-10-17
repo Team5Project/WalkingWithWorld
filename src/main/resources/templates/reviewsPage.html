@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a th:href="@{/reviews}">first</a>
+<th:block th:if="${walkingPaths != null}">
+    [[${walkingPaths}]]
+    <form method = "post" th:action = "@{/reviews/{id}(id=${1})}">
+        content : <input type="text" name="content" required>
+        사진 선택 : <input type="file" name="files" multiple>
+        <input type="submit" value="저장">
+        <a th:href="@{/reviews/delete(id=${1})}">삭제</a>
+        <a th:href="@{/reviews/updatePage(id=${1})}">수정</a>
+    </form>
+</th:block>
+
+<hr>
+</body>
+</html>
