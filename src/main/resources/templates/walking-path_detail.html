@@ -14,45 +14,71 @@
 <body>
 <h2 th:text="${walkingPaths}"></h2>
 <th:block th:each="photo:${walkingPaths.getPhotosList()}">
-    <img th:src="|/ex_images/${photo.getImgName()}|" style="width:200px;"></img>
+    <img th:src="|/ex_images/${photo.getImgName()}|" style="width:200px;"/>
 </th:block>
 
-<a th:href="@{/walking-path}">목록</a>
+<th:block th:if="${session.auth != null && session.auth.id == walkingPaths.usersId}">
+    <a th:href="@{|/walking-path/modify/${walkingPaths.id}|}">게시글 수정하기</a>
+    <a th:href="@{|/walking-path/delete/${walkingPaths.id}|}">게시글 삭제하기</a>
+</th:block>
 <div class="map_wrap">
     <div class="readMap" id="map"></div>
 </div>
 
+    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+    // 지도에 클릭 이벤트를 등록합니다
+    // 지도를 클릭하면 선 그리기가 시작됩니다 그려진 선이 있으면 지우고 다시 그립니다
+    window.onload = function(mouseEvent) {
+      var input = [[${walkingPaths.mapList}]];
+
+      // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
+      var linePath = [];
+      input.forEach(function(map){
+        linePath.push(new kakao.maps.LatLng(map["coordinateY"], map["coordinateX"]));
+      });
+
+      // 지도에 표시할 선을 생성합니다
+      var polyline = new kakao.maps.Polyline({
+          path: linePath, // 선을 구성하는 좌표배열 입니다
+          strokeWeight: 5, // 선의 두께 입니다
+          strokeColor: '#FFAE00', // 선의 색깔입니다
+          strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+          strokeStyle: 'solid' // 선의 스타일입니다
+      });
+
+      // 지도에 선을 표시합니다
+      polyline.setMap(map);
+    }
 <br>
 <a th:href="@{/walking-path}">목록</a>
 
 <br>
-
 
 <!--댓글 영역-->
 <br>
 <div>
     <h3>댓글 확인</h3>
     <div id="comments"></div>
-
 </div>
-<!--댓글 작성 하기-->
-<a th:href="@{|comments/${walkingPaths.getId()}|}">댓글 작성하기</a>
 
-리뷰 영역
-<!--<div th:replace="/reviews :: reviews">-->
-<!--</div>-->
+<!--댓글 작성 하기-->
+    <input type="text" id="comment_content" name="content" placeholder="댓글을 입력해주세요"/>
+    <input type="button" th:if="${session.auth !=null}" th:onclick="|writeComment(${walkingPaths.getId()})|" value="등록"/>
+    <input type="button" th:if="${session.auth == null}" th:onclick="|location.href='@{/login?redirectURL=/walking-path/{id}(id=${walkingPaths.getId()})}'|" value="등록">
+
+
 <div>
     <h3>리뷰 확인</h3>
     <div id="reviews"></div>
-
 </div>
 
 
 <!--리뷰 작성-->
-<!--<th:block th:if="${session.auth != null}">-->
-<!--    <a th:href="@{|/walking-path/${walkingPath.getId()}|}" ></a>-->
 <a th:href="@{|/reviews/${walkingPaths.getId()}|}">리뷰 작성하기</a>
 
+
+<!--맵 API-->
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d753200077e444dd40df1e458903dfd3"></script>
 <script th:inline="javascript">
@@ -91,7 +117,6 @@
     }
 </script>
 
-
 <script th:inline="javascript">
     function getReviewList() {
         fetch("/reviews", {
@@ -99,7 +124,6 @@
         })
             .then((response) => response.text())
             .then((data) => {
-                console.log('성공 : ', data);
                 document.getElementById("reviews").innerHTML = `${data}`;
             });
     }
@@ -110,7 +134,25 @@
         })
             .then((response) => response.text())
             .then((data) => {
-                console.log('성공 : ', data);
+                document.getElementById("comments").innerHTML = `${data}`;
+            });
+    }
+
+    function writeComment(id){
+        var CommentsDTO = new Object();
+        CommentsDTO.content = document.getElementById("comment_content").value;
+        console.log(CommentsDTO);
+        fetch("/comments/" + id, {
+            method: "POST",
+            headers:{
+                'content-type':'application/json'
+            },
+            body : JSON.stringify({
+                content : CommentsDTO.content
+            })
+        })
+            .then((response) => response.text())
+            .then((data) => {
                 document.getElementById("comments").innerHTML = `${data}`;
             });
     }
