@@ -23,6 +23,8 @@ var dots = {}; // 선이 그려지고 있을때 클릭할 때마다 클릭 지�
 let clickLa = [];
 let clickMa = [];
 let fullDistance;
+// 수정사항=====================================================================
+let resultLat = [];
 
 // 지도에 클릭 이벤트를 등록합니다
 // 지도를 클릭하면 선 그리기가 시작됩니다 그려진 선이 있으면 지우고 다시 그립니다
@@ -33,7 +35,11 @@ kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
 
     clickLa.push(clickPosition.La);
     clickMa.push(clickPosition.Ma);
-
+    // 수정사항===============================================================
+    let dot = [];
+    dot.push(clickPosition.La);
+    dot.push(clickPosition.Ma);
+    resultLat.push(dot);
     // 지도 클릭이벤트가 발생했는데 선을 그리고있는 상태가 아니면
     if (!drawingFlag) {
 
@@ -78,7 +84,7 @@ kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
 
         // 좌표 배열에 클릭한 위치를 추가합니다
         path.push(clickPosition);
-
+        //console.log(clickPosition);
         // 다시 선에 좌표 배열을 설정하여 클릭 위치까지 선을 그리도록 설정합니다
         clickLine.setPath(path);
 
@@ -102,6 +108,7 @@ kakao.maps.event.addListener(map, 'mousemove', function (mouseEvent) {
 
         // 마우스 클릭으로 그려진 마지막 좌표와 마우스 커서 위치의 좌표로 선을 표시합니다
         var movepath = [path[path.length - 1], mousePosition];
+
         moveLine.setPath(movepath);
         moveLine.setMap(map);
 
@@ -110,8 +117,8 @@ kakao.maps.event.addListener(map, 'mousemove', function (mouseEvent) {
 
         // 거리정보를 지도에 표시합니다
         showDistance(content, mousePosition);
-        console.log(content);
-        console.log(mousePosition);
+        //console.log(content);
+        //console.log(mousePosition);
     }
 });
 
@@ -128,8 +135,7 @@ kakao.maps.event.addListener(map, 'rightclick', function (mouseEvent) {
 
         // 마우스 클릭으로 그린 선의 좌표 배열을 얻어옵니다
         var path = clickLine.getPath();
-        // 수정사항 ---------------------------------------------------------
-        document.getElementById("course").value=path;
+
         // 선을 구성하는 좌표의 개수가 2개 이상이면
         if (path.length > 1) {
 
@@ -161,6 +167,8 @@ kakao.maps.event.addListener(map, 'rightclick', function (mouseEvent) {
         // 상태를 false로, 그리지 않고 있는 상태로 변경합니다
         drawingFlag = false;
     }
+    // 수정사항=====================================================================
+    document.getElementById("course").value = resultLat;
 });
 
 // 클릭으로 그려진 선을 지도에서 제거하는 함수입니다
@@ -168,6 +176,7 @@ function deleteClickLine() {
     if (clickLine) {
         clickLine.setMap(null);
         clickLine = null;
+        resultLat = [];
     }
 }
 
@@ -266,89 +275,6 @@ function getTimeHTML(distance) {
         walkHour = '<span class="number">' + Math.floor(walkTime / 60) + '</span>시간 '
     }
     walkMin = '<span class="number">' + walkTime % 60 + '</span>분'
-
-    // 거리와 도보 시간, 자전거 시간을 가지고 HTML Content를 만들어 리턴합니다
-    var content = '<ul class="dotOverlay distanceInfo">';
-    content += '    <li>';
-    content += '        <span class="label">총거리</span><span class="number">' + distance + '</span>m';
-    content += '    </li>';
-    content += '    <li>';
-    content += '        <span class="label">도보</span>' + walkHour + walkMin;
-    content += '    </li>';
-    content += '</ul>'
-
-    return content;
-}
-
-//---------------------------------------------------------------------
-//
-//
-// 산책로 상세보기(그린 지도 불러오기)
-//
-//
-//---------------------------------------------------------------------
-
-document.querySelector("button").addEventListener("click", function (e) {
-
-    // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
-    var linePath = [];
-    for (let i = 0; i < clickLa.length; i++) {
-        let constructor = new kakao.maps.LatLng(clickMa[i], clickLa[i]);
-        linePath.push(constructor);
-    }
-    console.log(clickLa);
-    console.log(clickMa);
-    console.log(linePath);
-    // 지도에 표시할 선을 생성합니다
-    var polyline = new kakao.maps.Polyline({
-        path: linePath, // 선을 구성하는 좌표배열 입니다
-        strokeWeight: 5, // 선의 두께 입니다
-        strokeColor: '#FFAE00', // 선의 색깔입니다
-        strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-        strokeStyle: 'solid' // 선의 스타일입니다
-    });
-
-    // 지도에 선을 표시합니다 
-    polyline.setMap(readMap);
-    getTimeHTML(fullDistance);
-    console.log(fullDistance);
-});
-
-
-
-function showDistance(content, position) {
-
-    if (distanceOverlay) { // 커스텀오버레이가 생성된 상태이면
-
-        // 커스텀 오버레이의 위치와 표시할 내용을 설정합니다
-        distanceOverlay.setPosition(position);
-        distanceOverlay.setContent(content);
-
-    } else { // 커스텀 오버레이가 생성되지 않은 상태이면
-
-        // 커스텀 오버레이를 생성하고 지도에 표시합니다
-        distanceOverlay = new kakao.maps.CustomOverlay({
-            map: map, // 커스텀오버레이를 표시할 지도입니다
-            content: content,  // 커스텀오버레이에 표시할 내용입니다
-            position: position, // 커스텀오버레이를 표시할 위치입니다.
-            xAnchor: 0,
-            yAnchor: 0,
-            zIndex: 3
-        });
-    }
-}
-
-function getTimeHTML(distance) {
-
-    // 도보의 시속은 평균 4km/h 이고 도보의 분속은 67m/min입니다
-    var walkkTime = distance / 67 | 0;
-    var walkHour = '', walkMin = '';
-
-    // 계산한 도보 시간이 60분 보다 크면 시간으로 표시합니다
-    if (walkkTime > 60) {
-        walkHour = '<span class="number">' + Math.floor(walkkTime / 60) + '</span>시간 '
-    }
-    walkMin = '<span class="number">' + walkkTime % 60 + '</span>분'
 
     // 거리와 도보 시간, 자전거 시간을 가지고 HTML Content를 만들어 리턴합니다
     var content = '<ul class="dotOverlay distanceInfo">';
