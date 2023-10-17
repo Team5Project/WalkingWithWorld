@@ -55,6 +55,7 @@ public class WalkingPathsController {
         mav.setViewName("redirect:/walking-path/" + walkingPathId);
         return mav;
     }
+
     @GetMapping("/walking-path/write")
     public ModelAndView goToWrite(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();

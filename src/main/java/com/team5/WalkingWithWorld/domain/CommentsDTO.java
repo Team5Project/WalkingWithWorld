@@ -2,14 +2,15 @@ package com.team5.WalkingWithWorld.domain;
 
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class CommentsDTO  {
-    private int walkingPathId;
-    private int usersId;
+    private int id;
+    private int walking_paths_id;
+    private int users_id;
     private String name;
     private String content;
-    private LocalDate createdAt;
-    private LocalDate modifiedAt;
+    private LocalDateTime created_at;
+    private LocalDateTime modified_at;
 }
