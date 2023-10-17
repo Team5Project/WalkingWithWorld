@@ -26,6 +26,7 @@ public class WalkingPathsController {
     @Autowired
     WalkingPathService walkingPathService;
 
+    //리스트
     @GetMapping("/walking-path")
     public ModelAndView readAllWalkingPath(@Login UsersDto loginUser) {
         ModelAndView mav = new ModelAndView();
@@ -40,6 +41,7 @@ public class WalkingPathsController {
         return mav;
     }
 
+    //산책로 등록
     @PostMapping("/walking-path")
     public ModelAndView createWalkingPath(WalkingPathsMapDTO dto,
                                           @Login UsersDto loginUser,
@@ -48,6 +50,7 @@ public class WalkingPathsController {
         ModelAndView mav = new ModelAndView();
         dto.setUsersId(loginUser.getId());
         dto.setCreatedBy(loginUser.getName());
+
         // 추후 결과 따른 msg 추가
         int walkingPathId = walkingPathService.createWalkingPath(dto, files);
 
