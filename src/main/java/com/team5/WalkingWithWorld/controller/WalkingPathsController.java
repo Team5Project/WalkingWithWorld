@@ -9,10 +9,7 @@ import com.team5.WalkingWithWorld.service.WalkingPathService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
@@ -61,20 +58,26 @@ public class WalkingPathsController {
     public ModelAndView goToWrite(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         mav.addObject("referer", request.getHeader("referer"));
-        mav.setViewName("walking-path_form");
+        mav.setViewName("walking-path_create_form");
         return mav;
     }
     @GetMapping("/walking-path/modify/{walking-path-id}")
     public ModelAndView goToModify(@PathVariable("walking-path-id") int walkingPathId, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         mav.addObject("referer", request.getHeader("referer"));
-        mav.addObject("walkingPathId", walkingPathId);
-        mav.setViewName("walking-path_form");
+        mav.addObject("walkingPath", dao.readWalkingPath(walkingPathId));
+        mav.setViewName("walking-path_modify_form");
         return mav;
     }
-
+    @PostMapping("/walking-path/modify")
+    public String modifyWalkingPath(WalkingPathsDTO walkingPathsDTO, @Login UsersDto loginUser) {
+        walkingPathsDTO.setModifiedBy(loginUser.getName());
+        walkingPathsDTO.setId(walkingPathsDTO.getId());
+        int result = dao.updateWalkingPath(walkingPathsDTO);
+        System.out.println("수정 결과 : " + result);
+        return "redirect:/walking-path";
+    }
     @GetMapping("/walking-path/{walking-path-id}")
-    @ResponseBody
     public ModelAndView getWalkingPathById(@PathVariable("walking-path-id") int id, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         WalkingPathsMapDTO walkingPaths = walkingPathService.readWalkingPathById(id);
@@ -87,7 +90,11 @@ public class WalkingPathsController {
         mav.setViewName("walking-path_detail");
         return mav;
     }
-
+    @GetMapping("/walking-path/detail/{walking-path-id}")
+    @ResponseBody
+    public WalkingPathsMapDTO getWalkingPathMapById(@PathVariable("walking-path-id") int id) {
+        return dao.readWalkingPath(id);
+    }
     @GetMapping("/walking-path/photos/{walking-path-id}")
     @ResponseBody
     public List<PhotosDTO> getPhotosByWalkingPathId(@PathVariable("walking-path-id") int id) {
