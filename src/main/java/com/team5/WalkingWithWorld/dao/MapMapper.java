@@ -1,14 +1,17 @@
 package com.team5.WalkingWithWorld.dao;
 
-import com.team5.WalkingWithWorld.domain.WalkingPathsMapDTO;
+
+import com.team5.WalkingWithWorld.domain.MapDTO;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import java.util.List;
 
 @Mapper
 public interface MapMapper {
-    @Insert("insert into map (walking_paths_id, time, distance, course) values (#{id}, #{time}, #{distance}, #{course})")
-    boolean addMap(WalkingPathsMapDTO dto);
-    @Select("select time, distance, course from map where walking_paths_id = #{id}")
-    WalkingPathsMapDTO ReadMap(int id);
+    @Insert("insert into map (walking_paths_id, time, distance, coordinate_x, coordinate_y) values (#{walkingPathsId}, #{time}, #{distance}, #{coordinateX}, #{coordinateY})")
+    boolean addMap(MapDTO dto);
+    @Select("select time, distance, coordinate_x, coordinate_y from map where walking_paths_id = #{walkingPathsId}")
+    List<MapDTO> ReadMap(int id);
 }
