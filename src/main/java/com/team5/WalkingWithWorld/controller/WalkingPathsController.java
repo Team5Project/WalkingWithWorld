@@ -9,6 +9,7 @@ import com.team5.WalkingWithWorld.service.WalkingPathService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -52,6 +53,17 @@ public class WalkingPathsController {
         System.out.println("게시글 생성 완료 : " + walkingPathId);
         mav.setViewName("redirect:/walking-path/" + walkingPathId);
         return mav;
+    }
+
+    @PostMapping(value = "/walking-path/condition/{keyword}", produces = "application/json; charset=utf-8")
+    public String conditionSearch(@PathVariable("keyword") String searchWord, @RequestBody SearchDTO searchDTO, Model model) {
+        searchDTO.setKeyword(searchWord.equals("null")?null:searchWord);
+        List<WalkingPathsDTO> walkingPathList = dao.searchWalkingPathWithSearchDTO(searchDTO); // 변경
+        for(WalkingPathsDTO dto : walkingPathList) {
+            dto.setPhotosList(photoDao.readPhotos(dto.getId()));
+        }
+        model.addAttribute("walkingPathList", walkingPathList);
+        return "walking-path_list :: #walking-path-list";
     }
 
     @PostMapping("/walking-path/search")
