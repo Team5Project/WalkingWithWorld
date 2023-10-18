@@ -10,6 +10,7 @@
     </style>
 </head>
 <body>
+    <p th:if="${keyword}" th:text="|'${keyword}' 검색 결과|"></p>
     <ul th:each="walkingPath:${walkingPathList}">
         <img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}" th:src="@{|/ex_images/${walkingPath.getPhotosList().get(0).getImgName()}|}" style='width:200px;'/>
         <a th:href="@{|/walking-path/${walkingPath.getId()}|}" th:text="${walkingPath}"></a>

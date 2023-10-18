@@ -54,6 +54,18 @@ public class WalkingPathsController {
         return mav;
     }
 
+    @PostMapping("/walking-path/search")
+    public ModelAndView searchByKeyword(String keyword) {
+        System.out.println(keyword);
+        ModelAndView mav = new ModelAndView();
+        List<WalkingPathsDTO> walkingPathsDTOList = dao.searchWalkingPathByKeyword(keyword);
+        for(WalkingPathsDTO dto : walkingPathsDTOList)
+            dto.setPhotosList(photoDao.readPhotos(dto.getId()));
+        mav.addObject("walkingPathList", walkingPathsDTOList);
+        mav.addObject("keyword", keyword);
+        mav.setViewName("walking-path");
+        return mav;
+    }
     @GetMapping("/walking-path/write")
     public ModelAndView goToWrite(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
