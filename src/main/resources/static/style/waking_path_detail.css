@@ -6,7 +6,7 @@
     min-width: 280px;
 }
 
-main{
+main {
     margin: 120px auto;
 }
 
@@ -122,6 +122,13 @@ section:nth-child(4) {
     border-radius: 20px;
     border: 1px solid #f5d666;
     padding: 40px;
+
+    /* 테스트 끝나면 지울 부분 시작 */
+    display: flex;
+    justify-content: start;
+    gap: 20px;
+    overflow: scroll;
+    /* 지울부분끝 */
 }
 
 .rv-chav {
