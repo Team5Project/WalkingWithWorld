@@ -84,9 +84,9 @@
 </head>
 <body>
 <form method="post" action="/walking-path" enctype="multipart/form-data">
-    <label>제목 : <input type="text" name="title" placeholder="제목"></label><br>
+    <label>제목 : <input type="text" name="title" placeholder="제목" required></label><br>
     <label>주소 :
-        <input type="text" name="addr" id="address" placeholder="주소"><br>
+        <input type="text" name="addr" id="address" placeholder="주소" required><br>
         <input type="button" onclick="searchAddr()" value="주소 찾기">
     </label><br>
 
@@ -115,7 +115,7 @@
         }
     </script>
 
-    <label>사진 선택 : <input type="file" name="files" multiple></label><br>
+    <label>사진 선택 : <input type="file" name="files" multiple required></label><br>
     <label>
         <input type="hidden" name="course" id="course">
         <input type="hidden" name="time" id="time">

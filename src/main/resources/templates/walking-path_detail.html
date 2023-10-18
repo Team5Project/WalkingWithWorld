@@ -98,6 +98,7 @@
 <!--맵 API-->
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d753200077e444dd40df1e458903dfd3"></script>
+<th:block th:if="${#lists.size(walkingPaths.mapList) != 0}">
 <script th:inline="javascript">
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
         mapOption = {
@@ -131,7 +132,7 @@
         polyline.setMap(map);
     }
 </script>
-
+</th:block>
 <script th:inline="javascript">
     function getReviewList() {
         fetch("/reviews", {

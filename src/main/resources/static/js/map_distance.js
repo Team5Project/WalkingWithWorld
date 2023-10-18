@@ -6,6 +6,11 @@ var mapContainer = document.getElementById('map'), // 지도를 표시할 div
 
 var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
+// 값 넣기
+document.getElementById('course').value = "";
+document.getElementById('time').value = 0;
+document.getElementById('distance').value = 0;
+
 //---------------------------------------------------------------------
 //
 //
