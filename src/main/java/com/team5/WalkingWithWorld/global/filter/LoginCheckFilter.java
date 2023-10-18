@@ -15,7 +15,7 @@ public class LoginCheckFilter implements Filter {
 
     //TODO 로그인이 필요 없는 URL 추가
 
-    private static final String[] whiteList = {"/","/signup","/login","/logout","/signupForm","/walking-path","/walking-path/*","/reviews","/comments","/images/*","/ex_images/*","/css/*"};
+    private static final String[] whiteList = {"/","/signup","/login","/logout","/signupForm","/walking-path","/walking-path/*","/reviews","/comments","/images/**","/ex_images/*","/style/*","/js/**"};
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
