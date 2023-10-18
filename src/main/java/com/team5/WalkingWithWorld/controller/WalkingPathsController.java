@@ -82,7 +82,7 @@ public class WalkingPathsController {
     public ModelAndView goToWrite(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         mav.addObject("referer", request.getHeader("referer"));
-        mav.setViewName("walking-path_create_form");
+        mav.setViewName("walking-path_write_form");
         return mav;
     }
     @GetMapping("/walking-path/modify/{walking-path-id}")

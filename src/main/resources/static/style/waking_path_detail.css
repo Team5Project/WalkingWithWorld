@@ -1,0 +1,295 @@
+/* ----- 상세페이지 공통 ----- */
+.detail_member {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    min-width: 280px;
+}
+
+main{
+    margin: 120px auto;
+}
+
+section {
+    padding: 0 90px;
+}
+
+section:nth-child(3),
+section:nth-child(4) {
+    margin-top: 120px;
+}
+
+/* ----- 페이지 헤더 ----- */
+
+.detail_header {
+    margin-bottom: 20px;
+}
+
+.detail_header h2 {
+    font-size: 40px;
+
+}
+
+.detail_title {
+    width: 600px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.star_score {
+    font-size: 20px;
+    color: #97bf04;
+}
+
+.detail_header address {
+    font-size: 20px;
+    line-height: 1.5em;
+}
+
+.detail_header p b {
+    color: #97bf04;
+}
+
+.detail_header p i {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+/* ----- 상세인포, 댓글 -----  */
+
+
+.iac_wrapper {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.iac_wrapper>* {
+    width: 600px;
+}
+
+.detail_info {
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+
+.review_write {
+    margin-top: 20px;
+    padding: 20px 30px;
+    background-color: #f5d666;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.review_write p {
+    font-size: 24px;
+    line-height: 1.5em;
+}
+
+.comments_wrapper {
+    border-radius: 20px;
+    border: 1px solid #97bf04;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.comments p {
+    margin-top: 10px;
+    margin-bottom: 47px;
+}
+
+#comments_write {
+    display: flex;
+    justify-content: space-between;
+}
+
+.comments_input {
+    width: 450px;
+    border-bottom: 1px solid #9D9393;
+}
+
+
+/* ----- 리뷰 관련 스타일 ----- */
+
+.review_container {
+    position: relative;
+    margin: 0 auto;
+    border-radius: 20px;
+    border: 1px solid #f5d666;
+    padding: 40px;
+}
+
+.rv-chav {
+    position: absolute;
+    top: calc(50% - 32px);
+    color: #665956;
+    font-size: 64px;
+    text-shadow: 0 3px 5px #888;
+}
+
+.rv-chav.left {
+    left: -32px;
+}
+
+.rv-chav.right {
+    right: -32px;
+}
+
+.review_content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.viewer {
+    width: 600px;
+    height: 450px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.img_list {
+    display: flex;
+    width: 600px;
+    justify-content: space-between;
+}
+
+.thumb {
+    display: block;
+    width: 100px;
+    height: 75px;
+    overflow: hidden;
+    opacity: 0.5;
+    transition: 0.5s;
+}
+
+.images img {
+    object-fit: cover;
+    object-position: center center;
+    width: 100%;
+    height: 100%;
+}
+
+.thumb:hover {
+    opacity: 1;
+}
+
+.review_main {
+    width: 510px;
+}
+
+.review_main hr {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.review_info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.up_del {
+    display: flex;
+    justify-content: start;
+    gap: 20px;
+}
+
+.info_modi {
+    color: #97bf04;
+}
+
+.info_del {
+    color: #ff3a3a;
+}
+
+.review_text p {
+    line-height: 1.5;
+}
+
+/*
+---------------------------------
+---------------------------------
+지도 api용 스타일
+---------------------------------
+---------------------------------
+*/
+.readMap {
+    margin-top: 10px;
+    width: 100%;
+    height: 350px;
+}
+
+/* #readMap {
+            position: relative;
+        }
+
+        #pathLoad {
+            position: absolute;
+            bottom: -30px;
+        } */
+
+
+/*--------- 오버레이 ------------*/
+
+.dot {
+    overflow: hidden;
+    float: left;
+    width: 12px;
+    height: 12px;
+    background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/mini_circle.png');
+}
+
+.dotOverlay {
+    position: relative;
+    bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    border-bottom: 2px solid #ddd;
+    float: left;
+    font-size: 12px;
+    padding: 5px;
+    background: #fff;
+}
+
+.dotOverlay:nth-of-type(n) {
+    border: 0;
+    box-shadow: 0px 1px 2px #888;
+}
+
+.number {
+    font-weight: bold;
+    color: #ee6152;
+}
+
+.dotOverlay:after {
+    content: '';
+    position: absolute;
+    margin-left: -6px;
+    left: 50%;
+    bottom: -8px;
+    width: 11px;
+    height: 8px;
+    background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white_small.png')
+}
+
+.distanceInfo {
+    position: relative;
+    top: 5px;
+    left: 5px;
+    list-style: none;
+    margin: 0;
+}
+
+.distanceInfo .label {
+    display: inline-block;
+    width: 50px;
+}
+
+.distanceInfo:after {
+    content: none;
+}
