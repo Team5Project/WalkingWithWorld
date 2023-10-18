@@ -32,16 +32,11 @@ header {
     width: 1440px;
     margin: 0 auto;
     height: 107px;
-    /* display: flex;
-    justify-content: space-between;
-    align-items: center; */
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    /* 수직 가운데 정렬 */
-    /* 세 개의 열을 만듭니다. */
     text-align: center;
-    /* 모든 요소의 텍스트를 가운데 정렬합니다. */
+
 }
 
 .logo {
@@ -195,4 +190,20 @@ footer {
     text-align: center;
     background-color: #97bf04;
     color: #000;
+}
+
+.btn_path_submit {
+    display: inline-block;
+    border-radius: 25px;
+    width: 120px;
+    line-height: 40px;
+    text-align: center;
+    background-color: #97bf04;
+    color: #fff;
+    font-size: 20px;
+}
+
+.path_ctrl {
+    display: flex;
+    align-items: center;
 }
