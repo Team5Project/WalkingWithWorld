@@ -185,8 +185,8 @@
 <script th:inline="javascript">
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
         mapOption = {
-            center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-            level: 3 // 지도의 확대 레벨
+            center: new kakao.maps.LatLng([[${walkingPaths.mapList.get(0).coordinateY}]], [[${walkingPaths.mapList.get(0).coordinateX}]]), // 지도의 중심좌표
+            level: 6 // 지도의 확대 레벨
         };
 
     var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
@@ -199,8 +199,6 @@
         // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
         var linePath = [];
         input.forEach(function (map) {
-            console.log(map["coordinateX"]);
-            console.log(map["coordinateY"]);
             linePath.push(new kakao.maps.LatLng(map["coordinateY"], map["coordinateX"]));
         });
 
