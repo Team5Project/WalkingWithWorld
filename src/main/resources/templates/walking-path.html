@@ -139,8 +139,8 @@
         <div class="multi-range-slider">
             <p id="showtime"></p>
             <!-- 입력 받을 슬라이더 -->
-            <input type="range" name="minTime" id="minTime" value="0" min="0" max="600" onchange="set()"/>
-            <input type="range" name="maxTime" id="maxTime" value="600" min="0" max="600" onchange="set()"/>
+            <input type="range" name="minTime" id="minTime" value="0" min="0" max="600" step="10" onchange="set()"/>
+            <input type="range" name="maxTime" id="maxTime" value="600" min="0" max="600" step="10" onchange="set()"/>
             <!-- 양방향 슬라이더 보여주기 -->
             <div class="slider">
                 <div class="track"></div>
@@ -154,8 +154,8 @@
         <div class="multi-range-slider">
             <p id="show-distance"></p>
             <!-- 입력 받을 슬라이더 -->
-            <input type="range" name="minDistance" id="minDistance" value="0" min="0" max="100000" onchange="setDistance()"/>
-            <input type="range" name="maxDistance" id="maxDistance" value="100000" min="0" max="100000" onchange="setDistance()"/>
+            <input type="range" name="minDistance" id="minDistance" value="0" min="0" max="20000" step="100" onchange="setDistance()"/>
+            <input type="range" name="maxDistance" id="maxDistance" value="20000" min="0" max="20000" step="100" onchange="setDistance()"/>
             <!-- 양방향 슬라이더 보여주기 -->
             <div class="distance-slider">
                 <div class="track"></div>
@@ -187,7 +187,7 @@
     function set() {
         let minTimeValue = minTime.value;
         let maxTimeValue = maxTime.value;
-        document.getElementById("showtime").innerText = "from " + minTimeValue + " to " + maxTimeValue;
+        document.getElementById("showtime").innerText = "최소 " + Math.floor(minTimeValue / 60) + "시간" + minTimeValue % 60 + "분 ~ " + Math.floor(maxTimeValue / 60) + "시간" + maxTimeValue % 60 + "분";
     };
 
     const thumbLeft = document.querySelector(".slider > .thumb.left");
@@ -222,7 +222,7 @@
     function setDistance() {
         let minDistanceValue = minDistance.value;
         let maxDistanceValue = maxDistance.value;
-        document.getElementById("show-distance").innerText = "from " + minDistanceValue + " to " + maxDistanceValue;
+        document.getElementById("show-distance").innerText = "최소 " + minDistanceValue / 1000 + "Km ~ " + maxDistanceValue / 1000 + "Km";
     };
 
     const distanceThumbLeft = document.querySelector(".distance-slider > .thumb.left");
