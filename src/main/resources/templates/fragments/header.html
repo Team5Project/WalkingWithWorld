@@ -8,7 +8,7 @@
     <th:block th:if="${session.auth != null}">
         <div class="member">
             <span class="profile_image"></span>
-            <span class="name">산책마니아1</span>
+            <span th:text="${session.auth.name}" class="name">산책마니아1</span>
             <a th:href="@{/logout}" class="btn_logout">logout</a>
         </div>
     </th:block>

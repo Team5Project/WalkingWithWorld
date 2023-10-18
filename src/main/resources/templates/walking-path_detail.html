@@ -6,8 +6,8 @@
     <link th:href="@{/style/reset.css}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
           integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link th:href="@{/style/common.css}" rel="stylesheet" >
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link th:href="@{/style/common.css}" rel="stylesheet">
     <link th:href="@{/style/waking_path_detail.css}" rel="stylesheet">
 </head>
 <body>
@@ -34,7 +34,7 @@
                 <aside class="images">
                     <figure class="viewer">
                         <img
-                             th:src="@{|/ex_images/${walkingPaths.photosList[0].imgName}|}"/>
+                                th:src="@{|/ex_images/${walkingPaths.photosList[0].imgName}|}"/>
                     </figure>
 
                     <div class="img_list">
@@ -84,102 +84,102 @@
         </div>
     </section>
     <section class="map">
-            <h3>상세 경로</h3>
-    <div class="map_wrap">
-        <div class="readMap" id="map"></div>
-    </div>
-        </section>
+        <h3>상세 경로</h3>
+        <div class="map_wrap">
+            <div class="readMap" id="map"></div>
+        </div>
+    </section>
     <section class="review">
-            <h3>리뷰</h3>
-            <div class="review_container">
-                <i class="rv-chav left fa-solid fa-circle-chevron-left"></i>
-                <i class="rv-chav right fa-solid fa-circle-chevron-right"></i>
-                <div class="review_content">
-                    <aside class="images">
-                        <figure class="viewer">
+        <h3>리뷰</h3>
+        <div class="review_container">
+            <i class="rv-chav left fa-solid fa-circle-chevron-left"></i>
+            <i class="rv-chav right fa-solid fa-circle-chevron-right"></i>
+            <div class="review_content">
+                <aside class="images">
+                    <figure class="viewer">
+                        <img src="/images/sample/1.jpg" alt="">
+                    </figure>
+                    <div class="img_list">
+                        <figcaption class="thumb">
                             <img src="/images/sample/1.jpg" alt="">
-                        </figure>
-                        <div class="img_list">
-                            <figcaption class="thumb">
-                                <img src="/images/sample/1.jpg" alt="">
-                            </figcaption>
-                            <figcaption class="thumb">
-                                <img src="/images/sample/2.jpg" alt="">
-                            </figcaption>
-                            <figcaption class="thumb">
-                                <img src="/images/sample/3.jpg" alt="">
-                            </figcaption>
-                            <figcaption class="thumb">
-                                <img src="/images/sample/4.jpg" alt="">
-                            </figcaption>
-                            <figcaption class="thumb">
-                                <img src="/images/sample/5.jpg" alt="">
-                            </figcaption>
+                        </figcaption>
+                        <figcaption class="thumb">
+                            <img src="/images/sample/2.jpg" alt="">
+                        </figcaption>
+                        <figcaption class="thumb">
+                            <img src="/images/sample/3.jpg" alt="">
+                        </figcaption>
+                        <figcaption class="thumb">
+                            <img src="/images/sample/4.jpg" alt="">
+                        </figcaption>
+                        <figcaption class="thumb">
+                            <img src="/images/sample/5.jpg" alt="">
+                        </figcaption>
+                    </div>
+                </aside>
+                <article class="review_main">
+                    <div class="review_info">
+                        <div class="detail_member">
+                            <a href="" class="profile_image"></a>
+                            <span class="name">산책마니아1</span>
+                            <span class="date">2023.10.15</span>
                         </div>
-                    </aside>
-                    <article class="review_main">
-                        <div class="review_info">
-                            <div class="detail_member">
-                                <a href="" class="profile_image"></a>
-                                <span class="name">산책마니아1</span>
-                                <span class="date">2023.10.15</span>
-                            </div>
-                            <div class="up_del">
-                                <span class="info_modi">수정</span>
-                                <span class="info_del">삭제</span>
-                            </div>
+                        <div class="up_del">
+                            <span class="info_modi">수정</span>
+                            <span class="info_del">삭제</span>
                         </div>
-                        <hr>
-                        <div class="review_text">
-                            <p>
-                                두손을 풀밭에 이상의 인류의 위하여서, 청춘의 있다. 보라. 못할 방지하는 구하기 능히 속에 피다. 기쁘며. 오직 사막이다. 장식하는 가는 그들에게 하여도
-                                것이다.
-                                용감하고
-                                청춘의 꽃이 우리의 때에.
+                    </div>
+                    <hr>
+                    <div class="review_text">
+                        <p>
+                            두손을 풀밭에 이상의 인류의 위하여서, 청춘의 있다. 보라. 못할 방지하는 구하기 능히 속에 피다. 기쁘며. 오직 사막이다. 장식하는 가는 그들에게 하여도
+                            것이다.
+                            용감하고
+                            청춘의 꽃이 우리의 때에.
 
-                                인간의 그들은 생명을 같은 뜨고, 아니다. 관현악이며. 밥을 더운지라 가치를 그러므로 뭇 황금시대다. 곧 너의 가지에 넣는 품에 튼튼하며, 인생을 못하다
-                                청춘의
-                                생생하며.
-                                내는 그러므로 있는가? 소리다. 황금시대다.
-                            </p>
-                        </div>
-                    </article>
-                </div>
+                            인간의 그들은 생명을 같은 뜨고, 아니다. 관현악이며. 밥을 더운지라 가치를 그러므로 뭇 황금시대다. 곧 너의 가지에 넣는 품에 튼튼하며, 인생을 못하다
+                            청춘의
+                            생생하며.
+                            내는 그러므로 있는가? 소리다. 황금시대다.
+                        </p>
+                    </div>
+                </article>
             </div>
-        </section>
+        </div>
+    </section>
 </main>
 <footer th:replace="fragments/header :: footer"></footer>
 
 
-
-
 <a th:href="@{/walking-path}">목록</a>
+
+<br>
 
 <!--댓글 영역-->
 <br>
 <div>
     <h3>댓글 확인</h3>
     <div id="comments"></div>
-
 </div>
-<!--댓글 작성 하기-->
-<a th:href="@{|comments/${walkingPaths.getId()}|}">댓글 작성하기</a>
 
-리뷰 영역
-<!--<div th:replace="/reviews :: reviews">-->
-<!--</div>-->
+<!--댓글 작성 하기-->
+<input type="text" id="comment_content" name="content" placeholder="댓글을 입력해주세요"/>
+<input type="button" th:if="${session.auth !=null}" th:onclick="|writeComment(${walkingPaths.getId()})|" value="등록"/>
+<input type="button" th:if="${session.auth == null}"
+       th:onclick="|location.href='@{/login?redirectURL=/walking-path/{id}(id=${walkingPaths.getId()})}'|" value="등록">
+
+
 <div>
     <h3>리뷰 확인</h3>
     <div id="reviews"></div>
-
 </div>
 
 
 <!--리뷰 작성-->
-<!--<th:block th:if="${session.auth != null}">-->
-<!--    <a th:href="@{|/walking-path/${walkingPath.getId()}|}" ></a>-->
 <a th:href="@{|/reviews/${walkingPaths.getId()}|}">리뷰 작성하기</a>
 
+
+<!--맵 API-->
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d753200077e444dd40df1e458903dfd3"></script>
 <script th:inline="javascript">
@@ -217,6 +217,7 @@
         polyline.setMap(map);
     }
 </script>
+
 <script th:inline="javascript">
     function getReviewList() {
         fetch("/reviews", {
@@ -224,7 +225,6 @@
         })
             .then((response) => response.text())
             .then((data) => {
-                console.log('성공 : ', data);
                 document.getElementById("reviews").innerHTML = `${data}`;
             });
     }
@@ -235,7 +235,25 @@
         })
             .then((response) => response.text())
             .then((data) => {
-                console.log('성공 : ', data);
+                document.getElementById("comments").innerHTML = `${data}`;
+            });
+    }
+
+    function writeComment(id){
+        var CommentsDTO = new Object();
+        CommentsDTO.content = document.getElementById("comment_content").value;
+        console.log(CommentsDTO);
+        fetch("/comments/" + id, {
+            method: "POST",
+            headers:{
+                'content-type':'application/json'
+            },
+            body : JSON.stringify({
+                content : CommentsDTO.content
+            })
+        })
+            .then((response) => response.text())
+            .then((data) => {
                 document.getElementById("comments").innerHTML = `${data}`;
             });
     }
