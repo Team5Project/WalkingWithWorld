@@ -13,12 +13,15 @@ import java.io.IOException;
 @Slf4j
 public class LoginCheckFilter implements Filter {
 
-    //TODO 로그인이 필요 없는 URL 추가
+    // TODO 로그인이 필요 없는 URL 추가
 
-    private static final String[] whiteList = {"/","/signup","/login","/logout","/signupForm","/walking-path","/walking-path/*","/reviews","/comments","/images/*","/ex_images/*","/style/**","/js/**","/images/**"};
+    private static final String[] whiteList = { "/", "/signup", "/login", "/logout", "/signupForm", "/walking-path",
+            "/walking-path/*", "/reviews", "/comments", "/images/*", "/ex_images/*", "/style/**", "/js/**",
+            "/images/**" };
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String requestURI = httpServletRequest.getRequestURI();
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
@@ -31,7 +34,7 @@ public class LoginCheckFilter implements Filter {
                 if (session == null || session.getAttribute(SessionConst.LONGIN_USERS) == null) {
                     log.info("미인증 사용자 요청 : {}", requestURI);
 
-                    //로그인으로 보내기
+                    // 로그인으로 보내기
                     httpServletResponse.sendRedirect("/login?redirectURL=" + requestURI);
                     return;
                 }

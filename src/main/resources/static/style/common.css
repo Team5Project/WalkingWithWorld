@@ -99,10 +99,12 @@ nav a {
     text-align: center;
     gap: 10px;
 }
-.header_hr{
-    width:1440px;
-    margin:0 auto;
+
+.header_hr {
+    width: 1440px;
+    margin: 0 auto;
 }
+
 /* ----- 메인 관련 ----- */
 
 main {
