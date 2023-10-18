@@ -74,8 +74,13 @@
     width: 100px;
     height: 40px;
     flex-shrink: 0;
+    border: none;
     border-radius: 30px;
     background: var(--D4D9B4, #D4D9B4);
     margin: 25px;
+    font:inherit;
 }
 
+.btn-ref > a {
+    color:initial;
+}

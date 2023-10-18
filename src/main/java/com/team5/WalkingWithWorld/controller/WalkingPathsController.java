@@ -27,6 +27,7 @@ public class WalkingPathsController {
     @Autowired
     WalkingPathService walkingPathService;
 
+    // 전체 리스트
     @GetMapping("/walking-path")
     public ModelAndView readAllWalkingPath(@Login UsersDto loginUser) {
         ModelAndView mav = new ModelAndView();
@@ -35,12 +36,12 @@ public class WalkingPathsController {
         for(WalkingPathsDTO dto : walkingPathList) {
            dto.setPhotosList(photoDao.readPhotos(dto.getId()));
         }
-
         mav.addObject("walkingPathList", walkingPathList);
         mav.setViewName("walking-path");
         return mav;
     }
 
+    //산책로 등록
     @PostMapping("/walking-path")
     public ModelAndView createWalkingPath(WalkingPathsDTO dto,
                                           @Login UsersDto loginUser, FileVo files, MapDTO mapDTO, String course) throws IOException {
@@ -101,6 +102,8 @@ public class WalkingPathsController {
         System.out.println("수정 결과 : " + result);
         return "redirect:/walking-path/"  + walkingPathsDTO.getId();
     }
+
+    //산책로 단품
     @GetMapping("/walking-path/{walking-path-id}")
     public ModelAndView getWalkingPathById(@PathVariable("walking-path-id") int id, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();

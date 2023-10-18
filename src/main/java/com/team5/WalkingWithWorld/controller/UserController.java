@@ -70,7 +70,10 @@ public class UserController {
     }
 
     @GetMapping("/signup")
-    public String index(){
+    public String index(HttpServletRequest request,
+                        Model model){
+        String referer = request.getHeader("Referer");
+        model.addAttribute("referer", referer);
         return "signup_Form";
     }
 

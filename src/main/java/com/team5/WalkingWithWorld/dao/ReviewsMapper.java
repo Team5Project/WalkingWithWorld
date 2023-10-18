@@ -11,7 +11,8 @@ public interface ReviewsMapper {
     public List<ReviewsDTO> reviewslist();
 
     @Insert("insert into reviews(users_id,walking_paths_id,content,created_at,created_by,modified_at,modified_by) " +
-            "values (#{usersId},#{walkingPathsId},#{content},#{createdAt},#{createdBy},#{modifiedAt},#{modifiedBy})")
+            "values (#{usersId},#{walkingPathsId},#{content},now(),#{createdBy},#{modifiedAt},#{modifiedBy})")
+    @Options(useGeneratedKeys = true,keyProperty = "id")
     public boolean insertReviews (ReviewsDTO vo);
 
     @Delete("delete from reviews where id = #{id}")
