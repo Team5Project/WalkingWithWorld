@@ -7,6 +7,122 @@
         a {
           text-decoration : none;
         }
+        .slider {
+          position: relative;
+          z-index: 1;
+          height: 10px;
+          margin: 0 15px;
+        }
+
+        .slider > .track {
+          position: absolute;
+          z-index: 1;
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          border-radius: 5px;
+          background-color: #c6aee7;
+        }
+
+        .slider > .range {
+          position: absolute;
+          z-index: 2;
+          left: 0%;
+          right: 0%;
+          top: 0;
+          bottom: 0;
+          border-radius: 5px;
+          background-color: #6200ee;
+        }
+
+        .slider > .thumb {
+          position: absolute;
+          z-index: 3;
+          width: 30px;
+          height: 30px;
+          background-color: #6200ee;
+          border-radius: 50%;
+        }
+
+        .slider > .thumb.left {
+          left: 0%;
+          transform: translate(-15px, -10px);
+        }
+        .slider > .thumb.right {
+          right: 0%;
+          transform: translate(20px, -10px);
+        }
+
+        input[type="range"] {
+          position: absolute;
+          /* opacity로 가린 것을 이벤트도 비활성화하기 위해 */
+          pointer-events: none;
+          -webkit-appearance: none;
+          z-index: 2;
+          height: 10px;
+          width: 100%;
+          opacity: 0;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+          /* 겹쳐진 두 thumb를 모두 활성화 */
+          pointer-events: all;
+          width: 30px;
+          height: 30px;
+          border-radius: 0;
+          border: 0 none;
+          background-color: red;
+          cursor: pointer;
+          /* appearance를 해야 위의 스타일들을 볼 수 있음 */
+          -webkit-appearance: none;
+        }
+        .distance-slider {
+          position: relative;
+          z-index: 1;
+          height: 10px;
+          margin: 0 15px;
+        }
+
+        .distance-slider > .track {
+          position: absolute;
+          z-index: 1;
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          border-radius: 5px;
+          background-color: #c6aee7;
+        }
+
+        .distance-slider > .range {
+          position: absolute;
+          z-index: 2;
+          left: 0%;
+          right: 0%;
+          top: 0;
+          bottom: 0;
+          border-radius: 5px;
+          background-color: #6200ee;
+        }
+
+        .distance-slider > .thumb {
+          position: absolute;
+          z-index: 3;
+          width: 30px;
+          height: 30px;
+          background-color: #6200ee;
+          border-radius: 50%;
+        }
+
+        .distance-slider > .thumb.left {
+          left: 0%;
+          transform: translate(-15px, -10px);
+        }
+        .distance-slider > .thumb.right {
+          right: 0%;
+          transform: translate(20px, -10px);
+        }
     </style>
 </head>
 <body>
@@ -20,12 +136,34 @@
         <option value="종로">종로구</option>
     </select><br>
     <label>시간 :
-        <input type="number" name="minTime" id="minTime" min="0"/>
-        <input type="number" name="maxTime" id="maxTime" max="1440"/>
+        <div class="multi-range-slider">
+            <p id="showtime"></p>
+            <!-- 입력 받을 슬라이더 -->
+            <input type="range" name="minTime" id="minTime" value="0" min="0" max="600" onchange="set()"/>
+            <input type="range" name="maxTime" id="maxTime" value="600" min="0" max="600" onchange="set()"/>
+            <!-- 양방향 슬라이더 보여주기 -->
+            <div class="slider">
+                <div class="track"></div>
+                <div class="range"></div>
+                <div class="thumb left"></div>
+                <div class="thumb right"></div>
+            </div>
+        </div>
     </label><br>
     <label>거리 :
-        <input type="number" name="minDistance" id="minDistance" min="0"/>
-        <input type="number" name="maxDistance" id="maxDistance" max="100000"/>
+        <div class="multi-range-slider">
+            <p id="show-distance"></p>
+            <!-- 입력 받을 슬라이더 -->
+            <input type="range" name="minDistance" id="minDistance" value="0" min="0" max="100000" onchange="setDistance()"/>
+            <input type="range" name="maxDistance" id="maxDistance" value="100000" min="0" max="100000" onchange="setDistance()"/>
+            <!-- 양방향 슬라이더 보여주기 -->
+            <div class="distance-slider">
+                <div class="track"></div>
+                <div class="range"></div>
+                <div class="thumb left"></div>
+                <div class="thumb right"></div>
+            </div>
+        </div>
     </label><br>
     <input type="button" th:data-word="${keyword}" th:onclick="searchWalkingPath(this.getAttribute('data-word'))" value="검색하기"/>
 </div>
@@ -39,6 +177,78 @@
 <hr>
 <a th:if="${session.auth != null}" th:href="@{/walking-path/write}">게시글 작성하기</a>
 <a th:if="${session.auth == null}" th:href="@{'/login?redirectURL=/walking-path'}">게시글 작성하기</a>
+<script>
+    // 양방향 슬라이더
+    const minTime = document.getElementById("minTime");
+    const maxTime = document.getElementById("maxTime");
+
+    set();
+
+    function set() {
+        let minTimeValue = minTime.value;
+        let maxTimeValue = maxTime.value;
+        document.getElementById("showtime").innerText = "from " + minTimeValue + " to " + maxTimeValue;
+    };
+
+    const thumbLeft = document.querySelector(".slider > .thumb.left");
+    const thumbRight = document.querySelector(".slider > .thumb.right");
+    const range = document.querySelector(".slider > .range");
+
+    const setMin = () => {
+        const _this = minTime;
+        const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+        _this.value = Math.min(parseInt(_this.value), parseInt(maxTime.value) - 1);
+        const percent = ((_this.value - min) / (max - min)) * 100;
+        thumbLeft.style.left = percent + "%";
+        range.style.left = percent + "%";
+    };
+    const setMax = () => {
+        const _this = maxTime;
+        const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+        _this.value = Math.max(parseInt(_this.value), parseInt(minTime.value) + 1);
+        const percent = ((_this.value - min) / (max - min)) * 100;
+        thumbRight.style.right = 100 - percent + "%";
+        range.style.right = 100 - percent + "%";
+    };
+
+    minTime.addEventListener("input", setMin);
+    maxTime.addEventListener("input", setMax);
+    // 거리 슬라이더
+    const minDistance = document.getElementById("minDistance");
+    const maxDistance = document.getElementById("maxDistance");
+
+    setDistance();
+
+    function setDistance() {
+        let minDistanceValue = minDistance.value;
+        let maxDistanceValue = maxDistance.value;
+        document.getElementById("show-distance").innerText = "from " + minDistanceValue + " to " + maxDistanceValue;
+    };
+
+    const distanceThumbLeft = document.querySelector(".distance-slider > .thumb.left");
+    const distanceThumbRight = document.querySelector(".distance-slider > .thumb.right");
+    const distanceRange = document.querySelector(".distance-slider > .range");
+
+    const setMinDistance = () => {
+        const _this = minDistance;
+        const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+        _this.value = Math.min(parseInt(_this.value), parseInt(maxDistance.value) - 1);
+        const percent = ((_this.value - min) / (max - min)) * 100;
+        distanceThumbLeft.style.left = percent + "%";
+        distanceRange.style.left = percent + "%";
+    };
+    const setMaxDistance = () => {
+        const _this = maxDistance;
+        const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+        _this.value = Math.max(parseInt(_this.value), parseInt(minDistance.value) + 1);
+        const percent = ((_this.value - min) / (max - min)) * 100;
+        distanceThumbRight.style.right = 100 - percent + "%";
+        distanceRange.style.right = 100 - percent + "%";
+    };
+
+    minDistance.addEventListener("input", setMinDistance);
+    maxDistance.addEventListener("input", setMaxDistance);
+</script>
 <script th:inline="javascript">
     function searchWalkingPath(keyword) {
         var SearchDTO = new Object();
