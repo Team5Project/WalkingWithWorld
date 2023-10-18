@@ -10,12 +10,61 @@
     </style>
 </head>
 <body>
+<div>
+    <select name="location" id="location">
+        <option value="서울">서울</option>
+        <option value="강남">강남구</option>
+        <option value="강동">강동구</option>
+        <option value="관악">관악구</option>
+        <option value="송파">송파구</option>
+        <option value="종로">종로구</option>
+    </select><br>
+    <label>시간 :
+        <input type="number" name="minTime" id="minTime" min="0"/>
+        <input type="number" name="maxTime" id="maxTime" max="1440"/>
+    </label><br>
+    <label>거리 :
+        <input type="number" name="minDistance" id="minDistance" min="0"/>
+        <input type="number" name="maxDistance" id="maxDistance" max="100000"/>
+    </label><br>
+    <input type="button" th:data-word="${keyword}" th:onclick="searchWalkingPath(this.getAttribute('data-word'))" value="검색하기"/>
+</div>
+<p th:if="${keyword}" th:text="|'${keyword}' 검색 결과|"></p>
+<div id="walking-path">
     <ul th:each="walkingPath:${walkingPathList}">
         <img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}" th:src="@{|/ex_images/${walkingPath.getPhotosList().get(0).getImgName()}|}" style='width:200px;'/>
         <a th:href="@{|/walking-path/${walkingPath.getId()}|}" th:text="${walkingPath}"></a>
     </ul>
+</div>
 <hr>
-        <a th:if="${session.auth != null}" th:href="@{/walking-path/write}">게시글 작성하기</a>
-        <a th:if="${session.auth == null}" th:href="@{'/login?redirectURL=/walking-path'}">게시글 작성하기</a>
+<a th:if="${session.auth != null}" th:href="@{/walking-path/write}">게시글 작성하기</a>
+<a th:if="${session.auth == null}" th:href="@{'/login?redirectURL=/walking-path'}">게시글 작성하기</a>
+<script th:inline="javascript">
+    function searchWalkingPath(keyword) {
+        var SearchDTO = new Object();
+        SearchDTO.location = document.getElementById("location").value;
+        SearchDTO.minTime = document.getElementById("minTime").value;
+        SearchDTO.maxTime = document.getElementById("maxTime").value;
+        SearchDTO.minDistance = document.getElementById("minDistance").value;
+        SearchDTO.maxDistance = document.getElementById("maxDistance").value;
+        fetch("/walking-path/condition/" + keyword, {
+            method: "POST",
+            headers: {
+                'content-type':'application/json'
+            },
+            body: JSON.stringify({
+                location : SearchDTO.location,
+                minTime : SearchDTO.minTime,
+                maxTime : SearchDTO.maxTime,
+                minDistance : SearchDTO.minDistance,
+                maxDistance : SearchDTO.maxDistance
+            })
+        })
+            .then((response) => response.text())
+            .then((data) => {
+                document.getElementById("walking-path").innerHTML = `${data}`;
+            });
+    }
+</script>
 </body>
 </html>
