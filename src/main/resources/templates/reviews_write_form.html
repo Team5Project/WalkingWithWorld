@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a th:href="@{/reviews}">first</a>
+<th:block th:if="${walkingPaths != null}">
+    <div>
+        <!--        <img th:if="${#lists.size(walkingPaths.getPhotosList())>0}" th:src="@{|/ex_images/${walkingPaths.getPhotosList().get(0).getImgName()}|}"  alt=""/>-->
+    </div>
+    <h1>리뷰 등록</h1>
+    <div>
+        <form method="post" th:action="@{/reviews/{id}(id=${walkingPaths.getId()})}" enctype="multipart/form-data">
+            본문
+            <textarea name="content" rows="10" cols="60" wrap="soft" required></textarea>
+            사진(5개 제한)
+            <input type="file" name="files" onchange="setThumbnail(event)" multiple>
+            <div id="review_image_container">
+
+            </div>
+            <input type="submit" value="저장">
+            <a th:href="@{/walking-path/{id}(id=${walkingPaths.getId()})}">뒤로가기</a>
+        </form>
+    </div>
+
+</th:block>
+<script>
+    //이미지 미리보기
+    function setThumbnail(event) {
+        for (var image of event.target.files) {
+            var reader = new FileReader();
+
+            reader.onload = function (event) {
+                var img = document.createElement("img");
+                img.setAttribute("src", event.target.result);
+                document.querySelector("div#review_image_container").appendChild(img);
+            };
+
+            console.log(image);
+            reader.readAsDataURL(image);
+        }
+    }
+</script>
+</body>
+</html>
