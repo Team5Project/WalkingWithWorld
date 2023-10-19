@@ -9,6 +9,7 @@ import com.team5.WalkingWithWorld.service.WalkingPathService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,6 +27,7 @@ public class WalkingPathsController {
     @Autowired
     WalkingPathService walkingPathService;
 
+    // 전체 리스트
     @GetMapping("/walking-path")
     public ModelAndView readAllWalkingPath(@Login UsersDto loginUser) {
         ModelAndView mav = new ModelAndView();
@@ -34,12 +36,12 @@ public class WalkingPathsController {
         for(WalkingPathsDTO dto : walkingPathList) {
            dto.setPhotosList(photoDao.readPhotos(dto.getId()));
         }
-
         mav.addObject("walkingPathList", walkingPathList);
         mav.setViewName("walking-path");
         return mav;
     }
 
+    //산책로 등록
     @PostMapping("/walking-path")
     public ModelAndView createWalkingPath(WalkingPathsDTO dto,
                                           @Login UsersDto loginUser, FileVo files, MapDTO mapDTO, String course) throws IOException {
@@ -54,6 +56,29 @@ public class WalkingPathsController {
         return mav;
     }
 
+    @PostMapping(value = "/walking-path/condition/{keyword}", produces = "application/json; charset=utf-8")
+    public String conditionSearch(@PathVariable("keyword") String searchWord, @RequestBody SearchDTO searchDTO, Model model) {
+        searchDTO.setKeyword(searchWord.equals("null")?null:searchWord);
+        List<WalkingPathsDTO> walkingPathList = dao.searchWalkingPathWithSearchDTO(searchDTO); // 변경
+        for(WalkingPathsDTO dto : walkingPathList) {
+            dto.setPhotosList(photoDao.readPhotos(dto.getId()));
+        }
+        model.addAttribute("walkingPathList", walkingPathList);
+        return "walking-path_list :: #walking-path-list";
+    }
+
+    @PostMapping("/walking-path/search")
+    public ModelAndView searchByKeyword(String keyword) {
+        System.out.println(keyword);
+        ModelAndView mav = new ModelAndView();
+        List<WalkingPathsDTO> walkingPathsDTOList = dao.searchWalkingPathByKeyword(keyword);
+        for(WalkingPathsDTO dto : walkingPathsDTOList)
+            dto.setPhotosList(photoDao.readPhotos(dto.getId()));
+        mav.addObject("walkingPathList", walkingPathsDTOList);
+        mav.addObject("keyword", keyword);
+        mav.setViewName("walking-path");
+        return mav;
+    }
     @GetMapping("/walking-path/write")
     public ModelAndView goToWrite(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
@@ -75,8 +100,10 @@ public class WalkingPathsController {
         walkingPathsDTO.setId(walkingPathsDTO.getId());
         int result = dao.updateWalkingPath(walkingPathsDTO);
         System.out.println("수정 결과 : " + result);
-        return "redirect:/walking-path";
+        return "redirect:/walking-path/"  + walkingPathsDTO.getId();
     }
+
+    //산책로 단품
     @GetMapping("/walking-path/{walking-path-id}")
     public ModelAndView getWalkingPathById(@PathVariable("walking-path-id") int id, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
