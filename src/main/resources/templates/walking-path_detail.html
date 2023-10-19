@@ -57,28 +57,13 @@
             </article>
             <div class="comments_wrapper">
                 <div class="comments_content">
-                    <article class="comments">
-                        <div class="comments_info">
-                            <div class="review_info">
-                                <div class="detail_member">
-                                    <a href="" class="profile_image"></a>
-                                    <span class="name">산책마니아1</span>
-                                    <span class="date">2023.10.15</span>
-                                </div>
-                                <div class="up_del" style="visibility:visible;">
-                                    <span class="info_modi">수정</span>
-                                    <span class="info_del">삭제</span>
-                                </div>
-                            </div>
-                        </div>
-                        <p>조용조용히 아이와 걸으며 산책하기 좋습니다.</p>
-                    </article>
-
+<!--                    여기에 댓글이 들어감-->
                 </div>
-
-                <form action="" method="post" id="comments_write">
-                    <input type="text" name="content" class="comments_input" placeholder="댓글 등록하기" required>
-                    <input type="submit" value="등록" class="btn_comments">
+                <form action="" method="post" id="comments_write" onsubmit="return false;">
+                    <input type="text" id="comment_content" class="comments_input" name="content" placeholder="댓글을 입력해주세요"/>
+                    <input type="button" class="btn_comments" th:if="${session.auth !=null}" th:onclick="|writeComment(${walkingPaths.getId()})|" value="등록"/>
+                    <input type="button" class="btn_comments" th:if="${session.auth == null}"
+                           th:onclick="|location.href='@{/login?redirectURL=/walking-path/{id}(id=${walkingPaths.getId()})}'|" value="등록">
                 </form>
             </div>
         </div>
@@ -94,80 +79,11 @@
         <div class="review_container">
             <i class="rv-chav left fa-solid fa-circle-chevron-left"></i>
             <i class="rv-chav right fa-solid fa-circle-chevron-right"></i>
-            <div class="review_content">
-                <aside class="images">
-                    <figure class="viewer">
-                        <img src="/images/sample/1.jpg" alt="">
-                    </figure>
-                    <div class="img_list">
-                        <figcaption class="thumb">
-                            <img src="/images/sample/1.jpg" alt="">
-                        </figcaption>
-                        <figcaption class="thumb">
-                            <img src="/images/sample/2.jpg" alt="">
-                        </figcaption>
-                        <figcaption class="thumb">
-                            <img src="/images/sample/3.jpg" alt="">
-                        </figcaption>
-                        <figcaption class="thumb">
-                            <img src="/images/sample/4.jpg" alt="">
-                        </figcaption>
-                        <figcaption class="thumb">
-                            <img src="/images/sample/5.jpg" alt="">
-                        </figcaption>
-                    </div>
-                </aside>
-                <article class="review_main">
-                    <div class="review_info">
-                        <div class="detail_member">
-                            <a href="" class="profile_image"></a>
-                            <span class="name">산책마니아1</span>
-                            <span class="date">2023.10.15</span>
-                        </div>
-                        <div class="up_del">
-                            <span class="info_modi">수정</span>
-                            <span class="info_del">삭제</span>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="review_text">
-                        <p>
-                            두손을 풀밭에 이상의 인류의 위하여서, 청춘의 있다. 보라. 못할 방지하는 구하기 능히 속에 피다. 기쁘며. 오직 사막이다. 장식하는 가는 그들에게 하여도
-                            것이다.
-                            용감하고
-                            청춘의 꽃이 우리의 때에.
 
-                            인간의 그들은 생명을 같은 뜨고, 아니다. 관현악이며. 밥을 더운지라 가치를 그러므로 뭇 황금시대다. 곧 너의 가지에 넣는 품에 튼튼하며, 인생을 못하다
-                            청춘의
-                            생생하며.
-                            내는 그러므로 있는가? 소리다. 황금시대다.
-                        </p>
-                    </div>
-                </article>
-            </div>
         </div>
     </section>
 </main>
 <footer th:replace="fragments/header :: footer"></footer>
-
-
-<a th:href="@{/walking-path}">목록</a>
-
-<br>
-
-<!--댓글 영역-->
-<br>
-<div>
-    <h3>댓글 확인</h3>
-    <div id="comments"></div>
-</div>
-
-<!--댓글 작성 하기-->
-<input type="text" id="comment_content" name="content" placeholder="댓글을 입력해주세요"/>
-<input type="button" th:if="${session.auth !=null}" th:onclick="|writeComment(${walkingPaths.getId()})|" value="등록"/>
-<input type="button" th:if="${session.auth == null}"
-       th:onclick="|location.href='@{/login?redirectURL=/walking-path/{id}(id=${walkingPaths.getId()})}'|" value="등록">
-
 
 <div>
     <h3>리뷰 확인</h3>
@@ -185,8 +101,8 @@
 <script th:inline="javascript">
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
         mapOption = {
-            center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-            level: 3 // 지도의 확대 레벨
+            center: new kakao.maps.LatLng([[${walkingPaths.mapList.get(0).coordinateY}]], [[${walkingPaths.mapList.get(0).coordinateX}]]), // 지도의 중심좌표
+            level: 6 // 지도의 확대 레벨
         };
 
     var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
@@ -199,8 +115,6 @@
         // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
         var linePath = [];
         input.forEach(function (map) {
-            console.log(map["coordinateX"]);
-            console.log(map["coordinateY"]);
             linePath.push(new kakao.maps.LatLng(map["coordinateY"], map["coordinateX"]));
         });
 
@@ -225,7 +139,7 @@
         })
             .then((response) => response.text())
             .then((data) => {
-                document.getElementById("reviews").innerHTML = `${data}`;
+                document.querySelector(".review_container").innerHTML = `${data}`;
             });
     }
 
@@ -235,7 +149,7 @@
         })
             .then((response) => response.text())
             .then((data) => {
-                document.getElementById("comments").innerHTML = `${data}`;
+                document.querySelector(".comments_content").innerHTML = `${data}`;
             });
     }
 
@@ -254,6 +168,7 @@
         })
             .then((response) => response.text())
             .then((data) => {
+                document.getElementById("comment_content").value = "";
                 document.getElementById("comments").innerHTML = `${data}`;
             });
     }

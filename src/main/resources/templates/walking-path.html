@@ -7,15 +7,159 @@
         a {
           text-decoration : none;
         }
+
     </style>
 </head>
 <body>
+<div>
+    <select name="location" id="location">
+        <option value="서울">서울</option>
+        <option value="강남">강남구</option>
+        <option value="강동">강동구</option>
+        <option value="관악">관악구</option>
+        <option value="송파">송파구</option>
+        <option value="종로">종로구</option>
+    </select><br>
+    <label>시간 :
+        <div class="multi-range-slider">
+            <p id="showtime"></p>
+            <!-- 입력 받을 슬라이더 -->
+            <input type="range" name="minTime" id="minTime" value="0" min="0" max="600" step="10" onchange="set()"/>
+            <input type="range" name="maxTime" id="maxTime" value="600" min="0" max="600" step="10" onchange="set()"/>
+            <!-- 양방향 슬라이더 보여주기 -->
+            <div class="slider">
+                <div class="track"></div>
+                <div class="range"></div>
+                <div class="thumb left"></div>
+                <div class="thumb right"></div>
+            </div>
+        </div>
+    </label><br>
+    <label>거리 :
+        <div class="multi-range-slider">
+            <p id="show-distance"></p>
+            <!-- 입력 받을 슬라이더 -->
+            <input type="range" name="minDistance" id="minDistance" value="0" min="0" max="20000" step="100" onchange="setDistance()"/>
+            <input type="range" name="maxDistance" id="maxDistance" value="20000" min="0" max="20000" step="100" onchange="setDistance()"/>
+            <!-- 양방향 슬라이더 보여주기 -->
+            <div class="distance-slider">
+                <div class="track"></div>
+                <div class="range"></div>
+                <div class="thumb left"></div>
+                <div class="thumb right"></div>
+            </div>
+        </div>
+    </label><br>
+    <input type="button" th:data-word="${keyword}" th:onclick="searchWalkingPath(this.getAttribute('data-word'))" value="검색하기"/>
+</div>
+<p th:if="${keyword}" th:text="|'${keyword}' 검색 결과|"></p>
+<div id="walking-path">
     <ul th:each="walkingPath:${walkingPathList}">
         <img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}" th:src="@{|/ex_images/${walkingPath.getPhotosList().get(0).getImgName()}|}" style='width:200px;'/>
         <a th:href="@{|/walking-path/${walkingPath.getId()}|}" th:text="${walkingPath}"></a>
     </ul>
+</div>
 <hr>
-        <a th:if="${session.auth != null}" th:href="@{/walking-path/write}">게시글 작성하기</a>
-        <a th:if="${session.auth == null}" th:href="@{'/login?redirectURL=/walking-path'}">게시글 작성하기</a>
+<a th:if="${session.auth != null}" th:href="@{/walking-path/write}">게시글 작성하기</a>
+<a th:if="${session.auth == null}" th:href="@{'/login?redirectURL=/walking-path'}">게시글 작성하기</a>
+<script>
+    // 양방향 슬라이더
+    const minTime = document.getElementById("minTime");
+    const maxTime = document.getElementById("maxTime");
+
+    set();
+
+    function set() {
+        let minTimeValue = minTime.value;
+        let maxTimeValue = maxTime.value;
+        document.getElementById("showtime").innerText = "최소 " + Math.floor(minTimeValue / 60) + "시간" + minTimeValue % 60 + "분 ~ " + Math.floor(maxTimeValue / 60) + "시간" + maxTimeValue % 60 + "분";
+    };
+
+    const thumbLeft = document.querySelector(".slider > .thumb.left");
+    const thumbRight = document.querySelector(".slider > .thumb.right");
+    const range = document.querySelector(".slider > .range");
+
+    const setMin = () => {
+        const _this = minTime;
+        const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+        _this.value = Math.min(parseInt(_this.value), parseInt(maxTime.value) - 1);
+        const percent = ((_this.value - min) / (max - min)) * 100;
+        thumbLeft.style.left = percent + "%";
+        range.style.left = percent + "%";
+    };
+    const setMax = () => {
+        const _this = maxTime;
+        const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+        _this.value = Math.max(parseInt(_this.value), parseInt(minTime.value) + 1);
+        const percent = ((_this.value - min) / (max - min)) * 100;
+        thumbRight.style.right = 100 - percent + "%";
+        range.style.right = 100 - percent + "%";
+    };
+
+    minTime.addEventListener("input", setMin);
+    maxTime.addEventListener("input", setMax);
+    // 거리 슬라이더
+    const minDistance = document.getElementById("minDistance");
+    const maxDistance = document.getElementById("maxDistance");
+
+    setDistance();
+
+    function setDistance() {
+        let minDistanceValue = minDistance.value;
+        let maxDistanceValue = maxDistance.value;
+        document.getElementById("show-distance").innerText = "최소 " + minDistanceValue / 1000 + "Km ~ " + maxDistanceValue / 1000 + "Km";
+    };
+
+    const distanceThumbLeft = document.querySelector(".distance-slider > .thumb.left");
+    const distanceThumbRight = document.querySelector(".distance-slider > .thumb.right");
+    const distanceRange = document.querySelector(".distance-slider > .range");
+
+    const setMinDistance = () => {
+        const _this = minDistance;
+        const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+        _this.value = Math.min(parseInt(_this.value), parseInt(maxDistance.value) - 1);
+        const percent = ((_this.value - min) / (max - min)) * 100;
+        distanceThumbLeft.style.left = percent + "%";
+        distanceRange.style.left = percent + "%";
+    };
+    const setMaxDistance = () => {
+        const _this = maxDistance;
+        const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+        _this.value = Math.max(parseInt(_this.value), parseInt(minDistance.value) + 1);
+        const percent = ((_this.value - min) / (max - min)) * 100;
+        distanceThumbRight.style.right = 100 - percent + "%";
+        distanceRange.style.right = 100 - percent + "%";
+    };
+
+    minDistance.addEventListener("input", setMinDistance);
+    maxDistance.addEventListener("input", setMaxDistance);
+</script>
+<script th:inline="javascript">
+    function searchWalkingPath(keyword) {
+        var SearchDTO = new Object();
+        SearchDTO.location = document.getElementById("location").value;
+        SearchDTO.minTime = document.getElementById("minTime").value;
+        SearchDTO.maxTime = document.getElementById("maxTime").value;
+        SearchDTO.minDistance = document.getElementById("minDistance").value;
+        SearchDTO.maxDistance = document.getElementById("maxDistance").value;
+        fetch("/walking-path/condition/" + keyword, {
+            method: "POST",
+            headers: {
+                'content-type':'application/json'
+            },
+            body: JSON.stringify({
+                location : SearchDTO.location,
+                minTime : SearchDTO.minTime,
+                maxTime : SearchDTO.maxTime,
+                minDistance : SearchDTO.minDistance,
+                maxDistance : SearchDTO.maxDistance
+            })
+        })
+            .then((response) => response.text())
+            .then((data) => {
+                document.getElementById("walking-path").innerHTML = `${data}`;
+            });
+    }
+</script>
 </body>
 </html>
