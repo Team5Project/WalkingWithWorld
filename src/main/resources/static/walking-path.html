@@ -31,15 +31,39 @@
                 <hr>
                 <div class="cat_time">
                     <h3>산책 시간</h3>
-                    <div class="cat_time_range">
-                        <input type="range">
+                    <div class="cat_time_range multi-range-slider">
+                        <p id="showtime"></p>
+                        <!-- 입력 받을 슬라이더 -->
+                        <input type="range" name="minTime" id="minTime" value="0" min="0" max="60" step="1"
+                            onchange="set()" />
+                        <input type="range" name="maxTime" id="maxTime" value="60" min="0" max="60" step="1"
+                            onchange="set()" />
+                        <!-- 양방향 슬라이더 보여주기 -->
+                        <div class="slider">
+                            <div class="track"></div>
+                            <div class="range"></div>
+                            <div class="thumb left"></div>
+                            <div class="thumb right"></div>
+                        </div>
                     </div>
                 </div>
                 <hr>
-                <div class="cat_distance">
+                <div class="cat_distance multi-range-slider">
                     <h3>거리</h3>
                     <div class="cat_distance_range">
-                        <input type="range">
+                        <p id="show-distance"></p>
+                        <!-- 입력 받을 슬라이더 -->
+                        <input type="range" name="minDistance" id="minDistance" value="0" min="0" max="200" step="1"
+                            onchange="setDistance()" />
+                        <input type="range" name="maxDistance" id="maxDistance" value="200" min="0" max="200" step="100"
+                            onchange="setDistance()" />
+                        <!-- 양방향 슬라이더 보여주기 -->
+                        <div class="distance-slider">
+                            <div class="track"></div>
+                            <div class="range"></div>
+                            <div class="thumb left"></div>
+                            <div class="thumb right"></div>
+                        </div>
                     </div>
                 </div>
             </aside>
@@ -105,6 +129,110 @@
             </article>
         </section>
     </main>
+    <script>
+        // 양방향 슬라이더
+        const minTime = document.getElementById("minTime");
+        const maxTime = document.getElementById("maxTime");
+
+        set();
+
+        function set() {
+            let minTimeValue = minTime.value;
+            let maxTimeValue = maxTime.value;
+            document.getElementById("showtime").innerText = "최소 " + Math.floor(minTimeValue / 60) + "시간" + minTimeValue % 60 + "분 ~ " + Math.floor(maxTimeValue / 60) + "시간" + maxTimeValue % 60 + "분";
+        };
+
+        const thumbLeft = document.querySelector(".slider > .thumb.left");
+        const thumbRight = document.querySelector(".slider > .thumb.right");
+        const range = document.querySelector(".slider > .range");
+
+        const setMin = () => {
+            const _this = minTime;
+            const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+            _this.value = Math.min(parseInt(_this.value), parseInt(maxTime.value) - 1);
+            const percent = ((_this.value - min) / (max - min)) * 100;
+            thumbLeft.style.left = percent + "%";
+            range.style.left = percent + "%";
+        };
+        const setMax = () => {
+            const _this = maxTime;
+            const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+            _this.value = Math.max(parseInt(_this.value), parseInt(minTime.value) + 1);
+            const percent = ((_this.value - min) / (max - min)) * 100;
+            thumbRight.style.right = 100 - percent + "%";
+            range.style.right = 100 - percent + "%";
+        };
+
+        minTime.addEventListener("input", setMin);
+        maxTime.addEventListener("input", setMax);
+        // 거리 슬라이더
+        const minDistance = document.getElementById("minDistance");
+        const maxDistance = document.getElementById("maxDistance");
+
+        setDistance();
+
+        function setDistance() {
+            let minDistanceValue = minDistance.value;
+            let maxDistanceValue = maxDistance.value;
+            document.getElementById("show-distance").innerText = "최소 " + minDistanceValue / 1000 + "Km ~ " + maxDistanceValue / 1000 + "Km";
+        };
+
+        const distanceThumbLeft = document.querySelector(".distance-slider > .thumb.left");
+        const distanceThumbRight = document.querySelector(".distance-slider > .thumb.right");
+        const distanceRange = document.querySelector(".distance-slider > .range");
+
+        const setMinDistance = () => {
+            const _this = minDistance;
+            const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+            _this.value = Math.min(parseInt(_this.value), parseInt(maxDistance.value) - 1);
+            const percent = ((_this.value - min) / (max - min)) * 100;
+            distanceThumbLeft.style.left = percent + "%";
+            distanceRange.style.left = percent + "%";
+        };
+        const setMaxDistance = () => {
+            const _this = maxDistance;
+            const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+            _this.value = Math.max(parseInt(_this.value), parseInt(minDistance.value) + 1);
+            const percent = ((_this.value - min) / (max - min)) * 100;
+            distanceThumbRight.style.right = 100 - percent + "%";
+            distanceRange.style.right = 100 - percent + "%";
+        };
+
+        minDistance.addEventListener("input", setMinDistance);
+        maxDistance.addEventListener("input", setMaxDistance);
+    </script>
+
+
+
+
+
+    <script th:inline="javascript">
+        function searchWalkingPath(keyword) {
+            var SearchDTO = new Object();
+            SearchDTO.location = document.getElementById("location").value;
+            SearchDTO.minTime = document.getElementById("minTime").value;
+            SearchDTO.maxTime = document.getElementById("maxTime").value;
+            SearchDTO.minDistance = document.getElementById("minDistance").value;
+            SearchDTO.maxDistance = document.getElementById("maxDistance").value;
+            fetch("/walking-path/condition/" + keyword, {
+                method: "POST",
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    location: SearchDTO.location,
+                    minTime: SearchDTO.minTime,
+                    maxTime: SearchDTO.maxTime,
+                    minDistance: SearchDTO.minDistance,
+                    maxDistance: SearchDTO.maxDistance
+                })
+            })
+                .then((response) => response.text())
+                .then((data) => {
+                    document.getElementById("walking-path").innerHTML = `${data}`;
+                });
+        }
+    </script>
 </body>
 
 </html>

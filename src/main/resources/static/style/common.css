@@ -31,7 +31,7 @@ input {
 header {
     width: 1440px;
     margin: 0 auto;
-    height: 107px;
+    height: 100px;
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
@@ -136,6 +136,20 @@ footer {
     height: 98px;
 }
 
+/* ----- 게시글 리스트 공유 스타일 ----- */
+
+.path_content {
+    line-height: 1.5;
+}
+
+.path_content h4 {
+    font-size: 24px;
+}
+
+.rating {
+    color: #97bf04;
+}
+
 /* ----- 버튼 ----- */
 .btn_signin {
     display: block;
@@ -206,4 +220,28 @@ footer {
 .path_ctrl {
     display: flex;
     align-items: center;
+}
+
+.btn_search {
+    display: block;
+    width: 75px;
+    line-height: 30px;
+    border-radius: 25px;
+    text-align: center;
+    background-color: #97bf04;
+    color: #fff;
+    position: absolute;
+    top: calc(50% - 15px);
+    right: 8px
+}
+
+.btn_signup_main {
+    display: block;
+    width: 240px;
+    line-height: 80px;
+    text-align: center;
+    background-color: #97bf04;
+    color: #fff;
+    margin: 10px 30px;
+    font-size: 24px;
 }
