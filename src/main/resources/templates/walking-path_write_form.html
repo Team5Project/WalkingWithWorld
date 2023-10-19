@@ -4,8 +4,50 @@
     <meta charset="UTF-8">
     <title>walking-path 입력폼</title>
     <style>
+        #write-form {
+            border: 1px solid red;
+        }
+        #input-items {
+            border: 1px solid green;
+            border-radius: 10px;
+            margin: 10px;
+        }
+        #left-form {
+            float: left;
+            width: 49%;
+        }
+        #left-form > label {
+            margin-left: 10px;
+            padding: 10px;
+        }
+        #left-form > label > input {
+            margin-left: 10px;
+            width: 80%;
+        }
+        #line {
+            float: left;
+            width: 2px;
+            height: 350px;
+            margin-top: 20px;
+            background-color: green;
+        }
+        #right-form {
+            float: left;
+            width: 49%;
+        }
+        #right-form > label {
+            margin-left: 10px;
+        }
+        #clear {
+            clear: left;
+        }
+        .map_wrap {
+            margin: 5px 10px 10px 10px;
+            border: 1px solid gray;
+        }
+
+        /*------------- 지도 ---------------*/
         .readMap {
-            margin-top: 10px;
             width: 100%;
             height: 350px;
         }
@@ -83,13 +125,38 @@
     </style>
 </head>
 <body>
-<form method="post" action="/walking-path" enctype="multipart/form-data">
-    <label>제목 : <input type="text" name="title" placeholder="제목" required></label><br>
-    <label>주소 :
-        <input type="text" name="addr" id="address" placeholder="주소" required><br>
-        <input type="button" onclick="searchAddr()" value="주소 찾기">
-    </label><br>
+<div id="write-form">
+    <h2>산책로 등록</h2>
+    <form method="post" action="/walking-path" enctype="multipart/form-data">
+        <div id="input-items">
+            <div id="left-form">
+                <label>산책로 이름<br><input type="text" name="title" placeholder="제목" required></label><br>
+                <label>주소<br>
+                    <input type="text" name="addr" id="address" placeholder="주소" required><br>
+                    <input type="button" onclick="searchAddr()" value="주소 찾기">
+                </label><br>
 
+                <label>사진<br><input type="file" name="files" multiple required></label><br>
+                <label>
+                    <input type="hidden" name="course" id="course">
+                    <input type="hidden" name="time" id="time">
+                    <input type="hidden" name="distance" id="distance">
+                </label>
+            </div>
+            <div id="line"></div>
+            <div id="right-form">
+                <label>경로 그리기
+                    <div class="map_wrap">
+                        <div class="readMap" id="map"></div>
+                    </div>
+                </label>
+            </div>
+            <div id="clear"></div>
+        </div>
+        <input type="submit" value="확인">
+        <a th:href="${referer}">뒤로가기</a>
+    </form>
+</div>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
         function searchAddr() {
@@ -114,23 +181,8 @@
             }).open();
         }
     </script>
-
-    <label>사진 선택 : <input type="file" name="files" multiple required></label><br>
-    <label>
-        <input type="hidden" name="course" id="course">
-        <input type="hidden" name="time" id="time">
-        <input type="hidden" name="distance" id="distance">
-    </label>
-    <div class="map_wrap">
-        <div class="readMap" id="map"></div>
-    </div>
-
     <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d753200077e444dd40df1e458903dfd3"></script>
     <script th:inline="javascript" src="/js/map_distance.js"></script>
-
-    <input type="submit" value="작성하기">
-    <a th:href="${referer}">뒤로가기</a>
-</form>
 </body>
 </html>
