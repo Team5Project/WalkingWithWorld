@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -36,8 +35,8 @@ public class ReviewsController {
     @Autowired
     ReviewService reviewService;
 
-    @GetMapping("/reviews/{reviews-id}")
-    public String reviews(@PathVariable("reviews-id") int id,
+    @GetMapping("/reviews/{walking-paths-id}/write")
+    public String reviews(@PathVariable("walking-paths-id") int id,
                           Model model,
                           HttpServletRequest request) {
         String referer = request.getHeader("Referer");
@@ -52,10 +51,12 @@ public class ReviewsController {
         return "reviews_write_form";
     }
 
-    @PostMapping("/reviews")
-    public String getReviewList(Model model ) {
+    @PostMapping("/reviews/list/{walking-paths-id}")
+    public String getReviewList(Model model,
+                                @PathVariable("walking-paths-id") int id
+                                ) {
 
-        List<ReviewsDTO> list = dao.reviewslist();
+        List<ReviewsDTO> list = dao.reviewListById(id);
 
         for(ReviewsDTO dto:list){
             dto.setPhotosList(photoDao.readReviewPhotos(dto.getId()));
@@ -68,7 +69,7 @@ public class ReviewsController {
 
 
     //리뷰 작성
-    @PostMapping("/reviews/{walking-paths-id}")
+    @PostMapping("/reviews/{walking-paths-id}/write")
     public ModelAndView createReview(@Login UsersDto loginUser,
                                @PathVariable("walking-paths-id") int id,
                                ReviewsDTO reviewsDTO,
@@ -92,7 +93,7 @@ public class ReviewsController {
         boolean result = dao.deleteReviews(id);
         ModelAndView mav = new ModelAndView();
         if (result) {
-            mav.addObject("list", dao.reviewslist());
+            mav.addObject("list", dao.reviewlist());
         }
         mav.setViewName("reviews_write_form");
         return mav;
@@ -110,7 +111,7 @@ public class ReviewsController {
         boolean result = dao.updateReviews(vo);
         ModelAndView mav = new ModelAndView();
         if (result) {
-            mav.addObject("list", dao.reviewslist());
+            mav.addObject("list", dao.reviewlist());
         }
         mav.setViewName("reviews_write_form");
         return mav;

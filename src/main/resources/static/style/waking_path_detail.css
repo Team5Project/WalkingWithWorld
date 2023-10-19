@@ -101,6 +101,7 @@ section:nth-child(4) {
 .comments p {
     margin-top: 10px;
     margin-bottom: 47px;
+    margin-left: 30px;
 }
 
 #comments_write {

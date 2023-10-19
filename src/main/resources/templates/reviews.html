@@ -7,28 +7,18 @@
 <body>
 <div id="reviews" class="review_content" th:each="review:${reviewList}">
     <!--    여서부터!-->
+    <th:block th:if="${#lists.size(review.getPhotosList())>0}">
     <aside class="images">
         <figure class="viewer">
-            <img src="/images/sample/1.jpg" alt="">
+            <img th:src="@{|/ex_images/${review.photosList[0].imgName}|}" src="/images/sample/1.jpg" alt="">
         </figure>
         <div class="img_list">
-            <figcaption class="thumb">
-                <img src="/images/sample/1.jpg" alt="">
-            </figcaption>
-            <figcaption class="thumb">
-                <img src="/images/sample/2.jpg" alt="">
-            </figcaption>
-            <figcaption class="thumb">
-                <img src="/images/sample/3.jpg" alt="">
-            </figcaption>
-            <figcaption class="thumb">
-                <img src="/images/sample/4.jpg" alt="">
-            </figcaption>
-            <figcaption class="thumb">
-                <img src="/images/sample/5.jpg" alt="">
+            <figcaption class="thumb" th:each="photo : ${review.photosList}">
+                <img th:src="@{|/ex_images/${photo.imgName}|}" src="/images/sample/1.jpg" alt="">
             </figcaption>
         </div>
     </aside>
+    </th:block>
     <article class="review_main">
         <div class="review_info">
             <div class="detail_member">
@@ -36,10 +26,12 @@
                 <span class="name" th:text="${review.createdBy}">작성자명</span>
                 <span class="date" th:text="${review.createdAt}">작성일시</span>
             </div>
-            <div class="up_del">
-                <span class="info_modi">수정</span>
-                <span class="info_del">삭제</span>
-            </div>
+            <th:block th:if="${session.auth!=null && session.auth.getName()== review.createdBy}">
+                <div class="up_del">
+                    <span class="info_modi">수정</span>
+                    <span class="info_del">삭제</span>
+                </div>
+            </th:block>
         </div>
         <hr>
         <div class="review_text">
@@ -49,5 +41,19 @@
         </div>
     </article>
 </div>
+<script>
+    let imgRoot = document.querySelectorAll(".images")
+    console.log(imgRoot);
+    imgRoot.forEach(function (ir) {
+        let imgList = ir.querySelectorAll(".img_list img");
+
+        imgList.forEach(function (img) {
+            img.addEventListener("click", (e) => {
+                ir.querySelector(".viewer img").src = img.src;
+            });
+        });
+    });
+
+</script>
 </body>
 </html>

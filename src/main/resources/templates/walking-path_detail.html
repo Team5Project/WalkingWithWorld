@@ -17,14 +17,29 @@
     <section class="detail_header">
         <div class="detail_title">
             <h2 th:text="${walkingPaths.title}">타이틀 미입력</h2>
-            <div class="up_del">
-                <span class="info_modi">수정</span>
-                <span class="info_del">삭제</span>
-            </div>
+            <th:block th:if="${session.auth !=null && session.auth.getName()==walkingPaths.getCreatedBy()}">
+                <div class="up_del">
+                    <span class="info_modi">수정</span>
+                    <span class="info_del">삭제</span>
+                </div>
+            </th:block>
         </div>
         <p>
-            <span class="star_score">★★★★★</span> <i></i>리뷰 <b>8</b> <i>|</i> 댓글 <b>22</b> <i>|</i> 거리 <b>10</b> Km
-            <i>|</i> 시간 <b>3</b> 시간
+            <span class="star_score">★★★★★</span>
+            <i></i>리뷰 <b>8</b>
+            <i>|</i> 댓글 <b>22</b>
+            <th:block th:if="${walkingPaths.getMapList().get(0).getDistance()>1000}">
+                <i>|</i> 거리 <b  th:text="${#numbers.formatDecimal(walkingPaths.getMapList().get(0).getDistance()/1000,2,2)}">10</b> Km
+            </th:block>
+            <th:block th:unless="${walkingPaths.getMapList().get(0).getDistance()>1000}">
+                <i>|</i> 거리 <b  th:text="${walkingPaths.getMapList().get(0).getDistance()}">10</b> m
+            </th:block>
+            <th:block th:if="${walkingPaths.getMapList().get(0).getTime()>60}">
+                <i>|</i> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()/60}">3</b> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()%60}"></b> 분
+            </th:block>
+            <th:block th:unless="${walkingPaths.getMapList().get(0).getTime()>60}">
+            <i>|</i> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()}"></b> 분
+            </th:block>
         </p>
         <address th:text="${walkingPaths.addr}">주소 미입력</address>
     </section>
@@ -49,7 +64,7 @@
                         리뷰를 남겨주세요!
                     </p>
                     <div>
-                        <a href="" class="btn_write_big">
+                        <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}">
                             리뷰작성
                         </a>
                     </div>
@@ -79,21 +94,10 @@
         <div class="review_container">
             <i class="rv-chav left fa-solid fa-circle-chevron-left"></i>
             <i class="rv-chav right fa-solid fa-circle-chevron-right"></i>
-
         </div>
     </section>
 </main>
 <footer th:replace="fragments/header :: footer"></footer>
-
-<div>
-    <h3>리뷰 확인</h3>
-    <div id="reviews"></div>
-</div>
-
-
-<!--리뷰 작성-->
-<a th:href="@{|/reviews/${walkingPaths.getId()}|}">리뷰 작성하기</a>
-
 
 <!--맵 API-->
 <script type="text/javascript"
@@ -133,8 +137,11 @@
 </script>
 
 <script th:inline="javascript">
+    /*<![CDATA[*/
     function getReviewList() {
-        fetch("/reviews", {
+        var walkingPathId = [[${walkingPaths.getId()}]];
+        console.log(walkingPathId)
+        fetch("/reviews/list/"+walkingPathId,{
             method: "POST"
         })
             .then((response) => response.text())
@@ -142,7 +149,7 @@
                 document.querySelector(".review_container").innerHTML = `${data}`;
             });
     }
-
+    /*]]>*/
     function getCommentList() {
         fetch("/comments", {
             method: "POST"
@@ -152,6 +159,7 @@
                 document.querySelector(".comments_content").innerHTML = `${data}`;
             });
     }
+
 
     function writeComment(id){
         var CommentsDTO = new Object();

@@ -32,7 +32,7 @@
         <div class="review_form">
             <div class="form">
                 <section class="write">
-                    <form method="post" th:action="@{/reviews/{id}(id=${walkingPaths.getId()})}"
+                    <form method="post" th:action="@{|/reviews/${walkingPaths.getId()}/write|}"
                           enctype="multipart/form-data">
                         <span>별점</span> <br>
                         <span value="5">★★★★★</span><br>
