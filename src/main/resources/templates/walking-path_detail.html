@@ -29,10 +29,10 @@
             <i></i>리뷰 <b>8</b>
             <i>|</i> 댓글 <b>22</b>
             <th:block th:if="${walkingPaths.getMapList().get(0).getDistance()>1000}">
-                <i>|</i> 거리 <b  th:text="${#numbers.formatDecimal(walkingPaths.getMapList().get(0).getDistance()/1000,2,2)}">10</b> Km
+                <i>|</i> 거리 <b th:text="${#numbers.formatDecimal(walkingPaths.getMapList().get(0).getDistance()/1000,2,2)}">10</b> Km
             </th:block>
             <th:block th:unless="${walkingPaths.getMapList().get(0).getDistance()>1000}">
-                <i>|</i> 거리 <b  th:text="${walkingPaths.getMapList().get(0).getDistance()}">10</b> m
+                <i>|</i> 거리 <b th:text="${walkingPaths.getMapList().get(0).getDistance()}">10</b> m
             </th:block>
             <th:block th:if="${walkingPaths.getMapList().get(0).getTime()>60}">
                 <i>|</i> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()/60}">3</b> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()%60}"></b> 분

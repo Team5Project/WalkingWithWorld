@@ -1,190 +1,171 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org/">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>walking-path</title>
-    <style>
-        a {
-          text-decoration : none;
-        }
-        .slider {
-    position: relative;
-    z-index: 1;
-    height: 10px;
-    margin: 20px 15px;
-}
-
-.slider>.track {
-    position: absolute;
-    z-index: 1;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    border-radius: 5px;
-    background-color: #c6aee7;
-}
-
-.slider>.range {
-    position: absolute;
-    z-index: 2;
-    left: 0%;
-    right: 0%;
-    top: 0;
-    bottom: 0;
-    border-radius: 5px;
-    background-color: #6200ee;
-}
-
-.slider>.thumb {
-    position: absolute;
-    z-index: 3;
-    width: 30px;
-    height: 30px;
-    background-color: #6200ee;
-    border-radius: 50%;
-}
-
-.slider>.thumb.left {
-    left: 0%;
-    transform: translate(-15px, -10px);
-}
-
-.slider>.thumb.right {
-    right: 0%;
-    transform: translate(20px, -10px);
-}
-
-input[type="range"] {
-    position: absolute;
-    /* opacity로 가린 것을 이벤트도 비활성화하기 위해 */
-    pointer-events: none;
-    -webkit-appearance: none;
-    z-index: 2;
-    height: 10px;
-    width: 100%;
-    opacity: 0;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-    /* 겹쳐진 두 thumb를 모두 활성화 */
-    pointer-events: all;
-    width: 30px;
-    height: 30px;
-    border-radius: 0;
-    border: 0 none;
-    background-color: red;
-    cursor: pointer;
-    /* appearance를 해야 위의 스타일들을 볼 수 있음 */
-    -webkit-appearance: none;
-}
-
-.distance-slider {
-    position: relative;
-    z-index: 1;
-    height: 10px;
-    margin: 0 15px;
-}
-
-.distance-slider>.track {
-    position: absolute;
-    z-index: 1;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    border-radius: 5px;
-    background-color: #c6aee7;
-}
-
-.distance-slider>.range {
-    position: absolute;
-    z-index: 2;
-    left: 0%;
-    right: 0%;
-    top: 0;
-    bottom: 0;
-    border-radius: 5px;
-    background-color: #6200ee;
-}
-
-.distance-slider>.thumb {
-    position: absolute;
-    z-index: 3;
-    width: 30px;
-    height: 30px;
-    background-color: #6200ee;
-    border-radius: 50%;
-}
-
-.distance-slider>.thumb.left {
-    left: 0%;
-    transform: translate(-15px, -10px);
-}
-
-.distance-slider>.thumb.right {
-    right: 0%;
-    transform: translate(20px, -10px);
-}
-
-#show-distance,
-#showtime {
-    margin-bottom: 30px;
-}
-    </style>
+    <link rel="stylesheet" href="/style/reset.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/style/common.css">
+    <link rel="stylesheet" href="/style/waking_path.css">
 </head>
 <body>
+<header th:replace="fragments/header :: header"></header>
+<hr class="header_hr">
+<main>
+    <section>
+        <aside class="category">
+            <div class="cat_location">
+                <h3>지역</h3>
+                <div class="cat_location_list" id="location">
+                    <p>
+                        <label for="radio_seoul" class="location_name">서울</label>
+                        <input type="radio" name="location" value="서울" class="location_radio" id="radio_seoul">
+                    </p>
+                    <p>
+                        <label for="radio_gangnam" class="location_name">강남구</label>
+                        <input type="radio" name="location" value="강남구" class="location_radio" id="radio_gangnam">
+                    </p>
+                    <p>
+                        <label for="radio_gangdong" class="location_name">강동구</label>
+                        <input type="radio" name="location" value="강동구" class="location_radio" id="radio_gangdong">
+                    </p>
+                    <p>
+                        <label for="radio_Gwanak" class="location_name">관악구</label>
+                        <input type="radio" name="location" value="관악구" class="location_radio" id="radio_Gwanak">
+                    </p>
+                    <p>
+                        <label for="radio_songpa" class="location_name">송파구</label>
+                        <input type="radio" name="location" value="송파구" class="location_radio" id="radio_songpa">
+                    </p>
+                    <p>
+                        <label for="radio_jongro" class="location_name">종로구</label>
+                        <input type="radio" name="location" value="종로구" class="location_radio" id="radio_jongro">
+                    </p>
+                </div>
+            </div>
+            <hr class="cat_hr">
+            <div class="cat_time">
+                <h3>산책 시간</h3>
+                <div class="cat_time_range multi-range-slider">
+                    <p id="showtime"></p>
+                    <!-- 입력 받을 슬라이더 -->
+                    <input type="range" name="minTime" id="minTime" value="0" min="0" max="600" step="10" onchange="set()" />
+                    <input type="range" name="maxTime" id="maxTime" value="600" min="0" max="600" step="10" onchange="set()" />
+                    <!-- 양방향 슬라이더 보여주기 -->
+                    <div class="slider">
+                        <div class="track"></div>
+                        <div class="range"></div>
+                        <div class="thumb left"></div>
+                        <div class="thumb right"></div>
+                    </div>
+                </div>
+            </div>
+            <hr class="cat_hr">
+            <div class="cat_distance">
+                <h3>거리</h3>
+                <div class="cat_distance_range multi-range-slider">
+                    <p id="show-distance"></p>
+                    <!-- 입력 받을 슬라이더 -->
+                    <input type="range" name="minDistance" id="minDistance" value="0" min="0" max="20000" step="100"
+                           onchange="setDistance()" />
+                    <input type="range" name="maxDistance" id="maxDistance" value="20000" min="0" max="20000" step="100"
+                           onchange="setDistance()" />
+                    <!-- 양방향 슬라이더 보여주기 -->
+                    <div class="distance-slider">
+                        <div class="track"></div>
+                        <div class="range"></div>
+                        <div class="thumb left"></div>
+                        <div class="thumb right"></div>
+                    </div>
+                </div>
+            </div>
+            <hr class="cat_hr">
+            <input class="btn_cat" input type="button" th:data-word="${keyword}" th:onclick="searchWalkingPath(this.getAttribute('data-word'))" value="검색하기">
+        </aside>
+        <article id="walking-path">
+            <div class="path_list" th:each="walkingPath:${walkingPathList}">
+                <div class="path_wrapper">
+                    <figure class="path_img">
+                        <img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}" th:src="@{|/ex_images/${walkingPath.getPhotosList().get(0).getImgName()}|}" alt="">
+                    </figure>
+                    <div class="path_content">
+                        <h4 th:text="${walkingPath.title}">제목</h4>
+                        <address th:text="${walkingPath.addr}">주소</address>
+                        <p class="path_dtinfo">15Km | 50분 </p>
+                        <p class="rating">★★★★★</p>
+                    </div>
+                    <div class="path_auth">
+                        <p th:text="${walkingPath.createdBy}">작성자</p>
+                        <p th:text="${walkingPath.createdAt}">날짜</p>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="path_ctrl">
+                <p class="pagenation">&lt;&lt; &lt; 1 2 3 4 5 &gt; &gt;&gt;</p>
+                <a th:if="${session.auth != null}" th:href="@{/walking-path/write}" class="btn_path_submit">산책로 등록</a>
+                <a th:if="${session.auth == null}" th:href="@{'/login?redirectURL=/walking-path'}" class="btn_path_submit">산책로 등록</a>
+            </div>
+        </article>
+    </section>
+</main>
+<footer th:replace="fragments/header :: footer"></footer>
+
+<!--////////////////원본 소스////////////////////-->
+
 <div>
-    <select name="location" id="location">
-        <option value="서울">서울</option>
-        <option value="강남">강남구</option>
-        <option value="강동">강동구</option>
-        <option value="관악">관악구</option>
-        <option value="송파">송파구</option>
-        <option value="종로">종로구</option>
-    </select><br>
-    <label>시간 :
-        <div class="multi-range-slider">
-            <p id="showtime"></p>
-            <!-- 입력 받을 슬라이더 -->
-            <input type="range" name="minTime" id="minTime" value="0" min="0" max="600" step="10" onchange="set()"/>
-            <input type="range" name="maxTime" id="maxTime" value="600" min="0" max="600" step="10" onchange="set()"/>
-            <!-- 양방향 슬라이더 보여주기 -->
-            <div class="slider">
-                <div class="track"></div>
-                <div class="range"></div>
-                <div class="thumb left"></div>
-                <div class="thumb right"></div>
-            </div>
-        </div>
-    </label><br>
-    <label>거리 :
-        <div class="multi-range-slider">
-            <p id="show-distance"></p>
-            <!-- 입력 받을 슬라이더 -->
-            <input type="range" name="minDistance" id="minDistance" value="0" min="0" max="20000" step="100" onchange="setDistance()"/>
-            <input type="range" name="maxDistance" id="maxDistance" value="20000" min="0" max="20000" step="100" onchange="setDistance()"/>
-            <!-- 양방향 슬라이더 보여주기 -->
-            <div class="distance-slider">
-                <div class="track"></div>
-                <div class="range"></div>
-                <div class="thumb left"></div>
-                <div class="thumb right"></div>
-            </div>
-        </div>
-    </label><br>
-    <input type="button" th:data-word="${keyword}" th:onclick="searchWalkingPath(this.getAttribute('data-word'))" value="검색하기"/>
+<!--    <select name="location" id="location">-->
+<!--        <option value="서울">서울</option>-->
+<!--        <option value="강남">강남구</option>-->
+<!--        <option value="강동">강동구</option>-->
+<!--        <option value="관악">관악구</option>-->
+<!--        <option value="송파">송파구</option>-->
+<!--        <option value="종로"></option>-->
+<!--    </select><br>-->
+<!--    <label>시간 :-->
+<!--        <div class="multi-range-slider">-->
+<!--            <p id="showtime"></p>-->
+<!--            &lt;!&ndash; 입력 받을 슬라이더 &ndash;&gt;-->
+<!--            <input type="range" name="minTime" id="minTime" value="0" min="0" max="600" step="10" onchange="set()"/>-->
+<!--            <input type="range" name="maxTime" id="maxTime" value="600" min="0" max="600" step="10" onchange="set()"/>-->
+<!--            &lt;!&ndash; 양방향 슬라이더 보여주기 &ndash;&gt;-->
+<!--            <div class="slider">-->
+<!--                <div class="track"></div>-->
+<!--                <div class="range"></div>-->
+<!--                <div class="thumb left"></div>-->
+<!--                <div class="thumb right"></div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </label><br>-->
+<!--    <label>거리 :-->
+<!--        <div class="multi-range-slider">-->
+<!--            <p id="show-distance"></p>-->
+<!--            &lt;!&ndash; 입력 받을 슬라이더 &ndash;&gt;-->
+<!--            <input type="range" name="minDistance" id="minDistance" value="0" min="0" max="20000" step="100" onchange="setDistance()"/>-->
+<!--            <input type="range" name="maxDistance" id="maxDistance" value="20000" min="0" max="20000" step="100" onchange="setDistance()"/>-->
+<!--            &lt;!&ndash; 양방향 슬라이더 보여주기 &ndash;&gt;-->
+<!--            <div class="distance-slider">-->
+<!--                <div class="track"></div>-->
+<!--                <div class="range"></div>-->
+<!--                <div class="thumb left"></div>-->
+<!--                <div class="thumb right"></div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </label><br>-->
 </div>
 <p th:if="${keyword}" th:text="|'${keyword}' 검색 결과|"></p>
-<div id="walking-path">
+<!--<div id="walking-path">-->
     <ul th:each="walkingPath:${walkingPathList}">
         <img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}" th:src="@{|/ex_images/${walkingPath.getPhotosList().get(0).getImgName()}|}" style='width:200px;'/>
         <a th:href="@{|/walking-path/${walkingPath.getId()}|}" th:text="${walkingPath}"></a>
     </ul>
 </div>
 <hr>
-<a th:if="${session.auth != null}" th:href="@{/walking-path/write}">게시글 작성하기</a>
-<a th:if="${session.auth == null}" th:href="@{'/login?redirectURL=/walking-path'}">게시글 작성하기</a>
 <script>
     // 양방향 슬라이더
     const minTime = document.getElementById("minTime");
@@ -256,11 +237,29 @@ input[type="range"]::-webkit-slider-thumb {
 
     minDistance.addEventListener("input", setMinDistance);
     maxDistance.addEventListener("input", setMaxDistance);
+    /* ---------- 지역 고르기 radio ---------- */
+
+    let radios = document.querySelectorAll('.location_radio');
+
+    radios.forEach(radio => {
+      radio.addEventListener("change", function () {
+        let names = document.querySelectorAll('.location_name');
+        names.forEach(name => {
+          name.style.color = '';
+          name.style.fontWeight = '';
+        });
+        if (radio.checked) {
+          let name = document.querySelector(`.location_name[for="${radio.id}"]`);
+          name.style.color = '#97bf04';
+          name.style.fontWeight = 'bold';
+        }
+      })
+    })
 </script>
 <script th:inline="javascript">
     function searchWalkingPath(keyword) {
         var SearchDTO = new Object();
-        SearchDTO.location = document.getElementById("location").value;
+        SearchDTO.location = document.querySelector('input[name="location"]:checked').value;
         SearchDTO.minTime = document.getElementById("minTime").value;
         SearchDTO.maxTime = document.getElementById("maxTime").value;
         SearchDTO.minDistance = document.getElementById("minDistance").value;
