@@ -3,6 +3,7 @@ package com.team5.WalkingWithWorld.dao;
 import com.team5.WalkingWithWorld.domain.CommentsDTO;
 import org.apache.ibatis.annotations.*;
 
+import javax.annotation.processing.Generated;
 import java.util.List;
 
 @Mapper
@@ -27,6 +28,7 @@ public interface CommentsMapper {
     //글쓰기
     @Insert("insert into comments (users_id, walking_paths_id,content ,created_at) " +
             "values (#{users_id}, #{walking_paths_id}, #{content}, NOW())")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
     public boolean write(CommentsDTO comments);
 
     //글쓰기폼에 정보 전송

@@ -17,10 +17,13 @@
                         <span class="name" th:text="${comment.getName()}">이름 입력란</span>
                         <span class="date" th:text="${#temporals.format(comment.created_at,'yyyy-MM-dd')}">날짜입력란</span>
                     </div>
-                    <div class="up_del" style="visibility:visible;">
-                        <span class="info_modi" th:onclick="|UpdateAct(${comment.id})|">수정</span>
-                        <a class="info_del" th:href="@{/comments/delete(id=${comment.id})}" >삭제</a>
-                    </div>
+                    <th:block th:if="${session.auth!=null && session.auth.getName() == comment.getName()}">
+                        <div class="up_del" style="visibility:visible;">
+                            <span class="info_modi" th:onclick="|UpdateAct(${comment.id})|">수정</span>
+                            <a class="info_del" th:href="@{/comments/delete(id=${comment.id})}" >삭제</a>
+                        </div>
+                    </th:block>
+
                 </div>
             </div>
             <p th:text="${comment.getContent()}">조용조용히 아이와 걸으며 산책하기 좋습니다.</p>

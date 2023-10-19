@@ -16,7 +16,7 @@ public class LoginCheckFilter implements Filter {
     // TODO 로그인이 필요 없는 URL 추가
 
     private static final String[] whiteList = { "/", "/signup", "/login", "/logout", "/signupForm", "/walking-path",
-            "/walking-path/*", "/reviews", "/comments", "/images/*", "/ex_images/*", "/style/**", "/js/**",
+            "/walking-path/*", "/reviews","/reviews/list/*", "/comments", "/images/*", "/ex_images/*", "/style/**", "/js/**",
             "/images/**" };
 
     @Override

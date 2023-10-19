@@ -2,7 +2,6 @@ package com.team5.WalkingWithWorld.service;
 
 import com.team5.WalkingWithWorld.dao.UserMapper;
 import com.team5.WalkingWithWorld.domain.LoginDto;
-import com.team5.WalkingWithWorld.domain.Users;
 import com.team5.WalkingWithWorld.domain.UsersDto;
 import com.team5.WalkingWithWorld.global.PasswordEncoder;
 import org.springframework.stereotype.Service;

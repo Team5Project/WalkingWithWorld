@@ -7,6 +7,7 @@ import com.team5.WalkingWithWorld.global.SessionConst;
 import com.team5.WalkingWithWorld.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -78,8 +79,8 @@ public class UserController {
     }
 
     @PostMapping("/signup")
+    @Valid
     public String signUpUser(UsersDto usersDto) {
-        List<UsersDto> userList = userService.getAllUsers();
         boolean user = userService.createUser(usersDto);
         System.out.println(user);
         return "login_Form";

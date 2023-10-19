@@ -1,9 +1,9 @@
-<header class="header" xmlns:th="http://www.w3.org/1999/html">
-    <h1 class="logo"></h1>
+<header class="header" xmlns:th="http://www.thymeleaf.org">
+    <a th:href="@{/}" style="text-decoration: none"><h1 class="logo"></h1></a>
     <nav>
-        <a href="">산책로</a>
-        <a href="#">커뮤니티</a>
-        <a href="#">리뷰</a>
+        <a href="" th:href="@{/walking-path}">산책로</a>
+        <a href="#" style="color: rgb(128,128,128)">커뮤니티</a>
+        <a href="#" style="color:rgb(128,128,128)">리뷰</a>
     </nav>
     <th:block th:if="${session.auth != null}">
         <div class="member">
