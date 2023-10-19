@@ -11,6 +11,8 @@ import java.util.List;
 public interface WalkingPathsMapper {
     @Select("select id, users_id, title, addr, created_at, created_by, modified_at, modified_by from walking_paths order by created_at desc")
     List<WalkingPathsDTO> readAll();
+    @Select("select id, users_id, title, addr, created_at, created_by, modified_at, modified_by from walking_paths order by created_at desc")
+    List<WalkingPathsMapDTO> readAllWalkingPathsMap();
     @Insert("Insert into walking_paths (users_id, title, addr, created_at, created_by) values (#{usersId}, #{title}, #{addr}, now(), #{createdBy})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int addWalkingPath(WalkingPathsDTO dto);
@@ -20,7 +22,7 @@ public interface WalkingPathsMapper {
 
     @Select("select id, users_id, title, addr, created_at, created_by, modified_at, modified_by " +
             "from walking_paths where title like concat('%', #{keyword}, '%') or addr like concat('%', #{keyword}, '%') order by created_at desc")
-    List<WalkingPathsDTO> searchWalkingPathByKeyword(String keyword);
+    List<WalkingPathsMapDTO> searchWalkingPathByKeyword(String keyword);
 
     @Select({"<script> select walking_paths.id, users_id, title, addr, created_at, created_by, modified_at, modified_by",
             "from walking_paths inner join map on walking_paths.id = map.walking_paths_id" +
@@ -32,7 +34,7 @@ public interface WalkingPathsMapper {
             "<if test='minDistance > 0'> and distance >= ${minDistance}</if>" +
             "<if test='maxDistance > 0'> <![CDATA[and distance <= ${maxDistance}]]></if>" +
             "</where>group by walking_paths.id order by created_at desc</script>"})
-    List<WalkingPathsDTO> searchWalkingPathWithSearchDTO(SearchDTO dto);
+    List<WalkingPathsMapDTO> searchWalkingPathWithSearchDTO(SearchDTO dto);
 
     @Update("update walking_paths set title = #{title}, addr = #{addr}, modified_at = now(), modified_by = #{modifiedBy} where id = #{id}")
     int updateWalkingPath(WalkingPathsDTO dto);

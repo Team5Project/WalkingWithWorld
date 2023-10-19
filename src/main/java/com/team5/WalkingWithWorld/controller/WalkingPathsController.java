@@ -31,11 +31,13 @@ public class WalkingPathsController {
     @GetMapping("/walking-path")
     public ModelAndView readAllWalkingPath(@Login UsersDto loginUser) {
         ModelAndView mav = new ModelAndView();
-        List<WalkingPathsDTO> walkingPathList = dao.readAll();
+        List<WalkingPathsMapDTO> walkingPathList = dao.readAllWalkingPathsMap();
 
-        for(WalkingPathsDTO dto : walkingPathList) {
+        for(WalkingPathsMapDTO dto : walkingPathList) {
            dto.setPhotosList(photoDao.readPhotos(dto.getId()));
+           dto.setMapList(mapDao.ReadMap(dto.getId()));
         }
+
         mav.addObject("walkingPathList", walkingPathList);
         mav.setViewName("walking-path");
         return mav;
@@ -59,11 +61,12 @@ public class WalkingPathsController {
     @PostMapping(value = "/walking-path/condition/{keyword}", produces = "application/json; charset=utf-8")
     public String conditionSearch(@PathVariable("keyword") String searchWord, @RequestBody SearchDTO searchDTO, Model model) {
         searchDTO.setKeyword(searchWord.equals("null")?null:searchWord);
-        List<WalkingPathsDTO> walkingPathList = dao.searchWalkingPathWithSearchDTO(searchDTO); // 변경
-        for(WalkingPathsDTO dto : walkingPathList) {
+        List<WalkingPathsMapDTO> walkingPathMapList = dao.searchWalkingPathWithSearchDTO(searchDTO); // 변경
+        for(WalkingPathsMapDTO dto : walkingPathMapList) {
             dto.setPhotosList(photoDao.readPhotos(dto.getId()));
+            dto.setMapList(mapDao.ReadMap(dto.getId()));
         }
-        model.addAttribute("walkingPathList", walkingPathList);
+        model.addAttribute("walkingPathList", walkingPathMapList);
         return "walking-path_list :: #walking-path-list";
     }
 
@@ -71,10 +74,12 @@ public class WalkingPathsController {
     public ModelAndView searchByKeyword(String keyword) {
         System.out.println(keyword);
         ModelAndView mav = new ModelAndView();
-        List<WalkingPathsDTO> walkingPathsDTOList = dao.searchWalkingPathByKeyword(keyword);
-        for(WalkingPathsDTO dto : walkingPathsDTOList)
+        List<WalkingPathsMapDTO> walkingPathsMapDTOList = dao.searchWalkingPathByKeyword(keyword);
+        for(WalkingPathsMapDTO dto : walkingPathsMapDTOList) {
             dto.setPhotosList(photoDao.readPhotos(dto.getId()));
-        mav.addObject("walkingPathList", walkingPathsDTOList);
+            dto.setMapList(mapDao.ReadMap(dto.getId()));
+        }
+        mav.addObject("walkingPathList", walkingPathsMapDTOList);
         mav.addObject("keyword", keyword);
         mav.setViewName("walking-path");
         return mav;
