@@ -98,7 +98,17 @@
 <!--맵 API-->
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d753200077e444dd40df1e458903dfd3"></script>
-<th:block th:if="${#lists.size(walkingPaths.mapList) != 0}">
+<th:block th:if="${#lists.size(walkingPaths.mapList) == 0}">
+    <script>
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new kakao.maps.LatLng(37.541, 126.986), // 지도의 중심좌표
+            level: 6 // 지도의 확대 레벨
+        };
+        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+    </script>
+</th:block>
+<th:block th:unless="${#lists.size(walkingPaths.mapList) == 0}">
 <script th:inline="javascript">
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
         mapOption = {
