@@ -23,7 +23,9 @@
                     <img th:if="${#lists.size(walkingPaths.getPhotosList())>0}"
                          th:src="@{|/ex_images/${walkingPaths.getPhotosList().get(0).getImgName()}|}" alt=""/>
                     <span th:text="${walkingPaths.getTitle()}"></span>
-                    <span th:text="${walkingPaths.getMapList().get(0).getDistance()}"></span>
+                    <th:block th:if="${#lists.size(walkingPaths.getMapList())>0}">
+                        <span th:text="${walkingPaths.getMapList().get(0).getDistance()}"></span>
+                    </th:block>
                     <span th:text="${walkingPaths.getAddr()}"></span>
                 </div>
             </th:block>

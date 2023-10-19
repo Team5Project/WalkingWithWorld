@@ -163,7 +163,7 @@ section:nth-child(4) {
 .img_list {
     display: flex;
     width: 600px;
-    justify-content: space-between;
+    justify-content: left;
 }
 
 .thumb {
@@ -173,6 +173,7 @@ section:nth-child(4) {
     overflow: hidden;
     opacity: 0.5;
     transition: 0.5s;
+    margin-right:10px;
 }
 
 .images img {
