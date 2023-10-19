@@ -28,17 +28,19 @@
             <span class="star_score">★★★★★</span>
             <i></i>리뷰 <b>8</b>
             <i>|</i> 댓글 <b>22</b>
-            <th:block th:if="${walkingPaths.getMapList().get(0).getDistance()>1000}">
-                <i>|</i> 거리 <b  th:text="${#numbers.formatDecimal(walkingPaths.getMapList().get(0).getDistance()/1000,2,2)}">10</b> Km
-            </th:block>
-            <th:block th:unless="${walkingPaths.getMapList().get(0).getDistance()>1000}">
-                <i>|</i> 거리 <b  th:text="${walkingPaths.getMapList().get(0).getDistance()}">10</b> m
-            </th:block>
-            <th:block th:if="${walkingPaths.getMapList().get(0).getTime()>60}">
-                <i>|</i> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()/60}">3</b> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()%60}"></b> 분
-            </th:block>
-            <th:block th:unless="${walkingPaths.getMapList().get(0).getTime()>60}">
-            <i>|</i> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()}"></b> 분
+            <th:block th:if="${walkingPaths.mapList}">
+                <th:block th:if="${walkingPaths.getMapList().get(0).getDistance()>1000}">
+                    <i>|</i> 거리 <b  th:text="${#numbers.formatDecimal(walkingPaths.getMapList().get(0).getDistance()/1000,2,2)}">10</b> Km
+                </th:block>
+                <th:block th:unless="${walkingPaths.getMapList().get(0).getDistance()>1000}">
+                    <i>|</i> 거리 <b  th:text="${walkingPaths.getMapList().get(0).getDistance()}">10</b> m
+                </th:block>
+                <th:block th:if="${walkingPaths.getMapList().get(0).getTime()>60}">
+                    <i>|</i> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()/60}">3</b> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()%60}"></b> 분
+                </th:block>
+                <th:block th:unless="${walkingPaths.getMapList().get(0).getTime()>60}">
+                <i>|</i> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()}"></b> 분
+                </th:block>
             </th:block>
         </p>
         <address th:text="${walkingPaths.addr}">주소 미입력</address>
@@ -49,11 +51,11 @@
                 <aside class="images">
                     <figure class="viewer">
                         <img
-                                th:src="@{|/ex_images/${walkingPaths.photosList[0].imgName}|}"/>
+                                th:if="${walkingPaths.photosList}" th:src="@{|/ex_images/${walkingPaths.photosList[0].imgName}|}"/>
                     </figure>
 
                     <div class="img_list">
-                        <figcaption class="thumb" th:each=" wp : ${walkingPaths.photosList}">
+                        <figcaption class="thumb" th:if="${walkingPaths.photosList}" th:each=" wp : ${walkingPaths.photosList}">
                             <img th:src="@{|/ex_images/${wp.imgName}|}">
                         </figcaption>
                     </div>
@@ -102,6 +104,17 @@
 <!--맵 API-->
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d753200077e444dd40df1e458903dfd3"></script>
+<th:block th:unless="${walkingPaths.mapList}">
+    <script>
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new kakao.maps.LatLng(37.541, 126.986), // 지도의 중심좌표
+            level: 6 // 지도의 확대 레벨
+        };
+        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+    </script>
+</th:block>
+<th:block th:if="${walkingPaths.mapList}">
 <script th:inline="javascript">
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
         mapOption = {
@@ -135,7 +148,7 @@
         polyline.setMap(map);
     }
 </script>
-
+</th:block>
 <script th:inline="javascript">
     /*<![CDATA[*/
     function getReviewList() {

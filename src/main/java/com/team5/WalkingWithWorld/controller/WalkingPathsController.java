@@ -109,9 +109,12 @@ public class WalkingPathsController {
         ModelAndView mav = new ModelAndView();
         WalkingPathsMapDTO walkingPaths = walkingPathService.readWalkingPathById(id);
         List<PhotosDTO> photosList = photoDao.readPhotos(walkingPaths.getId());
-        walkingPaths.setPhotosList(photosList);
+        if(!photosList.isEmpty())
+            walkingPaths.setPhotosList(photosList);
         List<MapDTO> mapList = mapDao.ReadMap(walkingPaths.getId());
         walkingPaths.setMapList(mapList);
+        if(walkingPaths.getMapList().isEmpty())
+            walkingPaths.setMapList(null);
 
         mav.addObject("walkingPaths", walkingPaths);
         mav.setViewName("walking-path_detail");
