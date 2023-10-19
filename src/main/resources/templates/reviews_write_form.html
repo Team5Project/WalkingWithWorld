@@ -16,9 +16,8 @@
             본문
             <textarea name="content" rows="10" cols="60" wrap="soft" required></textarea>
             사진(5개 제한)
-            <input type="file" name="files" onchange="setThumbnail(event)" multiple>
+            <input id="file" type="file" name="files" onchange="setThumbnail(event)" multiple/>
             <div id="review_image_container">
-
             </div>
             <input type="submit" value="저장">
             <a th:href="@{/walking-path/{id}(id=${walkingPaths.getId()})}">뒤로가기</a>
@@ -29,6 +28,12 @@
 <script>
     //이미지 미리보기
     function setThumbnail(event) {
+
+        if (event.target.files.length < 1) {
+            console.log("출력")
+            document.getElementById("review_image_container").innerText = "";
+        }
+
         for (var image of event.target.files) {
             var reader = new FileReader();
 
@@ -37,8 +42,6 @@
                 img.setAttribute("src", event.target.result);
                 document.querySelector("div#review_image_container").appendChild(img);
             };
-
-            console.log(image);
             reader.readAsDataURL(image);
         }
     }
