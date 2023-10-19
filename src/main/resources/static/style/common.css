@@ -40,7 +40,7 @@ header {
 }
 
 .logo {
-    display: inline-block;
+    justify-self: start;
     background-image: url(/images/logo.png);
     background-size: cover;
     width: 124px;

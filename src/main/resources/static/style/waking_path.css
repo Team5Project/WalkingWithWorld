@@ -82,7 +82,10 @@ input[type="radio"]:checked+label {
     height: 100%;
 }
 
-
+.path_title {
+    font-size: 24px;
+    color: #000;
+}
 
 .path_ctrl {
     display: grid;

@@ -89,13 +89,28 @@
         <article id="walking-path">
             <div class="path_list" th:each="walkingPath:${walkingPathList}">
                 <div class="path_wrapper">
-                    <figure class="path_img">
+                    <a class="path_img" th:href="@{|/walking-path/${walkingPath.getId()}|}">
                         <img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}" th:src="@{|/ex_images/${walkingPath.getPhotosList().get(0).getImgName()}|}" alt="">
-                    </figure>
+                    </a>
                     <div class="path_content">
-                        <h4 th:text="${walkingPath.title}">제목</h4>
+                        <a th:text="${walkingPath.title}" th:href="@{|/walking-path/${walkingPath.getId()}|}"  class="path_title">제목</a>
                         <address th:text="${walkingPath.addr}">주소</address>
-                        <p class="path_dtinfo">15Km | 50분 </p>
+                        <p class="path_dtinfo" th:if="${#lists.size(walkingPath.mapList) > 0}">
+                            <th:block th:if="${walkingPath.mapList.get(0).distance > 1000}">
+                                <b th:text="${#numbers.formatDecimal(walkingPath.mapList.get(0).distance/1000,2,2)}">10</b> Km
+                            </th:block>
+                            <th:block th:unless="${walkingPath.mapList.get(0).distance > 1000}">
+                                <b th:text="${walkingPath.mapList.get(0).distance}">10</b> Km
+                            </th:block>
+                            |
+<!--                            <th:block th:if="${walkingPath.mapList.get(0).time > 60}">-->
+<!--                                <b th:text="${walkingPath.mapList.get(0).time / 60">10</b> 시간-->
+<!--                                <b th:text="${walkingPaths.mapList().get(0).time % 60}"></b> 분-->
+<!--                            </th:block>-->
+                            <th:block th:unless="${walkingPath.mapList.get(0).time > 60}">
+                                <b th:text="${walkingPath.mapList.get(0).time}">10</b> 시간
+                            </th:block>
+                        </p>
                         <p class="rating">★★★★★</p>
                     </div>
                     <div class="path_auth">
