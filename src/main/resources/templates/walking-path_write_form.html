@@ -3,159 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>walking-path 입력폼</title>
-    <style>
-        #write-form {
-            border: 1px solid red;
-        }
-        #input-items {
-            border: 1px solid green;
-            border-radius: 10px;
-            margin: 10px;
-        }
-        #left-form {
-            float: left;
-            width: 49%;
-        }
-        #left-form > label {
-            float: left;
-            width: 80%;
-            padding: 20px;
-        }
-        #left-form > label > .text-box {
-            width: 100%;
-            border-top: none;
-            border-left: none;
-            border-right: none;
-            border-bottom: 2px solid green;
-            padding: 5px;
-        }
-        .button {
-            width: 100px;
-            background-color: #97BF04;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            margin-left: 10px;
-        }
-        #buttons {
-            text-align: right;
-        }
-        .submit-button {
-            font-size: 20px;
-            width: 100px;
-            background-color: #97BF04;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            margin: 10px;
-        }
-        a {
-            font-size: 20px;
-            text-decoration: none;
-            background-color: #D4D9B4;
-            color: #666666;
-            border-radius: 20px;
-            margin: 10px;
-        }
-        #line {
-            float: left;
-            width: 2px;
-            height: 350px;
-            margin-top: 20px;
-            background-color: green;
-        }
-        #right-form > label {
-            float: left;
-            width: 48%;
-            margin: 5px 10px 10px 10px;
-        }
-        #clear {
-            clear: left;
-        }
-        .map_wrap {
-            border: 1px solid gray;
-            margin-top: 5px;
-        }
-
-        /*------------- 지도 ---------------*/
-        .readMap {
-            width: 100%;
-            height: 500px;
-        }
-
-        /* #readMap {
-            position: relative;
-        }
-
-        #pathLoad {
-            position: absolute;
-            bottom: -30px;
-        } */
-
-
-
-        /*--------- 오버레이 ------------*/
-
-        .dot {
-            overflow: hidden;
-            float: left;
-            width: 12px;
-            height: 12px;
-            background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/mini_circle.png');
-        }
-
-        .dotOverlay {
-            position: relative;
-            bottom: 10px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            border-bottom: 2px solid #ddd;
-            float: left;
-            font-size: 12px;
-            padding: 5px;
-            background: #fff;
-        }
-
-        .dotOverlay:nth-of-type(n) {
-            border: 0;
-            box-shadow: 0px 1px 2px #888;
-        }
-
-        .number {
-            font-weight: bold;
-            color: #ee6152;
-        }
-
-        .dotOverlay:after {
-            content: '';
-            position: absolute;
-            margin-left: -6px;
-            left: 50%;
-            bottom: -8px;
-            width: 11px;
-            height: 8px;
-            background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white_small.png')
-        }
-
-        .distanceInfo {
-            position: relative;
-            top: 5px;
-            left: 5px;
-            list-style: none;
-            margin: 0;
-        }
-
-        .distanceInfo .label {
-            display: inline-block;
-            width: 50px;
-        }
-
-        .distanceInfo:after {
-            content: none;
-        }
-    </style>
+    <link rel="stylesheet" href="/style/reset.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/style/common.css">
+    <link rel="stylesheet" href="/style/walking_path_write_form.css">
 </head>
 <body>
+<header th:replace="fragments/header :: header"></header>
+
+<hr class="header_hr">
 <div id="write-form">
     <h2>산책로 등록</h2>
     <form method="post" action="/walking-path" enctype="multipart/form-data">
@@ -166,8 +24,14 @@
                     <input type="button" class="button" onclick="searchAddr()" value="주소 찾기"><br>
                     <input type="text" name="addr" class="text-box" id="address" required><br>
                 </label><br>
-
-                <label>사진<br><input type="file" name="files" multiple required></label><br>
+                <span>사진(5개 제한)</span><br>
+                <section class="img-area">
+                    <div class="filebox">
+                        <label for="file" class="fileImg"></label>
+                        <input id="file" type="file" name="files" onchange="setThumbnail(event)" multiple/>
+                    </div>
+                    <div id="image_container" class="image_container"></div>
+                </section><br>
                 <label>
                     <input type="hidden" name="course" id="course">
                     <input type="hidden" name="time" id="time">
@@ -190,32 +54,58 @@
         </div>
     </form>
 </div>
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script>
-        function searchAddr() {
-            new daum.Postcode({
-                oncomplete: function(data) {
-                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
-                    // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-                    var addr = ''; // 주소 변수
+<footer th:replace="fragments/header :: footer"></footer>
 
-                    //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-                        addr = data.roadAddress;
-                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
-                        addr = data.jibunAddress;
-                    }
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    function searchAddr() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
-                    // 주소 정보를 해당 필드에 넣는다.
-                    document.getElementById("address").value = addr;
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
                 }
-            }).open();
+
+                // 주소 정보를 해당 필드에 넣는다.
+                document.getElementById("address").value = addr;
+            }
+        }).open();
+    }
+</script>
+<script>
+    function setThumbnail(event) {
+        document.getElementById("image_container").innerText = "";
+        if(event.target.files.length < 1) {
+            document.getElementById("image_container").innerText = "";
         }
-    </script>
-    <script type="text/javascript"
-            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d753200077e444dd40df1e458903dfd3"></script>
-    <script th:inline="javascript" src="/js/map_distance.js"></script>
+        else if(event.target.files.length > 5) {
+            document.getElementById("image_container").innerText = "";
+            alert("사진은 최대 5개까지 업로드 가능합니다.");
+        }
+        else {
+            for(var image of event.target.files) {
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    var img = document.createElement("img");
+                    img.setAttribute("src", event.target.result);
+                    document.querySelector("div#image_container").appendChild(img);
+                };
+                reader.readAsDataURL(image);
+            }
+        }
+    }
+</script>
+<script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d753200077e444dd40df1e458903dfd3"></script>
+<script th:inline="javascript" src="/js/map_distance.js"></script>
 </body>
 </html>
