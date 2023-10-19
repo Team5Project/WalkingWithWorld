@@ -1,50 +1,85 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="/style/reset.css" th:href="@{/style/reset.css}" />
+    <link rel="stylesheet" href="/style/common.css" th:href="@{/style/common.css}">
+    <link rel="stylesheet" href="/style/review_write_form.css" th:href="@{/style/review_write_form.css}">
 </head>
-<body>
-<a th:href="@{/reviews}">first</a>
-<th:block th:if="${walkingPaths != null}">
-    <div>
-        <!--        <img th:if="${#lists.size(walkingPaths.getPhotosList())>0}" th:src="@{|/ex_images/${walkingPaths.getPhotosList().get(0).getImgName()}|}"  alt=""/>-->
-    </div>
-    <h1>리뷰 등록</h1>
-    <div>
-        <form method="post" th:action="@{/reviews/{id}(id=${walkingPaths.getId()})}" enctype="multipart/form-data">
-            본문
-            <textarea name="content" rows="10" cols="60" wrap="soft" required></textarea>
-            사진(5개 제한)
-            <input id="file" type="file" name="files" onchange="setThumbnail(event)" multiple/>
-            <div id="review_image_container">
+
+<body class="body">
+    <div class="all">
+        <div>
+            <h1>리뷰 등록</h1><br>
+        </div>
+
+        <div class="wrapper">
+            <div class="left">
+                <th:block th:if="${walkingPaths != null}">
+                    <div class="walking-path">
+                        <img th:if="${#lists.size(walkingPaths.getPhotosList())>0}"
+                            th:src="@{|/ex_images/${walkingPaths.getPhotosList().get(0).getImgName()}|}" alt="" />
+                        <span th:text="${walkingPaths.getTitle()}"></span>
+                        <span th:text="${walkingPaths.getMapList().get(0).getDistance()}"></span>
+                        <span th:text="${walkingPaths.getAddr()}"></span>
+                    </div>
+                </th:block>
             </div>
-            <input type="submit" value="저장">
-            <a th:href="@{/walking-path/{id}(id=${walkingPaths.getId()})}">뒤로가기</a>
-        </form>
+
+            <div class="review_form">
+                <div class="form">
+                    <section class="write">
+                        <form method="post" th:action="@{/reviews/{id}(id=${walkingPaths.getId()})}"
+                            enctype="multipart/form-data">
+                            <span>별점</span> <br>
+                            <span>본문</span> <br>
+                            <textarea name="content" rows="10" cols="60" wrap="soft" required></textarea><br>
+                            <span>사진(5개 제한)</span><br>
+                            <section class="img-area">
+                                <div id="review_image_container" class="image_container">
+                                </div>
+                                <div class="filebox">
+                                    <label for="file">+</label>
+                                    <input id="file" type="file" name="files" onchange="setThumbnail(event)" multiple />
+                                </div>
+                            </section>
+
+                    </section>
+                    <section class="submit">
+                        <input type="submit" value="저장" class="btn-review">
+                        <button class="btn-ref"><a
+                                th:href="@{/walking-path/{id}(id=${walkingPaths.getId()})}">뒤로가기</a></button>
+                    </section>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
-</th:block>
-<script>
-    //이미지 미리보기
-    function setThumbnail(event) {
 
-        if (event.target.files.length < 1) {
-            console.log("출력")
-            document.getElementById("review_image_container").innerText = "";
+    <script>
+        //이미지 미리보기
+        function setThumbnail(event) {
+
+            if (event.target.files.length < 1) {
+                console.log("출력")
+                document.getElementById("review_image_container").innerText = "";
+            }
+
+            for (var image of event.target.files) {
+                var reader = new FileReader();
+
+                reader.onload = function (event) {
+                    var img = document.createElement("img");
+                    img.setAttribute("src", event.target.result);
+                    document.querySelector("div#review_image_container").appendChild(img);
+                };
+                reader.readAsDataURL(image);
+            }
         }
-
-        for (var image of event.target.files) {
-            var reader = new FileReader();
-
-            reader.onload = function (event) {
-                var img = document.createElement("img");
-                img.setAttribute("src", event.target.result);
-                document.querySelector("div#review_image_container").appendChild(img);
-            };
-            reader.readAsDataURL(image);
-        }
-    }
-</script>
+    </script>
 </body>
+
 </html>

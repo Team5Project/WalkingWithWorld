@@ -41,8 +41,12 @@ public class ReviewsController {
                           Model model,
                           HttpServletRequest request) {
         String referer = request.getHeader("Referer");
+        WalkingPathsMapDTO walkingPaths = pathsMapper.readWalkingPath(id);
+        walkingPaths.setMapList(mapMapper.ReadMap(id) );
+        walkingPaths.setPhotosList(photoDao.readPhotos(id));
 
-        model.addAttribute("walkingPaths", pathsMapper.readWalkingPath(id));
+
+        model.addAttribute("walkingPaths",walkingPaths);
         model.addAttribute("referer");
 
         return "reviews_write_form";
