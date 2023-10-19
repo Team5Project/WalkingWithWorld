@@ -1,12 +1,25 @@
-.body{
+h1 {
+    font-size: 24px;
+    ;
+}
+
+.body {
     margin-left: auto;
     margin-right: auto;
 }
-.all{
+
+.all {
     display: flex;
     flex-direction: column;
-    align-items: start;
+
 }
+
+.title{
+    margin-top: 60px;
+    margin-bottom: 20px;
+    margin-left: 20%;
+}
+
 .wrapper {
     flex-direction: row;
     justify-content: center;
@@ -59,6 +72,7 @@
 
 .write span {
     margin: 10px;
+    font-size: 21px;
 }
 
 .write textarea {
@@ -76,12 +90,9 @@
     align-items: center;
     justify-content: end;
 }
-
-.image_container {
-    width: 150px;
-    height: 150px;
+.img-area{
     display: flex;
-    flex-direction: row;
+    align-items: center;
 }
 
 .image_container>img {
@@ -102,13 +113,14 @@
 }
 
 .filebox label {
-    display: inline-block;
-    padding: 10px 20px;
+        /* display: inline-block; */
+    /* padding: 0; */
     color: #81e042;
     vertical-align: middle;
     cursor: pointer;
     height: 40px;
     margin-left: 10px;
+    font-size: 50px;
 }
 
 .filebox input[type="file"] {
