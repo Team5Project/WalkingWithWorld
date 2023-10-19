@@ -16,6 +16,13 @@ public interface CommentsMapper {
             "order by c.created_at desc limit 5")
     public List<CommentsDTO> list();
 
+    @Select("select c.id, c.walking_paths_id, u.name,c.content, c.created_by,c.created_at " +
+            "from comments c " +
+            "join users u on c.users_id = u.id " +
+            "where walking_paths_id = #{id} " +
+            "order by c.created_at desc limit 5")
+    public List<CommentsDTO> getCommentById(int id);
+
     //내글 리스트
 //    @Select("select" +
 //                "c.id , c.content, c.created_at" +

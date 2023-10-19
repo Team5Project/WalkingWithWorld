@@ -150,8 +150,11 @@
             });
     }
     /*]]>*/
+
+    /*<![CDATA[*/
     function getCommentList() {
-        fetch("/comments", {
+        var walkingPathId= [[${walkingPaths.getId()}]]
+        fetch("/comments/list/"+walkingPathId, {
             method: "POST"
         })
             .then((response) => response.text())
@@ -159,6 +162,7 @@
                 document.querySelector(".comments_content").innerHTML = `${data}`;
             });
     }
+    /*]]>*/
 
 
     function writeComment(id){
