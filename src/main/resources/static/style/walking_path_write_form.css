@@ -1,9 +1,16 @@
 
         #write-form {
-            border: 1px solid red;
+            margin: 50px auto;
+            width: 1000px;
+        }
+        h1 {
+            margin-left: 50px;
+            margin-bottom: 10px;
+            font-size: 24px;
+            color: #97BF04;
         }
         #input-items {
-            border: 1px solid green;
+            border: 1px solid #97BF04;
             border-radius: 10px;
             margin: 10px;
         }
@@ -32,9 +39,15 @@
             height: 100px;
             border: 2px solid gray;
             margin-left: 1px;
+            margin-bottom: 1px;
         }
-        .fileImg:before {
-            content: url("/images/photoImg.png");
+        .fileImg {
+            color: #81e042;
+            vertical-align: middle;
+            cursor: pointer;
+            height: 40px;
+            margin-left: 10px;
+            font-size: 50px;
         }
         .filebox > input {
             display: none;
@@ -44,10 +57,11 @@
             border-top: none;
             border-left: none;
             border-right: none;
-            border-bottom: 2px solid green;
+            border-bottom: 2px solid #97BF04;
             padding: 5px;
         }
         .button {
+            padding: 6px;
             width: 100px;
             background-color: #97BF04;
             color: white;
@@ -61,6 +75,7 @@
         .submit-button {
             font-size: 20px;
             width: 100px;
+            height: 40px;
             background-color: #97BF04;
             color: white;
             border: none;
@@ -68,6 +83,7 @@
             margin: 10px;
         }
         #buttons > a {
+            padding: 6px 10px;
             font-size: 20px;
             text-decoration: none;
             background-color: #D4D9B4;
@@ -80,7 +96,7 @@
             width: 2px;
             height: 500px;
             margin-top: 20px;
-            background-color: green;
+            background-color: #97BF04;
         }
         #right-form > label {
             float: left;

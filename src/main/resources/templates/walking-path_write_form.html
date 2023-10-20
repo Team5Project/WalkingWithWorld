@@ -15,7 +15,7 @@
 
 <hr class="header_hr">
 <div id="write-form">
-    <h2>산책로 등록</h2>
+    <h1>산책로 등록</h1>
     <form method="post" action="/walking-path" enctype="multipart/form-data">
         <div id="input-items">
             <div id="left-form">
@@ -27,7 +27,7 @@
                 <span>사진(5개 제한)</span><br>
                 <section class="img-area">
                     <div class="filebox">
-                        <label for="file" class="fileImg"></label>
+                        <label for="file" class="fileImg">+</label>
                         <input id="file" type="file" name="files" onchange="setThumbnail(event)" multiple/>
                     </div>
                     <div id="image_container" class="image_container"></div>
