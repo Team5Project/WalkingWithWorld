@@ -30,13 +30,16 @@
             <i>|</i> 댓글 <b>22</b>
             <th:block th:if="${walkingPaths.mapList}">
                 <th:block th:if="${walkingPaths.getMapList().get(0).getDistance()>1000}">
-                    <i>|</i> 거리 <b  th:text="${#numbers.formatDecimal(walkingPaths.getMapList().get(0).getDistance()/1000,1,2)}">10</b> Km
+                    <i>|</i> 거리 <b
+                        th:text="${#numbers.formatDecimal(walkingPaths.getMapList().get(0).getDistance()/1000,1,2)}">10</b>
+                    Km
                 </th:block>
                 <th:block th:unless="${walkingPaths.getMapList().get(0).getDistance()>1000}">
-                    <i>|</i> 거리 <b  th:text="${walkingPaths.getMapList().get(0).getDistance()}">10</b> m
+                    <i>|</i> 거리 <b th:text="${walkingPaths.getMapList().get(0).getDistance()}">10</b> m
                 </th:block>
                 <th:block th:if="${walkingPaths.getMapList().get(0).getTime()>60}">
-                    <i>|</i> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()/60}">3</b> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()%60}"></b> 분
+                    <i>|</i> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()/60}">3</b> 시간 <b
+                        th:text="${walkingPaths.getMapList().get(0).getTime()%60}"></b> 분
                 </th:block>
                 <th:block th:unless="${walkingPaths.getMapList().get(0).getTime()>60}">
                     <i>|</i> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()}"></b> 분
@@ -51,14 +54,14 @@
                 <aside class="images">
                     <figure class="viewer">
                         <img th:if="${walkingPaths.photosList}"
-                            th:src="@{|/ex_images/${walkingPaths.photosList[0].imgName}|}" />
+                             th:src="@{|/ex_images/${walkingPaths.photosList[0].imgName}|}"/>
                         <img th:unless="${walkingPaths.photosList}"
-                             th:src="@{/images/noimage.png}" />
+                             th:src="@{/images/noimage.png}"/>
                     </figure>
 
                     <div class="img_list">
                         <figcaption class="thumb" th:if="${walkingPaths.photosList}"
-                            th:each=" wp : ${walkingPaths.photosList}">
+                                    th:each=" wp : ${walkingPaths.photosList}">
                             <img th:src="@{|/ex_images/${wp.imgName}|}">
                         </figcaption>
                     </div>
@@ -82,12 +85,12 @@
                 </div>
                 <form action="" method="post" id="comments_write" onsubmit="return false;">
                     <input type="text" id="comment_content" class="comments_input" name="content"
-                        placeholder="댓글을 입력해주세요" required />
+                           placeholder="댓글을 입력해주세요" required/>
                     <input type="button" class="btn_comments" th:if="${session.auth !=null}"
-                        th:onclick="|writeComment(${walkingPaths.getId()})|" value="등록" />
+                           th:onclick="|writeComment(${walkingPaths.getId()})|" value="등록"/>
                     <input type="button" class="btn_comments" th:if="${session.auth == null}"
-                        th:onclick="|location.href='@{/login?redirectURL=/walking-path/{id}(id=${walkingPaths.getId()})}'|"
-                        value="등록">
+                           th:onclick="|location.href='@{/login?redirectURL=/walking-path/{id}(id=${walkingPaths.getId()})}'|"
+                           value="등록">
                 </form>
             </div>
         </div>
@@ -113,7 +116,7 @@
         </div>
     </section>
 </main>
-    <footer th:replace="fragments/header :: footer"></footer>
+<footer th:replace="fragments/header :: footer"></footer>
 
 <!--맵 API-->
 <script type="text/javascript"
@@ -121,12 +124,13 @@
 <th:block th:unless="${walkingPaths.mapList}">
     <script th:inline="javascript">
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-        mapOption = {
-            center: new kakao.maps.LatLng(37.541, 126.986), // 지도의 중심좌표
-            level: 6 // 지도의 확대 레벨
-        };
+            mapOption = {
+                center: new kakao.maps.LatLng(37.541, 126.986), // 지도의 중심좌표
+                level: 6 // 지도의 확대 레벨
+            };
         var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-    </script>>
+    </script>
+    >
 </th:block>
 <th:block th:if="${walkingPaths.mapList}">
     <script th:inline="javascript">
@@ -135,76 +139,79 @@
                 center: new kakao.maps.LatLng([[${walkingPaths.mapList.get(0).coordinateY}]], [[${walkingPaths.mapList.get(0).coordinateX}]]), // 지도의 중심좌표
                 level: 6 // 지도의 확대 레벨
             };
-            var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-            // 지도를 클릭하면 선 그리기가 시작됩니다 그려진 선이 있으면 지우고 다시 그립니다
-            window.onload = function (mouseEvent) {
-                var input = [[${walkingPaths.mapList}]];
+        // 지도를 클릭하면 선 그리기가 시작됩니다 그려진 선이 있으면 지우고 다시 그립니다
+        window.onload = function (mouseEvent) {
+            var input = [[${walkingPaths.mapList}]];
 
-                // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
-                var linePath = [];
-                input.forEach(function (map) {
-                    linePath.push(new kakao.maps.LatLng(map["coordinateY"], map["coordinateX"]));
-                });
+            // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
+            var linePath = [];
+            input.forEach(function (map) {
+                linePath.push(new kakao.maps.LatLng(map["coordinateY"], map["coordinateX"]));
+            });
 
-                // 지도에 표시할 선을 생성합니다
-                var polyline = new kakao.maps.Polyline({
-                    path: linePath, // 선을 구성하는 좌표배열 입니다
-                    strokeWeight: 5, // 선의 두께 입니다
-                    strokeColor: '#FFAE00', // 선의 색깔입니다
-                    strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-                    strokeStyle: 'solid' // 선의 스타일입니다
-                });
+            // 지도에 표시할 선을 생성합니다
+            var polyline = new kakao.maps.Polyline({
+                path: linePath, // 선을 구성하는 좌표배열 입니다
+                strokeWeight: 5, // 선의 두께 입니다
+                strokeColor: '#FFAE00', // 선의 색깔입니다
+                strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                strokeStyle: 'solid' // 선의 스타일입니다
+            });
 
-                // 지도에 선을 표시합니다
-                polyline.setMap(map);
+            // 지도에 선을 표시합니다
+            polyline.setMap(map);
         }
     </script>
 </th:block>
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    function getReviewList() {
-        var walkingPathId = [[${walkingPaths.getId()}]];
-        console.log(walkingPathId)
-        fetch("/reviews/list/"+walkingPathId,{
-            method: "POST"
-        })
-            .then((response) => response.text())
-            .then((data) => {
-                document.querySelector(".review_container").innerHTML = `${data}`;
-            });
-    }
-    /*]]>*/
-
-    /*<![CDATA[*/
-    function getCommentList() {
-        var walkingPathId= [[${walkingPaths.getId()}]]
-        fetch("/comments/list/"+walkingPathId, {
-            method: "POST"
-        })
-            .then((response) => response.text())
-            .then((data) => {
-                document.querySelector(".comments_content").innerHTML = `${data}`;
-            });
-    }
-    /*]]>*/
-
-    function writeComment(id){
-        var CommentsDTO = new Object();
-        CommentsDTO.content = document.getElementById("comment_content").value;
-        if(CommentsDTO.content == ""){
-            alert("댓글을 입력해주세요");
-            return;
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        function getReviewList() {
+            var walkingPathId = [[${walkingPaths.getId()}]];
+            console.log(walkingPathId)
+            fetch("/reviews/list/" + walkingPathId, {
+                method: "POST"
+            })
+                .then((response) => response.text())
+                .then((data) => {
+                    if(data){
+                        console.log("확인")
+                        return;
+                    }
+                    document.querySelector(".review_container").innerHTML = `${data}`;
+                });
         }
 
-        console.log(CommentsDTO);
-        fetch("/comments/" + id, {
-            method: "POST",
-            headers:{
-                'content-type':'application/json'
-            },
-            body : JSON.stringify({
-                content : CommentsDTO.content
+        /*]]>*/
+
+        /*<![CDATA[*/
+        function getCommentList() {
+            var walkingPathId = [[${walkingPaths.getId()}]]
+            fetch("/comments/list/" + walkingPathId, {
+                method: "POST"
+            })
+                .then((response) => response.text())
+                .then((data) => {
+                    document.querySelector(".comments_content").innerHTML = `${data}`;
+                });
+        }
+
+        /*]]>*/
+
+
+        function writeComment(id) {
+            var CommentsDTO = new Object();
+            CommentsDTO.content = document.getElementById("comment_content").value;
+            console.log(CommentsDTO);
+            fetch("/comments/" + id, {
+                method: "POST",
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    content: CommentsDTO.content
+                })
             })
                 .then((response) => response.text())
                 .then((data) => {
@@ -212,9 +219,36 @@
                     document.getElementById("comments").innerHTML = `${data}`;
                 });
         }
-    }
-    window.addEventListener('onload', getReviewList());
-    window.addEventListener('onload', getCommentList());
+
+        //프래그먼트 요소지만 현재 html 에 있으므로 여기에 구현
+        /*<![CDATA[*/
+        function deleteComment(id) {
+
+            const CommentsDTO = {};
+            CommentsDTO.id = id;
+            CommentsDTO.walkingPathsId = [[${walkingPaths.getId()}]]
+            console.log(CommentsDTO);
+            fetch("/comments/delete", {
+                method: "POST",
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: CommentsDTO.id,
+                    walkingPathsId: CommentsDTO.walkingPathsId
+                })
+            })
+                .then((response) => response.text())
+                .then((data) => {
+                    document.getElementById("comment_content").value = "";
+                    document.getElementById("comments").innerHTML = `${data}`;
+                });
+        }
+
+        /*]]>*/
+
+        window.addEventListener('onload', getReviewList());
+        window.addEventListener('onload', getCommentList());
     </script>
     <script>
         let imgRoot = document.querySelectorAll(".images")
@@ -228,9 +262,8 @@
                 });
             });
         });
-    });
 
-</script>
+    </script>
 
 </body>
 </html>
