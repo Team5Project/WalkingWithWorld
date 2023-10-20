@@ -19,9 +19,10 @@ public class CommentsController {
     @Autowired
     CommentsMapper dao;
 
-    @PostMapping("/comments")
-    public String list(Model model) {
-        List<CommentsDTO> list = dao.list();
+    @PostMapping("/comments/list/{walking-paths-id}")
+    public String list(Model model,
+                       @PathVariable("walking-paths-id") int id) {
+        List<CommentsDTO> list = dao.getCommentById(id);
         model.addAttribute("commentList", list);
         return "comments :: #comments";
     }
@@ -38,7 +39,7 @@ public class CommentsController {
         dto.setWalking_paths_id(id);
         dao.write(dto);
 
-        List<CommentsDTO> list = dao.list();
+        List<CommentsDTO> list = dao.getCommentById(id);
         model.addAttribute("commentList", list);
         return "comments :: #comments";
     }
@@ -53,7 +54,7 @@ public class CommentsController {
     public ModelAndView update(CommentsDTO dto) {
         boolean result = dao.update(dto);
         ModelAndView mav = new ModelAndView();
-        mav.addObject("list", dao.list());
+//        mav.addObject("list", dao.list());
         mav.setViewName("redirect:/comment");
         return mav;
     }
@@ -62,7 +63,7 @@ public class CommentsController {
     public ModelAndView delete(String id) {
         boolean result = dao.delete(id);
         ModelAndView mav = new ModelAndView();
-        mav.addObject("list", dao.list());
+//        mav.addObject("list", dao.list(id));
         mav.setViewName("redirect:/comment");
         return mav;
     }

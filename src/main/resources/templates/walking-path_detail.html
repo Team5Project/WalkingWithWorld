@@ -142,17 +142,39 @@
 
             var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-            // 지도에 클릭 이벤트를 등록합니다
-            // 지도를 클릭하면 선 그리기가 시작됩니다 그려진 선이 있으면 지우고 다시 그립니다
-            window.onload = function (mouseEvent) {
-                var input = [[${ walkingPaths.mapList }]];
 
-                // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
-                var linePath = [];
-                input.forEach(function (map) {
-                    linePath.push(new kakao.maps.LatLng(map["coordinateY"], map["coordinateX"]));
-                });
+        // 지도에 선을 표시합니다
+        polyline.setMap(map);
+    }
+</script>
+</th:block>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    function getReviewList() {
+        var walkingPathId = [[${walkingPaths.getId()}]];
+        console.log(walkingPathId)
+        fetch("/reviews/list/"+walkingPathId,{
+            method: "POST"
+        })
+            .then((response) => response.text())
+            .then((data) => {
+                document.querySelector(".review_container").innerHTML = `${data}`;
+            });
+    }
+    /*]]>*/
 
+    /*<![CDATA[*/
+    function getCommentList() {
+        var walkingPathId= [[${walkingPaths.getId()}]]
+        fetch("/comments/list/"+walkingPathId, {
+            method: "POST"
+        })
+            .then((response) => response.text())
+            .then((data) => {
+                document.querySelector(".comments_content").innerHTML = `${data}`;
+            });
+    }
+    /*]]>*/
                 // 지도에 표시할 선을 생성합니다
                 var polyline = new kakao.maps.Polyline({
                     path: linePath, // 선을 구성하는 좌표배열 입니다
