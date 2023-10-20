@@ -19,8 +19,8 @@
                     </div>
                     <th:block th:if="${session.auth!=null && session.auth.getName() == comment.getName()}">
                         <div class="up_del" style="visibility:visible;">
-                            <span class="info_modi" th:onclick="|UpdateAct(${comment.id})|">수정</span>
-                            <a class="info_del" th:href="@{/comments/delete(id=${comment.id})}" >삭제</a>
+                            <span id="update" class="info_modi" th:onclick="|UpdateAct(${comment.id})|">수정</span>
+                            <span id="delete" class="info_del" th:onclick="|deleteComment(${comment.id})|" th:value="${comment.walkingPathsId}">삭제</span>
                         </div>
                     </th:block>
 

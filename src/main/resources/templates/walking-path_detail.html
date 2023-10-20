@@ -13,16 +13,51 @@
 </head>
 
 <body>
-    <header th:replace="fragments/header :: header"></header>
-    <hr class="header_hr">
-    <main>
-        <section class="detail_header">
-            <div class="detail_title">
-                <h2 th:text="${walkingPaths.title}">타이틀 미입력</h2>
-                <th:block th:if="${session.auth !=null && session.auth.getName()==walkingPaths.getCreatedBy()}">
-                    <div class="up_del">
-                        <span class="info_modi">수정</span>
-                        <span class="info_del">삭제</span>
+<header th:replace="fragments/header :: header"></header>
+<hr class="header_hr">
+<main>
+    <section class="detail_header">
+        <div class="detail_title">
+            <h2 th:text="${walkingPaths.title}">타이틀 미입력</h2>
+            <th:block th:if="${session.auth !=null && session.auth.getName()==walkingPaths.getCreatedBy()}">
+                <div class="up_del">
+                    <span class="info_modi">수정</span>
+                    <span class="info_del">삭제</span>
+                </div>
+            </th:block>
+        </div>
+        <p>
+            <span class="star_score">★★★★★</span>
+            <i></i>리뷰 <b>8</b>
+            <i>|</i> 댓글 <b>22</b>
+            <th:block th:if="${walkingPaths.getMapList().get(0).getDistance()>1000}">
+                <i>|</i> 거리 <b  th:text="${#numbers.formatDecimal(walkingPaths.getMapList().get(0).getDistance()/1000,1,2)}">10</b> Km
+            </th:block>
+            <th:block th:unless="${walkingPaths.getMapList().get(0).getDistance()>1000}">
+                <i>|</i> 거리 <b  th:text="${walkingPaths.getMapList().get(0).getDistance()}">10</b> m
+            </th:block>
+            <th:block th:if="${walkingPaths.getMapList().get(0).getTime()>60}">
+                <i>|</i> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()/60}">3</b> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()%60}"></b> 분
+            </th:block>
+            <th:block th:unless="${walkingPaths.getMapList().get(0).getTime()>60}">
+            <i>|</i> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()}"></b> 분
+            </th:block>
+        </p>
+        <address th:text="${walkingPaths.addr}">주소 미입력</address>
+    </section>
+    <section class="infoAndcomments">
+        <div class="iac_wrapper">
+            <article class="detail_info">
+                <aside class="images">
+                    <figure class="viewer">
+                        <img
+                                th:src="@{|/ex_images/${walkingPaths.photosList[0].imgName}|}"/>
+                    </figure>
+
+                    <div class="img_list">
+                        <figcaption class="thumb" th:each=" wp : ${walkingPaths.photosList}">
+                            <img th:src="@{|/ex_images/${wp.imgName}|}">
+                        </figcaption>
                     </div>
                 </th:block>
                 </aside>
@@ -37,7 +72,7 @@
                         </a>
                     </div>
                 </div>
-            </div>
+            </article>
             <div class="comments_wrapper">
                 <div class="comments_content">
 <!--                    여기에 댓글이 들어감-->
@@ -215,6 +250,7 @@
         alert("댓글을 입력해주세요");
         return;
         }
+
         console.log(CommentsDTO);
         fetch("/comments/" + id, {
             method: "POST",
