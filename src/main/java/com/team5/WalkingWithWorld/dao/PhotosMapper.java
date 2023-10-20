@@ -16,8 +16,8 @@ public interface PhotosMapper {
     @Select("select id, reviews_id, walking_paths_id, img_name, img_path from photos where walking_paths_id = #{id} and reviews_id is null")
     List<PhotosDTO> readPhotos(int id);
 
-    @Insert("insert into photos (reviews_id,walking_paths_id, img_name, img_path) values (#{reviewsId},#{walkingPathsId}, #{imgName}, #{imgPath})")
+    @Insert("insert into photos (reviews_id, img_name, img_path) values (#{reviewsId}, #{imgName}, #{imgPath})")
     boolean addReviewPhotos(PhotosDTO photosDTO);
-    @Select("select id, reviews_id, walking_paths_id, img_name, img_path from photos where reviews_id = #{reviewsId}")
+    @Select("select id, reviews_id, img_name, img_path from photos where reviews_id = #{reviewsId}")
     List<PhotosDTO> readReviewPhotos(int reviewsId);
 }
