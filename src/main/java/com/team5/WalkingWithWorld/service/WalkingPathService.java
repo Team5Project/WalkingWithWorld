@@ -30,15 +30,16 @@ public class WalkingPathService {
         //산책로
         walkingPathsMapper.addWalkingPath(walkingPathsDTO);
         //지도
-        List<MapDTO> mapList = new ArrayList<>();
-        String[] courseSplit = course.split(",");
-        mapDTO.setWalkingPathsId(walkingPathsDTO.getId());
-        for(int i = 0; i < courseSplit.length; i += 2) {
-            mapDTO.setCoordinateX(courseSplit[i]);
-            mapDTO.setCoordinateY(courseSplit[i + 1]);
-            mapMapper.addMap(mapDTO);
+        if(!course.isEmpty()) {
+            List<MapDTO> mapList = new ArrayList<>();
+            String[] courseSplit = course.split(",");
+            mapDTO.setWalkingPathsId(walkingPathsDTO.getId());
+            for (int i = 0; i < courseSplit.length; i += 2) {
+                mapDTO.setCoordinateX(courseSplit[i]);
+                mapDTO.setCoordinateY(courseSplit[i + 1]);
+                mapMapper.addMap(mapDTO);
+            }
         }
-
         //산책로 이미지
         Map<String, String> filesName = fileUpload.upload(multipartFile);
 

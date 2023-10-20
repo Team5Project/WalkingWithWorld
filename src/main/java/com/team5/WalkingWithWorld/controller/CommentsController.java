@@ -5,6 +5,7 @@ import com.team5.WalkingWithWorld.domain.CommentsDTO;
 import com.team5.WalkingWithWorld.domain.UsersDto;
 import com.team5.WalkingWithWorld.global.Login;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +28,7 @@ public class CommentsController {
     }
 
     @PostMapping(value = "/comments/{walking-paths-id}",produces = "application/json; charset=utf-8")
-    public String writeComment(@RequestBody CommentsDTO dto,
+    public String writeComment(@RequestBody @Valid CommentsDTO dto,
                                @Login UsersDto usersDto,
                                @PathVariable("walking-paths-id") int id,
                                Model model,

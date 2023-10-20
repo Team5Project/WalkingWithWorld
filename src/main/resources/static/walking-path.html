@@ -2,237 +2,271 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>walking-path</title>
-    <link rel="stylesheet" href="/style/reset.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="/style/common.css">
-    <link rel="stylesheet" href="/style/waking_path.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>walking-path</title>
+  <link rel="stylesheet" href="/style/reset.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="/style/common.css">
+  <link rel="stylesheet" href="/style/waking_path.css">
 </head>
 
 <body>
-    <main>
-        <section>
-            <aside class="category">
-                <div class="cat_region">
-                    <h3>지역</h3>
-                    <div class="cat_region_list">
-                        <a href="">서울, 경기 +</a>
-                        <a href="">충청 +</a>
-                        <a href="">강원도 +</a>
-                        <a href="">전라 +</a>
-                        <a href="">경상 +</a>
-                        <a href="">제주특별자치도 +</a>
-                    </div>
-                </div>
-                <hr>
-                <div class="cat_time">
-                    <h3>산책 시간</h3>
-                    <div class="cat_time_range multi-range-slider">
-                        <p id="showtime"></p>
-                        <!-- 입력 받을 슬라이더 -->
-                        <input type="range" name="minTime" id="minTime" value="0" min="0" max="60" step="1"
-                            onchange="set()" />
-                        <input type="range" name="maxTime" id="maxTime" value="60" min="0" max="60" step="1"
-                            onchange="set()" />
-                        <!-- 양방향 슬라이더 보여주기 -->
-                        <div class="slider">
-                            <div class="track"></div>
-                            <div class="range"></div>
-                            <div class="thumb left"></div>
-                            <div class="thumb right"></div>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="cat_distance multi-range-slider">
-                    <h3>거리</h3>
-                    <div class="cat_distance_range">
-                        <p id="show-distance"></p>
-                        <!-- 입력 받을 슬라이더 -->
-                        <input type="range" name="minDistance" id="minDistance" value="0" min="0" max="200" step="1"
-                            onchange="setDistance()" />
-                        <input type="range" name="maxDistance" id="maxDistance" value="200" min="0" max="200" step="100"
-                            onchange="setDistance()" />
-                        <!-- 양방향 슬라이더 보여주기 -->
-                        <div class="distance-slider">
-                            <div class="track"></div>
-                            <div class="range"></div>
-                            <div class="thumb left"></div>
-                            <div class="thumb right"></div>
-                        </div>
-                    </div>
-                </div>
-            </aside>
-            <article>
-                <div class="path_list">
-                    <div class="path_wrapper">
-                        <figure class="path_img"><img src="/images/sample/1.jpg" alt=""></figure>
-                        <div class="path_content">
-                            <h4>청계산</h4>
-                            <address>종로구 청계천로 999-11, 서울</address>
-                            <p class="path_dtinfo">15Km | 50분 </p>
-                            <p class="rating">★★★★★</p>
-                        </div>
-                        <div class="count">
-                            <p>리뷰 8</p>
-                            <p>댓글 22</p>
-                        </div>
-                    </div>
-                    <div class="path_wrapper">
-                        <figure class="path_img"><img src="/images/sample/1.jpg" alt=""></figure>
-                        <div class="path_content">
-                            <h4>청계산</h4>
-                            <address>종로구 청계천로 999-11, 서울</address>
-                            <p class="path_dtinfo">15Km | 50분 </p>
-                            <p class="rating">★★★★★</p>
-                        </div>
-                        <div class="count">
-                            <p>리뷰 8</p>
-                            <p>댓글 22</p>
-                        </div>
-                    </div>
-                    <div class="path_wrapper">
-                        <figure class="path_img"><img src="/images/sample/1.jpg" alt=""></figure>
-                        <div class="path_content">
-                            <h4>청계산</h4>
-                            <address>종로구 청계천로 999-11, 서울</address>
-                            <p class="path_dtinfo">15Km | 50분 </p>
-                            <p class="rating">★★★★★</p>
-                        </div>
-                        <div class="count">
-                            <p>리뷰 8</p>
-                            <p>댓글 22</p>
-                        </div>
-                    </div>
-                    <div class="path_wrapper">
-                        <figure class="path_img"><img src="/images/sample/1.jpg" alt=""></figure>
-                        <div class="path_content">
-                            <h4>청계산</h4>
-                            <address>종로구 청계천로 999-11, 서울</address>
-                            <p class="path_dtinfo">15Km | 50분 </p>
-                            <p class="rating">★★★★★</p>
-                        </div>
-                        <div class="count">
-                            <p>리뷰 8</p>
-                            <p>댓글 22</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="path_ctrl">
-                    <p class="pagenation">&lt;&lt; &lt; 1 2 3 4 5 &gt; &gt;&gt;</p>
-                    <a href="" class="btn_path_submit">산책로 등록</a>
-                </div>
-            </article>
-        </section>
-    </main>
-    <script>
-        // 양방향 슬라이더
-        const minTime = document.getElementById("minTime");
-        const maxTime = document.getElementById("maxTime");
+  <main>
+    <section>
+      <aside class="category">
+        <div class="cat_location">
+          <h3>지역</h3>
+          <div class="cat_location_list">
+            <p>
+              <label for="radio_seoul" class="location_name">서울</label>
+              <input type="radio" name="location" value="서울" class="location_radio" id="radio_seoul">
+            </p>
+            <p>
+              <label for="radio_gangnam" class="location_name">강남구</label>
+              <input type="radio" name="location" value="강남구" class="location_radio" id="radio_gangnam">
+            </p>
+            <p>
+              <label for="radio_gangdong" class="location_name">강동구</label>
+              <input type="radio" name="location" value="강동구" class="location_radio" id="radio_gangdong">
+            </p>
+            <p>
+              <label for="radio_Gwanak" class="location_name">관악구</label>
+              <input type="radio" name="location" value="관악구" class="location_radio" id="radio_Gwanak">
+            </p>
+            <p>
+              <label for="radio_songpa" class="location_name">송파구</label>
+              <input type="radio" name="location" value="송파구" class="location_radio" id="radio_songpa">
+            </p>
+            <p>
+              <label for="radio_jongro" class="location_name">종로구</label>
+              <input type="radio" name="location" value="종로구" class="location_radio" id="radio_jongro">
+            </p>
+          </div>
+        </div>
+        <hr>
+        <div class="cat_time">
+          <h3>산책 시간</h3>
+          <div class="cat_time_range multi-range-slider">
+            <p id="showtime"></p>
+            <!-- 입력 받을 슬라이더 -->
+            <input type="range" name="minTime" id="minTime" value="0" min="0" max="600" step="10" onchange="set()" />
+            <input type="range" name="maxTime" id="maxTime" value="600" min="0" max="600" step="10" onchange="set()" />
+            <!-- 양방향 슬라이더 보여주기 -->
+            <div class="slider">
+              <div class="track"></div>
+              <div class="range"></div>
+              <div class="thumb left"></div>
+              <div class="thumb right"></div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="cat_distance">
+          <h3>거리</h3>
+          <div class="cat_distance_range multi-range-slider">
+            <p id="show-distance"></p>
+            <!-- 입력 받을 슬라이더 -->
+            <input type="range" name="minDistance" id="minDistance" value="0" min="0" max="20000" step="100"
+              onchange="setDistance()" />
+            <input type="range" name="maxDistance" id="maxDistance" value="20000" min="0" max="20000" step="100"
+              onchange="setDistance()" />
+            <!-- 양방향 슬라이더 보여주기 -->
+            <div class="distance-slider">
+              <div class="track"></div>
+              <div class="range"></div>
+              <div class="thumb left"></div>
+              <div class="thumb right"></div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <input class="btn_cat" type="submit" value="검색하기">
+      </aside>
+      <article>
+        <div class="path_list">
+          <div class="path_wrapper">
+            <figure class="path_img"><img src="/images/sample/1.jpg" alt=""></figure>
+            <div class="path_content">
+              <h4>청계산</h4>
+              <address>종로구 청계천로 999-11, 서울</address>
+              <p class="path_dtinfo">15Km | 50분 </p>
+              <p class="rating">★★★★★</p>
+            </div>
+            <div class="path_auth">
+              <p>산책마니아1</p>
+              <p>1999.02.02</p>
+            </div>
+          </div>
+          <div class="path_wrapper">
+            <figure class="path_img"><img src="/images/sample/1.jpg" alt=""></figure>
+            <div class="path_content">
+              <h4>청계산</h4>
+              <address>종로구 청계천로 999-11, 서울</address>
+              <p class="path_dtinfo">15Km | 50분 </p>
+              <p class="rating">★★★★★</p>
+            </div>
+            <div class="count">
+              <p>리뷰 8</p>
+              <p>댓글 22</p>
+            </div>
+          </div>
+          <div class="path_wrapper">
+            <figure class="path_img"><img src="/images/sample/1.jpg" alt=""></figure>
+            <div class="path_content">
+              <h4>청계산</h4>
+              <address>종로구 청계천로 999-11, 서울</address>
+              <p class="path_dtinfo">15Km | 50분 </p>
+              <p class="rating">★★★★★</p>
+            </div>
+            <div class="count">
+              <p>리뷰 8</p>
+              <p>댓글 22</p>
+            </div>
+          </div>
+          <div class="path_wrapper">
+            <figure class="path_img"><img src="/images/sample/1.jpg" alt=""></figure>
+            <div class="path_content">
+              <h4>청계산</h4>
+              <address>종로구 청계천로 999-11, 서울</address>
+              <p class="path_dtinfo">15Km | 50분 </p>
+              <p class="rating">★★★★★</p>
+            </div>
+            <div class="count">
+              <p>리뷰 8</p>
+              <p>댓글 22</p>
+            </div>
+          </div>
+        </div>
+        <div class="path_ctrl">
+          <p class="pagenation">&lt;&lt; &lt; 1 2 3 4 5 &gt; &gt;&gt;</p>
+          <a href="" class="btn_path_submit">산책로 등록</a>
+        </div>
+      </article>
+    </section>
+  </main>
+  <script>
+    // 양방향 슬라이더
+    const minTime = document.getElementById("minTime");
+    const maxTime = document.getElementById("maxTime");
 
-        set();
+    set();
 
-        function set() {
-            let minTimeValue = minTime.value;
-            let maxTimeValue = maxTime.value;
-            document.getElementById("showtime").innerText = "최소 " + Math.floor(minTimeValue / 60) + "시간" + minTimeValue % 60 + "분 ~ " + Math.floor(maxTimeValue / 60) + "시간" + maxTimeValue % 60 + "분";
-        };
+    function set() {
+      let minTimeValue = minTime.value;
+      let maxTimeValue = maxTime.value;
+      document.getElementById("showtime").innerText = "최소 " + Math.floor(minTimeValue / 60) + "시간" + minTimeValue % 60 + "분 ~ " + Math.floor(maxTimeValue / 60) + "시간" + maxTimeValue % 60 + "분";
+    };
 
-        const thumbLeft = document.querySelector(".slider > .thumb.left");
-        const thumbRight = document.querySelector(".slider > .thumb.right");
-        const range = document.querySelector(".slider > .range");
+    const thumbLeft = document.querySelector(".slider > .thumb.left");
+    const thumbRight = document.querySelector(".slider > .thumb.right");
+    const range = document.querySelector(".slider > .range");
 
-        const setMin = () => {
-            const _this = minTime;
-            const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
-            _this.value = Math.min(parseInt(_this.value), parseInt(maxTime.value) - 1);
-            const percent = ((_this.value - min) / (max - min)) * 100;
-            thumbLeft.style.left = percent + "%";
-            range.style.left = percent + "%";
-        };
-        const setMax = () => {
-            const _this = maxTime;
-            const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
-            _this.value = Math.max(parseInt(_this.value), parseInt(minTime.value) + 1);
-            const percent = ((_this.value - min) / (max - min)) * 100;
-            thumbRight.style.right = 100 - percent + "%";
-            range.style.right = 100 - percent + "%";
-        };
+    const setMin = () => {
+      const _this = minTime;
+      const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+      _this.value = Math.min(parseInt(_this.value), parseInt(maxTime.value) - 1);
+      const percent = ((_this.value - min) / (max - min)) * 100;
+      thumbLeft.style.left = percent + "%";
+      range.style.left = percent + "%";
+    };
+    const setMax = () => {
+      const _this = maxTime;
+      const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+      _this.value = Math.max(parseInt(_this.value), parseInt(minTime.value) + 1);
+      const percent = ((_this.value - min) / (max - min)) * 100;
+      thumbRight.style.right = 100 - percent + "%";
+      range.style.right = 100 - percent + "%";
+    };
 
-        minTime.addEventListener("input", setMin);
-        maxTime.addEventListener("input", setMax);
-        // 거리 슬라이더
-        const minDistance = document.getElementById("minDistance");
-        const maxDistance = document.getElementById("maxDistance");
+    minTime.addEventListener("input", setMin);
+    maxTime.addEventListener("input", setMax);
+    // 거리 슬라이더
+    const minDistance = document.getElementById("minDistance");
+    const maxDistance = document.getElementById("maxDistance");
 
-        setDistance();
+    setDistance();
 
-        function setDistance() {
-            let minDistanceValue = minDistance.value;
-            let maxDistanceValue = maxDistance.value;
-            document.getElementById("show-distance").innerText = "최소 " + minDistanceValue / 1000 + "Km ~ " + maxDistanceValue / 1000 + "Km";
-        };
+    function setDistance() {
+      let minDistanceValue = minDistance.value;
+      let maxDistanceValue = maxDistance.value;
+      document.getElementById("show-distance").innerText = "최소 " + minDistanceValue / 1000 + "Km ~ " + maxDistanceValue / 1000 + "Km";
+    };
 
-        const distanceThumbLeft = document.querySelector(".distance-slider > .thumb.left");
-        const distanceThumbRight = document.querySelector(".distance-slider > .thumb.right");
-        const distanceRange = document.querySelector(".distance-slider > .range");
+    const distanceThumbLeft = document.querySelector(".distance-slider > .thumb.left");
+    const distanceThumbRight = document.querySelector(".distance-slider > .thumb.right");
+    const distanceRange = document.querySelector(".distance-slider > .range");
 
-        const setMinDistance = () => {
-            const _this = minDistance;
-            const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
-            _this.value = Math.min(parseInt(_this.value), parseInt(maxDistance.value) - 1);
-            const percent = ((_this.value - min) / (max - min)) * 100;
-            distanceThumbLeft.style.left = percent + "%";
-            distanceRange.style.left = percent + "%";
-        };
-        const setMaxDistance = () => {
-            const _this = maxDistance;
-            const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
-            _this.value = Math.max(parseInt(_this.value), parseInt(minDistance.value) + 1);
-            const percent = ((_this.value - min) / (max - min)) * 100;
-            distanceThumbRight.style.right = 100 - percent + "%";
-            distanceRange.style.right = 100 - percent + "%";
-        };
+    const setMinDistance = () => {
+      const _this = minDistance;
+      const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+      _this.value = Math.min(parseInt(_this.value), parseInt(maxDistance.value) - 1);
+      const percent = ((_this.value - min) / (max - min)) * 100;
+      distanceThumbLeft.style.left = percent + "%";
+      distanceRange.style.left = percent + "%";
+    };
+    const setMaxDistance = () => {
+      const _this = maxDistance;
+      const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+      _this.value = Math.max(parseInt(_this.value), parseInt(minDistance.value) + 1);
+      const percent = ((_this.value - min) / (max - min)) * 100;
+      distanceThumbRight.style.right = 100 - percent + "%";
+      distanceRange.style.right = 100 - percent + "%";
+    };
 
-        minDistance.addEventListener("input", setMinDistance);
-        maxDistance.addEventListener("input", setMaxDistance);
-    </script>
+    minDistance.addEventListener("input", setMinDistance);
+    maxDistance.addEventListener("input", setMaxDistance);
 
+    /* ---------- 지역 고르기 radio ---------- */
 
+    let radios = document.querySelectorAll('.location_radio');
 
-
-
-    <script th:inline="javascript">
-        function searchWalkingPath(keyword) {
-            var SearchDTO = new Object();
-            SearchDTO.location = document.getElementById("location").value;
-            SearchDTO.minTime = document.getElementById("minTime").value;
-            SearchDTO.maxTime = document.getElementById("maxTime").value;
-            SearchDTO.minDistance = document.getElementById("minDistance").value;
-            SearchDTO.maxDistance = document.getElementById("maxDistance").value;
-            fetch("/walking-path/condition/" + keyword, {
-                method: "POST",
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify({
-                    location: SearchDTO.location,
-                    minTime: SearchDTO.minTime,
-                    maxTime: SearchDTO.maxTime,
-                    minDistance: SearchDTO.minDistance,
-                    maxDistance: SearchDTO.maxDistance
-                })
-            })
-                .then((response) => response.text())
-                .then((data) => {
-                    document.getElementById("walking-path").innerHTML = `${data}`;
-                });
+    radios.forEach(radio => {
+      radio.addEventListener("change", function () {
+        let names = document.querySelectorAll('.location_name');
+        names.forEach(name => {
+          name.style.color = '';
+          name.style.fontWeight = '';
+        });
+        if (radio.checked) {
+          let name = document.querySelector(`.location_name[for="${radio.id}"]`);
+          name.style.color = '#97bf04';
+          name.style.fontWeight = 'bold';
         }
-    </script>
+      })
+    })
+
+  </script>
+
+  <script th:inline="javascript">
+    function searchWalkingPath(keyword) {
+      var SearchDTO = new Object();
+      SearchDTO.location = document.getElementById("location").value;
+      SearchDTO.minTime = document.getElementById("minTime").value;
+      SearchDTO.maxTime = document.getElementById("maxTime").value;
+      SearchDTO.minDistance = document.getElementById("minDistance").value;
+      SearchDTO.maxDistance = document.getElementById("maxDistance").value;
+      fetch("/walking-path/condition/" + keyword, {
+        method: "POST",
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          location: SearchDTO.location,
+          minTime: SearchDTO.minTime,
+          maxTime: SearchDTO.maxTime,
+          minDistance: SearchDTO.minDistance,
+          maxDistance: SearchDTO.maxDistance
+        })
+      })
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("walking-path").innerHTML = `${data}`;
+        });
+    }
+  </script>
 </body>
 
 </html>
