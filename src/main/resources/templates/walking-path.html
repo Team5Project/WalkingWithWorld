@@ -19,32 +19,49 @@
     <section>
         <aside class="category">
             <div class="cat_location">
-                <h3>지역</h3>
-                <div class="cat_location_list" id="location">
-                    <p>
-                        <label for="radio_seoul" class="location_name">서울</label>
-                        <input type="radio" name="location" value="서울" class="location_radio" id="radio_seoul">
-                    </p>
-                    <p>
-                        <label for="radio_gangnam" class="location_name">강남구</label>
-                        <input type="radio" name="location" value="강남구" class="location_radio" id="radio_gangnam">
-                    </p>
-                    <p>
-                        <label for="radio_gangdong" class="location_name">강동구</label>
-                        <input type="radio" name="location" value="강동구" class="location_radio" id="radio_gangdong">
-                    </p>
-                    <p>
-                        <label for="radio_Gwanak" class="location_name">관악구</label>
-                        <input type="radio" name="location" value="관악구" class="location_radio" id="radio_Gwanak">
-                    </p>
-                    <p>
-                        <label for="radio_songpa" class="location_name">송파구</label>
-                        <input type="radio" name="location" value="송파구" class="location_radio" id="radio_songpa">
-                    </p>
-                    <p>
-                        <label for="radio_jongro" class="location_name">종로구</label>
-                        <input type="radio" name="location" value="종로구" class="location_radio" id="radio_jongro">
-                    </p>
+                <div class="cat_location">
+                    <h3>지역</h3>
+                    <div class="cat_location_list">
+                        <p id="location_check_all">
+                            <i class="check_all_i fa-solid fa-circle-check"></i>
+                            서울
+                        </p>
+                        <p>
+                            <input type="checkbox" name="location" value="강남구" class="location_check" id="radio_gangnam">
+                            <label for="radio_gangnam" class="location_name">
+                                <i class="fa-solid fa-circle-check"></i>
+                                강남구
+                            </label>
+                        </p>
+                        <p>
+                            <input type="checkbox" name="location" value="강동구" class="location_check" id="radio_gangdong">
+                            <label for="radio_gangdong" class="location_name">
+                                <i class="fa-solid fa-circle-check"></i>
+                                강동구
+                            </label>
+                        </p>
+                        <p>
+                            <input type="checkbox" name="location" value="관악구" class="location_check" id="radio_Gwanak">
+                            <label for="radio_Gwanak" class="location_name">
+                                <i class="fa-solid fa-circle-check"></i>
+                                관악구
+                            </label>
+                        </p>
+                        <p>
+                            <input type="checkbox" name="location" value="송파구" class="location_check" id="radio_songpa">
+                            <label for="radio_songpa" class="location_name">
+                                <i class="fa-solid fa-circle-check"></i>
+                                송파구
+                            </label>
+                        </p>
+                        <p>
+                            <input type="checkbox" name="location" value="종로구" class="location_check" id="radio_jongro">
+                            <label for="radio_jongro" class="location_name">
+                                <i class="fa-solid fa-circle-check"></i>
+                                종로구
+                            </label>
+                        </p>
+                    </div>
                 </div>
             </div>
             <hr class="cat_hr">
@@ -205,21 +222,57 @@
 
     minDistance.addEventListener("input", setMinDistance);
     maxDistance.addEventListener("input", setMaxDistance);
-    /* ---------- 지역 고르기 radio ---------- */
+    /* ---------- 지역 고르기 check ---------- */
 
-    let radios = document.querySelectorAll('.location_radio');
+    let checkBoxes = document.querySelectorAll('.location_check');
+    let iconAll = document.querySelector(".check_all_i");
+    let paraAll = document.querySelector("#location_check_all");
+    let switchAll = false;
 
-    radios.forEach(radio => {
-      radio.addEventListener("change", function () {
-        let names = document.querySelectorAll('.location_name');
-        names.forEach(name => {
-          name.style.color = '';
-          name.style.fontWeight = '';
+    paraAll.addEventListener("click", () => {
+      checkBoxes.forEach(box => {
+        if (switchAll == false) {
+          box.checked = false;
+          console.log(box.checked);
+          let checkIcon = document.querySelector(`.location_name[for="${box.id}"] i`);
+          checkIcon.style.color = '';
+        } else {
+          box.checked = true;
+          console.log(box.checked);
+          let checkIcon = document.querySelector(`.location_name[for="${box.id}"] i`);
+          checkIcon.style.color = '#97bf04';
+        }
+      })
+      if (switchAll == false) {
+        switchAll = true;
+        iconAll.style.color = '';
+      } else {
+        switchAll = false;
+        iconAll.style.color = '#97bf04';
+      }
+    })
+
+    checkBoxes.forEach(checkBox => {
+      checkBox.addEventListener("change", function () {
+        let checkAll = true;
+        checkBoxes.forEach(cb => {
+          if (!cb.checked) {
+            checkAll = false;
+            return;
+          }
         });
-        if (radio.checked) {
-          let name = document.querySelector(`.location_name[for="${radio.id}"]`);
-          name.style.color = '#97bf04';
-          name.style.fontWeight = 'bold';
+        if (checkAll == true) {
+          iconAll.style.color = '#97bf04';
+        } else {
+          iconAll.style.color = '';
+        }
+
+        if (checkBox.checked) {
+          let checkIcon = document.querySelector(`.location_name[for="${checkBox.id}"] i`);
+          checkIcon.style.color = '#97bf04';
+        } else {
+          let checkIcon = document.querySelector(`.location_name[for="${checkBox.id}"] i`);
+          checkIcon.style.color = '';
         }
       })
     })
