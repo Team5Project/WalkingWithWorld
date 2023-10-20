@@ -14,4 +14,7 @@ public class SearchDTO {
     private int minDistance;
     private int maxDistance;
     private String keyword;
+
+    private int pageNum;
+    private int pageSize;
 }
