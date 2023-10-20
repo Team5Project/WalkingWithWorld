@@ -5,41 +5,52 @@
     <title>Title</title>
 </head>
 <body>
+
+
+
 <div id="reviews" class="review_content" th:each="review:${reviewList}">
     <!--    여서부터!-->
-    <th:block th:if="${#lists.size(review.getPhotosList())>0}">
-    <aside class="images">
-        <figure class="viewer">
-            <img th:src="@{|/ex_images/${review.photosList[0].imgName}|}" src="/images/sample/1.jpg" alt="">
-        </figure>
-        <div class="img_list">
-            <figcaption class="thumb" th:each="photo : ${review.photosList}">
-                <img th:src="@{|/ex_images/${photo.imgName}|}" src="/images/sample/1.jpg" alt="">
-            </figcaption>
-        </div>
-    </aside>
-    </th:block>
-    <article class="review_main">
-        <div class="review_info">
-            <div class="detail_member">
-                <a href="" class="profile_image"></a>
-                <span class="name" th:text="${review.createdBy}">작성자명</span>
-                <span class="date" th:text="${review.createdAt}">작성일시</span>
+        <th:block th:if="${#lists.size(review.getPhotosList())>0}">
+        <aside class="images">
+            <figure class="viewer">
+                <img th:src="@{|/ex_images/${review.photosList[0].imgName}|}" src="/images/sample/1.jpg" alt="">
+            </figure>
+            <div class="img_list">
+                <figcaption class="thumb" th:each="photo : ${review.photosList}">
+                    <img th:src="@{|/ex_images/${photo.imgName}|}" src="/images/sample/1.jpg" alt="">
+                </figcaption>
             </div>
-            <th:block th:if="${session.auth!=null && session.auth.getName()== review.createdBy}">
-                <div class="up_del">
-                    <span class="info_modi">수정</span>
-                    <span class="info_del">삭제</span>
+        </aside>
+        </th:block>
+        <th:block th:unless="${#lists.size(review.getPhotosList())>0}">
+            <aside class="images">
+                <figure class="viewer">
+                    <img th:src="@{/images/noimage.png}" src="/images/sample/1.jpg" alt="">
+                </figure>
+            </aside>
+        </th:block>
+        <article class="review_main">
+            <div class="review_info">
+                <div class="detail_member">
+                    <a href="" class="profile_image"></a>
+                    <span class="name" th:text="${review.createdBy}">작성자명</span>
+                    <span class="date" th:text="${review.createdAt}">작성일시</span>
                 </div>
-            </th:block>
-        </div>
-        <hr>
-        <div class="review_text">
-            <p th:text="${review.content}">
-                본문
-            </p>
-        </div>
-    </article>
+                <th:block th:if="${session.auth!=null && session.auth.getName()== review.createdBy}">
+                    <div class="up_del">
+                        <span class="info_modi">수정</span>
+                        <span class="info_del">삭제</span>
+                    </div>
+                </th:block>
+            </div>
+            <hr>
+            <div class="review_text">
+                <p th:text="${review.content}">
+                    본문
+                </p>
+            </div>
+        </article>
+
 </div>
 <script>
     let imgRoot = document.querySelectorAll(".images")

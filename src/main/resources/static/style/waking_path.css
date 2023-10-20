@@ -4,7 +4,7 @@ section {
     padding: 70px;
 }
 
-hr {
+.cat_hr {
     margin: 30px 0;
 }
 
@@ -15,7 +15,7 @@ hr {
     border-radius: 20px;
 }
 
-.cat_region_list {
+.cat_location_list {
     padding-left: 20px;
     display: flex;
     flex-direction: column;
@@ -23,9 +23,23 @@ hr {
     line-height: 2;
 }
 
-.cat_region_list a {
+.cat_location_list a {
     color: #000;
 }
+
+label {
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked+label {
+    background-color: #ffcc00;
+    color: #3700ff;
+}
+
 
 /* ----- 리스트 스타일 ----- */
 
@@ -42,8 +56,20 @@ hr {
     margin-bottom: 30px;
 }
 
-.count {
+.path_list {
+    width: 1000px;
+}
+
+.path_auth {
     justify-self: end;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    line-height: 1.5;
+}
+
+.path_auth p:nth-child(2) {
+    font-size: 12px;
 }
 
 .path_img {
@@ -60,7 +86,10 @@ hr {
     height: 100%;
 }
 
-
+.path_title {
+    font-size: 24px;
+    color: #000;
+}
 
 .path_ctrl {
     display: grid;
@@ -102,7 +131,7 @@ hr {
     top: 0;
     bottom: 0;
     border-radius: 5px;
-    background-color: #c6aee7;
+    background-color: #d4d9d4;
 }
 
 .slider>.range {
@@ -113,7 +142,7 @@ hr {
     top: 0;
     bottom: 0;
     border-radius: 5px;
-    background-color: #6200ee;
+    background-color: #b0d4b0;
 }
 
 .slider>.thumb {
@@ -121,7 +150,7 @@ hr {
     z-index: 3;
     width: 30px;
     height: 30px;
-    background-color: #6200ee;
+    background-color: #558C03;
     border-radius: 50%;
 }
 
@@ -142,15 +171,15 @@ input[type="range"] {
     -webkit-appearance: none;
     z-index: 2;
     height: 10px;
-    width: 100%;
+    width: 220px;
     opacity: 0;
 }
 
 input[type="range"]::-webkit-slider-thumb {
     /* 겹쳐진 두 thumb를 모두 활성화 */
     pointer-events: all;
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
     border-radius: 0;
     border: 0 none;
     background-color: red;
@@ -174,7 +203,7 @@ input[type="range"]::-webkit-slider-thumb {
     top: 0;
     bottom: 0;
     border-radius: 5px;
-    background-color: #c6aee7;
+    background-color: #d4d9d4;
 }
 
 .distance-slider>.range {
@@ -185,7 +214,7 @@ input[type="range"]::-webkit-slider-thumb {
     top: 0;
     bottom: 0;
     border-radius: 5px;
-    background-color: #6200ee;
+    background-color: #b0d4b0;
 }
 
 .distance-slider>.thumb {
@@ -193,7 +222,7 @@ input[type="range"]::-webkit-slider-thumb {
     z-index: 3;
     width: 30px;
     height: 30px;
-    background-color: #6200ee;
+    background-color: #558C03;
     border-radius: 50%;
 }
 
@@ -209,5 +238,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 #show-distance,
 #showtime {
+    margin-top: 15px;
     margin-bottom: 30px;
+    font-size: 14px;
 }
