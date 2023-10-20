@@ -185,6 +185,33 @@
             });
     }
 
+    //프래그먼트 요소지만 현재 html 에 있으므로 여기에 구현
+    /*<![CDATA[*/
+    function deleteComment(id){
+
+        const CommentsDTO = {};
+        CommentsDTO.id = id;
+        CommentsDTO.walkingPathsId = [[${walkingPaths.getId()}]]
+        console.log(CommentsDTO);
+        fetch("/comments/delete", {
+            method: "POST",
+            headers:{
+                'content-type':'application/json'
+            },
+            body : JSON.stringify({
+                id : CommentsDTO.id,
+                walkingPathsId : CommentsDTO.walkingPathsId
+            })
+        })
+            .then((response) => response.text())
+            .then((data) => {
+                document.getElementById("comment_content").value = "";
+                document.getElementById("comments").innerHTML = `${data}`;
+            });
+    }
+
+    /*]]>*/
+
     window.addEventListener('onload', getReviewList());
     window.addEventListener('onload', getCommentList());
 </script>
