@@ -4,13 +4,13 @@
             width: 1000px;
         }
         h1 {
-            margin-left: 50px;
+            margin-left: 10px;
             margin-bottom: 10px;
             font-size: 24px;
-            color: #97BF04;
+            font-weight: bold;
         }
         #input-items {
-            border: 1px solid #97BF04;
+            border: 1px solid #D4D9B4;
             border-radius: 10px;
             margin: 10px;
         }
@@ -101,7 +101,7 @@
         #right-form > label {
             float: left;
             width: 48%;
-            margin: 5px 10px 10px 10px;
+            margin: 10px 10px 10px 10px;
         }
         #clear {
             clear: left;
