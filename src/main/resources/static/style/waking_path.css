@@ -31,14 +31,14 @@ label {
     cursor: pointer;
 }
 
-input[type="radio"] {
+.fa-circle-check {
+    color: #d4d9d4
+}
+
+input[type="checkbox"] {
     display: none;
 }
 
-input[type="radio"]:checked+label {
-    background-color: #ffcc00;
-    color: #3700ff;
-}
 
 
 /* ----- 리스트 스타일 ----- */
