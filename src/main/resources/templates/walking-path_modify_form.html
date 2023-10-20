@@ -3,50 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <title>walking-path 입력폼</title>
+    <link rel="stylesheet" href="/style/common.css">
+    <link rel="stylesheet" href="/style/walking_path_write_form.css">
 </head>
 <body>
-<form method="post" action="/walking-path/modify" enctype="multipart/form-data">
-    <label>제목 : <input type="text" name="title" id="title" placeholder="제목"></label><br>
-    <label>주소 :
-        <input type="text" name="addr" id="address" placeholder="주소"><br>
-        <input type="button" onclick="searchAddr()" value="주소 찾기">
-        <input type="hidden" th:name="id" th:value="${walkingPath.id}">
-    </label><br>
+<header th:replace="fragments/header :: header"></header>
+<form method="post" action="/walking-path/modify" id="write-form" enctype="multipart/form-data">
+    <div id="input-items">
+        <div id="left-form">
+            <label>산책로 이름<br><input type="text" class="text-box" id="title" name="title" placeholder="제목" required></label><br>
+            <label>주소
+                <input type="button" class="button" onclick="searchAddr()" value="주소 찾기"><br>
+                <input type="text" name="addr" class="text-box" id="address" placeholder="주소" required><br>
+                <input type="hidden" th:name="id" th:value="${walkingPath.id}">
+            </label><br>
+        </div>
+        <div id="right-form">
+            <label>산책 경로
+                <div class="map_wrap">
+                    <div class="readMap" id="map"></div>
+                </div>
+            </label>
+        </div>
+        <div id="clear"></div>
+    </div>
+    <div id="buttons">
+        <input type="submit" class="submit-button" value="수정하기">
+        <a th:href="${referer}">&nbsp; 뒤로가기 &nbsp;</a>
+    </div>
+</form>
+<footer th:replace="fragments/header :: footer"></footer>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    function searchAddr() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script>
-        function searchAddr() {
-            new daum.Postcode({
-                oncomplete: function(data) {
-                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
 
-                    // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-                    var addr = ''; // 주소 변수
-
-                    //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-                        addr = data.roadAddress;
-                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
-                        addr = data.jibunAddress;
-                    }
-
-                    // 주소 정보를 해당 필드에 넣는다.
-                    document.getElementById("address").value = addr;
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
                 }
-            }).open();
+
+                // 주소 정보를 해당 필드에 넣는다.
+                document.getElementById("address").value = addr;
+            }
+        }).open();
+    }
+</script>
+<script th:inline="javascript">
+    titleDom = document.getElementById("title");
+    addrDom = document.getElementById("address");
+
+    titleDom.value = [[${walkingPath.title}]];
+    addrDom.value = [[${walkingPath.addr}]];
+</script>
+<!--맵 API-->
+<script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d753200077e444dd40df1e458903dfd3"></script>
+<th:block th:unless="${#lists.size(walkingPath.mapList) > 0}">
+    <script th:inline="javascript">
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+            mapOption = {
+                center: new kakao.maps.LatLng(37.541, 126.986), // 지도의 중심좌표
+                level: 6 // 지도의 확대 레벨
+            };
+        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+    </script>
+</th:block>
+<th:block th:if="${#lists.size(walkingPath.mapList) > 0}">
+    <script th:inline="javascript">
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+            mapOption = {
+                center: new kakao.maps.LatLng([[${walkingPath.mapList.get(0).coordinateY}]], [[${walkingPath.mapList.get(0).coordinateX}]]), // 지도의 중심좌표
+                level: 6 // 지도의 확대 레벨
+            };
+        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+        // 지도를 클릭하면 선 그리기가 시작됩니다 그려진 선이 있으면 지우고 다시 그립니다
+        window.onload = function (mouseEvent) {
+            var input = [[${walkingPath.mapList}]];
+
+            // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
+            var linePath = [];
+            input.forEach(function (map) {
+                linePath.push(new kakao.maps.LatLng(map["coordinateY"], map["coordinateX"]));
+            });
+
+            // 지도에 표시할 선을 생성합니다
+            var polyline = new kakao.maps.Polyline({
+                path: linePath, // 선을 구성하는 좌표배열 입니다
+                strokeWeight: 5, // 선의 두께 입니다
+                strokeColor: '#FFAE00', // 선의 색깔입니다
+                strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                strokeStyle: 'solid' // 선의 스타일입니다
+            });
+
+            // 지도에 선을 표시합니다
+            polyline.setMap(map);
         }
     </script>
-    <script th:inline="javascript">
-        titleDom = document.getElementById("title");
-        addrDom = document.getElementById("address");
-
-        titleDom.value = [[${walkingPath.title}]];
-        addrDom.value = [[${walkingPath.addr}]];
-    </script>
-
-    <input type="submit" value="수정하기">
-    <a th:href="${referer}">뒤로가기</a>
-</form>
+</th:block>
 </body>
 </html>

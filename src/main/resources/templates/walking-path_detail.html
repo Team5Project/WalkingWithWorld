@@ -19,8 +19,9 @@
             <h2 th:text="${walkingPaths.title}">타이틀 미입력</h2>
             <th:block th:if="${session.auth !=null && session.auth.getName()==walkingPaths.getCreatedBy()}">
                 <div class="up_del">
-                    <span class="info_modi">수정</span>
-                    <span class="info_del">삭제</span>
+                    <a th:href="|/walking-path/modify/${walkingPaths.id}|"><span class="info_modi">수정</span></a>
+                    <span th:onclick="|deleteWalkingPath(${walkingPaths.id})|"
+                          class="info_del">삭제</span>
                 </div>
             </th:block>
         </div>
@@ -130,7 +131,6 @@
             };
         var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
     </script>
-    >
 </th:block>
 <th:block th:if="${walkingPaths.mapList}">
     <script th:inline="javascript">
@@ -165,7 +165,25 @@
         }
     </script>
 </th:block>
-    <script th:inline="javascript">
+<script th:inline="javascript">
+
+    function deleteWalkingPath(id) {
+        var answer;
+        var path = "/walking-path/delete/"+id;
+        answer = confirm("게시글을 삭제하시겠습니까?");
+        if(answer == true) {
+            fetch(path, {
+                method: "GET",
+            })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+            });
+        }
+    }
+
         /*<![CDATA[*/
         function getReviewList() {
             var walkingPathId = [[${walkingPaths.getId()}]];
@@ -249,21 +267,21 @@
 
         window.addEventListener('onload', getReviewList());
         window.addEventListener('onload', getCommentList());
-    </script>
-    <script>
-        let imgRoot = document.querySelectorAll(".images")
-        console.log(imgRoot);
-        imgRoot.forEach(function (ir) {
-            let imgList = ir.querySelectorAll(".img_list img");
+</script>
+<script>
+    let imgRoot = document.querySelectorAll(".images")
+    console.log(imgRoot);
+    imgRoot.forEach(function (ir) {
+        let imgList = ir.querySelectorAll(".img_list img");
 
-            imgList.forEach(function (img) {
-                img.addEventListener("click", (e) => {
-                    ir.querySelector(".viewer img").src = img.src;
-                });
+        imgList.forEach(function (img) {
+            img.addEventListener("click", (e) => {
+                ir.querySelector(".viewer img").src = img.src;
             });
         });
+    });
 
-    </script>
+</script>
 
 </body>
 </html>

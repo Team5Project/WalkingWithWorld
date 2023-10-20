@@ -83,6 +83,8 @@ public class WalkingPathsController {
             dto.setMapList(mapDao.ReadMap(dto.getId()));
         }
         model.addAttribute("walkingPathList", walkingPathMapList);
+        model.addAttribute("keyword", searchWord);
+
         return "walking-path_list :: #walking-path-list";
     }
 
@@ -111,7 +113,9 @@ public class WalkingPathsController {
     public ModelAndView goToModify(@PathVariable("walking-path-id") int walkingPathId, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         mav.addObject("referer", request.getHeader("referer"));
-        mav.addObject("walkingPath", dao.readWalkingPath(walkingPathId));
+        WalkingPathsMapDTO walkingPathsMapDTO = dao.readWalkingPath(walkingPathId);
+        walkingPathsMapDTO.setMapList(mapDao.ReadMap(walkingPathsMapDTO.getId()));
+        mav.addObject("walkingPath", walkingPathsMapDTO);
         mav.setViewName("walking-path_modify_form");
         return mav;
     }
@@ -152,9 +156,10 @@ public class WalkingPathsController {
         return photoDao.readPhotos(id);
     }
     @GetMapping("/walking-path/delete/{walking-path-id}")
-    public String deleteWalkingPathById(@PathVariable("walking-path-id") int id) {
-        int result = dao.deleteWalkingPath(id);
-        System.out.println(result);
+    public String deleteWalkingPathById(@PathVariable("walking-path-id") String id) {
+        System.out.println(id + "들어온다.");
+        int result = dao.deleteWalkingPath(Integer.parseInt(id));
+        System.out.println("게시글 삭제 : " + result);
         return "redirect:/walking-path";
     }
 }

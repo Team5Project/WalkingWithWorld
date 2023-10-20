@@ -53,7 +53,7 @@ public interface WalkingPathsMapper {
     @Update("update walking_paths set title = #{title}, addr = #{addr}, modified_at = now(), modified_by = #{modifiedBy} where id = #{id}")
     int updateWalkingPath(WalkingPathsDTO dto);
 
-    @Delete("delete from walking_paths where id = #{walkingPathId}")
+    @Delete("delete from walking_paths where id = #{WalkingPathId}")
     int deleteWalkingPath(int WalkingPathId);
 
     //@Select("select id,title,addr,created_at,created_by from walking_paths where users_id=#{userId}")
