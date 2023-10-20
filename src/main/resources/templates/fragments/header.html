@@ -2,8 +2,7 @@
     <a th:href="@{/}" style="text-decoration: none"><h1 class="logo"></h1></a>
     <nav>
         <a href="" th:href="@{/walking-path}">산책로</a>
-        <a href="#" style="color: rgb(128,128,128)">커뮤니티</a>
-        <a href="#" style="color:rgb(128,128,128)">리뷰</a>
+        <a href="#">방명록</a>
     </nav>
     <th:block th:if="${session.auth != null}">
         <div class="member">

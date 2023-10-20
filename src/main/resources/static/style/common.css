@@ -40,7 +40,7 @@ header {
 }
 
 .logo {
-    display: inline-block;
+    justify-self: start;
     background-image: url(/images/logo.png);
     background-size: cover;
     width: 124px;
@@ -217,9 +217,15 @@ footer {
     font-size: 20px;
 }
 
-.path_ctrl {
-    display: flex;
-    align-items: center;
+.btn_wp_return {
+    display: block;
+    border-radius: 25px;
+    width: 120px;
+    line-height: 40px;
+    text-align: center;
+    background-color: #d4d9b4;
+    color: #000;
+    font-size: 20px;
 }
 
 .btn_search {
@@ -244,4 +250,16 @@ footer {
     color: #fff;
     margin: 10px 30px;
     font-size: 24px;
+}
+
+.btn_cat {
+    display: block;
+    width: 200px;
+    line-height: 40px;
+    text-align: center;
+    background-color: #97bf04;
+    color: #fff;
+    margin: 0 auto;
+    font-size: 20px;
+    border-radius: 10px;
 }
