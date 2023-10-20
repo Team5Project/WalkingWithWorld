@@ -34,7 +34,7 @@ public interface CommentsMapper {
 
     //글쓰기
     @Insert("insert into comments (users_id, walking_paths_id,content ,created_at) " +
-            "values (#{users_id}, #{walking_paths_id}, #{content}, NOW())")
+            "values (#{users_id}, #{walkingPathsId}, #{content}, NOW())")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     public boolean write(CommentsDTO comments);
 
@@ -48,5 +48,5 @@ public interface CommentsMapper {
 
     //삭제하기
     @Delete("DELETE FROM comments WHERE id = ${id}")
-    public boolean delete(String id);
+    public boolean delete(int id);
 }

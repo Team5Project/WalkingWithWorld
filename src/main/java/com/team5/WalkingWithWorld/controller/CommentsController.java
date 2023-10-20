@@ -36,7 +36,7 @@ public class CommentsController {
         String ref = request.getHeader("Referer");
 
         dto.setUsers_id(usersDto.getId());
-        dto.setWalking_paths_id(id);
+        dto.setWalkingPathsId(id);
         dao.write(dto);
 
         List<CommentsDTO> list = dao.getCommentById(id);
@@ -59,13 +59,19 @@ public class CommentsController {
         return mav;
     }
 
-    @RequestMapping("/comments/delete")
-    public ModelAndView delete(String id) {
-        boolean result = dao.delete(id);
-        ModelAndView mav = new ModelAndView();
-//        mav.addObject("list", dao.list(id));
-        mav.setViewName("redirect:/comment");
-        return mav;
-    }
+    @PostMapping(value = "/comments/delete", produces = "application/json; charset=utf-8")
+    public String delete(@RequestBody CommentsDTO dto,
+                         Model model) {
 
+        boolean result = dao.delete(dto.getId());
+
+        System.out.println(dto.getId());
+        System.out.println(dto.getWalkingPathsId());
+
+        List<CommentsDTO> list = dao.getCommentById(dto.getWalkingPathsId());
+        model.addAttribute("commentList", list);
+
+        return "comments :: #comments";
+
+    }
 }
