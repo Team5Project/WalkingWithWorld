@@ -1,5 +1,6 @@
 package com.team5.WalkingWithWorld.controller;
 
+import com.github.pagehelper.PageHelper;
 import com.team5.WalkingWithWorld.dao.MapMapper;
 import com.team5.WalkingWithWorld.dao.PhotosMapper;
 import com.team5.WalkingWithWorld.dao.WalkingPathsMapper;
@@ -26,6 +27,21 @@ public class WalkingPathsController {
     MapMapper mapDao;
     @Autowired
     WalkingPathService walkingPathService;
+
+    //페이징 확인
+    @GetMapping("/walking-paths-test")
+    @ResponseBody
+    public List<WalkingPathsMapDTO> getPagingWalkingPathList(
+            SearchDTO dto,
+            @RequestParam(required = false) int pageNum,
+            @RequestParam(required = false) int size){
+        PageInfo page = new PageInfo(pageNum, size);
+
+        PageHelper.startPage(dto);
+        com.github.pagehelper.PageInfo.of(walkingPathService.getList(dto));
+
+        return walkingPathService.getList(dto);
+    }
 
     // 전체 리스트
     @GetMapping("/walking-path")
