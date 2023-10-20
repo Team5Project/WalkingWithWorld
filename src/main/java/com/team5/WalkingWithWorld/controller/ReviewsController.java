@@ -57,12 +57,18 @@ public class ReviewsController {
                                 ) {
 
         List<ReviewsDTO> list = dao.reviewListById(id);
+        WalkingPathsMapDTO walkingPaths = walkingPathService.readWalkingPathById(id);
 
         for(ReviewsDTO dto:list){
             dto.setPhotosList(photoDao.readReviewPhotos(dto.getId()));
         }
-
+        model.addAttribute("walkingPaths", walkingPaths);
         model.addAttribute("reviewList", list);
+
+        if(list.isEmpty()){
+            return "reviews ::#static_reviews";
+        }
+
 
         return "reviews :: #reviews";
     }
