@@ -57,6 +57,8 @@
                         <figure class="viewer">
                             <img th:if="${walkingPaths.photosList}"
                                 th:src="@{|/ex_images/${walkingPaths.photosList[0].imgName}|}" />
+                            <img th:unless="${walkingPaths.photosList}"
+                                 th:src="@{/images/noimage.png}" />
                         </figure>
 
                         <div class="img_list">
@@ -72,7 +74,7 @@
                             리뷰를 남겨주세요!
                         </p>
                         <div>
-                            <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}">
+                            <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}" class="btn_write_big">
                                 리뷰작성
                             </a>
                         </div>
@@ -105,6 +107,13 @@
             <div class="review_container">
                 <i class="rv-chav left fa-solid fa-circle-chevron-left"></i>
                 <i class="rv-chav right fa-solid fa-circle-chevron-right"></i>
+                <div class="review_none">
+                    <p>아직 리뷰가 작성되지 않았습니다.</p>
+                    <p>첫 리뷰를 작성해 주세요!</p>
+                    <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}" class="btn_write_big">
+                        리뷰작성
+                    </a>
+                </div>
             </div>
         </section>
     </main>

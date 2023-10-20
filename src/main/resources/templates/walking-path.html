@@ -87,39 +87,40 @@
             <input class="btn_cat" input type="button" th:data-word="${keyword}" th:onclick="searchWalkingPath(this.getAttribute('data-word'))" value="검색하기">
         </aside>
         <article id="walking-path">
-            <div class="path_list" th:each="walkingPath:${walkingPathList}">
-                <div class="path_wrapper">
-                    <a class="path_img" th:href="@{|/walking-path/${walkingPath.getId()}|}">
-                        <img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}" th:src="@{|/ex_images/${walkingPath.getPhotosList().get(0).getImgName()}|}" alt="">
-                    </a>
-                    <div class="path_content">
-                        <a th:text="${walkingPath.title}" th:href="@{|/walking-path/${walkingPath.getId()}|}"  class="path_title">제목</a>
-                        <address th:text="${walkingPath.addr}">주소</address>
-                        <p class="path_dtinfo" th:if="${#lists.size(walkingPath.mapList) > 0}">
-                            <th:block th:if="${walkingPath.mapList.get(0).distance > 1000}">
-                                <b th:text="${#numbers.formatDecimal(walkingPath.mapList.get(0).distance/1000,2,2)}">10</b> Km
-                            </th:block>
-                            <th:block th:unless="${walkingPath.mapList.get(0).distance > 1000}">
-                                <b th:text="${walkingPath.mapList.get(0).distance}">10</b> Km
-                            </th:block>
-                            |
-<!--                            <th:block th:if="${walkingPath.mapList.get(0).time > 60}">-->
-<!--                                <b th:text="${walkingPath.mapList.get(0).time / 60">10</b> 시간-->
-<!--                                <b th:text="${walkingPaths.mapList().get(0).time % 60}"></b> 분-->
-<!--                            </th:block>-->
-                            <th:block th:unless="${walkingPath.mapList.get(0).time > 60}">
-                                <b th:text="${walkingPath.mapList.get(0).time}">10</b> 시간
-                            </th:block>
-                        </p>
-                        <p class="rating">★★★★★</p>
-                    </div>
-                    <div class="path_auth">
-                        <p th:text="${walkingPath.createdBy}">작성자</p>
-                        <p th:text="${walkingPath.createdAt}">날짜</p>
+            <div id="walking-path_wrapper">
+                <div class="path_list" th:each="walkingPath:${walkingPathList}">
+                    <div class="path_wrapper">
+                        <a class="path_img" th:href="@{|/walking-path/${walkingPath.getId()}|}">
+                            <img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}" th:src="@{|/ex_images/${walkingPath.getPhotosList().get(0).getImgName()}|}" alt="">
+                            <img th:unless="${#lists.size(walkingPath.getPhotosList()) > 0}" th:src="@{/images/noimage.png}" alt="">
+                        </a>
+                        <div class="path_content">
+                            <a th:text="${walkingPath.title}" th:href="@{|/walking-path/${walkingPath.getId()}|}"  class="path_title">제목</a>
+                            <address th:text="${walkingPath.addr}">주소</address>
+                            <p class="path_dtinfo" th:if="${#lists.size(walkingPath.mapList) > 0}">
+                                <th:block th:if="${walkingPath.mapList.get(0).distance > 1000}">
+                                    <b th:text="${#numbers.formatDecimal(walkingPath.mapList.get(0).distance/1000,2,2)}">10</b> Km
+                                </th:block>
+                                <th:block th:unless="${walkingPath.mapList.get(0).distance > 1000}">
+                                    <b th:text="${walkingPath.mapList.get(0).distance}">10</b> Km
+                                </th:block>
+                                |
+                                <th:block th:if="${walkingPath.mapList.get(0).time > 60}">
+                                    <b th:text="${walkingPath.mapList.get(0).time / 60}">10</b> 시간
+                                    <b th:text="${walkingPath.mapList.get(0).time % 60}"></b> 분
+                                </th:block>
+                                <th:block th:unless="${walkingPath.mapList.get(0).time > 60}">
+                                    <b th:text="${walkingPath.mapList.get(0).time}">10</b> 시간
+                                </th:block>
+                            </p>
+                            <p class="rating">★★★★★</p>
+                        </div>
+                        <div class="path_auth">
+                            <p th:text="${walkingPath.createdBy}">작성자</p>
+                            <p th:text="${walkingPath.createdAt}">날짜</p>
+                        </div>
                     </div>
                 </div>
-
-
             </div>
             <div class="path_ctrl">
                 <p class="pagenation">&lt;&lt; &lt; 1 2 3 4 5 &gt; &gt;&gt;</p>
@@ -131,56 +132,6 @@
 </main>
 <footer th:replace="fragments/header :: footer"></footer>
 
-<!--////////////////원본 소스////////////////////-->
-
-<div>
-<!--    <select name="location" id="location">-->
-<!--        <option value="서울">서울</option>-->
-<!--        <option value="강남">강남구</option>-->
-<!--        <option value="강동">강동구</option>-->
-<!--        <option value="관악">관악구</option>-->
-<!--        <option value="송파">송파구</option>-->
-<!--        <option value="종로"></option>-->
-<!--    </select><br>-->
-<!--    <label>시간 :-->
-<!--        <div class="multi-range-slider">-->
-<!--            <p id="showtime"></p>-->
-<!--            &lt;!&ndash; 입력 받을 슬라이더 &ndash;&gt;-->
-<!--            <input type="range" name="minTime" id="minTime" value="0" min="0" max="600" step="10" onchange="set()"/>-->
-<!--            <input type="range" name="maxTime" id="maxTime" value="600" min="0" max="600" step="10" onchange="set()"/>-->
-<!--            &lt;!&ndash; 양방향 슬라이더 보여주기 &ndash;&gt;-->
-<!--            <div class="slider">-->
-<!--                <div class="track"></div>-->
-<!--                <div class="range"></div>-->
-<!--                <div class="thumb left"></div>-->
-<!--                <div class="thumb right"></div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </label><br>-->
-<!--    <label>거리 :-->
-<!--        <div class="multi-range-slider">-->
-<!--            <p id="show-distance"></p>-->
-<!--            &lt;!&ndash; 입력 받을 슬라이더 &ndash;&gt;-->
-<!--            <input type="range" name="minDistance" id="minDistance" value="0" min="0" max="20000" step="100" onchange="setDistance()"/>-->
-<!--            <input type="range" name="maxDistance" id="maxDistance" value="20000" min="0" max="20000" step="100" onchange="setDistance()"/>-->
-<!--            &lt;!&ndash; 양방향 슬라이더 보여주기 &ndash;&gt;-->
-<!--            <div class="distance-slider">-->
-<!--                <div class="track"></div>-->
-<!--                <div class="range"></div>-->
-<!--                <div class="thumb left"></div>-->
-<!--                <div class="thumb right"></div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </label><br>-->
-</div>
-<p th:if="${keyword}" th:text="|'${keyword}' 검색 결과|"></p>
-<!--<div id="walking-path">-->
-    <ul th:each="walkingPath:${walkingPathList}">
-        <img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}" th:src="@{|/ex_images/${walkingPath.getPhotosList().get(0).getImgName()}|}" style='width:200px;'/>
-        <a th:href="@{|/walking-path/${walkingPath.getId()}|}" th:text="${walkingPath}"></a>
-    </ul>
-</div>
-<hr>
 <script>
     // 양방향 슬라이더
     const minTime = document.getElementById("minTime");

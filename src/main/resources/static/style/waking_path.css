@@ -56,6 +56,10 @@ input[type="radio"]:checked+label {
     margin-bottom: 30px;
 }
 
+.path_list {
+    width: 1000px;
+}
+
 .path_auth {
     justify-self: end;
     display: flex;
