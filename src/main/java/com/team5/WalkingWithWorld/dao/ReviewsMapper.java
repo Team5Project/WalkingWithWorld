@@ -11,7 +11,7 @@ public interface ReviewsMapper {
     public List<ReviewsDTO> reviewlist();
 
     @Select("select * from reviews where walking_paths_id = #{id}")
-    public List<ReviewsDTO> reviewListById(int id);
+    public List<ReviewsDTO> reviewListByWalkingPathsId(int id);
 
     @Insert("insert into reviews(users_id,walking_paths_id,content,created_at,created_by,modified_at,modified_by) " +
             "values (#{usersId},#{walkingPathsId},#{content},now(),#{createdBy},#{modifiedAt},#{modifiedBy})")
