@@ -19,7 +19,7 @@ public class LoginCheckFilter implements Filter {
             "/walking-path/*", "/reviews","/reviews/list/*", "/comments","/comments/list/*", "/images/*", "/ex_images/*", "/style/**", "/js/**",
 
             "/images/**", "/visitor/delete","/visitorslist", "/visitorslist/**", "/insertVisitors", "/insertVisitorsForm"};
-    
+
 
 
     @Override
