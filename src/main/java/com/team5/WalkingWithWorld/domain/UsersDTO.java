@@ -1,9 +1,7 @@
 package com.team5.WalkingWithWorld.domain;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +11,7 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @Setter
 @ToString
-public class UsersDto {
+public class UsersDTO {
     private int id;
 
     @NotBlank(message = "아이디 입력은 필수입니다.")

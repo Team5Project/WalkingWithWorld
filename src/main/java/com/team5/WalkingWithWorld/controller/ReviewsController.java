@@ -79,7 +79,7 @@ public class ReviewsController {
 
     //리뷰 작성
     @PostMapping("/reviews/{walking-paths-id}/write")
-    public String createReview(@Login UsersDto loginUser,
+    public String createReview(@Login UsersDTO loginUser,
                                @PathVariable("walking-paths-id") int id,
                                ReviewsDTO reviewsDTO,
                                FileVo files,

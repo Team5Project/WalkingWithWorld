@@ -7,7 +7,6 @@ import com.team5.WalkingWithWorld.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,13 +28,15 @@ public class WalkingPathService {
         return walkingPathsMapper.pagingList(dto);
     }
 
-
-    public int createWalkingPath(WalkingPathsDTO walkingPathsDTO, FileVo multipartFile, MapDTO mapDTO, String course) throws IOException {
+    // 산책로 생성
+    public int createWalkingPath(WalkingPathsDTO walkingPathsDTO, UsersDTO user, FileVo multipartFile, MapDTO mapDTO, String course) throws IOException {
         //산책로
-        walkingPathsMapper.addWalkingPath(walkingPathsDTO);
+        walkingPathsDTO.setUsersId(user.getId());
+        walkingPathsDTO.setCreatedBy(user.getName());
+        if(walkingPathsMapper.addWalkingPath(walkingPathsDTO) != 1)
+            return -1;
         //지도
         if(!course.isEmpty()) {
-            List<MapDTO> mapList = new ArrayList<>();
             String[] courseSplit = course.split(",");
             mapDTO.setWalkingPathsId(walkingPathsDTO.getId());
             for (int i = 0; i < courseSplit.length; i += 2) {
@@ -44,7 +45,7 @@ public class WalkingPathService {
                 mapMapper.addMap(mapDTO);
             }
         }
-        //산책로 이미지
+        //이미지
         Map<String, String> filesName = fileUpload.upload(multipartFile);
 
         PhotosDTO photosDTO = new PhotosDTO();
@@ -54,13 +55,62 @@ public class WalkingPathService {
             photosDTO.setImgPath(entry.getValue());
             photosMapper.addPhotos(photosDTO);
         }
+        System.out.println("게시글 생성 완료 : " + walkingPathsDTO.getId());
         return walkingPathsDTO.getId();
     }
 
+    // 산책로 하나 읽기
     public WalkingPathsMapDTO readWalkingPathById(int id) {
         WalkingPathsMapDTO walkingPathsMapDTO = walkingPathsMapper.readWalkingPath(id);
+        if(walkingPathsMapDTO == null)
+            return null;
+
+        // 지도 읽기
         List<MapDTO> mapDTOList = mapMapper.ReadMap(id);
-        walkingPathsMapDTO.setMapList(mapDTOList);
+        if(!mapDTOList.isEmpty())
+            walkingPathsMapDTO.setMapList(mapDTOList);
+
+        // 이미지 읽기
+        List<PhotosDTO> photosList = photosMapper.readPhotos(id);
+        if(!photosList.isEmpty())
+            walkingPathsMapDTO.setPhotosList(photosList);
+
         return walkingPathsMapDTO;
+    }
+
+    // 산책로 리스트 읽기 - 전체
+    public List<WalkingPathsMapDTO> readWalkingPathList() {
+        List<WalkingPathsMapDTO> walkingPathsMapDTOList = walkingPathsMapper.readAllWalkingPathsMap();
+        setPhotoAndMap(walkingPathsMapDTOList);
+        return walkingPathsMapDTOList;
+    }
+
+    // 산책로 리스트 읽기 - keyword 기준
+    public List<WalkingPathsMapDTO> readWalkingPathListWithKeyword(String keyword) {
+        List<WalkingPathsMapDTO> walkingPathsMapDTOList = walkingPathsMapper.searchWalkingPathByKeyword(keyword);
+        setPhotoAndMap(walkingPathsMapDTOList);
+        return walkingPathsMapDTOList;
+    }
+
+    // 산책로 리스트 읽기 - keyword와 searchDTO 기준
+    public List<WalkingPathsMapDTO> readWalkingPathListWithSearchDTO(String searchWord, SearchDTO searchDTO) {
+        searchDTO.setKeyword(searchWord.equals("null")?null:searchWord);
+        List<WalkingPathsMapDTO> walkingPathsMapDTOList = walkingPathsMapper.searchWalkingPathWithSearchDTO(searchDTO); // 변경
+        setPhotoAndMap(walkingPathsMapDTOList);
+        return walkingPathsMapDTOList;
+    }
+
+    // 산책로 리스트 읽기 - photo, map setter
+    public void setPhotoAndMap(List<WalkingPathsMapDTO> walkingPathMapList) {
+        for(WalkingPathsMapDTO dto : walkingPathMapList) {
+            dto.setPhotosList(photosMapper.readPhoto(dto.getId()));
+            dto.setMapList(mapMapper.ReadMap(dto.getId()));
+        }
+    }
+
+    // 산책로 수정
+    public void  modifyWalkingPathWithUserName(WalkingPathsDTO walkingPathsDTO, String userName) { // 안전하게!!!
+        walkingPathsDTO.setModifiedBy(userName);
+        System.out.println("수정되었습니다. : " + (walkingPathsMapper.updateWalkingPath(walkingPathsDTO)  == 1));
     }
 }
