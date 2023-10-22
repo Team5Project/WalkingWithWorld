@@ -98,6 +98,7 @@
     </section>
     <section class="map">
         <h3>상세 경로</h3>
+        <h4 id="exist">게시자가 상세 경로를 입력하지 않았습니다.</h4>
         <div class="map_wrap">
             <div class="readMap" id="map"></div>
         </div>
@@ -124,6 +125,7 @@
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d753200077e444dd40df1e458903dfd3"></script>
 <th:block th:unless="${walkingPaths.mapList}">
     <script th:inline="javascript">
+        document.getElementById('exist').style.visibility = "visible";
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div
             mapOption = {
                 center: new kakao.maps.LatLng(37.541, 126.986), // 지도의 중심좌표
