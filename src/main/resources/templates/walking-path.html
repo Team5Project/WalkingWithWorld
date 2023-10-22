@@ -24,7 +24,7 @@
                     <div class="cat_location_list">
                         <p id="location_check_all">
                             <i class="check_all_i fa-solid fa-circle-check"></i>
-                            서울
+                            서울 전체
                         </p>
                         <p>
                             <input type="checkbox" name="location" value="강남구" class="location_check" id="radio_gangnam">
@@ -280,7 +280,12 @@
 <script th:inline="javascript">
     function searchWalkingPath(keyword) {
         var SearchDTO = new Object();
-        SearchDTO.location = document.querySelector('input[name="location"]:checked').value;
+        var selected = document.querySelectorAll('input[name="location"]:checked');
+        var selectedValue = [];
+        for(let i = 0; i < selected.length; i++) {
+            selectedValue.push(selected[i].value);
+        }
+        SearchDTO.location = selectedValue;
         SearchDTO.minTime = document.getElementById("minTime").value;
         SearchDTO.maxTime = document.getElementById("maxTime").value;
         SearchDTO.minDistance = document.getElementById("minDistance").value;

@@ -157,7 +157,6 @@ public class WalkingPathsController {
     }
     @GetMapping("/walking-path/delete/{walking-path-id}")
     public String deleteWalkingPathById(@PathVariable("walking-path-id") String id) {
-        System.out.println(id + "들어온다.");
         int result = dao.deleteWalkingPath(Integer.parseInt(id));
         System.out.println("게시글 삭제 : " + result);
         return "redirect:/walking-path";

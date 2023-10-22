@@ -172,15 +172,7 @@
         var path = "/walking-path/delete/"+id;
         answer = confirm("게시글을 삭제하시겠습니까?");
         if(answer == true) {
-            fetch(path, {
-                method: "GET",
-            })
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-            });
+            location.href = path;
         }
     }
 
