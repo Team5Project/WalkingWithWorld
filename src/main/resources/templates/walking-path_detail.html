@@ -74,7 +74,7 @@
                     </p>
                     <div>
 
-                        <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}" class="btn_write_big">
+                        <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}" class="btns btn_write_big">
                             리뷰작성
                         </a>
                     </div>
@@ -87,9 +87,9 @@
                 <form action="" method="post" id="comments_write" onsubmit="return false;">
                     <input type="text" id="comment_content" class="comments_input" name="content"
                            placeholder="댓글을 입력해주세요" required/>
-                    <input type="button" class="btn_comments" th:if="${session.auth !=null}"
+                    <input type="button" class="btns btn_comments" th:if="${session.auth !=null}"
                            th:onclick="|writeComment(${walkingPaths.getId()})|" value="등록"/>
-                    <input type="button" class="btn_comments" th:if="${session.auth == null}"
+                    <input type="button" class="btns btn_comments" th:if="${session.auth == null}"
                            th:onclick="|location.href='@{/login?redirectURL=/walking-path/{id}(id=${walkingPaths.getId()})}'|"
                            value="등록">
                 </form>
@@ -111,7 +111,7 @@
             <div class="review_none">
                 <p>아직 리뷰가 작성되지 않았습니다.</p>
                 <p>첫 리뷰를 작성해 주세요!</p>
-                <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}" class="btn_write_big">
+                <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}" class="btns btn_write_big">
                     리뷰작성
                 </a>
             </div>

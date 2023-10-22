@@ -31,7 +31,7 @@
                             <b th:text="${walkingPath.mapList.get(0).time % 60}"></b> 분
                         </th:block>
                         <th:block th:unless="${walkingPath.mapList.get(0).time > 60}">
-                            <b th:text="${walkingPath.mapList.get(0).time}">10</b> 시간
+                            <b th:text="${walkingPath.mapList.get(0).time}">10</b> 분
                         </th:block>
                     </p>
                     <p class="rating">★★★★★</p>
@@ -43,10 +43,10 @@
             </div>
         </div>
         <div class="path_ctrl">
-            <a th:href="@{/walking-path}" class="btn_wp_return">전체목록</a>
+            <a th:href="@{/walking-path}" class="btns btn_wp_return">전체목록</a>
             <p class="pagenation">&lt;&lt; &lt; 1 2 3 4 5 &gt; &gt;&gt;</p>
-            <a th:if="${session.auth != null}" th:href="@{/walking-path/write}" class="btn_path_submit">산책로 등록</a>
-            <a th:if="${session.auth == null}" th:href="@{'/login?redirectURL=/walking-path'}" class="btn_path_submit">산책로 등록</a>
+            <a th:if="${session.auth != null}" th:href="@{/walking-path/write}" class="btns btn_path_submit">산책로 등록</a>
+            <a th:if="${session.auth == null}" th:href="@{'/login?redirectURL=/walking-path'}" class="btns btn_path_submit">산책로 등록</a>
         </div>
     </div>
 </article>
