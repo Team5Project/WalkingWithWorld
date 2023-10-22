@@ -7,7 +7,8 @@
 <body>
 <article id="walking-path-list">
     <div id="walking-path_wrapper">
-        <h3>검색 결과</h3>
+        <h3 th:if="${keyword != 'null'}" th:text="|'${keyword}' 검색 결과입니다.|"></h3>
+        <h3 th:text="|검색 결과 ${#lists.size(walkingPathList)}건|"></h3>
         <div class="path_list" th:each="walkingPath:${walkingPathList}">
             <div class="path_wrapper">
                 <a class="path_img" th:href="@{|/walking-path/${walkingPath.getId()}|}">
