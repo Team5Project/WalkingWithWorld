@@ -8,7 +8,7 @@
           integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link th:href="@{/style/common.css}" rel="stylesheet">
-    <link th:href="@{/style/insert_visitor.css}" rel="stylesheet">
+    <link th:href="@{/style/insert_visitors.css}" rel="stylesheet">
 </head>
 
 <body>
@@ -16,21 +16,37 @@
     <hr class="header_hr">
 
     <main>
-        <div class="visitor_logo">
-            <img th:src="@{/images/logo-big.png}"
-        </div>
-        <div class="insert_visitor">
-            <form method="post" action="/insertVisitors">
-                <input type="text" name="name" placeholder="작성자"required><br>
-                <input type="text" name="content" placeholder="내용"required><br>
-                <input type="text" name="password" placeholder="비밀번호"required><br>
-            </form>
-        </div>
-        <div class="visitor_mod">
-                <input type="submit" value="등록">
-                <input type="reset" value="reset">
-                <a th:href="@{/visitorslist}" >back</a>
-        </div>
+        <section>
+            <div class="visitors_write_wrap">
+                <aside class="visitor_logo">
+                    <img th:src="@{/images/logo-big.png}">
+                </aside>
+                <article>
+                    <div class="insert_visitor">
+                        <form method="post" action="/insertVisitors">
+                            <p class="inline_insert">
+                                <label for="visitor_name_input">작성자명</label>
+                                <input type="text" name="visitor_name_input" placeholder="작성자" id="visitor_name_input" required><br>
+                            </p>
+                            <p class="inline_insert">
+                                <label for="visitor_password_input">비밀번호</label>
+                                <input type="text" name="visitor_password_input" placeholder="비밀번호" id="visitor_password_input"required><br>    
+                            </p>
+                            <p class="inline_textarea">
+                                <label for="visitor_content_input">내용</label>
+                                <textarea name="visitor_content_input" id="visitor_content_input" required>
+                                </textarea>
+                            </p>
+                            <div class="visitor_mod">
+                                    <input type="submit" value="등록" class="btns btn_path_submit">
+                                    <input type="reset" value="reset" class="btns btn_path_submit">
+                                    <a th:href="@{/visitorslist}" class="btn_path_submit">back</a>
+                            </div>
+                        </form>
+                    </div>
+                </article>
+            </div>
+        </section>
     </main>
 
 <footer th:replace="fragments/header :: footer"></footer>
