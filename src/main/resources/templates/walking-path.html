@@ -84,7 +84,7 @@
                 </div>
             </div>
             <hr class="cat_hr">
-            <input class="btn_cat" input type="button" th:data-word="${keyword}" th:onclick="searchWalkingPath(this.getAttribute('data-word'))" value="검색하기">
+            <input class="btns btn_cat" input type="button" th:data-word="${keyword}" th:onclick="searchWalkingPath(this.getAttribute('data-word'))" value="검색하기">
         </aside>
         <article id="walking-path">
             <div id="walking-path_wrapper">
@@ -95,7 +95,7 @@
                             <img th:unless="${#lists.size(walkingPath.getPhotosList()) > 0}" th:src="@{/images/noimage.png}" alt="">
                         </a>
                         <div class="path_content">
-                            <a th:text="${walkingPath.title}" th:href="@{|/walking-path/${walkingPath.getId()}|}"  class="path_title">제목</a>
+                            <a th:text="${walkingPath.title}" th:href="@{|/walking-path/${walkingPath.getId()}|}" class="path_title">제목</a>
                             <address th:text="${walkingPath.addr}">주소</address>
                             <p class="path_dtinfo" th:if="${#lists.size(walkingPath.mapList) > 0}">
                                 <th:block th:if="${walkingPath.mapList.get(0).distance > 1000}">
@@ -123,9 +123,10 @@
                 </div>
             </div>
             <div class="path_ctrl">
+                <a th:href="@{/walking-path}" class="btns btn_wp_return">전체목록</a>
                 <p class="pagenation">&lt;&lt; &lt; 1 2 3 4 5 &gt; &gt;&gt;</p>
-                <a th:if="${session.auth != null}" th:href="@{/walking-path/write}" class="btn_path_submit">산책로 등록</a>
-                <a th:if="${session.auth == null}" th:href="@{'/login?redirectURL=/walking-path'}" class="btn_path_submit">산책로 등록</a>
+                <a th:if="${session.auth != null}" th:href="@{/walking-path/write}" class="btns btn_path_submit">산책로 등록</a>
+                <a th:if="${session.auth == null}" th:href="@{'/login?redirectURL=/walking-path'}" class="btns btn_path_submit">산책로 등록</a>
             </div>
         </article>
     </section>
