@@ -175,10 +175,10 @@
             })
                 .then((response) => response.text())
                 .then((data) => {
-                    if(data){
-                        console.log("확인")
-                        return;
-                    }
+                    // if(data){
+                    //     return;
+                    // }
+                    console.log(data)
                     document.querySelector(".review_container").innerHTML = `${data}`;
                 });
         }
