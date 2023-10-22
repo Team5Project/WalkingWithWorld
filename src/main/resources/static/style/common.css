@@ -27,9 +27,9 @@ input {
 }
 
 input:-webkit-autofill {
-  background-color: transparent !important;
-  	-webkit-box-shadow: 0 0 0 1000px white inset;
-  	box-shadow: 0 0 0 1000px white inset;
+    background-color: transparent !important;
+    -webkit-box-shadow: 0 0 0 1000px white inset;
+    box-shadow: 0 0 0 1000px white inset;
 }
 
 /* ----- 헤더 스타일 ----- */
@@ -157,22 +157,28 @@ footer {
 }
 
 /* ----- 버튼 ----- */
-.btn_signin {
+.btns {
     display: block;
     border-radius: 25px;
+    text-align: center;
     width: 120px;
     line-height: 40px;
-    text-align: center;
-    background-color: #97bf04;
     color: #fff;
 }
 
+.btns:hover {
+    background-color: #c6fc04;
+    transition: 0.6s;
+}
+
+
+.btn_signin {
+    background-color: #97bf04;
+}
+
 .btn_signup {
-    display: block;
-    border-radius: 25px;
     width: 200px;
     line-height: 40px;
-    text-align: center;
     background-color: #d4d9b4;
     color: #666;
 }
@@ -182,79 +188,54 @@ footer {
 }
 
 .btn_logout {
-    display: block;
-    border-radius: 25px;
     width: 80px;
     line-height: 32px;
-    text-align: center;
     background-color: #d4d9b4;
     color: #000;
 }
 
 .btn_write_big {
-    display: block;
-    border-radius: 25px;
     width: 200px;
     line-height: 50px;
-    text-align: center;
     background-color: #97bf04;
-    color: #fff;
     font-size: 24px;
 }
 
 .btn_comments {
-    display: inline-block;
-    border-radius: 25px;
     width: 80px;
     line-height: 32px;
-    text-align: center;
     background-color: #97bf04;
     color: #000;
 }
 
 .btn_path_submit {
-    display: inline-block;
-    border-radius: 25px;
-    width: 120px;
-    line-height: 40px;
-    text-align: center;
     background-color: #97bf04;
-    color: #fff;
     font-size: 20px;
 }
 
 
 .btn_search {
-    display: block;
     width: 75px;
     line-height: 30px;
     border-radius: 25px;
-    text-align: center;
     background-color: #97bf04;
-    color: #fff;
     position: absolute;
     top: calc(50% - 15px);
     right: 8px
 }
 
 .btn_signup_main {
-    display: block;
     width: 240px;
     line-height: 80px;
-    text-align: center;
     background-color: #97bf04;
-    color: #fff;
     margin: 10px 30px;
     font-size: 24px;
 }
 
 .btn_cat {
-    display: block;
     width: 200px;
     line-height: 40px;
-    text-align: center;
     background-color: #97bf04;
-    color: #fff;
     margin: 0 auto;
     font-size: 20px;
     border-radius: 10px;
@@ -266,6 +247,9 @@ footer {
     width: 80px;
     line-height: 32px;
     text-align: center;
+}
+
+.btn_wp_return {
     background-color: #d4d9b4;
     color: #666;
 }
