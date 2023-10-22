@@ -84,8 +84,7 @@ public class WalkingPathsController {
         }
         model.addAttribute("walkingPathList", walkingPathMapList);
         model.addAttribute("keyword", searchWord);
-
-        return "walking-path_list :: #walking-path-list";
+        return "walking-path_search :: #walking-path-list";
     }
 
     @PostMapping("/walking-path/search")

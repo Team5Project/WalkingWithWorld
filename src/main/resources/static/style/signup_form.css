@@ -64,8 +64,6 @@
 }
 
   .btn-signup:hover{
-    width: 105px;
-    height: 42px;
     border-radius: 30px;
     background: var(--97BF04, #c6fc04);
   }
