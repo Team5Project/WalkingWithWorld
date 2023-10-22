@@ -3,188 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <title>walking-path detail</title>
-    <style>
-        .readMap {
-            margin-top: 10px;
-            width: 100%;
-            height: 350px;
-        }
-
-        /* #readMap {
-            position: relative;
-        }
-
-        #pathLoad {
-            position: absolute;
-            bottom: -30px;
-        } */
-
-
-
-        /*--------- 오버레이 ------------*/
-
-        .dot {
-            overflow: hidden;
-            float: left;
-            width: 12px;
-            height: 12px;
-            background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/mini_circle.png');
-        }
-
-        .dotOverlay {
-            position: relative;
-            bottom: 10px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            border-bottom: 2px solid #ddd;
-            float: left;
-            font-size: 12px;
-            padding: 5px;
-            background: #fff;
-        }
-
-        .dotOverlay:nth-of-type(n) {
-            border: 0;
-            box-shadow: 0px 1px 2px #888;
-        }
-
-        .number {
-            font-weight: bold;
-            color: #ee6152;
-        }
-
-        .dotOverlay:after {
-            content: '';
-            position: absolute;
-            margin-left: -6px;
-            left: 50%;
-            bottom: -8px;
-            width: 11px;
-            height: 8px;
-            background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white_small.png')
-        }
-
-        .distanceInfo {
-            position: relative;
-            top: 5px;
-            left: 5px;
-            list-style: none;
-            margin: 0;
-        }
-
-        .distanceInfo .label {
-            display: inline-block;
-            width: 50px;
-        }
-
-        .distanceInfo:after {
-            content: none;
-        }
-    </style>
+    <link th:href="@{/style/reset.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link th:href="@{/style/common.css}" rel="stylesheet">
+    <link th:href="@{/style/waking_path_detail.css}" rel="stylesheet">
 </head>
 <body>
-<h2 th:text="${walkingPaths}"></h2>
-<th:block th:each="photo:${walkingPaths.getPhotosList()}">
-    <img th:src="|/ex_images/${photo.getImgName()}|" style="width:200px;"></img>
-</th:block>
+<header th:replace="fragments/header :: header"></header>
+<hr class="header_hr">
+<main>
+    <section class="detail_header">
+        <div class="detail_title">
+            <h2 th:text="${walkingPaths.title}">타이틀 미입력</h2>
+            <th:block th:if="${session.auth !=null && session.auth.getName()==walkingPaths.getCreatedBy()}">
+                <div class="up_del">
+                    <a th:href="|/walking-path/modify/${walkingPaths.id}|"><span class="info_modi">수정</span></a>
+                    <span th:onclick="|deleteWalkingPath(${walkingPaths.id})|"
+                          class="info_del">삭제</span>
+                </div>
+            </th:block>
+        </div>
+        <p>
+            <span class="star_score">★★★★★</span>
+            <i></i>리뷰 <b>8</b>
+            <i>|</i> 댓글 <b>22</b>
+            <th:block th:if="${walkingPaths.mapList}">
+                <th:block th:if="${walkingPaths.getMapList().get(0).getDistance()>1000}">
+                    <i>|</i> 거리 <b
+                        th:text="${#numbers.formatDecimal(walkingPaths.getMapList().get(0).getDistance()/1000,1,2)}">10</b>
+                    Km
+                </th:block>
+                <th:block th:unless="${walkingPaths.getMapList().get(0).getDistance()>1000}">
+                    <i>|</i> 거리 <b th:text="${walkingPaths.getMapList().get(0).getDistance()}">10</b> m
+                </th:block>
+                <th:block th:if="${walkingPaths.getMapList().get(0).getTime()>60}">
+                    <i>|</i> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()/60}">3</b> 시간 <b
+                        th:text="${walkingPaths.getMapList().get(0).getTime()%60}"></b> 분
+                </th:block>
+                <th:block th:unless="${walkingPaths.getMapList().get(0).getTime()>60}">
+                    <i>|</i> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()}"></b> 분
+                </th:block>
+            </th:block>
+        </p>
+        <address th:text="${walkingPaths.addr}">주소 미입력</address>
+    </section>
+    <section class="infoAndcomments">
+        <div class="iac_wrapper">
+            <article class="detail_info">
+                <aside class="images">
+                    <figure class="viewer">
+                        <img th:if="${walkingPaths.photosList}"
+                             th:src="@{|/ex_images/${walkingPaths.photosList[0].imgName}|}"/>
+                        <img th:unless="${walkingPaths.photosList}"
+                             th:src="@{/images/noimage.png}"/>
+                    </figure>
 
-<a th:href="@{/walking-path}">목록</a>
-<div class="map_wrap">
-    <div class="readMap" id="map"></div>
-</div>
+                    <div class="img_list">
+                        <figcaption class="thumb" th:if="${walkingPaths.photosList}"
+                                    th:each=" wp : ${walkingPaths.photosList}">
+                            <img th:src="@{|/ex_images/${wp.imgName}|}">
+                        </figcaption>
+                    </div>
+                </aside>
+                <div class="review_write">
+                    <p>
+                        이 산책로는 어땠나요?<br>
+                        리뷰를 남겨주세요!
+                    </p>
+                    <div>
+
+                        <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}" class="btn_write_big">
+                            리뷰작성
+                        </a>
+                    </div>
+                </div>
+            </article>
+            <div class="comments_wrapper">
+                <div class="comments_content">
+                    <!--                    여기에 댓글이 들어감-->
+                </div>
+                <form action="" method="post" id="comments_write" onsubmit="return false;">
+                    <input type="text" id="comment_content" class="comments_input" name="content"
+                           placeholder="댓글을 입력해주세요" required/>
+                    <input type="button" class="btn_comments" th:if="${session.auth !=null}"
+                           th:onclick="|writeComment(${walkingPaths.getId()})|" value="등록"/>
+                    <input type="button" class="btn_comments" th:if="${session.auth == null}"
+                           th:onclick="|location.href='@{/login?redirectURL=/walking-path/{id}(id=${walkingPaths.getId()})}'|"
+                           value="등록">
+                </form>
+            </div>
+        </div>
+    </section>
+    <section class="map">
+        <h3>상세 경로</h3>
+        <h4 id="exist">게시자가 상세 경로를 입력하지 않았습니다.</h4>
+        <div class="map_wrap">
+            <div class="readMap" id="map"></div>
+        </div>
+    </section>
+    <section class="review">
+        <h3>리뷰</h3>
+        <div class="review_container">
+            <i class="rv-chav left fa-solid fa-circle-chevron-left"></i>
+            <i class="rv-chav right fa-solid fa-circle-chevron-right"></i>
+            <div class="review_none">
+                <p>아직 리뷰가 작성되지 않았습니다.</p>
+                <p>첫 리뷰를 작성해 주세요!</p>
+                <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}" class="btn_write_big">
+                    리뷰작성
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+<footer th:replace="fragments/header :: footer"></footer>
+
+<!--맵 API-->
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d753200077e444dd40df1e458903dfd3"></script>
-<script th:inline="javascript">
-    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-    mapOption = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
-    };
+<th:block th:unless="${walkingPaths.mapList}">
+    <script th:inline="javascript">
+        document.getElementById('exist').style.visibility = "visible";
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+            mapOption = {
+                center: new kakao.maps.LatLng(37.541, 126.986), // 지도의 중심좌표
+                level: 6 // 지도의 확대 레벨
+            };
+        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+    </script>
+</th:block>
+<th:block th:if="${walkingPaths.mapList}">
+    <script th:inline="javascript">
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+            mapOption = {
+                center: new kakao.maps.LatLng([[${walkingPaths.mapList.get(0).coordinateY}]], [[${walkingPaths.mapList.get(0).coordinateX}]]), // 지도의 중심좌표
+                level: 6 // 지도의 확대 레벨
+            };
+        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+        // 지도를 클릭하면 선 그리기가 시작됩니다 그려진 선이 있으면 지우고 다시 그립니다
+        window.onload = function (mouseEvent) {
+            var input = [[${walkingPaths.mapList}]];
 
-    // 지도에 클릭 이벤트를 등록합니다
-    // 지도를 클릭하면 선 그리기가 시작됩니다 그려진 선이 있으면 지우고 다시 그립니다
-    window.onload = function(mouseEvent) {
-      var input = [[${walkingPaths.mapList}]];
-
-      // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
-      var linePath = [];
-      input.forEach(function(map){
-      console.log(map["coordinateX"]);
-      console.log(map["coordinateY"]);
-        linePath.push(new kakao.maps.LatLng(map["coordinateY"], map["coordinateX"]));
-      });
-
-      // 지도에 표시할 선을 생성합니다
-      var polyline = new kakao.maps.Polyline({
-          path: linePath, // 선을 구성하는 좌표배열 입니다
-          strokeWeight: 5, // 선의 두께 입니다
-          strokeColor: '#FFAE00', // 선의 색깔입니다
-          strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-          strokeStyle: 'solid' // 선의 스타일입니다
-      });
-
-      // 지도에 선을 표시합니다
-      polyline.setMap(map);
-    }
-<br>
-<a th:href="@{/walking-path}">목록</a>
-
-<br>
-
-
-<!--댓글 영역-->
-<br>
-<div>
-    <h3>댓글 확인</h3>
-    <div id="comments"></div>
-
-</div>
-<!--댓글 작성 하기-->
-<a th:href="@{|comments/${walkingPaths.getId()}|}">댓글 작성하기</a>
-
-리뷰 영역
-<!--<div th:replace="/reviews :: reviews">-->
-<!--</div>-->
-<div>
-    <h3>리뷰 확인</h3>
-    <div id="reviews"></div>
-
-</div>
-
-
-<!--리뷰 작성-->
-<!--<th:block th:if="${session.auth != null}">-->
-<!--    <a th:href="@{|/walking-path/${walkingPath.getId()}|}" ></a>-->
-<a th:href="@{|/reviews/${walkingPaths.getId()}|}">리뷰 작성하기</a>
-
-
-<script th:inline="javascript">
-    function getReviewList() {
-        fetch("/reviews", {
-            method: "POST"
-        })
-            .then((response) => response.text())
-            .then((data) => {
-                console.log('성공 : ', data);
-                document.getElementById("reviews").innerHTML = `${data}`;
+            // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
+            var linePath = [];
+            input.forEach(function (map) {
+                linePath.push(new kakao.maps.LatLng(map["coordinateY"], map["coordinateX"]));
             });
-    }
 
-    function getCommentList() {
-        fetch("/comments", {
-            method: "POST"
-        })
-            .then((response) => response.text())
-            .then((data) => {
-                console.log('성공 : ', data);
-                document.getElementById("comments").innerHTML = `${data}`;
+            // 지도에 표시할 선을 생성합니다
+            var polyline = new kakao.maps.Polyline({
+                path: linePath, // 선을 구성하는 좌표배열 입니다
+                strokeWeight: 5, // 선의 두께 입니다
+                strokeColor: 'red', // 선의 색깔입니다
+                strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                strokeStyle: 'solid' // 선의 스타일입니다
             });
+
+            // 지도에 선을 표시합니다
+            polyline.setMap(map);
+        }
+    </script>
+</th:block>
+<script th:inline="javascript">
+
+    function deleteWalkingPath(id) {
+        var answer;
+        var path = "/walking-path/delete/"+id;
+        answer = confirm("게시글을 삭제하시겠습니까?");
+        if(answer == true) {
+            location.href = path;
+        }
     }
 
-    window.addEventListener('onload', getReviewList());
-    window.addEventListener('onload', getCommentList());
+        /*<![CDATA[*/
+        function getReviewList() {
+            var walkingPathId = [[${walkingPaths.getId()}]];
+            console.log(walkingPathId)
+            fetch("/reviews/list/" + walkingPathId, {
+                method: "POST"
+            })
+                .then((response) => response.text())
+                .then((data) => {
+                    // if(data){
+                    //     return;
+                    // }
+                    console.log(data)
+                    document.querySelector(".review_container").innerHTML = `${data}`;
+                });
+        }
+
+        /*]]>*/
+
+        /*<![CDATA[*/
+        function getCommentList() {
+            var walkingPathId = [[${walkingPaths.getId()}]]
+            fetch("/comments/list/" + walkingPathId, {
+                method: "POST"
+            })
+                .then((response) => response.text())
+                .then((data) => {
+                    document.querySelector(".comments_content").innerHTML = `${data}`;
+                });
+        }
+
+        /*]]>*/
+
+
+        function writeComment(id) {
+            var CommentsDTO = new Object();
+            CommentsDTO.content = document.getElementById("comment_content").value;
+            console.log(CommentsDTO);
+            fetch("/comments/" + id, {
+                method: "POST",
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    content: CommentsDTO.content
+                })
+            })
+                .then((response) => response.text())
+                .then((data) => {
+                    document.getElementById("comment_content").value = "";
+                    document.getElementById("comments").innerHTML = `${data}`;
+                });
+        }
+
+        //프래그먼트 요소지만 현재 html 에 있으므로 여기에 구현
+        /*<![CDATA[*/
+        function deleteComment(id) {
+
+            const CommentsDTO = {};
+            CommentsDTO.id = id;
+            CommentsDTO.walkingPathsId = [[${walkingPaths.getId()}]]
+            console.log(CommentsDTO);
+            fetch("/comments/delete", {
+                method: "POST",
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: CommentsDTO.id,
+                    walkingPathsId: CommentsDTO.walkingPathsId
+                })
+            })
+                .then((response) => response.text())
+                .then((data) => {
+                    document.getElementById("comment_content").value = "";
+                    document.getElementById("comments").innerHTML = `${data}`;
+                });
+        }
+
+        /*]]>*/
+
+        window.addEventListener('onload', getReviewList());
+        window.addEventListener('onload', getCommentList());
 </script>
+<script>
+    let imgRoot = document.querySelectorAll(".images")
+    console.log(imgRoot);
+    imgRoot.forEach(function (ir) {
+        let imgList = ir.querySelectorAll(".img_list img");
+
+        imgList.forEach(function (img) {
+            img.addEventListener("click", (e) => {
+                ir.querySelector(".viewer img").src = img.src;
+            });
+        });
+    });
+
+</script>
+
 </body>
 </html>

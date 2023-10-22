@@ -8,10 +8,14 @@ import java.util.List;
 @Mapper
 public interface ReviewsMapper {
     @Select("select * from reviews")
-    public List<ReviewsDTO> reviewslist();
+    public List<ReviewsDTO> reviewlist();
+
+    @Select("select * from reviews where walking_paths_id = #{id}")
+    public List<ReviewsDTO> reviewListByWalkingPathsId(int id);
 
     @Insert("insert into reviews(users_id,walking_paths_id,content,created_at,created_by,modified_at,modified_by) " +
-            "values (#{usersId},#{walkingPathsId},#{content},#{createdAt},#{createdBy},#{modifiedAt},#{modifiedBy})")
+            "values (#{usersId},#{walkingPathsId},#{content},now(),#{createdBy},#{modifiedAt},#{modifiedBy})")
+    @Options(useGeneratedKeys = true,keyProperty = "id")
     public boolean insertReviews (ReviewsDTO vo);
 
     @Delete("delete from reviews where id = #{id}")

@@ -3,6 +3,7 @@ package com.team5.WalkingWithWorld.dao;
 import com.team5.WalkingWithWorld.domain.CommentsDTO;
 import org.apache.ibatis.annotations.*;
 
+import javax.annotation.processing.Generated;
 import java.util.List;
 
 @Mapper
@@ -15,6 +16,13 @@ public interface CommentsMapper {
             "order by c.created_at desc limit 5")
     public List<CommentsDTO> list();
 
+    @Select("select c.id, c.walking_paths_id, u.name,c.content, c.created_by,c.created_at " +
+            "from comments c " +
+            "join users u on c.users_id = u.id " +
+            "where walking_paths_id = #{id} " +
+            "order by c.created_at desc limit 5")
+    public List<CommentsDTO> getCommentById(int id);
+
     //내글 리스트
 //    @Select("select" +
 //                "c.id , c.content, c.created_at" +
@@ -26,7 +34,8 @@ public interface CommentsMapper {
 
     //글쓰기
     @Insert("insert into comments (users_id, walking_paths_id,content ,created_at) " +
-            "values (#{users_id}, #{walking_paths_id}, #{content}, NOW())")
+            "values (#{users_id}, #{walkingPathsId}, #{content}, NOW())")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
     public boolean write(CommentsDTO comments);
 
     //글쓰기폼에 정보 전송
@@ -39,5 +48,5 @@ public interface CommentsMapper {
 
     //삭제하기
     @Delete("DELETE FROM comments WHERE id = ${id}")
-    public boolean delete(String id);
+    public boolean delete(int id);
 }

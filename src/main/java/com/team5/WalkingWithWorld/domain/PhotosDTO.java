@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class PhotosDTO {
     private int id;
-    private int reviewId;
+    private int reviewsId;
     private int walkingPathsId;
     private String imgName;
     private String imgPath;

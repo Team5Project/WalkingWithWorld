@@ -1,19 +1,21 @@
 package com.team5.WalkingWithWorld.controller;
 
+import com.team5.WalkingWithWorld.dao.MapMapper;
 import com.team5.WalkingWithWorld.dao.PhotosMapper;
 import com.team5.WalkingWithWorld.dao.ReviewsMapper;
 import com.team5.WalkingWithWorld.dao.WalkingPathsMapper;
-import com.team5.WalkingWithWorld.domain.PhotosDTO;
-import com.team5.WalkingWithWorld.domain.ReviewsDTO;
-import com.team5.WalkingWithWorld.domain.UsersDto;
+import com.team5.WalkingWithWorld.domain.*;
 import com.team5.WalkingWithWorld.global.Login;
+import com.team5.WalkingWithWorld.service.ReviewService;
+import com.team5.WalkingWithWorld.service.WalkingPathService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.LocalDateTime;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -24,70 +26,101 @@ public class ReviewsController {
     WalkingPathsMapper pathsMapper;
     @Autowired
     PhotosMapper photoDao;
+    @Autowired
+    MapMapper mapMapper;
+    @Autowired
+    WalkingPathService walkingPathService;
+    @Autowired
+    WalkingPathsController walkingPathsController;
+    @Autowired
+    ReviewService reviewService;
 
-    @GetMapping("/reviews/{reviews-id}")
-    public String reviews(@PathVariable("reviews-id") int id,
-                          Model model){
+    @GetMapping("/reviews/{walking-paths-id}/write")
+    public String reviews(@PathVariable("walking-paths-id") int id,
+                          Model model,
+                          HttpServletRequest request) {
+        String referer = request.getHeader("Referer");
+        WalkingPathsMapDTO walkingPaths = pathsMapper.readWalkingPath(id);
+        walkingPaths.setMapList(mapMapper.ReadMap(id) );
+        walkingPaths.setPhotosList(photoDao.readPhotos(id));
 
-        model.addAttribute("walkingPaths", pathsMapper.readWalkingPath(id));
 
-        return "reviewsPage";
+        model.addAttribute("walkingPaths",walkingPaths);
+        model.addAttribute("referer");
+
+        return "reviews_write_form";
     }
 
-    @PostMapping("/reviews")
-    public String getReviewList(Model model, ReviewsDTO reviewsDTO){
+    @PostMapping("/reviews/list/{walking-paths-id}")
+    public String getReviewList(Model model,
+                                @PathVariable("walking-paths-id") int id
+                                ) {
 
-        List<ReviewsDTO> list = dao.reviewslist();
+        System.out.println(id);
+        List<ReviewsDTO> list = dao.reviewListByWalkingPathsId(id);
+
+        for(ReviewsDTO dto:list){
+            dto.setPhotosList(photoDao.readReviewPhotos(dto.getId()));
+        }
+        System.out.println(list);
+
+        model.addAttribute("walkingPaths", walkingPathService.readWalkingPathById(id));
         model.addAttribute("reviewList", list);
 
+        if(list.isEmpty()){
+            System.out.println("스태틱 리뷰");
+            return "reviews ::#static_reviews";
+        }
+
+        System.out.println("다이나믹 리뷰");
         return "reviews :: #reviews";
     }
 
 
-    @PostMapping("/reviews/{walking-paths-id}")
+    //리뷰 작성
+    @PostMapping("/reviews/{walking-paths-id}/write")
     public String createReview(@Login UsersDto loginUser,
-                                         @PathVariable("walking-paths-id") int id,
-                                         ReviewsDTO reviewsDTO){
-
+                               @PathVariable("walking-paths-id") int id,
+                               ReviewsDTO reviewsDTO,
+                               FileVo files,
+                               HttpServletRequest request) throws IOException {
+        ModelAndView mav;
         reviewsDTO.setUsersId(loginUser.getId());
         reviewsDTO.setWalkingPathsId(id);
-        reviewsDTO.setCreatedAt(LocalDateTime.now());
         reviewsDTO.setCreatedBy(loginUser.getName());
 
-        List<PhotosDTO> photosList = photoDao.readPhotos(loginUser.getId());
-        reviewsDTO.setPhotosList(photosList);
+        int reviewId = reviewService.createReview(reviewsDTO,files);
 
-        dao.insertReviews(reviewsDTO);
 
-        return "reviews";
+        mav = walkingPathsController.getWalkingPathById(id,request);
+
+        return "redirect:/walking-path/"+id;
     }
 
     @GetMapping("/reviews/delete")
-    public ModelAndView delete(int id){
-        boolean result=dao.deleteReviews(id);
-        ModelAndView mav=new ModelAndView();
-        if(result){
-            mav.addObject("list", dao.reviewslist());
+    public ModelAndView delete(int id) {
+        boolean result = dao.deleteReviews(id);
+        ModelAndView mav = new ModelAndView();
+        if (result) {
+            mav.addObject("list", dao.reviewlist());
         }
-        mav.setViewName("reviewsPage");
+        mav.setViewName("reviews_write_form");
         return mav;
     }
 
-    @RequestMapping(value="/reviews/UpdatePage")
-    @ResponseBody
-    public ReviewsDTO updateReviews(ReviewsDTO dto){
-        dao.updateReviews(dto);
-        return dto;
+    @RequestMapping(value = "/reviews/UpdatePage")
+    public String showUpdatePage(@PathVariable Long id, Model model) {
+        return "updatePage";
     }
 
     @GetMapping("/reviews/update")
-    public ModelAndView update(ReviewsDTO vo){
+    public ModelAndView update(ReviewsDTO vo) {
         boolean result = dao.updateReviews(vo);
         ModelAndView mav = new ModelAndView();
-        if(result){
-            mav.addObject("list", dao.reviewslist());
+        if (result) {
+            mav.addObject("list", dao.reviewlist());
         }
-        mav.setViewName("reviewsPage");
+        mav.setViewName("reviews_write_form");
         return mav;
     }
 

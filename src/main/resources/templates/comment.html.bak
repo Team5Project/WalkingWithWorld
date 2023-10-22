@@ -7,23 +7,24 @@
 </head>
 
 <body>
-<div id="comments">
-    <th:block th:if="${list}">
-        <ul th:each=" lst : ${list}">
-            <li>
-                <span th:text="${lst.getName()}"></span> : [[${lst.getContent()}]]
-                <span th:text="${#temporals.format(lst.created_at,'yyyy-MM-dd')}"></span>
-                <span th:onclick="|UpdateAct(${lst.id})|">수정</span>
-                <a th:href="@{/comments/delete(id=${lst.id})}">삭제</a>
-            </li>
-        </ul>
-    </th:block>
-</div>
+    <div id="comments">
+        <th:block th:if="${list}">
+            <ul th:each=" lst : ${list}">
+                <li>
+                    <span th:text="${lst.getName()}"></span> : [[${lst.getContent()}]]
+                    <span th:text="${#temporals.format(lst.created_at,'yyyy-MM-dd')}"></span>
+                    <span th:onclick="|UpdateAct(${lst.id})|">수정</span>
+                    <a th:href="@{/comments/delete(id=${lst.id})}">삭제</a>
+                </li>
+            </ul>
+        </th:block>
+    </div>
 
     <form action="/comments/write" method="post" id="writeform">
         <input type="text" name="content" placeholder="댓글 등록하기" required>
         <input type="submit" value="등록">
     </form>
+
 
     <form action="/comments/update" method="post" id="uform" style="display: none">
         <input type="hidden" name="id" id="uid" value="">
