@@ -100,10 +100,8 @@ public class ReviewsController {
     }
 
     @RequestMapping(value = "/reviews/UpdatePage")
-    @ResponseBody
-    public ReviewsDTO updateReviews(ReviewsDTO dto) {
-        dao.updateReviews(dto);
-        return dto;
+    public String showUpdatePage(@PathVariable Long id, Model model) {
+        return "updatePage";
     }
 
     @GetMapping("/reviews/update")
