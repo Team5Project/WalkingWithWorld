@@ -19,8 +19,9 @@
             <h2 th:text="${walkingPaths.title}">타이틀 미입력</h2>
             <th:block th:if="${session.auth !=null && session.auth.getName()==walkingPaths.getCreatedBy()}">
                 <div class="up_del">
-                    <span class="info_modi">수정</span>
-                    <span class="info_del">삭제</span>
+                    <a th:href="|/walking-path/modify/${walkingPaths.id}|"><span class="info_modi">수정</span></a>
+                    <span th:onclick="|deleteWalkingPath(${walkingPaths.id})|"
+                          class="info_del">삭제</span>
                 </div>
             </th:block>
         </div>
@@ -97,6 +98,7 @@
     </section>
     <section class="map">
         <h3>상세 경로</h3>
+        <h4 id="exist">게시자가 상세 경로를 입력하지 않았습니다.</h4>
         <div class="map_wrap">
             <div class="readMap" id="map"></div>
         </div>
@@ -123,6 +125,7 @@
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d753200077e444dd40df1e458903dfd3"></script>
 <th:block th:unless="${walkingPaths.mapList}">
     <script th:inline="javascript">
+        document.getElementById('exist').style.visibility = "visible";
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div
             mapOption = {
                 center: new kakao.maps.LatLng(37.541, 126.986), // 지도의 중심좌표
@@ -130,7 +133,6 @@
             };
         var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
     </script>
-    >
 </th:block>
 <th:block th:if="${walkingPaths.mapList}">
     <script th:inline="javascript">
@@ -155,7 +157,7 @@
             var polyline = new kakao.maps.Polyline({
                 path: linePath, // 선을 구성하는 좌표배열 입니다
                 strokeWeight: 5, // 선의 두께 입니다
-                strokeColor: '#FFAE00', // 선의 색깔입니다
+                strokeColor: 'red', // 선의 색깔입니다
                 strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
                 strokeStyle: 'solid' // 선의 스타일입니다
             });
@@ -165,7 +167,17 @@
         }
     </script>
 </th:block>
-    <script th:inline="javascript">
+<script th:inline="javascript">
+
+    function deleteWalkingPath(id) {
+        var answer;
+        var path = "/walking-path/delete/"+id;
+        answer = confirm("게시글을 삭제하시겠습니까?");
+        if(answer == true) {
+            location.href = path;
+        }
+    }
+
         /*<![CDATA[*/
         function getReviewList() {
             var walkingPathId = [[${walkingPaths.getId()}]];
@@ -249,21 +261,21 @@
 
         window.addEventListener('onload', getReviewList());
         window.addEventListener('onload', getCommentList());
-    </script>
-    <script>
-        let imgRoot = document.querySelectorAll(".images")
-        console.log(imgRoot);
-        imgRoot.forEach(function (ir) {
-            let imgList = ir.querySelectorAll(".img_list img");
+</script>
+<script>
+    let imgRoot = document.querySelectorAll(".images")
+    console.log(imgRoot);
+    imgRoot.forEach(function (ir) {
+        let imgList = ir.querySelectorAll(".img_list img");
 
-            imgList.forEach(function (img) {
-                img.addEventListener("click", (e) => {
-                    ir.querySelector(".viewer img").src = img.src;
-                });
+        imgList.forEach(function (img) {
+            img.addEventListener("click", (e) => {
+                ir.querySelector(".viewer img").src = img.src;
             });
         });
+    });
 
-    </script>
+</script>
 
 </body>
 </html>

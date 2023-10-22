@@ -28,7 +28,7 @@ public interface WalkingPathsMapper {
     @Select({"<script> select walking_paths.id, users_id, title, addr, created_at, created_by, modified_at, modified_by",
             "from walking_paths inner join map on walking_paths.id = map.walking_paths_id" +
             "<where>" +
-            "<if test='location != null'> addr like concat('%', #{location}, '%')</if>" +
+            "<foreach collection='location' item='loc' separator='or' open='(' close=')'> addr like concat('%', #{loc}, '%')</foreach>" +
             "<if test='keyword != null'> and (addr like concat('%', #{keyword}, '%') or title like concat('%', #{keyword}, '%'))</if>" +
             "<if test='minTime > 0'> and time >= ${minTime}</if>" +
             "<if test='maxTime > 0'> <![CDATA[and time <= ${maxTime}]]></if>" +
@@ -53,7 +53,7 @@ public interface WalkingPathsMapper {
     @Update("update walking_paths set title = #{title}, addr = #{addr}, modified_at = now(), modified_by = #{modifiedBy} where id = #{id}")
     int updateWalkingPath(WalkingPathsDTO dto);
 
-    @Delete("delete from walking_paths where id = #{walkingPathId}")
+    @Delete("delete from walking_paths where id = #{WalkingPathId}")
     int deleteWalkingPath(int WalkingPathId);
 
     //@Select("select id,title,addr,created_at,created_by from walking_paths where users_id=#{userId}")
