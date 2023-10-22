@@ -83,7 +83,7 @@ public class WalkingPathsController {
             dto.setMapList(mapDao.ReadMap(dto.getId()));
         }
         model.addAttribute("walkingPathList", walkingPathMapList);
-        return "walking-path_list :: #walking-path-list";
+        return "walking-path_search :: #walking-path-list";
     }
 
     @PostMapping("/walking-path/search")
