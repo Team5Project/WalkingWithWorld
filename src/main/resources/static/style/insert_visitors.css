@@ -1,0 +1,8 @@
+.visitor_logo {
+    width:50%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: start;
+    margin-right: 40px;
+}

@@ -1,3 +1,14 @@
+#article{
+    display : flex;
+    flex-direction: column;
+
+}
+
+h3{
+    width: 940px;
+    margin-bottom: 20px;
+}
+
 section{
     display : flex;
     flex-direction: column;
@@ -6,19 +17,54 @@ section{
 }
 
 .vwrapper{
+    width: 940px;
     display : flex;
+    flex-direction: column;
     gap : 10px;
     margin-bottom:40px;
+    border-radius: 20px;
+    border:1px solid #d4d9b4;
+    padding: 10px;
+}
+.vwrapper div{
+    display: flex;
+    line-height : 35px;
+}
+.visit_header{
+    border-bottom: 1px solid #97bf04;
+}
+
+.visit_header span:first-child,
+.vname{
+    width: 175px;
 }
 
 .vname{
-    width:100px;
+    font-weight: bold;
 }
 
 .vcontent{
-    width:200px;
-}
+    width:100%;
+    display: block;
+    background-color: #ccc;
+    padding: 10px;
+    height: 3.5em;
 
+}
+.visitor_footer{
+    display: flex;
+    justify-content: space-between;
+}
+.visitor_mod{
+    display: flex;
+    gap: 20px;
+
+}
 .vcreatedAt{
     width:200px;
+}
+.btn_write_wrapper{
+    width: 940px;
+    display: flex;
+    justify-content: end;
 }
