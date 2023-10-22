@@ -1,5 +1,7 @@
 <header class="header" xmlns:th="http://www.thymeleaf.org">
-    <a th:href="@{/}" style="text-decoration: none"><h1 class="logo"></h1></a>
+    <a th:href="@{/}" style="text-decoration: none">
+        <h1 class="logo"></h1>
+    </a>
     <nav>
         <a href="" th:href="@{/walking-path}">산책로</a>
         <a href="" th:href="@{/visitorslist}">자유게시판</a>
@@ -14,7 +16,8 @@
     <th:block th:if="${session.auth == null}">
         <div class="header_sign">
             <a th:href="@{/login}" class="btns btn_signin"><i class="sign_icon fa-solid fa-key"></i>Sign in</a>
-            <a  th:href="@{/signup}" class="btns btn_signup"><i class="sign_icon fa-solid fa-user-plus"></i>Sign up for free</a>
+            <a th:href="@{/signup}" class="btns btn_signup"><i class="sign_icon fa-solid fa-user-plus"></i>Sign up for
+                free</a>
         </div>
     </th:block>
 

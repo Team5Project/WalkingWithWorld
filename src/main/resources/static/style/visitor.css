@@ -1,0 +1,24 @@
+section{
+    display : flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 100px auto;
+}
+
+.vwrapper{
+    display : flex;
+    gap : 10px;
+    margin-bottom:40px;
+}
+
+.vname{
+    width:100px;
+}
+
+.vcontent{
+    width:200px;
+}
+
+.vcreatedAt{
+    width:200px;
+}

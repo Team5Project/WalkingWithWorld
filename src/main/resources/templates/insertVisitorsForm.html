@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>작성</h2>
+<form method="post" action="/insertVisitors">
+    <input type="text" name="name" placeholder="작성자"required><br>
+    <input type="text" name="content" placeholder="내용"required><br>
+    <input type="text" name="password" placeholder="비밀번호"required><br>
+
+    <input type="submit" value="등록">
+    <input type="reset" value="reset">
+    <a th:href="@{/visitorslist}" >back</a>
+</form>
+</body>
+</html>
