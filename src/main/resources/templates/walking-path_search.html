@@ -31,7 +31,7 @@
                             <b th:text="${walkingPath.mapList.get(0).time % 60}"></b> 분
                         </th:block>
                         <th:block th:unless="${walkingPath.mapList.get(0).time > 60}">
-                            <b th:text="${walkingPath.mapList.get(0).time}">10</b> 시간
+                            <b th:text="${walkingPath.mapList.get(0).time}">10</b> 분
                         </th:block>
                     </p>
                     <p class="rating">★★★★★</p>
