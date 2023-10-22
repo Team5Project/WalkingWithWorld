@@ -26,6 +26,12 @@ input {
     /* 기타 스타일 속성을 필요에 따라 추가할 수 있습니다. */
 }
 
+input:-webkit-autofill {
+  background-color: transparent !important;
+  	-webkit-box-shadow: 0 0 0 1000px white inset;
+  	box-shadow: 0 0 0 1000px white inset;
+}
+
 /* ----- 헤더 스타일 ----- */
 
 header {
@@ -217,16 +223,6 @@ footer {
     font-size: 20px;
 }
 
-.btn_wp_return {
-    display: block;
-    border-radius: 25px;
-    width: 120px;
-    line-height: 40px;
-    text-align: center;
-    background-color: #d4d9b4;
-    color: #000;
-    font-size: 20px;
-}
 
 .btn_search {
     display: block;
