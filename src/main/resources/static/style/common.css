@@ -166,6 +166,11 @@ footer {
     color: #fff;
 }
 
+.btns:hover {
+    background-color: #c6fc04;
+    transition: 0.6s;
+}
+
 
 .btn_signin {
     background-color: #97bf04;
