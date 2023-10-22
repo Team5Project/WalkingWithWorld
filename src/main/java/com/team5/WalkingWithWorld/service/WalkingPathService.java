@@ -25,6 +25,10 @@ public class WalkingPathService {
         this.mapMapper = mapMapper;
     }
 
+    public List<WalkingPathsMapDTO> getList(SearchDTO dto) {
+        return walkingPathsMapper.pagingList(dto);
+    }
+
 
     public int createWalkingPath(WalkingPathsDTO walkingPathsDTO, FileVo multipartFile, MapDTO mapDTO, String course) throws IOException {
         //산책로

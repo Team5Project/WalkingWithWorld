@@ -6,21 +6,32 @@
 </head>
 <body>
 
+<div id="static_reviews" class="review">
+        <i class="rv-chav left fa-solid fa-circle-chevron-left"></i>
+        <i class="rv-chav right fa-solid fa-circle-chevron-right"></i>
+        <div class="review_none">
+            <p>아직 리뷰가 작성되지 않았습니다.</p>
+            <p>첫 리뷰를 작성해 주세요!</p>
+            <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}" class="btn_write_big">
+                리뷰작성
+            </a>
+        </div>
+</div>
 
 
 <div id="reviews" class="review_content" th:each="review:${reviewList}">
-    <!--    여서부터!-->
+        <!--    여서부터!-->
         <th:block th:if="${#lists.size(review.getPhotosList())>0}">
-        <aside class="images">
-            <figure class="viewer">
-                <img th:src="@{|/ex_images/${review.photosList[0].imgName}|}" src="/images/sample/1.jpg" alt="">
-            </figure>
-            <div class="img_list">
-                <figcaption class="thumb" th:each="photo : ${review.photosList}">
-                    <img th:src="@{|/ex_images/${photo.imgName}|}" src="/images/sample/1.jpg" alt="">
-                </figcaption>
-            </div>
-        </aside>
+            <aside class="images">
+                <figure class="viewer">
+                    <img th:src="@{|/ex_images/${review.photosList[0].imgName}|}" src="/images/sample/1.jpg" alt="">
+                </figure>
+                <div class="img_list">
+                    <figcaption class="thumb" th:each="photo : ${review.photosList}">
+                        <img th:src="@{|/ex_images/${photo.imgName}|}" src="/images/sample/1.jpg" alt="">
+                    </figcaption>
+                </div>
+            </aside>
         </th:block>
         <th:block th:unless="${#lists.size(review.getPhotosList())>0}">
             <aside class="images">
@@ -50,8 +61,8 @@
                 </p>
             </div>
         </article>
-
 </div>
+
 <script>
     let imgRoot = document.querySelectorAll(".images")
     console.log(imgRoot);

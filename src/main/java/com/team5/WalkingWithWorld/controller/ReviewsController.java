@@ -56,21 +56,30 @@ public class ReviewsController {
                                 @PathVariable("walking-paths-id") int id
                                 ) {
 
-        List<ReviewsDTO> list = dao.reviewListById(id);
+        System.out.println(id);
+        List<ReviewsDTO> list = dao.reviewListByWalkingPathsId(id);
 
         for(ReviewsDTO dto:list){
             dto.setPhotosList(photoDao.readReviewPhotos(dto.getId()));
         }
+        System.out.println(list);
 
+        model.addAttribute("walkingPaths", walkingPathService.readWalkingPathById(id));
         model.addAttribute("reviewList", list);
 
+        if(list.isEmpty()){
+            System.out.println("스태틱 리뷰");
+            return "reviews ::#static_reviews";
+        }
+
+        System.out.println("다이나믹 리뷰");
         return "reviews :: #reviews";
     }
 
 
     //리뷰 작성
     @PostMapping("/reviews/{walking-paths-id}/write")
-    public ModelAndView createReview(@Login UsersDto loginUser,
+    public String createReview(@Login UsersDto loginUser,
                                @PathVariable("walking-paths-id") int id,
                                ReviewsDTO reviewsDTO,
                                FileVo files,
@@ -85,7 +94,7 @@ public class ReviewsController {
 
         mav = walkingPathsController.getWalkingPathById(id,request);
 
-        return mav;
+        return "redirect:/walking-path/"+id;
     }
 
     @GetMapping("/reviews/delete")

@@ -8,10 +8,13 @@ import lombok.ToString;
 @Setter
 @ToString
 public class SearchDTO {
-    private String location;
+    private String[] location;
     private int minTime;
     private int maxTime;
     private int minDistance;
     private int maxDistance;
     private String keyword;
+
+    private int pageNum;
+    private int pageSize;
 }

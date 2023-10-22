@@ -1,5 +1,6 @@
 package com.team5.WalkingWithWorld.controller;
 
+import com.github.pagehelper.PageHelper;
 import com.team5.WalkingWithWorld.dao.MapMapper;
 import com.team5.WalkingWithWorld.dao.PhotosMapper;
 import com.team5.WalkingWithWorld.dao.WalkingPathsMapper;
@@ -26,6 +27,21 @@ public class WalkingPathsController {
     MapMapper mapDao;
     @Autowired
     WalkingPathService walkingPathService;
+
+    //페이징 확인
+    @GetMapping("/walking-paths-test")
+    @ResponseBody
+    public List<WalkingPathsMapDTO> getPagingWalkingPathList(
+            SearchDTO dto,
+            @RequestParam(required = false) int pageNum,
+            @RequestParam(required = false) int size){
+        PageInfo page = new PageInfo(pageNum, size);
+
+        PageHelper.startPage(dto);
+        com.github.pagehelper.PageInfo.of(walkingPathService.getList(dto));
+
+        return walkingPathService.getList(dto);
+    }
 
     // 전체 리스트
     @GetMapping("/walking-path")
@@ -67,7 +83,8 @@ public class WalkingPathsController {
             dto.setMapList(mapDao.ReadMap(dto.getId()));
         }
         model.addAttribute("walkingPathList", walkingPathMapList);
-        return "walking-path_list :: #walking-path-list";
+        model.addAttribute("keyword", searchWord);
+        return "walking-path_search :: #walking-path-list";
     }
 
     @PostMapping("/walking-path/search")
@@ -95,7 +112,9 @@ public class WalkingPathsController {
     public ModelAndView goToModify(@PathVariable("walking-path-id") int walkingPathId, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
         mav.addObject("referer", request.getHeader("referer"));
-        mav.addObject("walkingPath", dao.readWalkingPath(walkingPathId));
+        WalkingPathsMapDTO walkingPathsMapDTO = dao.readWalkingPath(walkingPathId);
+        walkingPathsMapDTO.setMapList(mapDao.ReadMap(walkingPathsMapDTO.getId()));
+        mav.addObject("walkingPath", walkingPathsMapDTO);
         mav.setViewName("walking-path_modify_form");
         return mav;
     }
@@ -136,9 +155,9 @@ public class WalkingPathsController {
         return photoDao.readPhotos(id);
     }
     @GetMapping("/walking-path/delete/{walking-path-id}")
-    public String deleteWalkingPathById(@PathVariable("walking-path-id") int id) {
-        int result = dao.deleteWalkingPath(id);
-        System.out.println(result);
+    public String deleteWalkingPathById(@PathVariable("walking-path-id") String id) {
+        int result = dao.deleteWalkingPath(Integer.parseInt(id));
+        System.out.println("게시글 삭제 : " + result);
         return "redirect:/walking-path";
     }
 }
