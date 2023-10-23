@@ -4,16 +4,17 @@
 
 }
 
-h3{
-    width: 940px;
-    margin-bottom: 20px;
+.visitors_list_header{
+    margin-top: 60px;
+    margin-left: 20%;
+    font-size: 20px;
 }
 
 section{
     display : flex;
     flex-direction: column;
     align-items: center;
-    margin: 100px auto;
+    margin: 60px auto;
 }
 
 .vwrapper{
@@ -47,13 +48,14 @@ section{
     width:100%;
     display: block;
     background-color: #ccc;
-    padding: 10px;
+    padding: 0px 10px 5px 10px;
     height: 3.5em;
 
 }
 .visitor_footer{
     display: flex;
     justify-content: space-between;
+    margin-bottom: 10px;
 }
 .visitor_mod{
     display: flex;

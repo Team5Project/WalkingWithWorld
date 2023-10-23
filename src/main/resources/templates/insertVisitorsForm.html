@@ -16,6 +16,9 @@
     <hr class="header_hr">
 
     <main>
+        <div class="visitors_write_header">
+            게시글 작성
+        </div>
         <section>
             <div class="visitors_write_wrap">
                 <aside class="visitor_logo">
@@ -26,7 +29,7 @@
                         <form method="post" action="/insertVisitors">
                             <p class="inline_insert">
                                 <label for="visitor_name_input">작성자명</label>
-                                <input type="text" name="name" placeholder="작성자명" id="visitor_name_input" required><br>
+                                <input type="text" name="name" placeholder="작성자명" id="visitor_name_input" maxlength="10" required><br>
                             </p>
                             <p class="inline_insert">
                                 <label for="visitor_password_input">비밀번호</label>

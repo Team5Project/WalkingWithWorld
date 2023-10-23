@@ -3,6 +3,13 @@ section{
     flex-direction: column;
     align-items: center;
 }
+
+.visitors_write_header{
+    margin-top: 60px;
+    margin-left: 20%;
+    font-size: 20px;
+}
+
 .visitors_write_wrap{
     font-size: 20px;
     display: flex;
