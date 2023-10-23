@@ -26,6 +26,10 @@ input {
     /* 기타 스타일 속성을 필요에 따라 추가할 수 있습니다. */
 }
 
+input:focus {
+    outline: none;
+}
+
 input:-webkit-autofill {
     background-color: transparent !important;
     -webkit-box-shadow: 0 0 0 1000px white inset;

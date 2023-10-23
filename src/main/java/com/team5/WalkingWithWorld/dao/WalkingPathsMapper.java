@@ -19,7 +19,10 @@ public interface WalkingPathsMapper {
     int addWalkingPath(WalkingPathsDTO dto);
 
     @Select("select id, users_id, title, addr, created_at, created_by, modified_at, modified_by from walking_paths where id = #{walkingPathId}")
-    WalkingPathsMapDTO readWalkingPath(int WalkingPathId);
+    WalkingPathsMapDTO readWalkingPathMap(int WalkingPathId);
+
+    @Select("select id, users_id, title, addr, created_at, created_by, modified_at, modified_by from walking_paths where id = #{walkingPathId}")
+    WalkingPathsDTO readWalkingPath(int WalkingPathId);
 
     @Select("select id, users_id, title, addr, created_at, created_by, modified_at, modified_by " +
             "from walking_paths where title like concat('%', #{keyword}, '%') or addr like concat('%', #{keyword}, '%') order by created_at desc")

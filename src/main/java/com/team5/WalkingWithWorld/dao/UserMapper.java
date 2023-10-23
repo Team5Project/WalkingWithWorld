@@ -1,7 +1,7 @@
 package com.team5.WalkingWithWorld.dao;
 
 import com.team5.WalkingWithWorld.domain.LoginDto;
-import com.team5.WalkingWithWorld.domain.UsersDto;
+import com.team5.WalkingWithWorld.domain.UsersDTO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -13,12 +13,12 @@ public interface UserMapper {
 
     //로그인
     @Select("select * from users where email = #{email} and password=#{password}")
-    public UsersDto getUser(LoginDto loginDto);
+    public UsersDTO getUser(LoginDto loginDto);
 
     @Select("select * from users")
-    public List<UsersDto> getUsers();
+    public List<UsersDTO> getUsers();
     @Select("select * from users where id = ${userId}") // createWalkingPath()에서 사용
-    public UsersDto getUserById(int userId);
+    public UsersDTO getUserById(int userId);
     @Insert("insert into users values (null,#{name},#{password},#{email},#{addr})")
-    public boolean createUser(UsersDto userDto);
+    public boolean createUser(UsersDTO userDto);
 }
