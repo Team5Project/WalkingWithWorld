@@ -18,8 +18,11 @@ public interface ReviewsMapper {
     @Options(useGeneratedKeys = true,keyProperty = "id")
     public boolean insertReviews (ReviewsDTO vo);
 
-    @Delete("delete from reviews where id = #{id}")
-    public boolean deleteReviews (int id);
+    @Select("select * from reviews where id = #{id} and users_id = #{userId}")
+    public ReviewsDTO getReviewByIdAndReferenceUserId(int id, int userId);
+
+    @Delete("delete from reviews where id = #{id} and users_id = #{userId}")
+    public boolean deleteReviews (int id, int userId);
 
     @Update("update reviews set content = #{content}, modified_at = #{modifiedAt}, modified_by = #{modifiedBy} " +
             "where id = #{id}")

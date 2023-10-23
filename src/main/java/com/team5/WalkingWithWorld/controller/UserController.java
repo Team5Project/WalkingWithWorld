@@ -1,7 +1,7 @@
 package com.team5.WalkingWithWorld.controller;
 
 import com.team5.WalkingWithWorld.domain.LoginDto;
-import com.team5.WalkingWithWorld.domain.UsersDto;
+import com.team5.WalkingWithWorld.domain.UsersDTO;
 import com.team5.WalkingWithWorld.global.Login;
 import com.team5.WalkingWithWorld.global.SessionConst;
 import com.team5.WalkingWithWorld.service.UserService;
@@ -12,8 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 public class UserController {
@@ -27,14 +25,17 @@ public class UserController {
     @GetMapping("/login")
     public String loginIndex(@RequestParam(defaultValue = "/") String redirectURL,
                              Model model,
-                             HttpSession session) {
+                             HttpSession session,
+                             HttpServletRequest request) {
         model.addAttribute("redirectURL", redirectURL);
+
+        System.out.println(request.getHeader("Referer"));
 
         return "login_Form";
     }
 
     @GetMapping("/logout")
-    public String logoutIndex(@Login UsersDto usersDto,
+    public String logoutIndex(@Login UsersDTO usersDto,
                               HttpSession session) {
         if (usersDto != null) {
             session.invalidate();
@@ -53,7 +54,7 @@ public class UserController {
             return "login_Form";
         }
 
-        UsersDto user = userService.getUserInfo(loginDto);
+        UsersDTO user = userService.getUserInfo(loginDto);
         if (user == null) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
             System.out.println("아이디 또는 패스워드 오류");
@@ -80,7 +81,7 @@ public class UserController {
 
     @PostMapping("/signup")
     @Valid
-    public String signUpUser(UsersDto usersDto) {
+    public String signUpUser(UsersDTO usersDto) {
         boolean user = userService.createUser(usersDto);
         System.out.println(user);
         return "login_Form";

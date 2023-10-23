@@ -2,7 +2,7 @@ package com.team5.WalkingWithWorld.controller;
 
 import com.team5.WalkingWithWorld.dao.CommentsMapper;
 import com.team5.WalkingWithWorld.domain.CommentsDTO;
-import com.team5.WalkingWithWorld.domain.UsersDto;
+import com.team5.WalkingWithWorld.domain.UsersDTO;
 import com.team5.WalkingWithWorld.global.Login;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class CommentsController {
 
     @PostMapping(value = "/comments/{walking-paths-id}",produces = "application/json; charset=utf-8")
     public String writeComment(@RequestBody CommentsDTO dto,
-                               @Login UsersDto usersDto,
+                               @Login UsersDTO usersDto,
                                @PathVariable("walking-paths-id") int id,
                                Model model,
                                HttpServletRequest request) {

@@ -49,8 +49,8 @@
                 </div>
                 <th:block th:if="${session.auth!=null && session.auth.getName()== review.createdBy}">
                     <div class="up_del">
-                        <span class="info_modi">수정</span>
-                        <span class="info_del">삭제</span>
+                        <span class="info_modi" th:onclick="|modifiedReview(${review.getId()})|">수정</span>
+                        <span class="info_del" th:onclick="|deleteReview(${review.getId()})|">삭제</span>
                     </div>
                 </th:block>
             </div>

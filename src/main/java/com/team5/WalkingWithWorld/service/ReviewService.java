@@ -5,10 +5,13 @@ import com.team5.WalkingWithWorld.dao.ReviewsMapper;
 import com.team5.WalkingWithWorld.domain.FileVo;
 import com.team5.WalkingWithWorld.domain.PhotosDTO;
 import com.team5.WalkingWithWorld.domain.ReviewsDTO;
+import com.team5.WalkingWithWorld.global.exception.BusinessLogicException;
+import com.team5.WalkingWithWorld.global.exception.ExceptionCode;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class ReviewService {
@@ -39,5 +42,30 @@ public class ReviewService {
             photosMapper.addReviewPhotos(photosDTO);
         }
         return reviewDTO.getId();
+    }
+
+    public ReviewsDTO updateReview(int id, int loginId,ReviewsDTO reviewsDTO, FileVo multipartFile) throws IOException {
+        ReviewsDTO review = reviewsMapper.getReviewByIdAndReferenceUserId(id,loginId);
+
+
+        if(reviewsDTO.getContent() != null && !reviewsDTO.getContent().isEmpty()){
+            review.setContent(reviewsDTO.getContent());
+        } else{
+            System.out.println("비어있습니다.");
+        }
+
+        Map<String, String> filesName = fileUpload.upload(multipartFile);
+
+        PhotosDTO photosDTO = new PhotosDTO();
+        photosDTO.setReviewsId(review.getId());
+        System.out.println(review.getId());
+        photosDTO.setWalkingPathsId(review.getWalkingPathsId());
+        for(Map.Entry<String,String> entry:filesName.entrySet()){
+            photosDTO.setImgName(entry.getKey());
+            photosDTO.setImgPath(entry.getValue());
+            photosMapper.addReviewPhotos(photosDTO);
+        }
+        reviewsMapper.updateReviews(review);
+        return review;
     }
 }
