@@ -118,6 +118,6 @@ public class WalkingPathService {
             walkingPathsFromDB.setAddr(walkingPathsDTO.getAddr());
         walkingPathsFromDB.setModifiedBy(userName);
 
-        System.out.println("수정되었습니다. : " + (walkingPathsMapper.updateWalkingPath(walkingPathsFromDB)  == 1));
+        walkingPathsMapper.updateWalkingPath(walkingPathsFromDB);
     }
 }

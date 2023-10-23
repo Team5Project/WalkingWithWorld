@@ -60,7 +60,7 @@
 <!--맵 API-->
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d753200077e444dd40df1e458903dfd3"></script>
-<th:block th:unless="${#lists.size(walkingPath.mapList) > 0}">
+<th:block th:unless="${walkingPath.mapList}">
     <script th:inline="javascript">
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div
             mapOption = {
@@ -70,7 +70,7 @@
         var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
     </script>
 </th:block>
-<th:block th:if="${#lists.size(walkingPath.mapList) > 0}">
+<th:block th:if="${walkingPath.mapList}">
     <script th:inline="javascript">
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div
             mapOption = {

@@ -76,18 +76,19 @@ public class WalkingPathsController {
 
     //산책로 작성
     @PostMapping("/walking-path")
-    public ModelAndView createWalkingPath(WalkingPathsDTO dto,
-                                          @Login UsersDTO loginUser, FileVo files, MapDTO mapDTO, String course) throws IOException {
-        ModelAndView mav = new ModelAndView();
+    public String createWalkingPath(WalkingPathsDTO dto,
+                                          @Login UsersDTO loginUser, FileVo files, MapDTO mapDTO, String course, Model model) throws IOException {
         int result = walkingPathService.createWalkingPath(dto, loginUser, files, mapDTO, course);
-        mav.setViewName("redirect:/walking-path/" + result);
 
         if(result == -1) {
-            System.out.println("게시글 생성 실패");
-            mav.setViewName("redirect:/walking-path");
+            model.addAttribute("url", "/walking-path");
+            model.addAttribute("message", "게시글 작성을 실패하였습니다.");
         }
-
-        return mav;
+        else {
+            model.addAttribute("url", "/walking-path/" + result);
+            model.addAttribute("message", "게시글이 작성되었습니다.");
+        }
+        return "message";
     }
 
     // 산책로 수정 폼으로 이동(walking-path-id 참조)
@@ -97,7 +98,7 @@ public class WalkingPathsController {
 
         WalkingPathsMapDTO walkingPathsMapDTO = walkingPathService.readWalkingPathById(walkingPathId);
         if(walkingPathsMapDTO == null) {
-            System.out.println("해당 게시글을 찾을 수 없습니다.");
+            System.out.println("존재하지 않는 데이터 접근");
             mav.setViewName("redirect:/walking-path");
             return mav;
         }
@@ -110,14 +111,17 @@ public class WalkingPathsController {
 
     // 산책로 수정
     @PostMapping("/walking-path/modify")
-    public String modifyWalkingPath(WalkingPathsDTO walkingPathsDTO, @Login UsersDTO loginUser) {
+    public String modifyWalkingPath(WalkingPathsDTO walkingPathsDTO, @Login UsersDTO loginUser, Model model) {
         if(loginUser.getId() != walkingPathsMapper.readWalkingPath(walkingPathsDTO.getId()).getUsersId()) {
-            System.out.println("미인증 사용자 입니다.");
-            return "redirect:/walking-path/" + walkingPathsDTO.getId();
+            model.addAttribute("url", "/walking-path/" + walkingPathsDTO.getId());
+            model.addAttribute("message", "수정권한이 없습니다.");
+            return "message";
         }
 
         walkingPathService.modifyWalkingPathWithUserName(walkingPathsDTO, loginUser.getName());
-        return "redirect:/walking-path/"  + walkingPathsDTO.getId();
+        model.addAttribute("url", "/walking-path/"  + walkingPathsDTO.getId());
+        model.addAttribute("message", "게시글이 수정되었습니다.");
+        return "message";
     }
 
     //산책로 하나 조회
@@ -127,7 +131,7 @@ public class WalkingPathsController {
 
         WalkingPathsMapDTO walkingPaths = walkingPathService.readWalkingPathById(id);
         if(walkingPaths == null) {
-            System.out.println("검색 결과 없음");
+            System.out.println("존재하지 않는 데이터 접근");
             mav.setViewName("redirect:/walking-path");
             return mav;
         }
@@ -140,14 +144,17 @@ public class WalkingPathsController {
     // 산책로 삭제
     @GetMapping("/walking-path/delete/{walking-path-id}")
     public String deleteWalkingPathById(@PathVariable("walking-path-id") int id,
-                                        @Login UsersDTO login) {
+                                        @Login UsersDTO login, Model model) {
 
-        if(login.getId() != walkingPathsMapper.readWalkingPath(id).getUsersId()){
-            System.out.println("미인증 사용자 입니다");
-            return "redirect:/walking-path/"+id;
+        if(walkingPathsMapper.readWalkingPathMap(id) == null || login.getId() != walkingPathsMapper.readWalkingPath(id).getUsersId()){
+            model.addAttribute("message", "삭제 권한이 없거나 존재하지 않는 게시글입니다.");
+            model.addAttribute("url", "/walking-path/"+id);
+            return "message";
         }
 
-        System.out.println("게시글 삭제 결과 : " + walkingPathsMapper.deleteWalkingPath(id));
-        return "redirect:/walking-path";
+        walkingPathsMapper.deleteWalkingPath(id);
+        model.addAttribute("message", "삭제되었습니다.");
+        model.addAttribute("url", "/walking-path");
+        return "message";
     }
 }
