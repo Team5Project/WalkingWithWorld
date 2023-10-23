@@ -68,3 +68,11 @@ section{
     display: flex;
     justify-content: end;
 }
+
+.btn_vwrite{
+        width: 200px;
+        line-height: 40px;
+        background-color: #97bf04;
+        font-size: 20px;
+}
+

@@ -26,21 +26,21 @@
                         <form method="post" action="/insertVisitors">
                             <p class="inline_insert">
                                 <label for="visitor_name_input">작성자명</label>
-                                <input type="text" name="visitor_name_input" placeholder="작성자" id="visitor_name_input" required><br>
+                                <input type="text" name="name" placeholder="작성자명" id="visitor_name_input" required><br>
                             </p>
                             <p class="inline_insert">
                                 <label for="visitor_password_input">비밀번호</label>
-                                <input type="text" name="visitor_password_input" placeholder="비밀번호" id="visitor_password_input"required><br>    
+                                <input type="text" name="password" placeholder="비밀번호" id="visitor_password_input"required><br>
                             </p>
                             <p class="inline_textarea">
                                 <label for="visitor_content_input">내용</label>
-                                <textarea name="visitor_content_input" id="visitor_content_input" required>
+                                <textarea name="content" id="visitor_content_input" required>
                                 </textarea>
                             </p>
                             <div class="visitor_mod">
-                                    <input type="submit" value="등록" class="btns btns_vsubmit">
-                                    <input type="reset" value="reset" class="btns btns_vreset">
-                                    <a th:href="@{/visitorslist}" class="btns btns_vback">back</a>
+                                <a th:href="@{/visitorslist}" class="btns btn_vback">이전화면</a>
+                                <input type="reset" value="초기화" class="btns btn_vreset">
+                                <input type="submit" value="등록" class="btns btn_vsubmit">
                             </div>
                         </form>
                     </div>

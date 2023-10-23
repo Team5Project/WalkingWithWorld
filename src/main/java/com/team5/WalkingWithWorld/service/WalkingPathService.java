@@ -44,6 +44,7 @@ public class WalkingPathService {
                 mapMapper.addMap(mapDTO);
             }
         }
+
         //산책로 이미지
         Map<String, String> filesName = fileUpload.upload(multipartFile);
 

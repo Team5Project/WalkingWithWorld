@@ -34,7 +34,6 @@
                         <div class="visitor_footer">
                             <p class="vcreatedAt">[[${vo.createdAt}]]</p>
                             <div class="visitor_mod">
-                                <p class="btns btn_comments" th:onclick="|deleteVisitorList(${vo.getId()})|">수정</p>
                                 <p class="btns btn_vdelete" th:onclick="|deleteVisitorList(${vo.getId()})|">삭제</p>
                             </div>
                         </div>
@@ -42,7 +41,7 @@
                 </article>
             </div>
             <div class="btn_write_wrapper">
-                <a th:href="@{/insertVisitorsForm}" class="visitor_write btn_signin">글쓰기</a>
+                <a th:href="@{/insertVisitorsForm}" class="visitor_write btns btn_vwrite">글쓰기</a>
             </div>
         </section>
     </main>

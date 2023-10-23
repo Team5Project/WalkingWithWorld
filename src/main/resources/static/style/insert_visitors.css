@@ -7,15 +7,18 @@ section{
     font-size: 20px;
     display: flex;
     width: 900px;
+    align-items: center;
+    padding-top: 70px;
+    padding-bottom: 70px;
 }
 
 .visitors_write_wrap aside,
 .visitors_write_wrap article{
     width: 50%;
 }
-.visitors_write_wrap aside{
+/*.visitors_write_wrap aside{
     vertical-align: middle;
-}
+}*/
 .visitor_logo{
     text-align: center;
 }
@@ -60,4 +63,27 @@ textarea{
 .visitor_mod{
     display: flex;
     justify-content: end;
+    gap:10px;
 }
+
+.btn_vback{
+        width: 80px;
+        line-height: 40px;
+        background-color: #97bf04;
+        font-size: 20px;
+}
+
+.btn_vreset{
+        width: 80px;
+        line-height: 40px;
+        background-color: #d4d9b4;
+        font-size: 20px;
+}
+
+.btn_vsubmit{
+        width: 80px;
+        line-height: 40px;
+        background-color: #97bf04;
+        font-size: 20px;
+}
+
