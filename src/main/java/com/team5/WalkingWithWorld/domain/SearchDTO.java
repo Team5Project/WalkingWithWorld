@@ -8,7 +8,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class SearchDTO {
-    private String location;
+    private String[] location;
     private int minTime;
     private int maxTime;
     private int minDistance;
