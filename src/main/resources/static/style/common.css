@@ -242,9 +242,20 @@ footer {
     background-color: #97bf04;
     margin: 0 auto;
     font-size: 20px;
+    border-radius: 10px;
+}
+
+.btn_vdelete{
+    border-radius: 25px;
+    width: 80px;
+    line-height: 32px;
+    text-align: center;
+    color:#000;
+    background-color: #d4d9b4;
 }
 
 .btn_wp_return {
     background-color: #d4d9b4;
     color: #666;
 }
+

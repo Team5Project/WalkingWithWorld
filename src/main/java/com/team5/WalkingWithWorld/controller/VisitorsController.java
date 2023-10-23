@@ -37,13 +37,13 @@ public class VisitorsController {
             return mav;
         }else{
             mav.addObject("list", dao.visitorslist());
-            mav.addObject("message", "비밀번호가 다릅니다");
+            mav.addObject("message", "비밀번호가 일치하지 않습니다.");
             mav.setViewName("visitorView::#deleteList");
         }
         return mav;
     }
 
-    @RequestMapping(value="/insertVisitors")
+    @PostMapping("/insertVisitors")
     public ModelAndView insert(VisitorsDTO dto){
         boolean result=dao.insertVisitors(dto);
         ModelAndView mav=new ModelAndView();

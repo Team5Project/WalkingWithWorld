@@ -15,18 +15,36 @@
 <body>
     <header th:replace="fragments/header :: header"></header>
     <hr class="header_hr">
+
     <main>
-        <div id="article">
-            <section id="deleteList">
-                <div class="vwrapper" th:each="vo : ${list}">
-                    <p class="vname">[[${vo.name}]]</p>
-                    <p class="vcontent">[[${vo.content}]]</p>
-                    <p class="vcreatedAt">[[${vo.createdAt}]]</p>
-                    <p class="delete-link" th:onclick="|deleteVisitorList(${vo.getId()})|">삭제</p>
-                </div>
-            </section>
-        </div>
-        <a th:href="@{/insertVisitorsForm}" class="btn_signin">go</a>
+
+        <section>
+            <h3>자유게시판</h3>
+            <div id="article">
+                <article id="deleteList">
+                    <div class="vwrapper" th:each="vo : ${list}">
+                        <div class="visit_header">
+                            <span>작성자</span>
+                            <span>내용</span>
+                        </div>
+                        <div class="visitor_body">
+                            <p class="vname">[[${vo.name}]]</p>
+                            <p class="vcontent">[[${vo.content}]]</p>
+                        </div>
+                        <div class="visitor_footer">
+                            <p class="vcreatedAt" th:text="${#temporals.format(vo.createdAt, 'yyyy년 MM월 dd일 HH:mm')}"></p>
+                            <!--<p th:text="${#temporals.format(orderDto.orderDate, 'yy-mm-dd HH:mm')}"></p>-->
+                            <div class="visitor_mod">
+                                <p class="btns btn_vdelete" th:onclick="|deleteVisitorList(${vo.getId()})|">삭제</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <div class="btn_write_wrapper">
+                <a th:href="@{/insertVisitorsForm}" class="visitor_write btns btn_vwrite">글쓰기</a>
+            </div>
+        </section>
     </main>
     <footer th:replace="fragments/header :: footer"></footer>
 
