@@ -34,7 +34,14 @@ input:-webkit-autofill {
     background-color: transparent !important;
     -webkit-box-shadow: 0 0 0 1000px white inset;
     box-shadow: 0 0 0 1000px white inset;
-      font-family: inherit;
+    font-family: inherit;
+}
+
+input:-webkit-autofill:active {
+    background-color: transparent !important;
+    -webkit-box-shadow: 0 0 0 1000px white inset;
+    box-shadow: 0 0 0 1000px white inset;
+    font-family: inherit;
 }
 
 /* ----- 헤더 스타일 ----- */
@@ -79,12 +86,17 @@ nav a {
 
 /* 로그인 상태 */
 .profile_image {
-    display: inline-block;
+    display: block;
     border-radius: 50%;
     width: 40px;
     height: 40px;
-    background-color: #ccc;
     margin-right: 10px;
+    background-color: #97bf04;
+    background-image: url(/images/profile_thumb.svg);
+    background-position: center center;
+    background-size: 50%;
+    background-repeat: no-repeat;
+
 }
 
 .name {
@@ -172,7 +184,7 @@ footer {
 }
 
 .btns:hover {
-    background-color: #c6fc04;
+    background-color: #A8DE33;
     transition: 0.6s;
 }
 
@@ -210,7 +222,8 @@ footer {
     width: 80px;
     line-height: 32px;
     background-color: #97bf04;
-    color: #000;
+    color: #fff;
+
 }
 
 .btn_path_submit {
@@ -246,17 +259,17 @@ footer {
     border-radius: 10px;
 }
 
-.btn_vdelete{
+.btn_vdelete {
     border-radius: 25px;
     width: 80px;
     line-height: 32px;
     text-align: center;
-    color:#000;
+    color: #000;
     background-color: #d4d9b4;
 }
 
 .btn_wp_return {
     background-color: #d4d9b4;
     color: #666;
+    font-size: 20px;
 }
-

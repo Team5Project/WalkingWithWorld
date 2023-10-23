@@ -4,311 +4,337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>walking-path</title>
+    <title>WWW - Walking Path</title>
+    <!-- 파비콘 및 메타 데이터 설정 -->
+    <link rel="apple-touch-icon" th:href="@{/favicon/apple-touch-icon.png}" sizes="180x180">
+    <link rel="icon" type="image/png" th:href="@{/favicon/favicon-32x32.png}" sizes="32x32">
+    <link rel="icon" type="image/png" th:href="@{/favicon/favicon-16x16.png}" sizes="16x16">
+    <link rel="manifest" th:href="@{/favicon/site.webmanifest}">
+    <link rel="mask-icon" th:href="@{/favicon/safari-pinned-tab.svg}" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#00aba9">
+    <meta name="theme-color" content="#ffffff">
+    <!-- 파비콘 끝 -->
     <link rel="stylesheet" href="/style/reset.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/style/common.css">
     <link rel="stylesheet" href="/style/waking_path.css">
 </head>
+
 <body>
-<header th:replace="fragments/header :: header"></header>
-<hr class="header_hr">
-<main>
-    <section>
-        <aside class="category">
-            <div class="cat_location">
+    <header th:replace="fragments/header :: header"></header>
+    <hr class="header_hr">
+    <main>
+        <section>
+            <aside class="category">
                 <div class="cat_location">
-                    <h3>지역</h3>
-                    <div class="cat_location_list">
-                        <p id="location_check_all">
-                            <i class="check_all_i fa-solid fa-circle-check"></i>
-                            서울 전체
-                        </p>
-                        <p>
-                            <input type="checkbox" name="location" value="강남구" class="location_check" id="radio_gangnam">
-                            <label for="radio_gangnam" class="location_name">
-                                <i class="fa-solid fa-circle-check"></i>
-                                강남구
-                            </label>
-                        </p>
-                        <p>
-                            <input type="checkbox" name="location" value="강동구" class="location_check" id="radio_gangdong">
-                            <label for="radio_gangdong" class="location_name">
-                                <i class="fa-solid fa-circle-check"></i>
-                                강동구
-                            </label>
-                        </p>
-                        <p>
-                            <input type="checkbox" name="location" value="관악구" class="location_check" id="radio_Gwanak">
-                            <label for="radio_Gwanak" class="location_name">
-                                <i class="fa-solid fa-circle-check"></i>
-                                관악구
-                            </label>
-                        </p>
-                        <p>
-                            <input type="checkbox" name="location" value="송파구" class="location_check" id="radio_songpa">
-                            <label for="radio_songpa" class="location_name">
-                                <i class="fa-solid fa-circle-check"></i>
-                                송파구
-                            </label>
-                        </p>
-                        <p>
-                            <input type="checkbox" name="location" value="종로구" class="location_check" id="radio_jongro">
-                            <label for="radio_jongro" class="location_name">
-                                <i class="fa-solid fa-circle-check"></i>
-                                종로구
-                            </label>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <hr class="cat_hr">
-            <div class="cat_time">
-                <h3>산책 시간</h3>
-                <div class="cat_time_range multi-range-slider">
-                    <p id="showtime"></p>
-                    <!-- 입력 받을 슬라이더 -->
-                    <input type="range" name="minTime" id="minTime" value="0" min="0" max="300" step="10" onchange="set()" />
-                    <input type="range" name="maxTime" id="maxTime" value="300" min="0" max="300" step="10" onchange="set()" />
-                    <!-- 양방향 슬라이더 보여주기 -->
-                    <div class="slider">
-                        <div class="track"></div>
-                        <div class="range"></div>
-                        <div class="thumb left"></div>
-                        <div class="thumb right"></div>
-                    </div>
-                </div>
-            </div>
-            <hr class="cat_hr">
-            <div class="cat_distance">
-                <h3>거리</h3>
-                <div class="cat_distance_range multi-range-slider">
-                    <p id="show-distance"></p>
-                    <!-- 입력 받을 슬라이더 -->
-                    <input type="range" name="minDistance" id="minDistance" value="0" min="0" max="20000" step="100"
-                           onchange="setDistance()" />
-                    <input type="range" name="maxDistance" id="maxDistance" value="20000" min="0" max="20000" step="100"
-                           onchange="setDistance()" />
-                    <!-- 양방향 슬라이더 보여주기 -->
-                    <div class="distance-slider">
-                        <div class="track"></div>
-                        <div class="range"></div>
-                        <div class="thumb left"></div>
-                        <div class="thumb right"></div>
-                    </div>
-                </div>
-            </div>
-            <hr class="cat_hr">
-            <input class="btns btn_cat" input type="button" th:data-word="${keyword}" th:onclick="searchWalkingPath(this.getAttribute('data-word'))" value="검색하기">
-        </aside>
-        <article id="walking-path">
-            <div id="walking-path_wrapper">
-                <h3 th:if="${keyword}" th:text="|'${keyword}' 검색 결과입니다.|"></h3>
-                <h3 th:text="|검색 결과 ${#lists.size(walkingPathList)}건|"></h3>
-                <div class="path_list" th:each="walkingPath:${walkingPathList}">
-                    <div class="path_wrapper">
-                        <a class="path_img" th:href="@{|/walking-path/${walkingPath.getId()}|}">
-                            <img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}" th:src="@{|/ex_images/${walkingPath.getPhotosList().get(0).getImgName()}|}" alt="">
-                            <img th:unless="${#lists.size(walkingPath.getPhotosList()) > 0}" th:src="@{/images/noimage.png}" alt="">
-                        </a>
-                        <div class="path_content">
-                            <a th:text="${walkingPath.title}" th:href="@{|/walking-path/${walkingPath.getId()}|}" class="path_title">제목</a>
-                            <address th:text="${walkingPath.addr}">주소</address>
-                            <p class="path_dtinfo" th:if="${#lists.size(walkingPath.mapList) > 0}">
-                                <th:block th:if="${walkingPath.mapList.get(0).distance > 1000}">
-                                    <b th:text="${#numbers.formatDecimal(walkingPath.mapList.get(0).distance/1000,2,2)}">10</b> Km
-                                </th:block>
-                                <th:block th:unless="${walkingPath.mapList.get(0).distance > 1000}">
-                                    <b th:text="${walkingPath.mapList.get(0).distance}"></b> Km
-                                </th:block>
-                                |
-                                <th:block th:if="${walkingPath.mapList.get(0).time > 60}">
-                                    <b th:text="${walkingPath.mapList.get(0).time / 60}"></b> 시간
-                                    <b th:text="${walkingPath.mapList.get(0).time % 60}"></b> 분
-                                </th:block>
-                                <th:block th:unless="${walkingPath.mapList.get(0).time > 60}">
-                                    <b th:text="${walkingPath.mapList.get(0).time}"></b> 분
-                                </th:block>
+                    <div class="cat_location">
+                        <h3>지역</h3>
+                        <div class="cat_location_list">
+                            <p id="location_check_all">
+                                <i class="check_all_i fa-solid fa-circle-check"></i>
+                                서울 전체
                             </p>
-                            <p class="rating">★★★★★</p>
-                        </div>
-                        <div class="path_auth">
-                            <p th:text="${walkingPath.createdBy}">작성자</p>
-                            <p th:text="${walkingPath.createdAt}">날짜</p>
+                            <p>
+                                <input type="checkbox" name="location" value="강남구" class="location_check"
+                                    id="radio_gangnam">
+                                <label for="radio_gangnam" class="location_name">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    강남구
+                                </label>
+                            </p>
+                            <p>
+                                <input type="checkbox" name="location" value="강동구" class="location_check"
+                                    id="radio_gangdong">
+                                <label for="radio_gangdong" class="location_name">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    강동구
+                                </label>
+                            </p>
+                            <p>
+                                <input type="checkbox" name="location" value="관악구" class="location_check"
+                                    id="radio_Gwanak">
+                                <label for="radio_Gwanak" class="location_name">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    관악구
+                                </label>
+                            </p>
+                            <p>
+                                <input type="checkbox" name="location" value="송파구" class="location_check"
+                                    id="radio_songpa">
+                                <label for="radio_songpa" class="location_name">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    송파구
+                                </label>
+                            </p>
+                            <p>
+                                <input type="checkbox" name="location" value="종로구" class="location_check"
+                                    id="radio_jongro">
+                                <label for="radio_jongro" class="location_name">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    종로구
+                                </label>
+                            </p>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="path_ctrl">
-                <a th:href="@{/walking-path}" class="btns btn_wp_return">전체목록</a>
-                <p class="pagenation">&lt;&lt; &lt; 1 2 3 4 5 &gt; &gt;&gt;</p>
-                <a th:if="${session.auth != null}" th:href="@{/walking-path/write}" class="btns btn_path_submit">산책로 등록</a>
-                <a th:if="${session.auth == null}" th:href="@{'/login?redirectURL=/walking-path'}" class="btns btn_path_submit">산책로 등록</a>
-            </div>
-        </article>
-    </section>
-</main>
-<footer th:replace="fragments/header :: footer"></footer>
+                <hr class="cat_hr">
+                <div class="cat_time">
+                    <h3>소요 시간</h3>
+                    <div class="cat_time_range multi-range-slider">
+                        <p id="showtime"></p>
+                        <!-- 입력 받을 슬라이더 -->
+                        <input type="range" name="minTime" id="minTime" value="0" min="0" max="300" step="10"
+                            onchange="set()" />
+                        <input type="range" name="maxTime" id="maxTime" value="300" min="0" max="300" step="10"
+                            onchange="set()" />
+                        <!-- 양방향 슬라이더 보여주기 -->
+                        <div class="slider">
+                            <div class="track"></div>
+                            <div class="range"></div>
+                            <div class="thumb left"></div>
+                            <div class="thumb right"></div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="cat_hr">
+                <div class="cat_distance">
+                    <h3>거리</h3>
+                    <div class="cat_distance_range multi-range-slider">
+                        <p id="show-distance"></p>
+                        <!-- 입력 받을 슬라이더 -->
+                        <input type="range" name="minDistance" id="minDistance" value="0" min="0" max="20000" step="100"
+                            onchange="setDistance()" />
+                        <input type="range" name="maxDistance" id="maxDistance" value="20000" min="0" max="20000"
+                            step="100" onchange="setDistance()" />
+                        <!-- 양방향 슬라이더 보여주기 -->
+                        <div class="distance-slider">
+                            <div class="track"></div>
+                            <div class="range"></div>
+                            <div class="thumb left"></div>
+                            <div class="thumb right"></div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="cat_hr">
+                <input class="btns btn_cat" input type="button" th:data-word="${keyword}"
+                    th:onclick="searchWalkingPath(this.getAttribute('data-word'))" value="검색하기">
+            </aside>
+            <article id="walking-path">
+                <div id="walking-path_wrapper">
+                    <h3 th:if="${keyword}" th:text="|'${keyword}' 검색 결과입니다.|"></h3>
+                    <h3 th:text="|검색 결과 ${#lists.size(walkingPathList)}건|"></h3>
+                    <div class="path_list" th:each="walkingPath:${walkingPathList}">
+                        <div class="path_wrapper">
+                            <a class="path_img" th:href="@{|/walking-path/${walkingPath.getId()}|}">
+                                <img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}"
+                                    th:src="@{|/ex_images/${walkingPath.getPhotosList().get(0).getImgName()}|}" alt="">
+                                <img th:unless="${#lists.size(walkingPath.getPhotosList()) > 0}"
+                                    th:src="@{/images/noimage.png}" alt="">
+                            </a>
+                            <div class="path_content">
+                                <a th:text="${walkingPath.title}" th:href="@{|/walking-path/${walkingPath.getId()}|}"
+                                    class="path_title">제목</a>
+                                <address th:text="${walkingPath.addr}">주소</address>
+                                <p class="path_dtinfo" th:if="${#lists.size(walkingPath.mapList) > 0}">
+                                    <th:block th:if="${walkingPath.mapList.get(0).distance > 1000}">
+                                        <b
+                                            th:text="${#numbers.formatDecimal(walkingPath.mapList.get(0).distance/1000,2,2)}">10</b>
+                                        Km
+                                    </th:block>
+                                    <th:block th:unless="${walkingPath.mapList.get(0).distance > 1000}">
+                                        <b th:text="${walkingPath.mapList.get(0).distance}"></b> Km
+                                    </th:block>
+                                    |
+                                    <th:block th:if="${walkingPath.mapList.get(0).time > 60}">
+                                        <b th:text="${walkingPath.mapList.get(0).time / 60}"></b> 시간
+                                        <b th:text="${walkingPath.mapList.get(0).time % 60}"></b> 분
+                                    </th:block>
+                                    <th:block th:unless="${walkingPath.mapList.get(0).time > 60}">
+                                        <b th:text="${walkingPath.mapList.get(0).time}"></b> 분
+                                    </th:block>
+                                </p>
+                                <p class="rating">★★★★★</p>
+                            </div>
+                            <div class="path_auth">
+                                <p th:text="${walkingPath.createdBy}">작성자</p>
+                                <p th:text="${walkingPath.createdAt}">날짜</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="path_ctrl">
+                    <a th:href="@{/walking-path}" class="btns btn_wp_return">전체목록</a>
+                    <p class="pagenation">&lt;&lt; &lt; 1 2 3 4 5 &gt; &gt;&gt;</p>
+                    <a th:if="${session.auth != null}" th:href="@{/walking-path/write}" class="btns btn_path_submit">산책로
+                        등록</a>
+                    <a th:if="${session.auth == null}" th:href="@{'/login?redirectURL=/walking-path'}"
+                        class="btns btn_path_submit">산책로 등록</a>
+                </div>
+            </article>
+        </section>
+    </main>
+    <footer th:replace="fragments/header :: footer"></footer>
 
-<script>
-    // 양방향 슬라이더
-    const minTime = document.getElementById("minTime");
-    const maxTime = document.getElementById("maxTime");
+    <script>
+        // 양방향 슬라이더
+        const minTime = document.getElementById("minTime");
+        const maxTime = document.getElementById("maxTime");
 
-    set();
+        set();
 
-    function set() {
-        let minTimeValue = minTime.value;
-        let maxTimeValue = maxTime.value;
-        document.getElementById("showtime").innerText = "최소 " + Math.floor(minTimeValue / 60) + "시간" + minTimeValue % 60 + "분 ~ " + Math.floor(maxTimeValue / 60) + "시간" + maxTimeValue % 60 + "분";
-    };
+        function set() {
+            let minTimeValue = minTime.value;
+            let maxTimeValue = maxTime.value;
+            document.getElementById("showtime").innerText = "최소 " + Math.floor(minTimeValue / 60) + "시간" + minTimeValue % 60 + "분 ~ " + Math.floor(maxTimeValue / 60) + "시간" + maxTimeValue % 60 + "분";
+        };
 
-    const thumbLeft = document.querySelector(".slider > .thumb.left");
-    const thumbRight = document.querySelector(".slider > .thumb.right");
-    const range = document.querySelector(".slider > .range");
+        const thumbLeft = document.querySelector(".slider > .thumb.left");
+        const thumbRight = document.querySelector(".slider > .thumb.right");
+        const range = document.querySelector(".slider > .range");
 
-    const setMin = () => {
-        const _this = minTime;
-        const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
-        _this.value = Math.min(parseInt(_this.value), parseInt(maxTime.value) - 1);
-        const percent = ((_this.value - min) / (max - min)) * 100;
-        thumbLeft.style.left = percent + "%";
-        range.style.left = percent + "%";
-    };
-    const setMax = () => {
-        const _this = maxTime;
-        const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
-        _this.value = Math.max(parseInt(_this.value), parseInt(minTime.value) + 1);
-        const percent = ((_this.value - min) / (max - min)) * 100;
-        thumbRight.style.right = 100 - percent + "%";
-        range.style.right = 100 - percent + "%";
-    };
+        const setMin = () => {
+            const _this = minTime;
+            const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+            _this.value = Math.min(parseInt(_this.value), parseInt(maxTime.value) - 1);
+            const percent = ((_this.value - min) / (max - min)) * 100;
+            thumbLeft.style.left = percent + "%";
+            range.style.left = percent + "%";
+        };
+        const setMax = () => {
+            const _this = maxTime;
+            const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+            _this.value = Math.max(parseInt(_this.value), parseInt(minTime.value) + 1);
+            const percent = ((_this.value - min) / (max - min)) * 100;
+            thumbRight.style.right = 100 - percent + "%";
+            range.style.right = 100 - percent + "%";
+        };
 
-    minTime.addEventListener("input", setMin);
-    maxTime.addEventListener("input", setMax);
-    // 거리 슬라이더
-    const minDistance = document.getElementById("minDistance");
-    const maxDistance = document.getElementById("maxDistance");
+        minTime.addEventListener("input", setMin);
+        maxTime.addEventListener("input", setMax);
+        // 거리 슬라이더
+        const minDistance = document.getElementById("minDistance");
+        const maxDistance = document.getElementById("maxDistance");
 
-    setDistance();
+        setDistance();
 
-    function setDistance() {
-        let minDistanceValue = minDistance.value;
-        let maxDistanceValue = maxDistance.value;
-        document.getElementById("show-distance").innerText = "최소 " + minDistanceValue / 1000 + "Km ~ " + maxDistanceValue / 1000 + "Km";
-    };
+        function setDistance() {
+            let minDistanceValue = minDistance.value;
+            let maxDistanceValue = maxDistance.value;
+            document.getElementById("show-distance").innerText = "최소 " + minDistanceValue / 1000 + "Km ~ " + maxDistanceValue / 1000 + "Km";
+        };
 
-    const distanceThumbLeft = document.querySelector(".distance-slider > .thumb.left");
-    const distanceThumbRight = document.querySelector(".distance-slider > .thumb.right");
-    const distanceRange = document.querySelector(".distance-slider > .range");
+        const distanceThumbLeft = document.querySelector(".distance-slider > .thumb.left");
+        const distanceThumbRight = document.querySelector(".distance-slider > .thumb.right");
+        const distanceRange = document.querySelector(".distance-slider > .range");
 
-    const setMinDistance = () => {
-        const _this = minDistance;
-        const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
-        _this.value = Math.min(parseInt(_this.value), parseInt(maxDistance.value) - 1);
-        const percent = ((_this.value - min) / (max - min)) * 100;
-        distanceThumbLeft.style.left = percent + "%";
-        distanceRange.style.left = percent + "%";
-    };
-    const setMaxDistance = () => {
-        const _this = maxDistance;
-        const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
-        _this.value = Math.max(parseInt(_this.value), parseInt(minDistance.value) + 1);
-        const percent = ((_this.value - min) / (max - min)) * 100;
-        distanceThumbRight.style.right = 100 - percent + "%";
-        distanceRange.style.right = 100 - percent + "%";
-    };
+        const setMinDistance = () => {
+            const _this = minDistance;
+            const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+            _this.value = Math.min(parseInt(_this.value), parseInt(maxDistance.value) - 1);
+            const percent = ((_this.value - min) / (max - min)) * 100;
+            distanceThumbLeft.style.left = percent + "%";
+            distanceRange.style.left = percent + "%";
+        };
+        const setMaxDistance = () => {
+            const _this = maxDistance;
+            const [min, max] = [parseInt(_this.min), parseInt(_this.max)];
+            _this.value = Math.max(parseInt(_this.value), parseInt(minDistance.value) + 1);
+            const percent = ((_this.value - min) / (max - min)) * 100;
+            distanceThumbRight.style.right = 100 - percent + "%";
+            distanceRange.style.right = 100 - percent + "%";
+        };
 
-    minDistance.addEventListener("input", setMinDistance);
-    maxDistance.addEventListener("input", setMaxDistance);
-    /* ---------- 지역 고르기 check ---------- */
+        minDistance.addEventListener("input", setMinDistance);
+        maxDistance.addEventListener("input", setMaxDistance);
+        /* ---------- 지역 고르기 check ---------- */
 
-    let checkBoxes = document.querySelectorAll('.location_check');
-    let iconAll = document.querySelector(".check_all_i");
-    let paraAll = document.querySelector("#location_check_all");
-    let switchAll = false;
+        let checkBoxes = document.querySelectorAll('.location_check');
+        let iconAll = document.querySelector(".check_all_i");
+        let paraAll = document.querySelector("#location_check_all");
+        let switchAll = false;
 
-    paraAll.addEventListener("click", () => {
-      checkBoxes.forEach(box => {
-        if (switchAll == false) {
-          box.checked = false;
-          console.log(box.checked);
-          let checkIcon = document.querySelector(`.location_name[for="${box.id}"] i`);
-          checkIcon.style.color = '';
-        } else {
-          box.checked = true;
-          console.log(box.checked);
-          let checkIcon = document.querySelector(`.location_name[for="${box.id}"] i`);
-          checkIcon.style.color = '#97bf04';
-        }
-      })
-      if (switchAll == false) {
-        switchAll = true;
-        iconAll.style.color = '';
-      } else {
-        switchAll = false;
-        iconAll.style.color = '#97bf04';
-      }
-    })
+        paraAll.addEventListener("click", () => {
+            checkBoxes.forEach(box => {
+                if (switchAll == false) {
+                    box.checked = false;
+                    console.log(box.checked);
+                    let checkIcon = document.querySelector(`.location_name[for="${box.id}"] i`);
+                    checkIcon.style.color = '';
+                } else {
+                    box.checked = true;
+                    console.log(box.checked);
+                    let checkIcon = document.querySelector(`.location_name[for="${box.id}"] i`);
+                    checkIcon.style.color = '#97bf04';
+                }
+            })
+            if (switchAll == false) {
+                switchAll = true;
+                iconAll.style.color = '';
+            } else {
+                switchAll = false;
+                iconAll.style.color = '#97bf04';
+            }
+        })
 
-    checkBoxes.forEach(checkBox => {
-      checkBox.addEventListener("change", function () {
-        let checkAll = true;
-        checkBoxes.forEach(cb => {
-          if (!cb.checked) {
-            checkAll = false;
-            return;
-          }
-        });
-        if (checkAll == true) {
-          iconAll.style.color = '#97bf04';
-        } else {
-          iconAll.style.color = '';
-        }
+        checkBoxes.forEach(checkBox => {
+            checkBox.addEventListener("change", function () {
+                let checkAll = true;
+                checkBoxes.forEach(cb => {
+                    if (!cb.checked) {
+                        checkAll = false;
+                        return;
+                    }
+                });
+                if (checkAll == true) {
+                    iconAll.style.color = '#97bf04';
+                } else {
+                    iconAll.style.color = '';
+                }
 
-        if (checkBox.checked) {
-          let checkIcon = document.querySelector(`.location_name[for="${checkBox.id}"] i`);
-          checkIcon.style.color = '#97bf04';
-        } else {
-          let checkIcon = document.querySelector(`.location_name[for="${checkBox.id}"] i`);
-          checkIcon.style.color = '';
-        }
-      })
-    })
-</script>
-<script th:inline="javascript">
-    function searchWalkingPath(keyword) {
-        var SearchDTO = new Object();
-        var selected = document.querySelectorAll('input[name="location"]:checked');
-        var selectedValue = [];
-        for(let i = 0; i < selected.length; i++) {
-            selectedValue.push(selected[i].value);
-        }
-        SearchDTO.location = selectedValue;
-        SearchDTO.minTime = document.getElementById("minTime").value;
-        SearchDTO.maxTime = document.getElementById("maxTime").value;
-        SearchDTO.minDistance = document.getElementById("minDistance").value;
-        SearchDTO.maxDistance = document.getElementById("maxDistance").value;
-        fetch("/walking-path/condition/" + keyword, {
-            method: "POST",
-            headers: {
-                'content-type':'application/json'
-            },
-            body: JSON.stringify({
-                location : SearchDTO.location,
-                minTime : SearchDTO.minTime,
-                maxTime : SearchDTO.maxTime,
-                minDistance : SearchDTO.minDistance,
-                maxDistance : SearchDTO.maxDistance
+                if (checkBox.checked) {
+                    let checkIcon = document.querySelector(`.location_name[for="${checkBox.id}"] i`);
+                    checkIcon.style.color = '#97bf04';
+                } else {
+                    let checkIcon = document.querySelector(`.location_name[for="${checkBox.id}"] i`);
+                    checkIcon.style.color = '';
+                }
             })
         })
-            .then((response) => response.text())
-            .then((data) => {
-                document.getElementById("walking-path").innerHTML = `${data}`;
-            });
-    }
-</script>
+    </script>
+    <script th:inline="javascript">
+        function searchWalkingPath(keyword) {
+            var SearchDTO = new Object();
+            var selected = document.querySelectorAll('input[name="location"]:checked');
+            var selectedValue = [];
+            for (let i = 0; i < selected.length; i++) {
+                selectedValue.push(selected[i].value);
+            }
+            SearchDTO.location = selectedValue;
+            SearchDTO.minTime = document.getElementById("minTime").value;
+            SearchDTO.maxTime = document.getElementById("maxTime").value;
+            SearchDTO.minDistance = document.getElementById("minDistance").value;
+            SearchDTO.maxDistance = document.getElementById("maxDistance").value;
+            fetch("/walking-path/condition/" + keyword, {
+                method: "POST",
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    location: SearchDTO.location,
+                    minTime: SearchDTO.minTime,
+                    maxTime: SearchDTO.maxTime,
+                    minDistance: SearchDTO.minDistance,
+                    maxDistance: SearchDTO.maxDistance
+                })
+            })
+                .then((response) => response.text())
+                .then((data) => {
+                    document.getElementById("walking-path").innerHTML = `${data}`;
+                });
+        }
+    </script>
 </body>
+
 </html>

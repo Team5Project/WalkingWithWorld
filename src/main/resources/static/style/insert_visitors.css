@@ -1,8 +1,9 @@
-section{
+section {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 
 .visitors_write_header{
     margin-top: 60px;
@@ -10,7 +11,10 @@ section{
     font-size: 20px;
 }
 
-.visitors_write_wrap{
+
+
+.visitors_write_wrap {
+
     font-size: 20px;
     display: flex;
     width: 900px;
@@ -20,77 +24,86 @@ section{
 }
 
 .visitors_write_wrap aside,
-.visitors_write_wrap article{
+.visitors_write_wrap article {
     width: 50%;
 }
+
 /*.visitors_write_wrap aside{
     vertical-align: middle;
 }*/
-.visitor_logo{
+.visitor_logo {
     text-align: center;
 }
 
-.visitors_write_wrap article{
+.visitors_write_wrap article {
     border: 1px solid #97bf04;
     border-radius: 10px;
     padding: 15px;
 }
 
-.inline_insert{
+.inline_insert {
     display: flex;
     gap: 5px;
 }
-.inline_insert *{
+
+.inline_insert * {
     line-height: 2;
 }
-.inline_insert label{
-    width:75px;
+
+.inline_insert label {
+    width: 75px;
 }
 
-.inline_insert input{
+.inline_insert input {
     border-bottom: 1px solid #97bf04;
 }
-form{
+
+form {
     display: flex;
     flex-direction: column;
     gap: 50px;
 }
-.inline_textarea{
+
+.inline_textarea {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
-textarea{
+
+textarea {
     border-radius: 10px;
-    border: 1px solid #97bf04 ;
+    border: 1px solid #97bf04;
     resize: none;
     width: 430px;
     height: 150px;
+    padding: 10px;
 }
-.visitor_mod{
+
+.visitor_mod {
     display: flex;
     justify-content: end;
-    gap:10px;
+    gap: 10px;
 }
 
-.btn_vback{
-        width: 80px;
-        line-height: 40px;
-        background-color: #97bf04;
-        font-size: 20px;
+.btn_vback {
+    width: 80px;
+    line-height: 40px;
+    background-color: #97bf04;
+    font-size: 16px;
 }
 
-.btn_vreset{
-        width: 80px;
-        line-height: 40px;
-        background-color: #d4d9b4;
-        font-size: 20px;
+.btn_vreset {
+    width: 80px;
+    line-height: 40px;
+    background-color: #d4d9b4;
+    font-size: 16px;
+
 }
 
-.btn_vsubmit{
-        width: 80px;
-        line-height: 40px;
-        background-color: #97bf04;
-        font-size: 20px;
-}
+.btn_vsubmit {
+    width: 80px;
+    line-height: 40px;
+    background-color: #97bf04;
+    font-size: 16px;
 
+}
