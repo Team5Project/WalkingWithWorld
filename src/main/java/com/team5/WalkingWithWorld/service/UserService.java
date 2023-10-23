@@ -33,13 +33,8 @@ public class UserService {
     }
 
     public boolean createUser(UsersDTO usersDto){
-        UsersDTO encryptUser;
-        encryptUser = usersDto;
         String password = passwordEncoder.encrypt(usersDto.getEmail(),usersDto.getPassword());
-        encryptUser.setPassword(password);
-
-        System.out.println(password);
-
-        return userMapper.createUser(encryptUser);
+        usersDto.setPassword(password);
+        return userMapper.createUser(usersDto);
     }
 }

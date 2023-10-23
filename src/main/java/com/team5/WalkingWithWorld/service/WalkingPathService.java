@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class WalkingPathService {
@@ -117,7 +118,6 @@ public class WalkingPathService {
         if(walkingPathsDTO.getAddr() != null && !walkingPathsDTO.getAddr().isEmpty() && !walkingPathsDTO.getAddr().isBlank())
             walkingPathsFromDB.setAddr(walkingPathsDTO.getAddr());
         walkingPathsFromDB.setModifiedBy(userName);
-
         walkingPathsMapper.updateWalkingPath(walkingPathsFromDB);
     }
 }
