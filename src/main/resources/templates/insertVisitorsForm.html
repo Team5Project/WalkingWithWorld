@@ -2,18 +2,52 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>guestbook</title>
+    <link th:href="@{/style/reset.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link th:href="@{/style/common.css}" rel="stylesheet">
+    <link th:href="@{/style/insert_visitors.css}" rel="stylesheet">
 </head>
-<body>
-<h2>작성</h2>
-<form method="post" action="/insertVisitors">
-    <input type="text" name="name" placeholder="작성자"required><br>
-    <input type="text" name="content" placeholder="내용"required><br>
-    <input type="text" name="password" placeholder="비밀번호"required><br>
 
-    <input type="submit" value="등록">
-    <input type="reset" value="reset">
-    <a th:href="@{/visitorslist}" >back</a>
-</form>
+<body>
+    <header th:replace="fragments/header :: header"></header>
+    <hr class="header_hr">
+
+    <main>
+        <section>
+            <div class="visitors_write_wrap">
+                <aside class="visitor_logo">
+                    <img th:src="@{/images/logo-big.png}">
+                </aside>
+                <article>
+                    <div class="insert_visitor">
+                        <form method="post" action="/insertVisitors">
+                            <p class="inline_insert">
+                                <label for="visitor_name_input">작성자명</label>
+                                <input type="text" name="name" placeholder="작성자명" id="visitor_name_input" required><br>
+                            </p>
+                            <p class="inline_insert">
+                                <label for="visitor_password_input">비밀번호</label>
+                                <input type="password" name="password" placeholder="비밀번호" id="visitor_password_input" maxlength="10" required><br>
+                            </p>
+                            <p class="inline_textarea">
+                                <label for="visitor_content_input">내용</label>
+                                <textarea name="content" id="visitor_content_input" required></textarea>
+                            </p>
+                            <div class="visitor_mod">
+                                <a th:href="@{/visitorslist}" class="btns btn_vback">이전화면</a>
+                                <input type="reset" value="초기화" class="btns btn_vreset">
+                                <input type="submit" value="등록" class="btns btn_vsubmit">
+                            </div>
+                        </form>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+<footer th:replace="fragments/header :: footer"></footer>
 </body>
 </html>

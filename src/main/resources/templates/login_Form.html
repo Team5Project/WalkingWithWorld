@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="/style/reset.css" th:href="@{/style/reset.css}"/>
+    <link rel="stylesheet" href="/style/reset.css" th:href="@{/style/reset.css}" />
     <link rel="stylesheet" href="/style/common.css" th:href="@{/style/common.css}">
     <link rel="stylesheet" href="/style/login_form.css" th:href="@{/style/login_form.css}">
-    
+
 </head>
+
 <body class="body">
     <div id="left" class="login_img">
-        <img th:src="@{/images/login_left_image.png}">
+        <img th:src="@{/images/login_left_image.jpg}">
     </div>
     <div id="right" class="login_form">
         <div class="logo-img">
@@ -18,10 +20,10 @@
         </div>
         <div class="form">
             <form method="post" action="/login">
-            <input type="hidden" name="redirectURL" th:value="${redirectURL}">
-             <input type ="text" name="email" class="input" placeholder="이메일을 입력해주세요."> <br>
-             <input type="password" name="password"class="input" placeholder="비밀번호를 입력해주세요."> <br>
-            <input type="submit" value="LOGIN" class="btns btn-login">
+                <input type="hidden" name="redirectURL" th:value="${redirectURL}">
+                <input type="text" name="email" class="input" placeholder="이메일을 입력해주세요."> <br>
+                <input type="password" name="password" class="input" placeholder="비밀번호를 입력해주세요."> <br>
+                <input type="submit" value="LOGIN" class="btns btn-login">
             </form>
         </div>
         <section class="find">
@@ -34,4 +36,5 @@
         </section>
     </div>
 </body>
+
 </html>
