@@ -30,12 +30,11 @@
                             </p>
                             <p class="inline_insert">
                                 <label for="visitor_password_input">비밀번호</label>
-                                <input type="text" name="password" placeholder="비밀번호" id="visitor_password_input"required><br>
+                                <input type="password" name="password" placeholder="비밀번호" id="visitor_password_input" maxlength="10" required><br>
                             </p>
                             <p class="inline_textarea">
                                 <label for="visitor_content_input">내용</label>
-                                <textarea name="content" id="visitor_content_input" required>
-                                </textarea>
+                                <textarea name="content" id="visitor_content_input" required></textarea>
                             </p>
                             <div class="visitor_mod">
                                 <a th:href="@{/visitorslist}" class="btns btn_vback">이전화면</a>

@@ -32,7 +32,8 @@
                             <p class="vcontent">[[${vo.content}]]</p>
                         </div>
                         <div class="visitor_footer">
-                            <p class="vcreatedAt">[[${vo.createdAt}]]</p>
+                            <p class="vcreatedAt" th:text="${#temporals.format(vo.createdAt, 'yyyy년 MM월 dd일 HH:mm')}"></p>
+                            <!--<p th:text="${#temporals.format(orderDto.orderDate, 'yy-mm-dd HH:mm')}"></p>-->
                             <div class="visitor_mod">
                                 <p class="btns btn_vdelete" th:onclick="|deleteVisitorList(${vo.getId()})|">삭제</p>
                             </div>
