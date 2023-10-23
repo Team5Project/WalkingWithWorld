@@ -40,7 +40,7 @@ public class ReviewsController {
                           Model model,
                           HttpServletRequest request) {
         String referer = request.getHeader("Referer");
-        WalkingPathsMapDTO walkingPaths = pathsMapper.readWalkingPath(id);
+        WalkingPathsMapDTO walkingPaths = pathsMapper.readWalkingPathMap(id);
         walkingPaths.setMapList(mapMapper.ReadMap(id) );
         walkingPaths.setPhotosList(photoDao.readPhotos(id));
 

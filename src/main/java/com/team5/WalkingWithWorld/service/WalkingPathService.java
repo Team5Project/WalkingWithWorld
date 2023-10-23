@@ -61,7 +61,7 @@ public class WalkingPathService {
 
     // 산책로 하나 읽기
     public WalkingPathsMapDTO readWalkingPathById(int id) {
-        WalkingPathsMapDTO walkingPathsMapDTO = walkingPathsMapper.readWalkingPath(id);
+        WalkingPathsMapDTO walkingPathsMapDTO = walkingPathsMapper.readWalkingPathMap(id);
         if(walkingPathsMapDTO == null)
             return null;
 
@@ -109,8 +109,15 @@ public class WalkingPathService {
     }
 
     // 산책로 수정
-    public void  modifyWalkingPathWithUserName(WalkingPathsDTO walkingPathsDTO, String userName) { // 안전하게!!!
-        walkingPathsDTO.setModifiedBy(userName);
-        System.out.println("수정되었습니다. : " + (walkingPathsMapper.updateWalkingPath(walkingPathsDTO)  == 1));
+    public void  modifyWalkingPathWithUserName(WalkingPathsDTO walkingPathsDTO, String userName) {
+        WalkingPathsDTO walkingPathsFromDB = walkingPathsMapper.readWalkingPath(walkingPathsDTO.getId());
+
+        if(walkingPathsDTO.getTitle() != null && !walkingPathsDTO.getTitle().isEmpty() && !walkingPathsDTO.getTitle().isBlank())
+            walkingPathsFromDB.setTitle(walkingPathsDTO.getTitle());
+        if(walkingPathsDTO.getAddr() != null && !walkingPathsDTO.getAddr().isEmpty() && !walkingPathsDTO.getAddr().isBlank())
+            walkingPathsFromDB.setAddr(walkingPathsDTO.getAddr());
+        walkingPathsFromDB.setModifiedBy(userName);
+
+        System.out.println("수정되었습니다. : " + (walkingPathsMapper.updateWalkingPath(walkingPathsFromDB)  == 1));
     }
 }
