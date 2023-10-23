@@ -1,20 +1,23 @@
 <header class="header" xmlns:th="http://www.thymeleaf.org">
-    <a th:href="@{/}" style="text-decoration: none"><h1 class="logo"></h1></a>
+    <a th:href="@{/}" style="text-decoration: none">
+        <h1 class="logo"></h1>
+    </a>
     <nav>
         <a href="" th:href="@{/walking-path}">산책로</a>
-        <a href="#">방명록</a>
+        <a href="" th:href="@{/visitorslist}">자유게시판</a>
     </nav>
     <th:block th:if="${session.auth != null}">
         <div class="member">
             <span class="profile_image"></span>
             <span th:text="${session.auth.name}" class="name">산책마니아1</span>
-            <a th:href="@{/logout}" class="btn_logout">logout</a>
+            <a th:href="@{/logout}" class="btns btn_logout">logout</a>
         </div>
     </th:block>
     <th:block th:if="${session.auth == null}">
         <div class="header_sign">
-            <a th:href="@{/login}" class="btn_signin"><i class="sign_icon fa-solid fa-key"></i>Sign in</a>
-            <a  th:href="@{/signup}" class="btn_signup"><i class="sign_icon fa-solid fa-user-plus"></i>Sign up for free</a>
+            <a th:href="@{/login}" class="btns btn_signin"><i class="sign_icon fa-solid fa-key"></i>Sign in</a>
+            <a th:href="@{/signup}" class="btns btn_signup"><i class="sign_icon fa-solid fa-user-plus"></i>Sign up for
+                free</a>
         </div>
     </th:block>
 

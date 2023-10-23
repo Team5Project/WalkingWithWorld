@@ -12,7 +12,7 @@
         <div class="review_none">
             <p>아직 리뷰가 작성되지 않았습니다.</p>
             <p>첫 리뷰를 작성해 주세요!</p>
-            <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}" class="btn_write_big">
+            <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}" class=" btns btn_write_big">
                 리뷰작성
             </a>
         </div>
@@ -49,8 +49,8 @@
                 </div>
                 <th:block th:if="${session.auth!=null && session.auth.getName()== review.createdBy}">
                     <div class="up_del">
-                        <span class="info_modi">수정</span>
-                        <span class="info_del">삭제</span>
+                        <span class="info_modi" th:onclick="|modifiedReview(${review.getId()})|">수정</span>
+                        <span class="info_del" th:onclick="|deleteReview(${review.getId()})|">삭제</span>
                     </div>
                 </th:block>
             </div>
