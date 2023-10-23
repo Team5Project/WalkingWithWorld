@@ -167,6 +167,7 @@
         }
     </script>
 </th:block>
+
 <script th:inline="javascript">
 
     function deleteWalkingPath(id) {
@@ -190,13 +191,12 @@
                     // if(data){
                     //     return;
                     // }
-                    console.log(data)
                     document.querySelector(".review_container").innerHTML = `${data}`;
                 });
         }
-
         /*]]>*/
 
+        //댓글 가져오기
         /*<![CDATA[*/
         function getCommentList() {
             var walkingPathId = [[${walkingPaths.getId()}]]
@@ -208,10 +208,9 @@
                     document.querySelector(".comments_content").innerHTML = `${data}`;
                 });
         }
-
         /*]]>*/
 
-
+        //댓글 쓰기
         function writeComment(id) {
             var CommentsDTO = new Object();
             CommentsDTO.content = document.getElementById("comment_content").value;
@@ -232,6 +231,7 @@
                 });
         }
 
+        //댓글 삭제하기
         //프래그먼트 요소지만 현재 html 에 있으므로 여기에 구현
         /*<![CDATA[*/
         function deleteComment(id) {
@@ -256,10 +256,51 @@
                     document.getElementById("comments").innerHTML = `${data}`;
                 });
         }
-
         /*]]>*/
 
+        //리뷰 수정하기
+        function modifiedReview(id) {
+            var path = "/reviews/modify/";
+            answer = confirm("리뷰를 수정하시겠습니까?");
+            if (answer === true) {
+                location.href = path + id;
+            }
+        }
+
+        //리뷰 삭제하기
+        /*<![CDATA[*/
+        function deleteReview(id) {
+
+            const ReviewsDTO = {};
+            ReviewsDTO.id = id;
+            ReviewsDTO.walkingPathsId = [[${walkingPaths.getId()}]]
+
+            var answer;
+            var path = "/reviews/delete";
+            answer = confirm("리뷰를 삭제하시겠습니까?");
+            if(answer === true) {
+                fetch(path, {
+                    method: "POST",
+                    headers:{
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: ReviewsDTO.id,
+                        walkingPathsId: ReviewsDTO.walkingPathsId
+                    })
+                })
+                    .then(response => {
+                        if(response.status === 200){
+                            location.reload();
+                            alert("리뷰가 삭제 되었습니다.")
+                        }
+                    })
+            }
+        }
+
+        /*]]>*/
         window.addEventListener('onload', getReviewList());
+
         window.addEventListener('onload', getCommentList());
 </script>
 <script>
@@ -273,9 +314,6 @@
                 ir.querySelector(".viewer img").src = img.src;
             });
         });
-    });
-
-</script>
-
+    </script>
 </body>
 </html>

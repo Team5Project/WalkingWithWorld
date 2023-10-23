@@ -27,8 +27,11 @@ public class UserController {
     @GetMapping("/login")
     public String loginIndex(@RequestParam(defaultValue = "/") String redirectURL,
                              Model model,
-                             HttpSession session) {
+                             HttpSession session,
+                             HttpServletRequest request) {
         model.addAttribute("redirectURL", redirectURL);
+
+        System.out.println(request.getHeader("Referer"));
 
         return "login_Form";
     }
