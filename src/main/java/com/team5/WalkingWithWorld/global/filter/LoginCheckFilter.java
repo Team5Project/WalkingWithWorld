@@ -17,7 +17,7 @@ public class LoginCheckFilter implements Filter {
 
     private static final String[] whiteList = { "/", "/signup", "/login", "/logout", "/signupForm", "/walking-path",
             "/walking-path/*", "/reviews","/reviews/list/*", "/comments","/comments/list/*", "/images/*", "/ex_images/*", "/style/**", "/js/**",
-            "/images/**", "/visitor/delete","/visitorslist", "/visitorslist/**", "/insertVisitors", "/insertVisitorsForm"};
+            "/images/**", "/visitor/delete","/visitorslist", "/visitorslist/**", "/insertVisitors", "/insertVisitorsForm","/favicon/", "/favicon/**"};
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
