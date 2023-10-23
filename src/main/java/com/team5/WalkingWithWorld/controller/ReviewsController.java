@@ -45,8 +45,9 @@ public class ReviewsController {
                           Model model,
                           HttpServletRequest request) {
         String referer = request.getHeader("Referer");
-        WalkingPathsMapDTO walkingPaths = pathsMapper.readWalkingPath(id);
-        walkingPaths.setMapList(mapMapper.ReadMap(id));
+
+        WalkingPathsMapDTO walkingPaths = pathsMapper.readWalkingPathMap(id);
+        walkingPaths.setMapList(mapMapper.ReadMap(id) );
         walkingPaths.setPhotosList(photoDao.readPhotos(id));
 
 
@@ -81,7 +82,7 @@ public class ReviewsController {
 
     //리뷰 작성
     @PostMapping("/reviews/{walking-paths-id}/write")
-    public String createReview(@Login UsersDto loginUser,
+    public String createReview(@Login UsersDTO loginUser,
                                @PathVariable("walking-paths-id") int id,
                                ReviewsDTO reviewsDTO,
                                FileVo files,
@@ -102,7 +103,7 @@ public class ReviewsController {
 
     @PostMapping("/reviews/delete")
     public String delete(@RequestBody ReviewsDTO reviewsDTO,
-                         @Login UsersDto login,
+                         @Login UsersDTO login,
                          Model model) {
         boolean result = dao.deleteReviews(reviewsDTO.getId(), login.getId());
 
@@ -119,7 +120,7 @@ public class ReviewsController {
 
     @GetMapping(value = "/reviews/modify/{review-id}")
     public String getModifyForm(@PathVariable("review-id") int id,
-                                @Login UsersDto login,
+                                @Login UsersDTO login,
                                 Model model) {
         ReviewsDTO review = reviewsMapper.getReviewByIdAndReferenceUserId(id, login.getId());
         review.setPhotosList(photoDao.readReviewPhotos(id));
@@ -136,7 +137,7 @@ public class ReviewsController {
     public String modifyReview(ReviewsDTO vo,
                                FileVo files,
                                HttpServletRequest request,
-                               @Login UsersDto login,
+                               @Login UsersDTO login,
                                Model model,
                                @PathVariable("review-id") int id) throws IOException {
 

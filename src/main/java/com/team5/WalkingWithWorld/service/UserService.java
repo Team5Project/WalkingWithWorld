@@ -2,7 +2,7 @@ package com.team5.WalkingWithWorld.service;
 
 import com.team5.WalkingWithWorld.dao.UserMapper;
 import com.team5.WalkingWithWorld.domain.LoginDto;
-import com.team5.WalkingWithWorld.domain.UsersDto;
+import com.team5.WalkingWithWorld.domain.UsersDTO;
 import com.team5.WalkingWithWorld.global.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UsersDto getUserInfo(LoginDto loginDto){
+    public UsersDTO getUserInfo(LoginDto loginDto){
         LoginDto encryptLogin;
         encryptLogin = loginDto;
         encryptLogin.setPassword(passwordEncoder.encrypt(loginDto.getEmail(), loginDto.getPassword()));
@@ -28,12 +28,12 @@ public class UserService {
         return userMapper.getUser(encryptLogin);
     }
 
-    public List<UsersDto> getAllUsers(){
+    public List<UsersDTO> getAllUsers(){
         return userMapper.getUsers();
     }
 
-    public boolean createUser(UsersDto usersDto){
-        UsersDto encryptUser;
+    public boolean createUser(UsersDTO usersDto){
+        UsersDTO encryptUser;
         encryptUser = usersDto;
         String password = passwordEncoder.encrypt(usersDto.getEmail(),usersDto.getPassword());
         encryptUser.setPassword(password);
