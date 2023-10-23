@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>WWW - Sign Up</title>
     <link rel="stylesheet" href="/style/reset.css" th:href="@{/style/reset.css}" />
     <link rel="stylesheet" href="/style/common.css" th:href="@{/style/common.css}">
     <link rel="stylesheet" href="/style/login_form.css" th:href="@{/style/signup_form.css}">
@@ -21,8 +21,8 @@
                 <input type="password" name="password" class="input" placeholder="패스워드" required><br>
                 <input type="email" name="email" class="input" placeholder="Email" required><br>
                 <section class="address">
-                    <input type="text" name="addr" id="address"  class="input" placeholder="주소" required>
-                    <button  onclick="searchAddr()" value="주소 찾기" class="btn-address">주소 찾기</button>
+                    <input type="text" name="addr" id="address" class="input" placeholder="주소" required>
+                    <button onclick="searchAddr()" value="주소 찾기" class="btn-address">주소 찾기</button>
                 </section>
                 <input type="submit" value="확인" class="btn-signup">
                 <button class="btn-ref"><a th:href="${referer}" style="text-decoration: none">뒤로가기</a></button>
@@ -34,7 +34,7 @@
     <script>
         function searchAddr() {
             new daum.Postcode({
-                oncomplete: function(data) {
+                oncomplete: function (data) {
                     // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
                     // 각 주소의 노출 규칙에 따라 주소를 조합한다.
