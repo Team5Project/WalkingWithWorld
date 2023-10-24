@@ -44,6 +44,8 @@
 ---
 
 ### 1.5 WalkingWithWorld(WWW) 기능 설명
+<img src="./img/walking_paths_img.PNG" style="border-radius:5px; size:720px;">
+
 #### 산책로 게시글(walking paths)
 1. Create
    * 산책로 게시글 작성(이미지 파일 업로드, 산책로 경로 그리기)하는 기능
