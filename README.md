@@ -13,7 +13,7 @@
 
 ### 1.2 🗓️ 프로젝트 기간
 2023.10.13~2023.10.23 <br>
-<img src="./img/process.png" style="size:720px;">
+<img src="./img/process.png">
 
 
 ---
