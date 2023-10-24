@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>WWW - Review</title>
 </head>
+
 <body>
 
-<div id="static_reviews" class="review">
+    <div id="static_reviews" class="review">
         <i class="rv-chav left fa-solid fa-circle-chevron-left"></i>
         <i class="rv-chav right fa-solid fa-circle-chevron-right"></i>
         <div class="review_none">
             <p>아직 리뷰가 작성되지 않았습니다.</p>
             <p>첫 리뷰를 작성해 주세요!</p>
-            <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}" class="btn_write_big">
+            <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}" class=" btns btn_write_big">
                 리뷰작성
             </a>
         </div>
-</div>
+    </div>
 
 
-<div id="reviews" class="review_content" th:each="review:${reviewList}">
+    <div id="reviews" class="review_content" th:each="review:${reviewList}">
         <!--    여서부터!-->
         <th:block th:if="${#lists.size(review.getPhotosList())>0}">
             <aside class="images">
@@ -49,8 +51,8 @@
                 </div>
                 <th:block th:if="${session.auth!=null && session.auth.getName()== review.createdBy}">
                     <div class="up_del">
-                        <span class="info_modi">수정</span>
-                        <span class="info_del">삭제</span>
+                        <span class="info_modi" th:onclick="|modifiedReview(${review.getId()})|">수정</span>
+                        <span class="info_del" th:onclick="|deleteReview(${review.getId()})|">삭제</span>
                     </div>
                 </th:block>
             </div>
@@ -61,21 +63,22 @@
                 </p>
             </div>
         </article>
-</div>
+    </div>
 
-<script>
-    let imgRoot = document.querySelectorAll(".images")
-    console.log(imgRoot);
-    imgRoot.forEach(function (ir) {
-        let imgList = ir.querySelectorAll(".img_list img");
+    <script>
+        let imgRoot = document.querySelectorAll(".images")
+        console.log(imgRoot);
+        imgRoot.forEach(function (ir) {
+            let imgList = ir.querySelectorAll(".img_list img");
 
-        imgList.forEach(function (img) {
-            img.addEventListener("click", (e) => {
-                ir.querySelector(".viewer img").src = img.src;
+            imgList.forEach(function (img) {
+                img.addEventListener("click", (e) => {
+                    ir.querySelector(".viewer img").src = img.src;
+                });
             });
         });
-    });
 
-</script>
+    </script>
 </body>
+
 </html>

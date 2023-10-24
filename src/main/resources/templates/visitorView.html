@@ -3,7 +3,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>guestbook</title>
+    <title>WWW - FreeBoard</title>
+    <!-- 파비콘 및 메타 데이터 설정 -->
+    <link rel="apple-touch-icon" th:href="@{/favicon/apple-touch-icon.png}" sizes="180x180">
+    <link rel="icon" type="image/png" th:href="@{/favicon/favicon-32x32.png}" sizes="32x32">
+    <link rel="icon" type="image/png" th:href="@{/favicon/favicon-16x16.png}" sizes="16x16">
+    <link rel="manifest" th:href="@{/favicon/site.webmanifest}">
+    <link rel="mask-icon" th:href="@{/favicon/safari-pinned-tab.svg}" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#00aba9">
+    <meta name="theme-color" content="#ffffff">
+    <!-- 파비콘 끝 -->
     <link th:href="@{/style/reset.css}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
@@ -15,25 +24,46 @@
 <body>
     <header th:replace="fragments/header :: header"></header>
     <hr class="header_hr">
+
     <main>
-        <div id="article">
-            <section id="deleteList">
-                <div class="vwrapper" th:each="vo : ${list}">
-                    <p class="vname">[[${vo.name}]]</p>
-                    <p class="vcontent">[[${vo.content}]]</p>
-                    <p class="vcreatedAt">[[${vo.createdAt}]]</p>
-                    <p class="delete-link" th:onclick="|deleteVisitorList(${vo.getId()})|">삭제</p>
-                </div>
-            </section>
+        <div class="visitors_list_header">
+            자유게시판
         </div>
-        <a th:href="@{/insertVisitorsForm}" class="btn_signin">go</a>
+
+        <section>
+            <div id="article">
+                <article id="deleteList">
+                    <div class="vwrapper" th:each="vo : ${list}">
+                        <div class="visit_header">
+                            <span>작성자</span>
+                            <span>내용</span>
+                        </div>
+                        <div class="visitor_body">
+                            <p class="vname">[[${vo.name}]]</p>
+                            <p class="vcontent">[[${vo.content}]]</p>
+                        </div>
+                        <div class="visitor_footer">
+                            <p class="vcreatedAt" th:text="${#temporals.format(vo.createdAt, 'yyyy년 MM월 dd일 HH:mm')}">
+                            </p>
+                            <!--<p th:text="${#temporals.format(orderDto.orderDate, 'yy-mm-dd HH:mm')}"></p>-->
+                            <div class="visitor_mod">
+                                <p class="btns btn_vdelete" th:onclick="|deleteVisitorList(${vo.getId()})|">삭제</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <div class="btn_write_wrapper">
+                <a th:href="@{/insertVisitorsForm}" class="visitor_write btns btn_vwrite">글쓰기</a>
+            </div>
+        </section>
     </main>
     <footer th:replace="fragments/header :: footer"></footer>
 
     <script th:inline="javascript">
 
         /*<![CDATA[*/
-        function deleteVisitorList (id){
+        function deleteVisitorList(id) {
             var visitorsId = id;
             var VisitorsDTO = {};
             VisitorsDTO.id = id;

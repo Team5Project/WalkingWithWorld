@@ -1,16 +1,19 @@
 .body {
-    justify-content: space-around;
-    align-items: center;
-    flex-direction: low;
     display: flex;
+    justify-content: space-between;
 }
 
+body>div {
+    width: 50%;
+    height: 100vh;
+    overflow: hidden;
+}
 
-.login_img {
-    flex-direction: column;
-    justify-content: center;
-    display: flex;
-    background-color: #666666;
+.login_img img {
+    object-fit: cover;
+    object-position: center center;
+    width: 100%;
+    height: 100%;
 }
 
 .login_form {
@@ -19,25 +22,36 @@
     align-items: center;
     display: flex;
     text-align: center;
-    margin: 85px 250px;
+
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .logo-img {
-    margin-bottom: 90px
+    margin-bottom: 30px
 }
 
 .find {
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    display: flex;
+    text-align: center;
+}
+
+.find a {
+    display: block;
 }
 
 .forward-signup {
-    flex-direction: column;
-    align-items: flex-start;
-    display: flex;
-    margin-top: 120px
+    text-align: center;
+    margin-top: 120px;
+}
+
+.forward-signup a {
+    display: block;
+    color: #333;
+    text-decoration: underline;
 }
 
 .input {
@@ -45,11 +59,7 @@
     height: 40px;
     border: 1px solid gray;
     border-radius: 5px;
-    color: inherit;
-    font: inherit;
-    padding: 9px 16px;
-    margin-bottom: 15px;
-    outline: none;
+    padding-left: 10px;
 }
 
 .btn-login {
@@ -58,7 +68,7 @@
     flex-shrink: 0;
     border-radius: 30px;
     background: var(--97BF04, #97BF04);
-    margin: 25px
+    margin-bottom: 20px;
 }
 
 .find-a {
@@ -70,7 +80,7 @@
     line-height: normal;
 }
 
-.find-a > a {
+.find-a>a {
     color: #333;
     font-size: 16px;
     font-style: normal;
