@@ -148,20 +148,20 @@ input[type="checkbox"] {
 .slider>.thumb {
     position: absolute;
     z-index: 3;
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     background-color: #558C03;
     border-radius: 50%;
 }
 
 .slider>.thumb.left {
     left: 0%;
-    transform: translate(-15px, -10px);
+    transform: translate(-10px, -7px);
 }
 
 .slider>.thumb.right {
     right: 0%;
-    transform: translate(20px, -10px);
+    transform: translate(10px, -7px);
 }
 
 input[type="range"] {
@@ -220,20 +220,20 @@ input[type="range"]::-webkit-slider-thumb {
 .distance-slider>.thumb {
     position: absolute;
     z-index: 3;
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     background-color: #558C03;
     border-radius: 50%;
 }
 
 .distance-slider>.thumb.left {
     left: 0%;
-    transform: translate(-15px, -10px);
+    transform: translate(-10px, -7px);
 }
 
 .distance-slider>.thumb.right {
     right: 0%;
-    transform: translate(20px, -10px);
+    transform: translate(10px, -7px);
 }
 
 #show-distance,

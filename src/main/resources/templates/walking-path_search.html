@@ -23,7 +23,7 @@
                             <b th:text="${#numbers.formatDecimal(walkingPath.mapList.get(0).distance/1000,2,2)}">10</b> Km
                         </th:block>
                         <th:block th:unless="${walkingPath.mapList.get(0).distance > 1000}">
-                            <b th:text="${walkingPath.mapList.get(0).distance}">10</b> Km
+                            <b th:text="${walkingPath.mapList.get(0).distance}">10</b> m
                         </th:block>
                         |
                         <th:block th:if="${walkingPath.mapList.get(0).time > 60}">

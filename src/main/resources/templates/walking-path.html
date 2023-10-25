@@ -85,9 +85,9 @@
                     <div class="cat_time_range multi-range-slider">
                         <p id="showtime"></p>
                         <!-- 입력 받을 슬라이더 -->
-                        <input type="range" name="minTime" id="minTime" value="0" min="0" max="300" step="10"
+                        <input type="range" name="minTime" id="minTime" value="0" min="0" max="180" step="10"
                             onchange="set()" />
-                        <input type="range" name="maxTime" id="maxTime" value="300" min="0" max="300" step="10"
+                        <input type="range" name="maxTime" id="maxTime" value="180" min="0" max="180" step="10"
                             onchange="set()" />
                         <!-- 양방향 슬라이더 보여주기 -->
                         <div class="slider">
@@ -139,7 +139,8 @@
                                 <address th:text="${walkingPath.addr}">주소</address>
                                 <p class="path_dtinfo" th:if="${#lists.size(walkingPath.mapList) > 0}">
                                     <th:block th:if="${walkingPath.mapList.get(0).distance > 1000}">
-                                        <b th:text="${#numbers.formatDecimal(walkingPath.mapList.get(0).distance/1000,2,2)}">10</b>
+                                        <b
+                                            th:text="${#numbers.formatDecimal(walkingPath.mapList.get(0).distance/1000,2,2)}">10</b>
                                         Km
                                     </th:block>
                                     <th:block th:unless="${walkingPath.mapList.get(0).distance > 1000}">
