@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,10 +22,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DataJpaTest
 class WalkingPathsRepositoryTest {
-    @Autowired
-    MapRepository mapRepository;
-    @Autowired
-    PhotosRepository photosRepository;
     @Autowired
     WalkingPathsRepository walkingPathsRepository;
 
@@ -37,8 +34,8 @@ class WalkingPathsRepositoryTest {
     @Test
     void findById() {
         WalkingPaths walkingPaths = walkingPathsRepository.getReferenceById(1);
-        List<Photos> photos = photosRepository.findByWalkingPaths(walkingPaths);
-        List<Map> maps = mapRepository.findByWalkingPaths(walkingPaths);
+        List<Photos> photos = new ArrayList<>();
+        List<Map> maps = new ArrayList<>();
         WalkingPathsMapDTO1 walkingPathsMapDTO = WalkingPathsMapDTO1.builder()
                 .id(1)
                 .addr(walkingPaths.getAddr())
