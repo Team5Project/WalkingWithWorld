@@ -12,19 +12,19 @@
 ---
 
 ### 1.2 🗓️ 프로젝트 기간
-2023.10.13~2023.10.23
+2023.10.13~2023.10.23 <br>
+<img src="./img/process.PNG" style="border-radius:5px; size:720px;">
 
 
 ---
 
 ### 1.3 👥 팀원
-🏅이상혁|이승우|김진수|박희지
+🏅윤상혁|이승우|김진수|박희지
 :---:|:---:|:---:|:---:
-
+<img src="./img/윤상혁.png">|<img src="./img/이승우.png">|<img src="./img/김진수.png">|<img src="./img/박희지.png">|
 ---
 
 ### 1.4 기술 스택
-
 ### 공통
 
 <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"/>
@@ -43,6 +43,13 @@
 
 ---
 
-### 구현내용
+### 1.5 WalkingWithWorld(WWW) 기능 설명
+#### 산책로 게시글 목록 페이지
+<img src="./img/walking_paths_list_img.PNG" style="width: 60%"><br>
+지역, 최소-최대 소요시간, 최소-최대 거리 조건 필터 구현
+#### 산책로 게시글 상세 페이지
+<img src="./img/walking_paths_img.PNG">
+카카오맵 API를 활용하여 사용자가 입력한 경로 좌표를 받아 상세 페이지에서 보여주도록 구현
 
+---
  -- ing
