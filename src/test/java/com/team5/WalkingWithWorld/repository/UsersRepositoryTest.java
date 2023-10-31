@@ -50,10 +50,10 @@ class UsersRepositoryTest {
     @Transactional
     void insertUsers(){
         Users user = new Users();
-        user.setEmail("email@gmail.com");
-        user.setName("유저");
-        user.setPassword("!password1234");
-        user.setAddr("노원구");
+//        user.setEmail("email@gmail.com");
+//        user.setName("유저");
+//        user.setPassword("!password1234");
+//        user.setAddr("노원구");
         usersRepository.save(user);
     }
 
