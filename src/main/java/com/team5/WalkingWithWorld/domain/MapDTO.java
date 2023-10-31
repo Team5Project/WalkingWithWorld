@@ -1,5 +1,6 @@
 package com.team5.WalkingWithWorld.domain;
 
+import com.team5.WalkingWithWorld.entity.Map;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

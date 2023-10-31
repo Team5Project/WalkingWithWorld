@@ -1,9 +1,7 @@
 package com.team5.WalkingWithWorld.domain;
 
+import com.team5.WalkingWithWorld.entity.Map;
 import com.team5.WalkingWithWorld.entity.Photos;
-import com.team5.WalkingWithWorld.entity.WalkingPaths;
-import com.team5.WalkingWithWorld.repository.MapRepository;
-import com.team5.WalkingWithWorld.repository.PhotosRepository;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +14,7 @@ import java.util.List;
 @Setter
 @ToString
 @Builder
-public class WalkingPathsMapDTO {
+public class WalkingPathsMapDTO1 {
     private int id;
     private int usersId;
     private String title;
@@ -25,7 +23,7 @@ public class WalkingPathsMapDTO {
     private String createdBy;
     private LocalDateTime modifiedAt;
     private String modifiedBy;
-    private List<PhotosDTO> photosList;
-    private List<MapDTO> mapList;
+    private List<Photos> photosList;
+    private List<Map> mapList;
 
 }

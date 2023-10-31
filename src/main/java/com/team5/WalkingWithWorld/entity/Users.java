@@ -13,7 +13,6 @@ import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 @Getter
-@Setter
 @ToString
 @Entity
 public class Users {
