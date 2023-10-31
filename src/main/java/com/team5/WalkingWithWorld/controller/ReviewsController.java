@@ -24,8 +24,6 @@ import java.util.Objects;
 @Controller
 public class ReviewsController {
     @Autowired
-    ReviewsMapper dao;
-    @Autowired
     WalkingPathsMapper pathsMapper;
     @Autowired
     PhotosMapper photoDao;
@@ -47,7 +45,7 @@ public class ReviewsController {
         String referer = request.getHeader("Referer");
 
         WalkingPathsMapDTO walkingPaths = pathsMapper.readWalkingPathMap(id);
-        walkingPaths.setMapList(mapMapper.ReadMap(id) );
+        walkingPaths.setMapList(mapMapper.readMap(id) );
         walkingPaths.setPhotosList(photoDao.readPhotos(id));
 
 
@@ -63,7 +61,7 @@ public class ReviewsController {
     ) {
 
         System.out.println(id);
-        List<ReviewsDTO> list = dao.reviewListByWalkingPathsId(id);
+        List<ReviewsDTO> list = reviewsMapper.reviewListByWalkingPathsId(id);
 
         for (ReviewsDTO dto : list) {
             dto.setPhotosList(photoDao.readReviewPhotos(dto.getId()));
@@ -105,7 +103,7 @@ public class ReviewsController {
     public String delete(@RequestBody ReviewsDTO reviewsDTO,
                          @Login UsersDTO login,
                          Model model) {
-        boolean result = dao.deleteReviews(reviewsDTO.getId(), login.getId());
+        boolean result = reviewsMapper.deleteReviews(reviewsDTO.getId(), login.getId());
 
         if (!Objects.equals(login.getName(), reviewsDTO.getCreatedBy())) {
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);

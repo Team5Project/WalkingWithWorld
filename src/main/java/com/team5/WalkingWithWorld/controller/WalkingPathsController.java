@@ -28,7 +28,7 @@ public class WalkingPathsController {
     public List<WalkingPathsMapDTO> getPagingWalkingPathList(
             SearchDTO dto,
             @RequestParam(required = false) int pageNum,
-            @RequestParam(required = false) int size){
+            @RequestParam(required = false) int size) {
         PageInfo page = new PageInfo(pageNum, size);
 
         PageHelper.startPage(dto);
@@ -77,14 +77,13 @@ public class WalkingPathsController {
     //산책로 작성
     @PostMapping("/walking-path")
     public String createWalkingPath(WalkingPathsDTO dto,
-                                          @Login UsersDTO loginUser, FileVo files, MapDTO mapDTO, String course, Model model) throws IOException {
+                                    @Login UsersDTO loginUser, FileVo files, MapDTO mapDTO, String course, Model model) throws IOException {
         int result = walkingPathService.createWalkingPath(dto, loginUser, files, mapDTO, course);
 
-        if(result == -1) {
+        if (result == -1) {
             model.addAttribute("url", "/walking-path");
             model.addAttribute("message", "게시글 작성을 실패하였습니다.");
-        }
-        else {
+        } else {
             model.addAttribute("url", "/walking-path/" + result);
             model.addAttribute("message", "게시글이 작성되었습니다.");
         }
@@ -97,7 +96,7 @@ public class WalkingPathsController {
         ModelAndView mav = new ModelAndView();
 
         WalkingPathsMapDTO walkingPathsMapDTO = walkingPathService.readWalkingPathById(walkingPathId);
-        if(walkingPathsMapDTO == null) {
+        if (walkingPathsMapDTO == null) {
             System.out.println("존재하지 않는 데이터 접근");
             mav.setViewName("redirect:/walking-path");
             return mav;
@@ -112,14 +111,14 @@ public class WalkingPathsController {
     // 산책로 수정
     @PostMapping("/walking-path/modify")
     public String modifyWalkingPath(WalkingPathsDTO walkingPathsDTO, @Login UsersDTO loginUser, Model model) {
-        if(loginUser.getId() != walkingPathsMapper.readWalkingPath(walkingPathsDTO.getId()).getUsersId()) {
+        if (loginUser.getId() != walkingPathsMapper.readWalkingPath(walkingPathsDTO.getId()).getUsersId()) {
             model.addAttribute("url", "/walking-path/" + walkingPathsDTO.getId());
             model.addAttribute("message", "수정권한이 없습니다.");
             return "message";
         }
 
         walkingPathService.modifyWalkingPathWithUserName(walkingPathsDTO, loginUser.getName());
-        model.addAttribute("url", "/walking-path/"  + walkingPathsDTO.getId());
+        model.addAttribute("url", "/walking-path/" + walkingPathsDTO.getId());
         model.addAttribute("message", "게시글이 수정되었습니다.");
         return "message";
     }
@@ -130,7 +129,7 @@ public class WalkingPathsController {
         ModelAndView mav = new ModelAndView();
 
         WalkingPathsMapDTO walkingPaths = walkingPathService.readWalkingPathById(id);
-        if(walkingPaths == null) {
+        if (walkingPaths == null) {
             System.out.println("존재하지 않는 데이터 접근");
             mav.setViewName("redirect:/walking-path");
             return mav;
@@ -146,9 +145,9 @@ public class WalkingPathsController {
     public String deleteWalkingPathById(@PathVariable("walking-path-id") int id,
                                         @Login UsersDTO login, Model model) {
 
-        if(walkingPathsMapper.readWalkingPathMap(id) == null || login.getId() != walkingPathsMapper.readWalkingPath(id).getUsersId()){
+        if (walkingPathsMapper.readWalkingPathMap(id) == null || login.getId() != walkingPathsMapper.readWalkingPath(id).getUsersId()) {
             model.addAttribute("message", "삭제 권한이 없거나 존재하지 않는 게시글입니다.");
-            model.addAttribute("url", "/walking-path/"+id);
+            model.addAttribute("url", "/walking-path/" + id);
             return "message";
         }
 

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class WalkingPathService {
@@ -72,7 +71,7 @@ public class WalkingPathService {
             return null;
 
         // 지도 읽기
-        List<MapDTO> mapDTOList = mapMapper.ReadMap(id);
+        List<MapDTO> mapDTOList = mapMapper.readMap(id);
         if(!mapDTOList.isEmpty())
             walkingPathsMapDTO.setMapList(mapDTOList);
 
@@ -105,12 +104,31 @@ public class WalkingPathService {
         setPhotoAndMap(walkingPathsMapDTOList);
         return walkingPathsMapDTOList;
     }
-
+    // 산책로 리스트 읽기 - keyword와 searchDTO 기준 -> 수정
+//    public List<WalkingPathsMapDTO> readWalkingPathListWithSearchDTO(String searchWord, SearchDTO searchDTO) {
+//        if(searchWord.equals("null")) {
+//            List<MapDTO> mapDTOList = mapMapper.searchMap(searchDTO);
+//            List<WalkingPathsMapDTO> walkingPathsMapDTOList = new ArrayList<>();
+//            for(MapDTO mapDTO : mapDTOList) {
+//                WalkingPathsMapDTO walkingPathsMapDTO = walkingPathsMapper.readWalkingPathMap(mapDTO.getWalkingPathsId());
+//                walkingPathsMapDTO.setMapList(List.of(mapDTO));
+//                walkingPathsMapDTO.setPhotosList(photosMapper.readPhoto(mapDTO.getWalkingPathsId()));
+//                walkingPathsMapDTOList.add(walkingPathsMapDTO);
+//            }
+//            return walkingPathsMapDTOList;
+//        }
+//        else {
+//            searchDTO.setKeyword(searchWord);
+//            List<WalkingPathsMapDTO> walkingPathsMapDTOList = walkingPathsMapper.searchWalkingPathWithSearchDTO(searchDTO); // 변경
+//            setPhotoAndMap(walkingPathsMapDTOList);
+//            return walkingPathsMapDTOList;
+//        }
+//    }
     // 산책로 리스트 읽기 - photo, map setter
     public void setPhotoAndMap(List<WalkingPathsMapDTO> walkingPathMapList) {
         for(WalkingPathsMapDTO dto : walkingPathMapList) {
             dto.setPhotosList(photosMapper.readPhoto(dto.getId()));
-            dto.setMapList(mapMapper.ReadMap(dto.getId()));
+            dto.setMapList(mapMapper.readTimeDistance(dto.getId()));
         }
     }
 
