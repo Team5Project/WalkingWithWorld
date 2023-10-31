@@ -28,8 +28,10 @@ public class Users {
 
     private String addr;
 
-    public static Users of(int id, String name, String password, String email, String addr){
-        return new Users(id, name, password, email, addr);
+
+
+    public static Users of(int id,String name, String password, String email, String addr){
+        return new Users(id,name, password, email, addr);
     }
 
 
