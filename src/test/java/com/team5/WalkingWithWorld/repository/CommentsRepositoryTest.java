@@ -19,4 +19,13 @@ public class CommentsRepositoryTest {
         List<Comments> list = cr.findAll();
         list.stream().forEach(System.out::println);
     }
+
+    @Test
+    void write(){
+        Comments co = new Comments();
+        co.setUsers_id(1);
+        co.setWalkingPathsId(2);
+        co.setContent("test");
+        cr.save(co);
+    }
 }
