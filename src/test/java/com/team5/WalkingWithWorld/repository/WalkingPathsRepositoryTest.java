@@ -12,6 +12,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +22,12 @@ import java.util.stream.Collectors;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DataJpaTest
 class WalkingPathsRepositoryTest {
-    @Autowired
+    @MockBean
     WalkingPathsRepository walkingPathsRepository;
 
-    @Autowired
+    @MockBean
     PhotosRepository photosRepository;
-    @Autowired
+    @MockBean
     MapRepository mapRepository;
 
     @Test

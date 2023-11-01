@@ -2,20 +2,25 @@ package com.team5.WalkingWithWorld.controller;
 
 import com.team5.WalkingWithWorld.domain.LoginDto;
 import com.team5.WalkingWithWorld.domain.UsersDTO;
+import com.team5.WalkingWithWorld.entity.Users;
 import com.team5.WalkingWithWorld.global.Login;
 import com.team5.WalkingWithWorld.global.SessionConst;
 import com.team5.WalkingWithWorld.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 public class UserController {
-    UserService userService;
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -82,9 +87,21 @@ public class UserController {
     @PostMapping("/signup")
     @Valid
     public String signUpUser(UsersDTO usersDto) {
-        boolean user = userService.createUser(usersDto);
-        System.out.println(user);
+        userService.createUser(usersDto);
         return "login_Form";
+    }
+
+    @GetMapping("/users")
+    @ResponseBody
+    public ResponseEntity findAll(){
+        List<UsersDTO> userList =userService.getAllUsers();
+        return new ResponseEntity(userList, HttpStatus.OK);
+    }
+
+    @GetMapping("/users/{users-id}")
+    @ResponseBody
+    public ResponseEntity findAll(@PathVariable("users-id") int id){
+        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
 }

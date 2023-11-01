@@ -10,12 +10,13 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DataJpaTest
 class UsersRepositoryTest {
-    @Autowired
+    @MockBean
     private UsersRepository usersRepository;
     @Mock
     Users users;
@@ -26,7 +27,7 @@ class UsersRepositoryTest {
     @Order(1)
     @DisplayName("로그인 유저 확인")
     void loginUser(){
-        usersRepository.findUsersByEmailAndPassword("test1@gmail.com",
+        usersRepository.findUsersByEmailAndPassword("test@gmail.com",
                 "1iqX8ic/8pptQ6PoGXpaGg==")
                 .orElseThrow(()-> new EntityNotFoundException("유저가 없습니다."));
     }
