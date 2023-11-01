@@ -44,11 +44,9 @@ class WalkingPathsRepositoryTest {
         List<MapDTO1> maps = mapRepository.findByWalkingPaths(walkingPaths).stream().map(MapDTO1::from).collect(Collectors.toList());
         WalkingPathsMapDTO walkingPathsMapDTO = WalkingPathsMapDTO.builder()
                 .id(1)
-                .usersId(1)
+                .usersId(walkingPaths.getUsers().getId())
                 .addr(walkingPaths.getAddr())
                 .title(walkingPaths.getTitle())
-                .photosList(photos)
-                .mapList(maps)
                 .build();
         System.out.println(walkingPathsMapDTO);
     }
@@ -91,6 +89,6 @@ class WalkingPathsRepositoryTest {
                 .addr(walkingPaths.getAddr())
                 .title(walkingPaths.getTitle())
                 .build();
-        System.out.println(walkingPathsMapDTO);
+        System.out.println(walkingPaths);
     }
 }

@@ -4,6 +4,8 @@ import com.team5.WalkingWithWorld.domain.LoginDto;
 import com.team5.WalkingWithWorld.domain.UsersDTO;
 import com.team5.WalkingWithWorld.entity.Users;
 import com.team5.WalkingWithWorld.global.PasswordEncoder;
+import com.team5.WalkingWithWorld.global.exception.BusinessLogicException;
+import com.team5.WalkingWithWorld.global.exception.ExceptionCode;
 import com.team5.WalkingWithWorld.repository.UsersRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +24,8 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
     public UsersDTO getUserById(int id){
-        return UsersDTO.from(usersRepository.getReferenceById(id));
+        Users users = usersRepository.findById(id).orElseThrow(()-> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+        return UsersDTO.from(users);
     }
 
     public UsersDTO getUserInfo(LoginDto loginDto) {
