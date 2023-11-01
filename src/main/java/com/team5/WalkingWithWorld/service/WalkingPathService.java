@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class WalkingPathService {
@@ -74,13 +73,14 @@ public class WalkingPathService {
         // 지도 읽기
         List<MapDTO> mapDTOList = mapMapper.ReadMap(id);
         if(!mapDTOList.isEmpty())
-            walkingPathsMapDTO.setMapList(mapDTOList);
+//            walkingPathsMapDTO.setMapList(mapDTOList);
 
         // 이미지 읽기
-        List<PhotosDTO> photosList = photosMapper.readPhotos(id);
-        if(!photosList.isEmpty())
-            walkingPathsMapDTO.setPhotosList(photosList);
+//        List<PhotosDTO> photosList = photosMapper.readPhotos(id);
+//        if(!photosList.isEmpty())
+//            walkingPathsMapDTO.setPhotosList(photosList);
 
+        return walkingPathsMapDTO;
         return walkingPathsMapDTO;
     }
 
@@ -109,8 +109,8 @@ public class WalkingPathService {
     // 산책로 리스트 읽기 - photo, map setter
     public void setPhotoAndMap(List<WalkingPathsMapDTO> walkingPathMapList) {
         for(WalkingPathsMapDTO dto : walkingPathMapList) {
-            dto.setPhotosList(photosMapper.readPhoto(dto.getId()));
-            dto.setMapList(mapMapper.ReadMap(dto.getId()));
+//            dto.setPhotosList(photosMapper.readPhoto(dto.getId()));
+//            dto.setMapList(mapMapper.ReadMap(dto.getId()));
         }
     }
 

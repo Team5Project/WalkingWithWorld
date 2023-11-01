@@ -11,6 +11,7 @@ public class Map {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @JsonBackReference
     @ManyToOne
     private WalkingPaths walkingPaths;
     private Long time;

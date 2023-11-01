@@ -1,8 +1,6 @@
 package com.team5.WalkingWithWorld.repository;
 
-import com.team5.WalkingWithWorld.domain.WalkingPathsDTO;
-import com.team5.WalkingWithWorld.domain.WalkingPathsMapDTO;
-import com.team5.WalkingWithWorld.domain.WalkingPathsMapDTO1;
+import com.team5.WalkingWithWorld.domain.*;
 import com.team5.WalkingWithWorld.entity.Map;
 import com.team5.WalkingWithWorld.entity.Photos;
 import com.team5.WalkingWithWorld.entity.Users;
@@ -17,8 +15,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.stream.Collectors;
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -26,6 +23,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class WalkingPathsRepositoryTest {
     @Autowired
     WalkingPathsRepository walkingPathsRepository;
+
+    @Autowired
+    PhotosRepository photosRepository;
+    @Autowired
+    MapRepository mapRepository;
 
     @Test
     void findAll() {
@@ -37,9 +39,9 @@ class WalkingPathsRepositoryTest {
     @DisplayName("DTO 활용")
     void findById() {
         WalkingPaths walkingPaths = walkingPathsRepository.getReferenceById(1);
-        List<Photos> photos = new ArrayList<>();
-        List<Map> maps = new ArrayList<>();
-        WalkingPathsMapDTO1 walkingPathsMapDTO = WalkingPathsMapDTO1.builder()
+        List<PhotosDTO1> photos = photosRepository.findByWalkingPaths(walkingPaths).stream().map(PhotosDTO1::from).collect(Collectors.toList());
+        List<MapDTO1> maps = mapRepository.findByWalkingPaths(walkingPaths).stream().map(MapDTO1::from).collect(Collectors.toList());
+        WalkingPathsMapDTO walkingPathsMapDTO = WalkingPathsMapDTO.builder()
                 .id(1)
                 .usersId(1)
                 .addr(walkingPaths.getAddr())
@@ -48,6 +50,24 @@ class WalkingPathsRepositoryTest {
                 .mapList(maps)
                 .build();
         System.out.println(walkingPathsMapDTO);
+    }
+
+    @Test
+    @DisplayName("DTO 양방향")
+    void findById3(){
+        WalkingPaths walkingPaths = walkingPathsRepository.getReferenceById(1);
+        WalkingPathsMapDTO walkingPathsMapDTO = WalkingPathsMapDTO.from(walkingPaths);
+        System.out.println(walkingPathsMapDTO);
+    }
+
+    @Test
+    @DisplayName("엔티티 단방향")
+    void findById4(){
+        WalkingPaths walkingPaths = walkingPathsRepository.getReferenceById(1);
+//        List<Photos> photos = photosRepository.findByWalkingPaths(walkingPaths);
+//        List<Map> maps = mapRepository.findByWalkingPaths(walkingPaths);
+//        WalkingPathsMapDTO1 walkingPathsMapDTO = WalkingPathsMapDTO1.from(walkingPaths);
+//        System.out.println(walkingPathsMapDTO);
     }
 
 

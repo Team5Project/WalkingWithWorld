@@ -2,6 +2,7 @@ package com.team5.WalkingWithWorld.domain;
 
 import com.team5.WalkingWithWorld.entity.Map;
 import com.team5.WalkingWithWorld.entity.Photos;
+import com.team5.WalkingWithWorld.entity.WalkingPaths;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,4 +27,18 @@ public class WalkingPathsMapDTO1 {
     private List<Photos> photosList;
     private List<Map> mapList;
 
+    public static WalkingPathsMapDTO1 from(WalkingPaths walkingPaths,List<Photos> photos,List<Map> map){
+        return WalkingPathsMapDTO1.builder()
+                .id(walkingPaths.getId())
+                .usersId(walkingPaths.getUsers().getId())
+                .title(walkingPaths.getTitle())
+                .addr(walkingPaths.getAddr())
+                .createdAt(walkingPaths.getCreatedAt())
+                .createdBy(walkingPaths.getCreatedBy())
+                .modifiedAt(walkingPaths.getModifiedAt())
+                .modifiedBy(walkingPaths.getModifiedBy())
+                .photosList(photos)
+                .mapList(map)
+                .build();
+    }
 }

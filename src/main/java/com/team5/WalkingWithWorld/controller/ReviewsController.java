@@ -47,8 +47,8 @@ public class ReviewsController {
         String referer = request.getHeader("Referer");
 
         WalkingPathsMapDTO walkingPaths = pathsMapper.readWalkingPathMap(id);
-        walkingPaths.setMapList(mapMapper.ReadMap(id) );
-        walkingPaths.setPhotosList(photoDao.readPhotos(id));
+//        walkingPaths.setMapList(mapMapper.ReadMap(id) );
+//        walkingPaths.setPhotosList(photoDao.readPhotos(id));
 
 
         model.addAttribute("walkingPaths", walkingPaths);

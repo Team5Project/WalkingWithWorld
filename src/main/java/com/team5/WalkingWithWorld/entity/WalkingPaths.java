@@ -1,6 +1,7 @@
 package com.team5.WalkingWithWorld.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
@@ -21,6 +22,7 @@ public class WalkingPaths {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
     private Users users;
@@ -34,4 +36,5 @@ public class WalkingPaths {
     private LocalDateTime modifiedAt;
     @LastModifiedBy
     private String modifiedBy;
+
 }
