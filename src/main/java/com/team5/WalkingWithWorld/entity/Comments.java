@@ -1,9 +1,6 @@
 package com.team5.WalkingWithWorld.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +14,8 @@ public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+//    @ManyToOne
+//    @JoinColumn(name="WalkingPathsDTO_ID")
     private Integer walkingPathsId;
     private Integer users_id;
     private String name;
