@@ -12,6 +12,5 @@ import java.util.List;
 import java.util.List;
 
 public interface CommentsRepository extends JpaRepository<Comments,Integer> {
-
-    Comments save(Comments comments);
+    List<Comments> findTop5ByWalkingPathsIdOrderByIdDesc(Integer id);
 }
