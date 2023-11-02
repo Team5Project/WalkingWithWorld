@@ -1,7 +1,7 @@
 package com.team5.WalkingWithWorld.dao;
 
-import com.team5.WalkingWithWorld.domain.LoginDto;
-import com.team5.WalkingWithWorld.domain.UsersDTO;
+import com.team5.WalkingWithWorld.users.dto.LoginDto;
+import com.team5.WalkingWithWorld.users.dto.UsersDTO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

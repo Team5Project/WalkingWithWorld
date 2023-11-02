@@ -1,11 +1,12 @@
 package com.team5.WalkingWithWorld.dao;
 
-import com.team5.WalkingWithWorld.domain.SearchDTO;
-import com.team5.WalkingWithWorld.domain.WalkingPathsDTO;
-import com.team5.WalkingWithWorld.domain.WalkingPathsMapDTO;
-import org.apache.ibatis.annotations.*;
-import com.team5.WalkingWithWorld.domain.PageInfo;
 
+import com.team5.WalkingWithWorld.global.domain.PageInfo;
+import com.team5.WalkingWithWorld.global.domain.SearchDTO;
+import com.team5.WalkingWithWorld.walkingPaths.dto.WalkingPathsDTO;
+import com.team5.WalkingWithWorld.walkingPaths.dto.WalkingPathsMapDTO;
+
+import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 @Mapper
