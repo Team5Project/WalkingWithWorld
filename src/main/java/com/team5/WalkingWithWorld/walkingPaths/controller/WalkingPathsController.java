@@ -1,11 +1,9 @@
 package com.team5.WalkingWithWorld.walkingPaths.controller;
 
-import com.github.pagehelper.PageHelper;
 import com.team5.WalkingWithWorld.dao.WalkingPathsMapper;
 import com.team5.WalkingWithWorld.global.Login;
 import com.team5.WalkingWithWorld.global.domain.FileVo;
 import com.team5.WalkingWithWorld.global.domain.MapDTO;
-import com.team5.WalkingWithWorld.global.domain.PageInfo;
 import com.team5.WalkingWithWorld.global.domain.SearchDTO;
 import com.team5.WalkingWithWorld.users.dto.UsersDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.WalkingPathsDTO;
@@ -15,11 +13,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
-import java.util.List;
 
 @Controller
 public class WalkingPathsController {
@@ -29,19 +29,6 @@ public class WalkingPathsController {
     WalkingPathService walkingPathService;
 
     //페이징 확인
-    @GetMapping("/walking-paths-test")
-    @ResponseBody
-    public List<WalkingPathsMapDTO> getPagingWalkingPathList(
-            SearchDTO dto,
-            @RequestParam(required = false) int pageNum,
-            @RequestParam(required = false) int size) {
-        PageInfo page = new PageInfo(pageNum, size);
-
-        PageHelper.startPage(dto);
-        com.github.pagehelper.PageInfo.of(walkingPathService.getList(dto));
-
-        return walkingPathService.getList(dto);
-    }
 
     // 전체 리스트
     @GetMapping("/walking-path")
