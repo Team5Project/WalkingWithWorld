@@ -3,9 +3,6 @@ import lombok.Getter;
 
 public enum ExceptionCode {
 
-    BUSINESS_EXCEPTION_ERROR(200,"비지니스 로직 에러입니다."),
-
-
     UNAUTHORIZED(401, "미인증 사용자 입니다."),
     WALKINGPATHS_NOT_FOUND(404,"산책로가 없습니다"),
     USER_NOT_FOUND(404,"사용자가 없습니다."),
