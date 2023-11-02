@@ -1,6 +1,6 @@
 package com.team5.WalkingWithWorld.global.resolver;
 
-import com.team5.WalkingWithWorld.domain.UsersDTO;
+import com.team5.WalkingWithWorld.users.dto.UsersDTO;
 import com.team5.WalkingWithWorld.global.Login;
 import com.team5.WalkingWithWorld.global.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;

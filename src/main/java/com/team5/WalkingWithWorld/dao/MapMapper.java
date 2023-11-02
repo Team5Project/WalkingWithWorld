@@ -1,7 +1,7 @@
 package com.team5.WalkingWithWorld.dao;
 
 
-import com.team5.WalkingWithWorld.domain.MapDTO;
+import com.team5.WalkingWithWorld.global.domain.MapDTO;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
