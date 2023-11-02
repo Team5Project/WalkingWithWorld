@@ -1,15 +1,20 @@
 package com.team5.WalkingWithWorld.repository;
 
 import com.team5.WalkingWithWorld.domain.*;
-import com.team5.WalkingWithWorld.entity.Map;
-import com.team5.WalkingWithWorld.entity.Photos;
-import com.team5.WalkingWithWorld.entity.Users;
-import com.team5.WalkingWithWorld.entity.WalkingPaths;
+import com.team5.WalkingWithWorld.global.entity.Map;
+import com.team5.WalkingWithWorld.global.entity.Photos;
+import com.team5.WalkingWithWorld.global.domain.MapDTO1;
+import com.team5.WalkingWithWorld.global.domain.PhotosDTO1;
+import com.team5.WalkingWithWorld.global.repository.MapRepository;
+import com.team5.WalkingWithWorld.global.repository.PhotosRepository;
+import com.team5.WalkingWithWorld.users.entity.Users;
+import com.team5.WalkingWithWorld.walkingPaths.dto.WalkingPathsMapDTO;
+import com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths;
+import com.team5.WalkingWithWorld.walkingPaths.repository.WalkingPathsRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

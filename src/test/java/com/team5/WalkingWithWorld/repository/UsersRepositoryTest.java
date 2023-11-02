@@ -1,13 +1,12 @@
 package com.team5.WalkingWithWorld.repository;
 
-import com.team5.WalkingWithWorld.domain.LoginDto;
-import com.team5.WalkingWithWorld.domain.UsersDTO;
-import com.team5.WalkingWithWorld.entity.Users;
+import com.team5.WalkingWithWorld.users.dto.LoginDto;
+import com.team5.WalkingWithWorld.users.entity.Users;
+import com.team5.WalkingWithWorld.users.repository.UsersRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
