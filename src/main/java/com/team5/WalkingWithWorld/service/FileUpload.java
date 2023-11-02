@@ -1,6 +1,6 @@
 package com.team5.WalkingWithWorld.service;
 
-import com.team5.WalkingWithWorld.domain.FileVo;
+import com.team5.WalkingWithWorld.global.domain.FileVo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

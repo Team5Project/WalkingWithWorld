@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = {"com.team5.WalkingWithWorld.repository"})
+@EnableJpaRepositories(basePackages = {"com.team5.WalkingWithWorld"})
 //@MapperScan(value={"com.team5.WalkingWithWorld.dao"})
 public class WalkingWithWorldApplication {
 
