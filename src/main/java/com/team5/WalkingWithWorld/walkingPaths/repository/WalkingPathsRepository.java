@@ -9,5 +9,10 @@ public interface WalkingPathsRepository extends JpaRepository<WalkingPaths, Inte
     //Optional<WalkingPathsMapDTO1> findById(int id);
     // keyword로 찾기
     List<WalkingPaths> findByTitleContainingOrAddrContaining(String keyword1, String keyword2);
+<<<<<<< Updated upstream:src/main/java/com/team5/WalkingWithWorld/walkingPaths/repository/WalkingPathsRepository.java
 
+=======
+    // searchDTO로 찾기
+    // 나중에..
+>>>>>>> Stashed changes:src/main/java/com/team5/WalkingWithWorld/repository/WalkingPathsRepository.java
 }
