@@ -1,6 +1,6 @@
 package com.team5.WalkingWithWorld.dao;
 
-import com.team5.WalkingWithWorld.domain.ReviewsDTO;
+import com.team5.WalkingWithWorld.reviews.dto.ReviewsDTO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

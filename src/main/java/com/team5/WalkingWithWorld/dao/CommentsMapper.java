@@ -1,9 +1,8 @@
 package com.team5.WalkingWithWorld.dao;
 
-import com.team5.WalkingWithWorld.domain.CommentsDTO;
+import com.team5.WalkingWithWorld.comments.dto.CommentsDTO;
 import org.apache.ibatis.annotations.*;
 
-import javax.annotation.processing.Generated;
 import java.util.List;
 
 @Mapper

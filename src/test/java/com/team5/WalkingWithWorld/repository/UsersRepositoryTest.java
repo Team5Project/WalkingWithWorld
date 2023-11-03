@@ -1,21 +1,21 @@
 package com.team5.WalkingWithWorld.repository;
 
-import com.team5.WalkingWithWorld.domain.LoginDto;
-import com.team5.WalkingWithWorld.domain.UsersDTO;
-import com.team5.WalkingWithWorld.entity.Users;
+import com.team5.WalkingWithWorld.users.dto.LoginDto;
+import com.team5.WalkingWithWorld.users.entity.Users;
+import com.team5.WalkingWithWorld.users.repository.UsersRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DataJpaTest
 class UsersRepositoryTest {
-    @Autowired
+    @MockBean
     private UsersRepository usersRepository;
     @Mock
     Users users;
@@ -26,7 +26,7 @@ class UsersRepositoryTest {
     @Order(1)
     @DisplayName("로그인 유저 확인")
     void loginUser(){
-        usersRepository.findUsersByEmailAndPassword("test1@gmail.com",
+        usersRepository.findUsersByEmailAndPassword("test@gmail.com",
                 "1iqX8ic/8pptQ6PoGXpaGg==")
                 .orElseThrow(()-> new EntityNotFoundException("유저가 없습니다."));
     }
