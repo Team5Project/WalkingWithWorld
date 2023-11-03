@@ -143,9 +143,7 @@ public class ReviewsController {
     @PostMapping("/reviews/modify/{review-id}")
     public String modifyReview(ReviewsDTO vo,
                                FileVo files,
-                               HttpServletRequest request,
                                @Login UsersDTO login,
-                               Model model,
                                @PathVariable("review-id") int id) throws IOException {
 
 

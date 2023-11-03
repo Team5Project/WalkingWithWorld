@@ -1,10 +1,9 @@
 package com.team5.WalkingWithWorld.repository;
 
-import com.team5.WalkingWithWorld.domain.*;
-import com.team5.WalkingWithWorld.global.entity.Map;
-import com.team5.WalkingWithWorld.global.entity.Photos;
 import com.team5.WalkingWithWorld.global.domain.MapDTO1;
 import com.team5.WalkingWithWorld.global.domain.PhotosDTO1;
+import com.team5.WalkingWithWorld.global.entity.Map;
+import com.team5.WalkingWithWorld.global.entity.Photos;
 import com.team5.WalkingWithWorld.global.repository.MapRepository;
 import com.team5.WalkingWithWorld.global.repository.PhotosRepository;
 import com.team5.WalkingWithWorld.users.entity.Users;

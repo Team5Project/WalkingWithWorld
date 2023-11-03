@@ -19,8 +19,7 @@ public class CommentsDTO  {
 
     @NotBlank(message = "댓글을 입력해주세요.")
     private String content;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+
 
     public static CommentsDTO from(Comments comments){
         return CommentsDTO.builder()
@@ -29,8 +28,6 @@ public class CommentsDTO  {
                 .usersId(comments.getUsers().getId())
                 .name(comments.getUsers().getName())
                 .content(comments.getContent())
-                .createdAt(comments.getCreatedAt())
-                .modifiedAt(comments.getModifiedAt())
                 .build();
     }
 
@@ -40,8 +37,8 @@ public class CommentsDTO  {
                 user,
                 walkingPaths,
                 content,
-                createdAt,
-                name,
+                null,
+                null,
                 null,
                 null
         );
