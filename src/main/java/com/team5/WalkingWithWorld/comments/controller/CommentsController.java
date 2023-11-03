@@ -7,9 +7,7 @@ import com.team5.WalkingWithWorld.comments.service.CommentService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +26,13 @@ public class CommentsController {
         List<CommentsDTO> list = commentService.getAllCommentsByWalkingPathsId(id);
         model.addAttribute("commentList", list);
         return "comments :: #comments";
+    }
+
+    @GetMapping("/test/comments/{walking-paths-id}")
+    @ResponseBody
+    public List<CommentsDTO> list(@PathVariable("walking-paths-id") int id) {
+
+        return commentService.getAllCommentsByWalkingPathsId(id);
     }
 
     @PostMapping(value = "/comments/{walking-paths-id}",produces = "application/json; charset=utf-8")
