@@ -5,12 +5,6 @@ import com.team5.WalkingWithWorld.global.entity.AuditingFields;
 import com.team5.WalkingWithWorld.users.entity.Users;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,4 +22,12 @@ public class WalkingPaths extends AuditingFields {
     private Users users;
     private String title;
     private String addr;
+
+    public static WalkingPaths of(int id,
+                                  Users users,
+                                  String title,
+                                  String addr) {
+        return new WalkingPaths(id, users, title, addr);
+    }
+
 }
