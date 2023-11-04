@@ -1,6 +1,6 @@
 package com.team5.WalkingWithWorld.dao;
 
-import com.team5.WalkingWithWorld.domain.PhotosDTO;
+import com.team5.WalkingWithWorld.global.domain.PhotosDTO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

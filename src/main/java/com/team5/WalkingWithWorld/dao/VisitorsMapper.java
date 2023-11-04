@@ -1,13 +1,12 @@
 package com.team5.WalkingWithWorld.dao;
 
-import com.team5.WalkingWithWorld.domain.VisitorsDTO;
+import com.team5.WalkingWithWorld.global.domain.VisitorsDTO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
-
 @Mapper
 public interface VisitorsMapper {
     @Select("select * from visitors")
