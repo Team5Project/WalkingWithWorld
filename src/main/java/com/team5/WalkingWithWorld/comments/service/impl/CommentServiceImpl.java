@@ -28,8 +28,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentsDTO> getAllCommentsByWalkingPathsId(int walkingPathsId){
-        return commentsRepository.findAllByWalkingPathsId(walkingPathsId).stream().map(CommentsDTO::from).collect(Collectors.toList());
+    public List<CommentsDTO> findTop5ByWalkingPathsIdOrderByIdDesc(int walkingPathsId){
+        return commentsRepository.findTop5ByWalkingPathsIdOrderByIdDesc(walkingPathsId).stream().map(CommentsDTO::from).collect(Collectors.toList());
     }
     @Override
     public Comments createComment(CommentsDTO dto, int userId, int walkingPathsId){
@@ -39,7 +39,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(int id){
+    public void deleteComment(Long id){
         commentsRepository.deleteById(id);
     }
 }

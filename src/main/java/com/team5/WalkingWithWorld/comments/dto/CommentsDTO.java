@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class CommentsDTO  {
-    private int id;
+    private Long id;
     private int walkingPathsId;
     private int usersId;
     private String name;
@@ -36,11 +36,7 @@ public class CommentsDTO  {
                 id,
                 user,
                 walkingPaths,
-                content,
-                null,
-                null,
-                null,
-                null
+                content
         );
     }
 }
