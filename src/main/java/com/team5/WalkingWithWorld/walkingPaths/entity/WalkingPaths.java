@@ -3,6 +3,7 @@ package com.team5.WalkingWithWorld.walkingPaths.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.team5.WalkingWithWorld.global.entity.AuditingFields;
 import com.team5.WalkingWithWorld.users.entity.Users;
+import com.team5.WalkingWithWorld.walkingPaths.dto.RequestWalkingPathDTO;
 import jakarta.persistence.*;
 import lombok.*;
 

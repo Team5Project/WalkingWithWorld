@@ -1,7 +1,8 @@
 package com.team5.WalkingWithWorld.repository;
 
-import com.team5.WalkingWithWorld.entity.Users;
 import com.team5.WalkingWithWorld.entity.WalkingPaths;
+import com.team5.WalkingWithWorld.users.entity.Users;
+import com.team5.WalkingWithWorld.walkingPaths.repository.WalkingPathsRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
