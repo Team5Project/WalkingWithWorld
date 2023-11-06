@@ -1,6 +1,6 @@
-package com.team5.WalkingWithWorld.repository;
+package com.team5.WalkingWithWorld.visitors.repository;
 
-import com.team5.WalkingWithWorld.entity.Visitors;
+import com.team5.WalkingWithWorld.visitors.entity.Visitors;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
