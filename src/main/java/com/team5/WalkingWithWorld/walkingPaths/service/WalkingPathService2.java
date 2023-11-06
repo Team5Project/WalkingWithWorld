@@ -4,6 +4,8 @@ import com.team5.WalkingWithWorld.global.domain.FileVo;
 import com.team5.WalkingWithWorld.global.dto.RequestMapDTO;
 import com.team5.WalkingWithWorld.global.entity.Map;
 import com.team5.WalkingWithWorld.global.entity.Photos;
+import com.team5.WalkingWithWorld.global.exception.BusinessLogicException;
+import com.team5.WalkingWithWorld.global.exception.ExceptionCode;
 import com.team5.WalkingWithWorld.global.repository.MapRepository;
 import com.team5.WalkingWithWorld.global.repository.PhotosRepository;
 import com.team5.WalkingWithWorld.service.FileUpload;
@@ -14,6 +16,7 @@ import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDetailDTO;
 import com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths;
 import com.team5.WalkingWithWorld.walkingPaths.repository.WalkingPathsRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -98,32 +101,49 @@ public class WalkingPathService2 {
         }
         return walkingPaths.getId();
     }
-    // 산책로 수정
-    public WalkingPaths modifyWalkingPath(RequestWalkingPathDTO requestWalkingPathDTO, int id) throws Exception {
-        // 유저 확인
-        Optional<WalkingPaths> walkingPaths = walkingPathsRepository.findById(id);
-        WalkingPaths result;
-        if (walkingPaths.isPresent()) {
-            WalkingPaths entity = WalkingPaths.builder()
-                    .id(id)
-                    .users(walkingPaths.get().getUsers())
-                    .title(requestWalkingPathDTO.getTitle().isEmpty() ? walkingPaths.get().getTitle() : requestWalkingPathDTO.getTitle())
-                    .addr(requestWalkingPathDTO.getAddr().isEmpty() ? walkingPaths.get().getAddr() : requestWalkingPathDTO.getAddr())
-                    .build();
-            result = walkingPathsRepository.save(entity);
-        } else {
-            throw new Exception("게시글을 찾을 수 없습니다.");
-        }
-        return result;
+//    // 산책로 수정
+//    public WalkingPaths modifyWalkingPath(RequestWalkingPathDTO requestWalkingPathDTO, int id) throws Exception {
+//        // 유저 확인
+//        Optional<WalkingPaths> walkingPaths = walkingPathsRepository.findById(id);
+//        WalkingPaths result;
+//        if (walkingPaths.isPresent()) {
+//            WalkingPaths entity = WalkingPaths.builder()
+//                    .id(id)
+//                    .users(walkingPaths.get().getUsers())
+//                    .title(requestWalkingPathDTO.getTitle().isEmpty() ? walkingPaths.get().getTitle() : requestWalkingPathDTO.getTitle())
+//                    .addr(requestWalkingPathDTO.getAddr().isEmpty() ? walkingPaths.get().getAddr() : requestWalkingPathDTO.getAddr())
+//                    .build();
+//            result = walkingPathsRepository.save(entity);
+//        } else {
+//            throw new Exception("게시글을 찾을 수 없습니다.");
+//        }
+//        return result;
+//    }
+    public void modifyWalkingPath(RequestWalkingPathDTO requestWalkingPathDTO, int walkingPathsId){
+        WalkingPaths walkingPaths = walkingPathsRepository.findById(walkingPathsId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));
+
+        Optional.ofNullable(requestWalkingPathDTO.getTitle()).ifPresent(walkingPaths::updateTitle);
+        Optional.ofNullable(requestWalkingPathDTO.getAddr()).ifPresent(walkingPaths::updateAddr);
+
+        walkingPathsRepository.save(walkingPaths);
     }
     // 산책로 삭제
-    public boolean deleteWalkingPath(int id) {
-        Optional<WalkingPaths> walkingPaths = walkingPathsRepository.findById(id);
-        boolean result = true;
-        if(walkingPaths.isPresent())
-            walkingPathsRepository.deleteById(id);
-        else
-            result = false;
-        return result;
+//    public boolean deleteWalkingPath(int id) {
+//        Optional<WalkingPaths> walkingPaths = walkingPathsRepository.findById(id);
+//        boolean result = true;
+//        if(walkingPaths.isPresent())
+//            walkingPathsRepository.deleteById(id);
+//        else
+//            result = false;
+//        return result;
+//    }
+    @Transactional
+    public void deleteWalkingPath(int id){
+        WalkingPaths walkingPaths = walkingPathsRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));
+        //
+        mapRepository.deleteAllByWalkingPaths(walkingPaths);
+        photosRepository.deleteAllByWalkingPaths(walkingPaths);
+        walkingPathsRepository.deleteById(id);
+        //
     }
 }

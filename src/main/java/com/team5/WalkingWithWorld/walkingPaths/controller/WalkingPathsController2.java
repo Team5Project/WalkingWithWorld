@@ -1,21 +1,11 @@
 package com.team5.WalkingWithWorld.walkingPaths.controller;
 
-import com.team5.WalkingWithWorld.global.Login;
-import com.team5.WalkingWithWorld.global.domain.FileVo;
-import com.team5.WalkingWithWorld.global.dto.RequestMapDTO;
-import com.team5.WalkingWithWorld.global.dto.RequestPhotosDTO;
-import com.team5.WalkingWithWorld.users.dto.UsersDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.RequestDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.RequestWalkingPathDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDetailDTO;
-import com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths;
 import com.team5.WalkingWithWorld.walkingPaths.repository.WalkingPathsRepository;
 import com.team5.WalkingWithWorld.walkingPaths.service.WalkingPathService2;
-import org.apache.catalina.User;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -72,20 +62,14 @@ public class WalkingPathsController2 {
     // 산책로 수정 폼으로 이동(walking-path-id 참조)
     // 산책로 수정
     @PutMapping("/{id}")
-    public WalkingPaths modifyWalkingPath(@RequestBody RequestWalkingPathDTO requestWalkingPathDTO,
+    public int modifyWalkingPath(@RequestBody RequestWalkingPathDTO requestWalkingPathDTO,
                                           @PathVariable(value = "id") int id) { // @Login UsersDTO usersDTO로 확인하기
-        try {
-            return walkingPathService.modifyWalkingPath(requestWalkingPathDTO, id);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        walkingPathService.modifyWalkingPath(requestWalkingPathDTO, id);
+        return id;
     }
     // 산책로 삭제
     @DeleteMapping("/{id}")
     public void deleteWalkingPath(@PathVariable(value = "id") int id) {
-        boolean result = walkingPathService.deleteWalkingPath(id);
-        if(!result)
-            System.out.println("삭제 중 오류 발생");
+       walkingPathService.deleteWalkingPath(id);
     }
 }

@@ -9,4 +9,6 @@ import java.util.List;
 public interface MapRepository extends JpaRepository<Map, Integer> {
     List<Map> findByWalkingPaths(WalkingPaths walkingPaths);
     Map findTop1ByWalkingPaths(WalkingPaths walkingPaths);
+
+    void deleteAllByWalkingPaths(WalkingPaths walkingPaths);
 }
