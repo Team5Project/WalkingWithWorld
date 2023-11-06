@@ -9,6 +9,5 @@ public interface CommentService {
     List<CommentsDTO> getAllCommentsByWalkingPathsId(int walkingPathsId);
 
     Comments createComment(CommentsDTO dto, int userId, int walkingPathsId);
-
     void deleteComment(int id);
 }

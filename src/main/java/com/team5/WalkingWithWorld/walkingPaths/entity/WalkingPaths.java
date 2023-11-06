@@ -1,15 +1,10 @@
 package com.team5.WalkingWithWorld.walkingPaths.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.team5.WalkingWithWorld.global.entity.AuditingFields;
 import com.team5.WalkingWithWorld.users.entity.Users;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Builder
 @ToString
-public class WalkingPaths {
+public class WalkingPaths extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -27,13 +22,20 @@ public class WalkingPaths {
     private Users users;
     private String title;
     private String addr;
-    @CreatedDate
-    private LocalDateTime createdAt;
-    @CreatedBy
-    private String createdBy;
-    @LastModifiedDate
-    private LocalDateTime modifiedAt;
-    @LastModifiedBy
-    private String modifiedBy;
+
+    public static WalkingPaths of(int id,
+                                  Users users,
+                                  String title,
+                                  String addr) {
+        return new WalkingPaths(id, users, title, addr);
+    }
+
+    public  void updateTitle(String title){
+        this.title = title;
+    }
+
+    public void updateAddr(String addr){
+        this.addr = addr;
+    }
 
 }

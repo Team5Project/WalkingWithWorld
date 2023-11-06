@@ -1,15 +1,15 @@
 package com.team5.WalkingWithWorld.comments.controller;
 
+
 import com.team5.WalkingWithWorld.comments.dto.CommentsDTO;
+import com.team5.WalkingWithWorld.comments.entity.Comments;
 import com.team5.WalkingWithWorld.users.dto.UsersDTO;
 import com.team5.WalkingWithWorld.global.Login;
 import com.team5.WalkingWithWorld.comments.service.CommentService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,14 +20,28 @@ public class CommentsController {
     public CommentsController(CommentService commentService) {
         this.commentService = commentService;
     }
-
-    @PostMapping("/comments/list/{walking-paths-id}")
+@PostMapping("/comments/list/{walking-paths-id}")
     public String list(Model model,
-                       @PathVariable("walking-paths-id") int id) {
+                       @PathVariable("walking-paths-id") int id){
+    List<CommentsDTO> list =  commentService.getAllCommentsByWalkingPathsId(id);
+    model.addAttribute("commentList", list);
+    return "comments :: #comments";
+}
 
-        List<CommentsDTO> list = commentService.getAllCommentsByWalkingPathsId(id);
-        model.addAttribute("commentList", list);
-        return "comments :: #comments";
+    @GetMapping("/comments/list/{walking-paths-id}")
+    @ResponseBody
+    public List<CommentsDTO> listComment(Model model,
+                       @PathVariable("walking-paths-id") int id){
+        List<CommentsDTO> list =  commentService.getAllCommentsByWalkingPathsId(id);
+        return list;
+    }
+
+
+    @GetMapping("/test/comments/{walking-paths-id}")
+    @ResponseBody
+    public List<CommentsDTO> list(@PathVariable("walking-paths-id") int id) {
+
+        return commentService.getAllCommentsByWalkingPathsId(id);
     }
 
     @PostMapping(value = "/comments/{walking-paths-id}",produces = "application/json; charset=utf-8")
@@ -50,16 +64,16 @@ public class CommentsController {
 //        return dao.updateComments(id);
 //    }
 
-    @PostMapping(value = "/comments/delete", produces = "application/json; charset=utf-8")
-    public String delete(@RequestBody CommentsDTO dto,
-                         Model model) {
-
-        commentService.deleteComment(dto.getId());
-
-        List<CommentsDTO> list = commentService.getAllCommentsByWalkingPathsId(dto.getWalkingPathsId());
-        model.addAttribute("commentList", list);
-
-        return "comments :: #comments";
-
-    }
+//    @PostMapping(value = "/comments/delete", produces = "application/json; charset=utf-8")
+//    public String delete(@RequestBody CommentsDTO dto,
+//                         Model model) {
+//
+//        commentService.deleteComment(dto.getId());
+//
+//        List<CommentsDTO> list = commentService.findTop5ByWalkingPathsIdOrderByIdDesc(dto.getWalkingPathsId());
+//        model.addAttribute("commentList", list);
+//
+//        return "comments :: #comments";
+//
+//    }
 }
