@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 @Builder
 public class CommentsDTO  {
-    private int id;
+    private Long id;
     private int walkingPathsId;
     private int usersId;
     private String name;
@@ -21,7 +21,6 @@ public class CommentsDTO  {
 
     public static CommentsDTO from(Comments comments){
         return CommentsDTO.builder()
-                .id(comments.getId())
                 .walkingPathsId(comments.getWalkingPaths().getId())
                 .usersId(comments.getUsers().getId())
                 .name(comments.getUsers().getName())
@@ -31,7 +30,7 @@ public class CommentsDTO  {
 
     public  Comments toEntity(Users user, WalkingPaths walkingPaths){
         return Comments.of(
-                id,
+                null,
                 user,
                 walkingPaths,
                 content
