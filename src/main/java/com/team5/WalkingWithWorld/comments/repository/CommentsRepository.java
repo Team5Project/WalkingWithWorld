@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CommentsRepository extends JpaRepository<Comments, Integer> {
-    List<Comments> findTop5ByWalkingPathsIdOrderByCreatedAtDesc(int id);
+public interface CommentsRepository extends JpaRepository<Comments, Long> {
+    List<Comments> findTop5ByWalkingPathsIdOrderByIdDesc(int id);
 }
