@@ -7,8 +7,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 public class CommentsDTO  {
@@ -36,11 +34,7 @@ public class CommentsDTO  {
                 id,
                 user,
                 walkingPaths,
-                content,
-                null,
-                null,
-                null,
-                null
+                content
         );
     }
 }

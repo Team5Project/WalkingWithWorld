@@ -8,6 +8,9 @@ import lombok.*;
 @Getter
 @ToString
 @Entity
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Map {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +20,8 @@ public class Map {
     private WalkingPaths walkingPaths;
     private Long time;
     private String distance;
+    @Column(name = "coordinate_x")
     private String coordinateX;
+    @Column(name="coordinate_y")
     private String coordinateY;
 }
