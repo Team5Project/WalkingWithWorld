@@ -36,11 +36,7 @@ public class CommentsDTO  {
                 id,
                 user,
                 walkingPaths,
-                content,
-                null,
-                null,
-                null,
-                null
+                content
         );
     }
 }
