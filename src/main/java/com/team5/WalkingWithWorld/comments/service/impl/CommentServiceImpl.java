@@ -8,6 +8,7 @@ import com.team5.WalkingWithWorld.comments.repository.CommentsRepository;
 import com.team5.WalkingWithWorld.users.repository.UsersRepository;
 import com.team5.WalkingWithWorld.walkingPaths.repository.WalkingPathsRepository;
 import com.team5.WalkingWithWorld.comments.service.CommentService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentsDTO> getAllCommentsByWalkingPathsId(int walkingPathsId){
-        return commentsRepository.findAllByWalkingPathsId(walkingPathsId).stream().map(CommentsDTO::from).collect(Collectors.toList());
+        return commentsRepository.findTop5ByWalkingPathsIdOrderByCreatedAtDesc(walkingPathsId).stream().map(CommentsDTO::from).collect(Collectors.toList());
     }
     @Override
     public Comments createComment(CommentsDTO dto, int userId, int walkingPathsId){

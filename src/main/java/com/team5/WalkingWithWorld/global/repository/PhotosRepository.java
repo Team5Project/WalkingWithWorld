@@ -10,4 +10,7 @@ import java.util.List;
 @Repository
 public interface PhotosRepository extends JpaRepository<Photos, Integer> {
     List<Photos> findByWalkingPaths(WalkingPaths walkingPaths);
+    Photos findTop1ByWalkingPaths(WalkingPaths walkingPaths);
+
+    void deleteAllByWalkingPaths(WalkingPaths walkingPaths);
 }
