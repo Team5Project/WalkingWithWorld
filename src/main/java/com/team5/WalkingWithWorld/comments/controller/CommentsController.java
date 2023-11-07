@@ -20,19 +20,20 @@ public class CommentsController {
     public CommentsController(CommentService commentService) {
         this.commentService = commentService;
     }
-@PostMapping("/comments/list/{walking-paths-id}")
+
+    @PostMapping("/comments/list/{walking-paths-id}")
     public String list(Model model,
-                       @PathVariable("walking-paths-id") int id){
-    List<CommentsDTO> list =  commentService.getAllCommentsByWalkingPathsId(id);
-    model.addAttribute("commentList", list);
-    return "comments :: #comments";
-}
+                       @PathVariable("walking-paths-id") int id) {
+        List<CommentsDTO> list = commentService.findTop5ByWalkingPathsIdOrderByCreatedAtDesc(id);
+        model.addAttribute("commentList", list);
+        return "comments :: #comments";
+    }
 
     @GetMapping("/comments/list/{walking-paths-id}")
     @ResponseBody
     public List<CommentsDTO> listComment(Model model,
-                       @PathVariable("walking-paths-id") int id){
-        List<CommentsDTO> list =  commentService.getAllCommentsByWalkingPathsId(id);
+                                         @PathVariable("walking-paths-id") int id) {
+        List<CommentsDTO> list = commentService.findTop5ByWalkingPathsIdOrderByCreatedAtDesc(id);
         return list;
     }
 
@@ -41,18 +42,18 @@ public class CommentsController {
     @ResponseBody
     public List<CommentsDTO> list(@PathVariable("walking-paths-id") int id) {
 
-        return commentService.getAllCommentsByWalkingPathsId(id);
+        return commentService.findTop5ByWalkingPathsIdOrderByCreatedAtDesc(id);
     }
 
-    @PostMapping(value = "/comments/{walking-paths-id}",produces = "application/json; charset=utf-8")
+    @PostMapping(value = "/comments/{walking-paths-id}", produces = "application/json; charset=utf-8")
     public String writeComment(@RequestBody CommentsDTO dto,
                                @Login UsersDTO usersDto,
                                @PathVariable("walking-paths-id") int id,
                                Model model,
                                HttpServletRequest request) {
         String ref = request.getHeader("Referer");
-        commentService.createComment(dto, usersDto.getId(),id);
-        List<CommentsDTO> list = commentService.getAllCommentsByWalkingPathsId(id);
+        commentService.createComment(dto, usersDto.getId(), id);
+        List<CommentsDTO> list = commentService.findTop5ByWalkingPathsIdOrderByCreatedAtDesc(id);
         model.addAttribute("commentList", list);
         return "comments :: #comments";
     }

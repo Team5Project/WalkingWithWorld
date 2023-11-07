@@ -6,8 +6,8 @@ import com.team5.WalkingWithWorld.comments.entity.Comments;
 import java.util.List;
 
 public interface CommentService {
-    List<CommentsDTO> getAllCommentsByWalkingPathsId(int walkingPathsId);
+    List<CommentsDTO> findTop5ByWalkingPathsIdOrderByCreatedAtDesc(int walkingPathsId);
 
     Comments createComment(CommentsDTO dto, int userId, int walkingPathsId);
-    void deleteComment(int id);
+    void deleteComment(Long id);
 }
