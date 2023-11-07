@@ -1,9 +1,13 @@
-package com.team5.WalkingWithWorld.global.controller;
+package com.team5.WalkingWithWorld.visitors.controller;
 
 import com.team5.WalkingWithWorld.dao.VisitorsMapper;
-import com.team5.WalkingWithWorld.global.domain.VisitorsDTO;
+import com.team5.WalkingWithWorld.visitors.dto.VisitorsDTO;
+import com.team5.WalkingWithWorld.visitors.entity.Visitors;
+import com.team5.WalkingWithWorld.visitors.repository.VisitorsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,11 +17,14 @@ import java.util.List;
 public class VisitorsController {
     @Autowired
     VisitorsMapper dao;
+    @Autowired
+    VisitorsRepository visitorsRepository;
+
 
     @GetMapping("/visitorslist")
     public ModelAndView list(){
+        List<Visitors> list = visitorsRepository.findAll();
         ModelAndView mav = new ModelAndView();
-        List<VisitorsDTO> list = dao.visitorslist();
         System.out.println(list);
         mav.addObject("list", list);
         mav.setViewName("visitorView");
@@ -25,18 +32,16 @@ public class VisitorsController {
     }
 
     @PostMapping("/visitor/delete")
+    @Transactional
     public ModelAndView delete(@RequestBody VisitorsDTO visitorsDTO) {
-        boolean result = dao.deleteVisitors(visitorsDTO.getId(),visitorsDTO.getPassword());
         ModelAndView mav = new ModelAndView();
-
-        System.out.println(visitorsDTO);
-
-        if(result) {
-            mav.addObject("list", dao.visitorslist());
+        try {
+            visitorsRepository.deleteByIdAndPassword(visitorsDTO.getId(), visitorsDTO.getPassword());
+            mav.addObject("list", visitorsRepository.findAll());
             mav.setViewName("visitorView::#deleteList");
             return mav;
-        }else{
-            mav.addObject("list", dao.visitorslist());
+        }catch(EmptyResultDataAccessException e){
+            mav.addObject("list", visitorsRepository.findAll());
             mav.addObject("message", "비밀번호가 일치하지 않습니다.");
             mav.setViewName("visitorView::#deleteList");
         }
@@ -44,12 +49,15 @@ public class VisitorsController {
     }
 
     @PostMapping("/insertVisitors")
-    public ModelAndView insert(VisitorsDTO dto){
-        boolean result=dao.insertVisitors(dto);
+    @Transactional
+    public ModelAndView insert(Visitors vo){
         ModelAndView mav=new ModelAndView();
-        if(result){
-            mav.addObject("list", dao.visitorslist());
-        }
+       try{
+           visitorsRepository.save(vo);
+           mav.addObject("list", visitorsRepository.findAll());
+        }catch (Exception e){
+           mav.addObject("msg", "오류가 발생했습니다.");
+       }
         mav.setViewName("visitorView");
         return mav;
     }
