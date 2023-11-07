@@ -52,8 +52,8 @@ public class WalkingPathService2 {
         return responseWalkingPathDTOList;
     }
     // 산책로 하나 조회
-    public ResponseWalkingPathDetailDTO readWalkingPath(int id) throws Exception {
-        WalkingPaths walkingPaths = walkingPathsRepository.findById(id).orElseThrow(() -> new Exception("존재하지 않는 게시글"));
+    public ResponseWalkingPathDetailDTO readWalkingPath(int id){
+        WalkingPaths walkingPaths = walkingPathsRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));
         ResponseWalkingPathDetailDTO dto = ResponseWalkingPathDetailDTO.from(walkingPaths, mapRepository.findByWalkingPaths(walkingPaths), photosRepository.findByWalkingPaths(walkingPaths));
         return dto;
     }
@@ -67,30 +67,28 @@ public class WalkingPathService2 {
         return responseWalkingPathDTOList;
     }
     // 산책로 작성
-    public int createWalkingPath(RequestWalkingPathDTO requestWalkingPath,
-                                          List<RequestMapDTO> requestMapDTO,
-                                 List<MultipartFile> multipartFile) throws IOException { // , UsersDTO usersDTO
+    @Transactional
+    public int createWalkingPath(RequestWalkingPathDTO requestDTO, List<MultipartFile> files){ // , UsersDTO usersDTO
         Users users = usersRepository.getReferenceById(1);
         WalkingPaths entity = WalkingPaths.builder()
                 .users(users)
-                .title(requestWalkingPath.getTitle())
-                .addr(requestWalkingPath.getAddr())
+                .title(requestDTO.getTitle())
+                .addr(requestDTO.getAddr())
                 .build();
         WalkingPaths walkingPaths = walkingPathsRepository.save(entity);
         // 지도
-        for(RequestMapDTO dto : requestMapDTO) {
-            Map map = Map.builder()
-                    .walkingPaths(walkingPaths)
-                    .time(dto.getTime())
-                    .distance(dto.getDistance())
-                    .coordinateX(dto.getCoordinateX())
-                    .coordinateY(dto.getCoordinateY())
-                    .build();
+        for(RequestMapDTO dto : requestDTO.getRequestMapDTO()) {
+            Map map = Map.from(walkingPaths, dto);
             mapRepository.save(map);
         }
         // 사진
-        FileVo fileVo = new FileVo(multipartFile);
-        java.util.Map<String, String> filesName = fileUpload.upload(fileVo);
+        FileVo fileVo = new FileVo(files);
+        java.util.Map<String, String> filesName = null;
+        try {
+            filesName = fileUpload.upload(fileVo);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         for(java.util.Map.Entry<String, String> entry : filesName.entrySet()) {
             Photos photos = Photos.builder()
                     .walkingPaths(walkingPaths)
@@ -101,24 +99,7 @@ public class WalkingPathService2 {
         }
         return walkingPaths.getId();
     }
-//    // 산책로 수정
-//    public WalkingPaths modifyWalkingPath(RequestWalkingPathDTO requestWalkingPathDTO, int id) throws Exception {
-//        // 유저 확인
-//        Optional<WalkingPaths> walkingPaths = walkingPathsRepository.findById(id);
-//        WalkingPaths result;
-//        if (walkingPaths.isPresent()) {
-//            WalkingPaths entity = WalkingPaths.builder()
-//                    .id(id)
-//                    .users(walkingPaths.get().getUsers())
-//                    .title(requestWalkingPathDTO.getTitle().isEmpty() ? walkingPaths.get().getTitle() : requestWalkingPathDTO.getTitle())
-//                    .addr(requestWalkingPathDTO.getAddr().isEmpty() ? walkingPaths.get().getAddr() : requestWalkingPathDTO.getAddr())
-//                    .build();
-//            result = walkingPathsRepository.save(entity);
-//        } else {
-//            throw new Exception("게시글을 찾을 수 없습니다.");
-//        }
-//        return result;
-//    }
+    // 산책로 수정
     public void modifyWalkingPath(RequestWalkingPathDTO requestWalkingPathDTO, int walkingPathsId){
         WalkingPaths walkingPaths = walkingPathsRepository.findById(walkingPathsId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));
 
@@ -128,15 +109,6 @@ public class WalkingPathService2 {
         walkingPathsRepository.save(walkingPaths);
     }
     // 산책로 삭제
-//    public boolean deleteWalkingPath(int id) {
-//        Optional<WalkingPaths> walkingPaths = walkingPathsRepository.findById(id);
-//        boolean result = true;
-//        if(walkingPaths.isPresent())
-//            walkingPathsRepository.deleteById(id);
-//        else
-//            result = false;
-//        return result;
-//    }
     @Transactional
     public void deleteWalkingPath(int id){
         WalkingPaths walkingPaths = walkingPathsRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));

@@ -1,7 +1,5 @@
 package com.team5.WalkingWithWorld.global.dto;
 
-import com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths;
-import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
