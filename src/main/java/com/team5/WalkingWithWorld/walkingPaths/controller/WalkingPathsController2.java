@@ -1,6 +1,5 @@
 package com.team5.WalkingWithWorld.walkingPaths.controller;
 
-import com.team5.WalkingWithWorld.walkingPaths.dto.RequestDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.RequestWalkingPathDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDetailDTO;
@@ -10,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 
@@ -33,13 +31,7 @@ public class WalkingPathsController2 {
     // 산책로 하나 조회
     @GetMapping("/{id}")
     public ResponseWalkingPathDetailDTO getWalkingPath(@PathVariable(value = "id") int id){
-        ResponseWalkingPathDetailDTO dto = null;
-        try {
-            dto = walkingPathService.readWalkingPath(id);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return dto;
+        return walkingPathService.readWalkingPath(id);
     }
     // 산책로 검색 필터 이용(searchDTO)
     // 산책로 검색
@@ -50,14 +42,9 @@ public class WalkingPathsController2 {
     // 산책로 작성 폼으로 이동
     // 산책로 작성
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public int writeWalkingPath(@RequestPart RequestDTO requestDTO,
+    public int writeWalkingPath(@RequestPart RequestWalkingPathDTO requestDTO,
                                 @RequestPart List<MultipartFile> files) { // @Login UsersDTO usersDTO
-        try {
-            return walkingPathService.createWalkingPath(requestDTO.getRequestWalkingPathDTO(), requestDTO.getRequestMapDTO(),files);
-        } catch (IOException e) {
-            System.out.println("파일 생성중 오류 발생");
-        }
-        return 0;
+        return walkingPathService.createWalkingPath(requestDTO, files);
     }
     // 산책로 수정 폼으로 이동(walking-path-id 참조)
     // 산책로 수정
