@@ -7,12 +7,18 @@ import com.team5.WalkingWithWorld.global.domain.FileVo;
 import com.team5.WalkingWithWorld.global.domain.MapDTO;
 import com.team5.WalkingWithWorld.global.domain.PageInfo;
 import com.team5.WalkingWithWorld.global.domain.SearchDTO;
+import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
+import com.team5.WalkingWithWorld.global.pagination.PaginationService;
 import com.team5.WalkingWithWorld.users.dto.UsersDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.WalkingPathsDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.WalkingPathsMapDTO;
+import com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths;
 import com.team5.WalkingWithWorld.walkingPaths.service.WalkingPathService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class WalkingPathsController {
@@ -27,20 +34,20 @@ public class WalkingPathsController {
     WalkingPathsMapper walkingPathsMapper;
     @Autowired
     WalkingPathService walkingPathService;
+    @Autowired
+    PaginationService paginationService;
 
     //페이징 확인
-    @GetMapping("/walking-paths-test")
+    @GetMapping("/page")
     @ResponseBody
-    public List<WalkingPathsMapDTO> getPagingWalkingPathList(
+    public PageResponseDto getPagingWalkingPathList(
             SearchDTO dto,
-            @RequestParam(required = false) int pageNum,
-            @RequestParam(required = false) int size){
-        PageInfo page = new PageInfo(pageNum, size);
+            @PageableDefault Pageable pageable) {
 
-        PageHelper.startPage(dto);
-        com.github.pagehelper.PageInfo.of(walkingPathService.getList(dto));
-
-        return walkingPathService.getList(dto);
+        Page<WalkingPathsMapDTO> walkingPaths = walkingPathService.getWalkingPathPagination(pageable);
+        List<WalkingPathsMapDTO> walkingPathsMapDTOList = walkingPaths.getContent();
+        List<Integer> barNumber = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), pageable.getPageSize());
+        return new PageResponseDto(walkingPathsMapDTOList, walkingPaths,barNumber);
     }
 
     // 전체 리스트

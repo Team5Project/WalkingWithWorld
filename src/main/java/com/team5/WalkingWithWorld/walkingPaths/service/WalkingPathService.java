@@ -11,6 +11,10 @@ import com.team5.WalkingWithWorld.service.FileUpload;
 import com.team5.WalkingWithWorld.users.dto.UsersDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.WalkingPathsDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.WalkingPathsMapDTO;
+import com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths;
+import com.team5.WalkingWithWorld.walkingPaths.repository.WalkingPathsRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,20 +23,31 @@ import java.util.Map;
 
 @Service
 public class WalkingPathService {
-    private WalkingPathsMapper walkingPathsMapper;
-    private PhotosMapper photosMapper;
-    private FileUpload fileUpload;
-    private MapMapper mapMapper;
+    private final WalkingPathsMapper walkingPathsMapper;
+    private final PhotosMapper photosMapper;
+    private final FileUpload fileUpload;
+    private final MapMapper mapMapper;
+    private final WalkingPathsRepository walkingPathsRepository;
 
-    public WalkingPathService(WalkingPathsMapper walkingPathsMapper, PhotosMapper photosMapper, FileUpload fileUpload, MapMapper mapMapper) {
+    public WalkingPathService(WalkingPathsMapper walkingPathsMapper,
+                              PhotosMapper photosMapper,
+                              FileUpload fileUpload,
+                              MapMapper mapMapper,
+                              WalkingPathsRepository walkingPathsRepository) {
         this.walkingPathsMapper = walkingPathsMapper;
         this.photosMapper = photosMapper;
         this.fileUpload = fileUpload;
         this.mapMapper = mapMapper;
+        this.walkingPathsRepository = walkingPathsRepository;
     }
 
     public List<WalkingPathsMapDTO> getList(SearchDTO dto) {
         return walkingPathsMapper.pagingList(dto);
+    }
+
+    //산책로 페이지네이션
+    public Page<WalkingPathsMapDTO> getWalkingPathPagination(Pageable pageable){
+        return walkingPathsRepository.findAllBy(pageable).map(WalkingPathsMapDTO::from);
     }
 
     // 산책로 생성
