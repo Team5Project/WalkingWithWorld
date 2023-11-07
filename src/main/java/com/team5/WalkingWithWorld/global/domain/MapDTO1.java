@@ -11,8 +11,8 @@ import lombok.ToString;
 @ToString
 @Builder
 public class MapDTO1 {
-    private int id;
-    private int walkingPathsId;
+    private Long id;
+    private Long walkingPathsId;
     private Long time;
     private String distance;
     private String coordinateX;

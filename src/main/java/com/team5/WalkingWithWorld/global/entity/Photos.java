@@ -15,7 +15,7 @@ import lombok.*;
 public class Photos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @JsonBackReference
     @ManyToOne
     private Reviews reviews;
@@ -26,7 +26,7 @@ public class Photos {
     private String imgPath;
 
 
-    public static Photos of(int id, Reviews reviews,WalkingPaths walkingPaths,String imgName,String imgPath){
-        return new Photos(id, reviews, walkingPaths, imgName, imgPath);
+    public static Photos of(Long id, Reviews reviews,WalkingPaths walkingPaths,String imgName,String imgPath){
+        return new Photos(null, reviews, walkingPaths, imgName, imgPath);
     }
 }

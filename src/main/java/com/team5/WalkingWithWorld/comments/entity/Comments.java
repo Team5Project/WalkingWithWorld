@@ -6,8 +6,6 @@ import com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -16,7 +14,7 @@ import java.time.LocalDateTime;
 public class Comments extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "users_id")
@@ -29,12 +27,13 @@ public class Comments extends AuditingFields {
     private String content;
 
 
-    public static Comments of (int id,
+    public static Comments of (Long id,
                                Users users,
                                WalkingPaths walkingPaths,
                                String content
     ){
-        return new Comments(id,
+        return new Comments(
+                null,
                 users,
                 walkingPaths,
                 content

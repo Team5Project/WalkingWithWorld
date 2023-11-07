@@ -106,7 +106,7 @@ public class WalkingPathsController {
 
     // 산책로 수정 폼으로 이동(walking-path-id 참조)
     @GetMapping("/walking-path/modify/{walking-path-id}")
-    public ModelAndView goToModify(@PathVariable("walking-path-id") int walkingPathId, HttpServletRequest request) {
+    public ModelAndView goToModify(@PathVariable("walking-path-id") Long walkingPathId, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
 
         WalkingPathsMapDTO walkingPathsMapDTO = walkingPathService.readWalkingPathById(walkingPathId);
@@ -139,7 +139,7 @@ public class WalkingPathsController {
 
     //산책로 하나 조회
     @GetMapping("/walking-path/{walking-path-id}")
-    public ModelAndView getWalkingPathById(@PathVariable("walking-path-id") int id, HttpServletRequest request) {
+    public ModelAndView getWalkingPathById(@PathVariable("walking-path-id") Long id, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
 
         WalkingPathsMapDTO walkingPaths = walkingPathService.readWalkingPathById(id);
@@ -156,7 +156,7 @@ public class WalkingPathsController {
 
     // 산책로 삭제
     @GetMapping("/walking-path/delete/{walking-path-id}")
-    public String deleteWalkingPathById(@PathVariable("walking-path-id") int id,
+    public String deleteWalkingPathById(@PathVariable("walking-path-id") Long id,
                                         @Login UsersDTO login, Model model) {
 
         if(walkingPathsMapper.readWalkingPathMap(id) == null || login.getId() != walkingPathsMapper.readWalkingPath(id).getUsersId()){

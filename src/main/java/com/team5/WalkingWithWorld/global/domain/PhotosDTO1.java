@@ -9,9 +9,9 @@ import lombok.*;
 @ToString
 @Builder
 public class PhotosDTO1 {
-    private int id;
-    private int reviewsId;
-    private int walkingPathsId;
+    private Long id;
+    private Long reviewsId;
+    private Long walkingPathsId;
     private String imgName;
     private String imgPath;
 

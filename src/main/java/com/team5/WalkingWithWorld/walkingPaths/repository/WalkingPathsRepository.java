@@ -11,7 +11,5 @@ import java.util.Optional;
 
 @Repository
 public interface WalkingPathsRepository extends JpaRepository<WalkingPaths, Integer> {
-    Optional<WalkingPathsMapDTO1> findById(int id);
-
     Page<WalkingPaths> findAllBy(Pageable pageable);
 }

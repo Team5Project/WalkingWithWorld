@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class CommentsDTO  {
-    private int id;
-    private int walkingPathsId;
-    private int usersId;
+    private Long id;
+    private Long walkingPathsId;
+    private Long usersId;
     private String name;
 
     @NotBlank(message = "댓글을 입력해주세요.")
@@ -31,10 +31,10 @@ public class CommentsDTO  {
                 .build();
     }
 
-    public  Comments toEntity(Users user, WalkingPaths walkingPaths){
+    public  Comments toEntity(Users users, WalkingPaths walkingPaths){
         return Comments.of(
-                id,
-                user,
+                null,
+                users,
                 walkingPaths,
                 content
         );

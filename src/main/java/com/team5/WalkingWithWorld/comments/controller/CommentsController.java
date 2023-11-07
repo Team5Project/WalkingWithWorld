@@ -5,6 +5,8 @@ import com.team5.WalkingWithWorld.users.dto.UsersDTO;
 import com.team5.WalkingWithWorld.global.Login;
 import com.team5.WalkingWithWorld.comments.service.CommentService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,16 +23,18 @@ public class CommentsController {
 
     @PostMapping("/comments/list/{walking-paths-id}")
     public String list(Model model,
-                       @PathVariable("walking-paths-id") int id) {
+                       @PathVariable("walking-paths-id") Long id) {
 
         List<CommentsDTO> list = commentService.getAllCommentsByWalkingPathsId(id);
         model.addAttribute("commentList", list);
         return "comments :: #comments";
     }
 
-    @GetMapping("/test/comments/{walking-paths-id}")
+
+    // REST GET
+    @GetMapping("/rest/{walking-paths-id}/comments")
     @ResponseBody
-    public List<CommentsDTO> list(@PathVariable("walking-paths-id") int id) {
+    public List<CommentsDTO> list(@PathVariable("walking-paths-id") Long id) {
 
         return commentService.getAllCommentsByWalkingPathsId(id);
     }
@@ -38,7 +42,7 @@ public class CommentsController {
     @PostMapping(value = "/comments/{walking-paths-id}",produces = "application/json; charset=utf-8")
     public String writeComment(@RequestBody CommentsDTO dto,
                                @Login UsersDTO usersDto,
-                               @PathVariable("walking-paths-id") int id,
+                               @PathVariable("walking-paths-id") Long id,
                                Model model,
                                HttpServletRequest request) {
         String ref = request.getHeader("Referer");
@@ -46,6 +50,13 @@ public class CommentsController {
         List<CommentsDTO> list = commentService.getAllCommentsByWalkingPathsId(id);
         model.addAttribute("commentList", list);
         return "comments :: #comments";
+    }
+
+    @PostMapping("/rest/{walking-paths-id}/comments")
+    @ResponseBody
+    public ResponseEntity writeCommentRest(@RequestBody CommentsDTO dto,
+                                           @PathVariable("walking-paths-id") Long id){
+        return new ResponseEntity(commentService.createComment(dto, dto.getUsersId(), id), HttpStatus.OK);
     }
 
     //TODO 댓글 수정 구현
@@ -65,6 +76,12 @@ public class CommentsController {
         model.addAttribute("commentList", list);
 
         return "comments :: #comments";
+    }
 
+    @DeleteMapping("/rest/comments/{comments-id}")
+    @ResponseBody
+    public ResponseEntity deleteComments(@PathVariable("comments-id") Long id){
+        commentService.deleteComment(id);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

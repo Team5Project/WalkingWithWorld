@@ -75,6 +75,36 @@ public class UserController {
         return "redirect:/";
     }
 
+    @PostMapping("/rest/login")
+    @ResponseBody
+    public ResponseEntity loginUserRest(LoginDto loginDto,
+                            HttpSession session,
+                            BindingResult bindingResult,
+                            HttpServletRequest requet
+    ) {
+
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        UsersDTO user = userService.getUserInfo(loginDto);
+        if (user == null) {
+            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
+            System.out.println("아이디 또는 패스워드 오류");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        session.setAttribute(SessionConst.LONGIN_USERS, user);
+        String redirectURL = requet.getParameter("redirectURL");
+
+        if (redirectURL != null && !redirectURL.equals("/logout")) {
+            System.out.println("리다이렉트 확인" + redirectURL);
+            return new ResponseEntity(redirectURL,HttpStatus.OK
+            );
+        }
+        return new ResponseEntity("로그인 성공입니다.",HttpStatus.OK);
+    }
+
     @GetMapping("/signup")
     public String index(HttpServletRequest request,
                         Model model){

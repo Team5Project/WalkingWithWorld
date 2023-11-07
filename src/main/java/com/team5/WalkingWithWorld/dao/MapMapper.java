@@ -13,5 +13,5 @@ public interface MapMapper {
     @Insert("insert into map (walking_paths_id, time, distance, coordinate_x, coordinate_y) values (#{walkingPathsId}, #{time}, #{distance}, #{coordinateX}, #{coordinateY})")
     boolean addMap(MapDTO dto);
     @Select("select time, distance, coordinate_x, coordinate_y from map where walking_paths_id = #{walkingPathsId}")
-    List<MapDTO> ReadMap(int id);
+    List<MapDTO> ReadMap(Long id);
 }

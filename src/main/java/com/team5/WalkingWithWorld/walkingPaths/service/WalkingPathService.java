@@ -53,7 +53,7 @@ public class WalkingPathService {
     // 산책로 생성
     public int createWalkingPath(WalkingPathsDTO walkingPathsDTO, UsersDTO user, FileVo multipartFile, MapDTO mapDTO, String course) throws IOException {
         //산책로
-        walkingPathsDTO.setUsersId(user.getId());
+        walkingPathsDTO.setUsersId((long) user.getId());
         walkingPathsDTO.setCreatedBy(user.getName());
         if(walkingPathsMapper.addWalkingPath(walkingPathsDTO) != 1)
             return -1;
@@ -83,11 +83,11 @@ public class WalkingPathService {
             photosMapper.addPhotos(photosDTO);
         }
         System.out.println("게시글 생성 완료 : " + walkingPathsDTO.getId());
-        return walkingPathsDTO.getId();
+        return walkingPathsDTO.getId().intValue();
     }
 
     // 산책로 하나 읽기
-    public WalkingPathsMapDTO readWalkingPathById(int id) {
+    public WalkingPathsMapDTO readWalkingPathById(Long id) {
         WalkingPathsMapDTO walkingPathsMapDTO = walkingPathsMapper.readWalkingPathMap(id);
         if(walkingPathsMapDTO == null)
             return null;

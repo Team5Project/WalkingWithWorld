@@ -14,7 +14,7 @@ import lombok.*;
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String name;
 
@@ -27,12 +27,12 @@ public class Users {
 
 
 
-    public static Users of(int id,
+    public static Users of(Long id,
                            String name,
                            String password,
                            String email,
                            String addr){
-        return new Users(id,name, password, email, addr);
+        return new Users(null,name, password, email, addr);
     }
 }
 

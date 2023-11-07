@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 public class WalkingPaths extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
