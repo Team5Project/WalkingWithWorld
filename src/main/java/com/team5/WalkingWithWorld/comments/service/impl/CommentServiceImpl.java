@@ -29,7 +29,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentsDTO> getAllCommentsByWalkingPathsId(int walkingPathsId){
+    public List<CommentsDTO> findTop5ByWalkingPathsIdOrderByCreatedAtDesc(int walkingPathsId){
         return commentsRepository.findTop5ByWalkingPathsIdOrderByCreatedAtDesc(walkingPathsId).stream().map(CommentsDTO::from).collect(Collectors.toList());
     }
     @Override
@@ -40,7 +40,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(int id){
+    public void deleteComment(Long id){
         commentsRepository.deleteById(id);
     }
 }

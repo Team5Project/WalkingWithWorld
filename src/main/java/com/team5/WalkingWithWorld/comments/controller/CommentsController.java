@@ -24,7 +24,7 @@ public class CommentsController {
     @PostMapping("/comments/list/{walking-paths-id}")
     public String list(Model model,
                        @PathVariable("walking-paths-id") int id) {
-        List<CommentsDTO> list = commentService.getAllCommentsByWalkingPathsId(id);
+        List<CommentsDTO> list = commentService.findTop5ByWalkingPathsIdOrderByCreatedAtDesc(id);
         model.addAttribute("commentList", list);
         return "comments :: #comments";
     }
@@ -33,7 +33,7 @@ public class CommentsController {
     @ResponseBody
     public List<CommentsDTO> listComment(Model model,
                                          @PathVariable("walking-paths-id") int id) {
-        List<CommentsDTO> list = commentService.getAllCommentsByWalkingPathsId(id);
+        List<CommentsDTO> list = commentService.findTop5ByWalkingPathsIdOrderByCreatedAtDesc(id);
         return list;
     }
 
@@ -42,7 +42,7 @@ public class CommentsController {
     @ResponseBody
     public List<CommentsDTO> list(@PathVariable("walking-paths-id") int id) {
 
-        return commentService.getAllCommentsByWalkingPathsId(id);
+        return commentService.findTop5ByWalkingPathsIdOrderByCreatedAtDesc(id);
     }
 
     @PostMapping(value = "/comments/{walking-paths-id}", produces = "application/json; charset=utf-8")
@@ -53,7 +53,7 @@ public class CommentsController {
                                HttpServletRequest request) {
         String ref = request.getHeader("Referer");
         commentService.createComment(dto, usersDto.getId(), id);
-        List<CommentsDTO> list = commentService.getAllCommentsByWalkingPathsId(id);
+        List<CommentsDTO> list = commentService.findTop5ByWalkingPathsIdOrderByCreatedAtDesc(id);
         model.addAttribute("commentList", list);
         return "comments :: #comments";
     }

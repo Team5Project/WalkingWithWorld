@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
-public interface CommentsRepository extends JpaRepository<Comments, Integer> {
+public interface CommentsRepository extends JpaRepository<Comments, Long> {
     List<Comments> findTop5ByWalkingPathsIdOrderByCreatedAtDesc(int id);
+    void deleteById(Long id);
 }
