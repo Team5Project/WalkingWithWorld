@@ -11,4 +11,5 @@ public interface MapRepository extends JpaRepository<Map, Integer> {
     Map findTop1ByWalkingPaths(WalkingPaths walkingPaths);
 
     void deleteAllByWalkingPaths(WalkingPaths walkingPaths);
+
 }

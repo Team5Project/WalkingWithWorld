@@ -1,10 +1,13 @@
 package com.team5.WalkingWithWorld.walkingPaths.controller;
 
 import com.team5.WalkingWithWorld.walkingPaths.dto.RequestWalkingPathDTO;
+import com.team5.WalkingWithWorld.global.domain.PageResponseDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDetailDTO;
 import com.team5.WalkingWithWorld.walkingPaths.repository.WalkingPathsRepository;
 import com.team5.WalkingWithWorld.walkingPaths.service.WalkingPathService2;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,7 +25,11 @@ public class WalkingPathsController2 {
         this.walkingPathsRepository = walkingPathsRepository;
         this.walkingPathService = walkingPathService;
     }
-
+    // 페이지
+    @GetMapping("/page")
+    public PageResponseDTO<ResponseWalkingPathDTO> getWalkingPathsPage(@PageableDefault Pageable pageable) {
+        return walkingPathService.getPage(pageable);
+    }
     // 전체 리스트
     @GetMapping
     public List<ResponseWalkingPathDTO> getAll() {
