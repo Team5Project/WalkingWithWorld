@@ -3,6 +3,8 @@ package com.team5.WalkingWithWorld.comments.controller;
 import com.team5.WalkingWithWorld.comments.dto.CommentsDTO;
 import com.team5.WalkingWithWorld.comments.repository.CommentsRepository;
 import com.team5.WalkingWithWorld.comments.service.impl.CommentServiceImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +18,13 @@ public class CommentsControllerTest {
         this.commentServiceImpl = commentServiceImpl;
     }
 
+    //무한스크롤 페이지네이션 소스 테스트
     @GetMapping("{warking-path-id}")
-    public List<CommentsDTO> findTop5ByWalkingPathsIdOrderByCreatedAtDesc(@PathVariable("warking-path-id")int id){
-        return commentServiceImpl.findTop5ByWalkingPathsIdOrderByCreatedAtDesc(id);
+    public Page<CommentsDTO> listEntities(@RequestParam(name = "page", defaultValue = "0") int page,
+                                          @RequestParam(name = "size", defaultValue = "5") int size,
+                                          @PathVariable("warking-path-id") int walkingPathId) {
+        PageRequest scrollRequest = PageRequest.of(page, size);
+        return commentServiceImpl.findAllByWalkingPathsIdOrderByCreatedAtDesc(walkingPathId, scrollRequest);
     }
 
     @PostMapping("/")
