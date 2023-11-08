@@ -5,6 +5,8 @@ import com.team5.WalkingWithWorld.comments.repository.CommentsRepository;
 import com.team5.WalkingWithWorld.comments.service.impl.CommentServiceImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,19 +21,23 @@ public class CommentsControllerTest {
     }
 
     //무한스크롤 페이지네이션 소스 테스트
-    @GetMapping("{warking-path-id}")
-    public Page<CommentsDTO> listEntities(@RequestParam(name = "page", defaultValue = "0") int page,
-                                          @RequestParam(name = "size", defaultValue = "5") int size,
-                                          @PathVariable("warking-path-id") int walkingPathId) {
-        PageRequest scrollRequest = PageRequest.of(page, size);
-        return commentServiceImpl.findAllByWalkingPathsIdOrderByCreatedAtDesc(walkingPathId, scrollRequest);
+    @GetMapping("{walking-path-id}")
+    public Page<CommentsDTO> listEntities(@PageableDefault(size=5) Pageable pageable,
+                                          @PathVariable("walking-path-id") int walkingPathId) {
+        return commentServiceImpl.findAllByWalkingPathsIdOrderByCreatedAtDesc(walkingPathId, pageable);
     }
 
-    @PostMapping("/")
-    public CommentsDTO createComment(CommentsDTO dto, int userId, int walkingPathsId){
-        commentServiceImpl.createComment(dto,userId,walkingPathsId);
+    @PostMapping
+    public CommentsDTO createComment(CommentsDTO dto, int walkingPathsId){ //  int userId,
+        commentServiceImpl.createComment(dto,1,walkingPathsId);
         return dto;
     }
+
+    @PutMapping("/{comments-id}")
+    public void modifyComment(@RequestBody CommentsDTO dto, @PathVariable("comments-id") Long commentsId) {
+        commentServiceImpl.updateComment(dto, 1, commentsId);
+    }
+
 
     @DeleteMapping("{id}")
     public Long deleteComment(@PathVariable("id") Long id){

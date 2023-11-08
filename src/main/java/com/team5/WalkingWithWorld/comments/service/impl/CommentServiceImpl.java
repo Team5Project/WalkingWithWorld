@@ -2,12 +2,15 @@ package com.team5.WalkingWithWorld.comments.service.impl;
 
 import com.team5.WalkingWithWorld.comments.dto.CommentsDTO;
 import com.team5.WalkingWithWorld.comments.entity.Comments;
+import com.team5.WalkingWithWorld.global.exception.BusinessLogicException;
+import com.team5.WalkingWithWorld.global.exception.ExceptionCode;
 import com.team5.WalkingWithWorld.users.entity.Users;
 import com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths;
 import com.team5.WalkingWithWorld.comments.repository.CommentsRepository;
 import com.team5.WalkingWithWorld.users.repository.UsersRepository;
 import com.team5.WalkingWithWorld.walkingPaths.repository.WalkingPathsRepository;
 import com.team5.WalkingWithWorld.comments.service.CommentService;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,15 +42,28 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Page<CommentsDTO> findAllByWalkingPathsIdOrderByCreatedAtDesc(int walkingPathsId,
-                                                                         PageRequest scrollRequest){
-        return commentsRepository.findAllByWalkingPathsIdOrderByCreatedAtDesc(walkingPathsId,scrollRequest).map(CommentsDTO::from);
+                                                                         Pageable pageable){
+        return commentsRepository.findAllByWalkingPathsIdOrderByCreatedAtDesc(walkingPathsId, pageable).map(CommentsDTO::from);
     }
 
     @Override
     public Comments createComment(CommentsDTO dto, int userId, int walkingPathsId){
+
         Users users = usersRepository.getReferenceById(userId);
         WalkingPaths walkingPaths = walkingPathsRepository.getReferenceById(walkingPathsId);
         return commentsRepository.save(dto.toEntity(users, walkingPaths));
+    }
+
+    @Override
+    @Transactional
+    public void updateComment(CommentsDTO dto, int userId, Long id){
+        Comments comments = commentsRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENTS_NOT_FOUND));
+        Users users = usersRepository.getReferenceById(userId);
+        if(!comments.getUsers().equals(users))
+            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
+//        WalkingPaths walkingPaths = walkingPathsRepository.getReferenceById(walkingPathsId);
+        comments.updateContent(dto.getContent());
+//        commentsRepository.save(comments);
     }
 
     @Override
