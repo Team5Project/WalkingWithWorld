@@ -96,7 +96,7 @@ class WalkingPathsRepositoryTest {
     }
     @Test
     void findByTitleContainingOrAddrContaining() {
-        List<WalkingPaths> walkingPathsList = walkingPathsRepository.findByTitleContainingOrAddrContaining("송파", "송파");
+        List<WalkingPaths> walkingPathsList = walkingPathsRepository.findByTitleContainingOrAddrContaining("페이", "페이");
         walkingPathsList.stream().forEach(System.out::println);
         //assertThat(walkingPathsList).isEqualTo(walkingPathsMapper.searchWalkingPathByKeyword("송파"));
     }

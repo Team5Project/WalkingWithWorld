@@ -31,7 +31,7 @@ public class WalkingPathsController2 {
         return walkingPathService.getPage(pageable);
     }
     // 산책로 검색 페이지
-    @PostMapping("/search/page")
+    @GetMapping("/search/page")
     public PageResponseDTO<ResponseWalkingPathDTO> serachWalkingPathsPage(@PageableDefault Pageable pageable, String keyword) {
         return walkingPathService.getSearchPage(pageable, keyword);
     }
@@ -47,8 +47,8 @@ public class WalkingPathsController2 {
     }
     // 산책로 검색 필터 이용(searchDTO)
     // 산책로 검색
-    @PostMapping("/search")
-    public List<ResponseWalkingPathDTO> searchWalkingPaths(String keyword) {
+    @GetMapping("/search")
+    public List<ResponseWalkingPathDTO> searchWalkingPaths(@RequestParam String keyword) {
         return  walkingPathService.searchByKeyword(keyword);
     }
     // 산책로 작성 폼으로 이동

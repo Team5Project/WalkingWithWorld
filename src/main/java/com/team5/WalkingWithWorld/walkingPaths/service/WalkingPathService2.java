@@ -57,8 +57,9 @@ public class WalkingPathService2 {
         return new PageResponseDTO<>(responseWalkingPathDTOList, walkingPaths, barNumber);
     }
     public PageResponseDTO<ResponseWalkingPathDTO> getSearchPage(Pageable pageable, String keyword) {
-        Page<WalkingPaths> walkingPaths = walkingPathsRepository.findByTitleContainingOrAddrContaining(pageable, keyword, keyword);
-        List<ResponseWalkingPathDTO> responseWalkingPathDTOList = walkingPaths.stream().map(walkingPath -> ResponseWalkingPathDTO.from(walkingPath, mapRepository.findTop1ByWalkingPaths(walkingPath), photosRepository.findTop1ByWalkingPaths(walkingPath))).toList();
+        Page<WalkingPaths> walkingPaths = walkingPathsRepository.findByTitleContainingOrAddrContaining(keyword, keyword, pageable);
+        System.out.println(walkingPaths);
+        List<ResponseWalkingPathDTO> responseWalkingPathDTOList = walkingPaths.stream().map(walkingPath -> ResponseWalkingPathDTO.from(walkingPath, mapRepository.findTop1ByWalkingPaths(walkingPath), photosRepository.findTop1ByWalkingPaths(walkingPath))).collect(Collectors.toList());
         List<Integer> barNumber = pageService.getPaginationBarNumbers(pageable.getPageNumber(), walkingPaths.getTotalPages());
         return new PageResponseDTO<>(responseWalkingPathDTOList, walkingPaths, barNumber);
     }
@@ -79,11 +80,14 @@ public class WalkingPathService2 {
     }
     // 산책로 검색
     public List<ResponseWalkingPathDTO> searchByKeyword(String keyword) {
+        System.out.println(keyword);
         List<WalkingPaths> walkingPathsList = walkingPathsRepository.findByTitleContainingOrAddrContaining(keyword, keyword);
+        System.out.println(walkingPathsList);
         List<ResponseWalkingPathDTO> responseWalkingPathDTOList = new ArrayList<>();
         for(WalkingPaths walkingPaths : walkingPathsList) {
             responseWalkingPathDTOList.add(ResponseWalkingPathDTO.from(walkingPaths, mapRepository.findTop1ByWalkingPaths(walkingPaths), photosRepository.findTop1ByWalkingPaths(walkingPaths)));
         }
+        System.out.println(responseWalkingPathDTOList);
         return responseWalkingPathDTOList;
     }
     // 산책로 조건 필터
