@@ -1,4 +1,4 @@
-package com.team5.WalkingWithWorld.service;
+package com.team5.WalkingWithWorld.global.service;
 
 import com.team5.WalkingWithWorld.global.domain.FileVo;
 import org.springframework.beans.factory.annotation.Value;

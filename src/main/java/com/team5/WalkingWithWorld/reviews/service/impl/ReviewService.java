@@ -2,15 +2,8 @@ package com.team5.WalkingWithWorld.reviews.service.impl;
 
 import com.team5.WalkingWithWorld.dao.PhotosMapper;
 import com.team5.WalkingWithWorld.dao.ReviewsMapper;
-import com.team5.WalkingWithWorld.global.domain.FileVo;
-import com.team5.WalkingWithWorld.global.domain.PhotosDTO;
-import com.team5.WalkingWithWorld.reviews.dto.ReviewsRequestDTO;
-import com.team5.WalkingWithWorld.reviews.service.ReviewsService;
-import com.team5.WalkingWithWorld.service.FileUpload;
+import com.team5.WalkingWithWorld.global.service.FileUpload;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.util.Map;
 
 @Service
 public class ReviewService {

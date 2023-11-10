@@ -12,7 +12,7 @@ import com.team5.WalkingWithWorld.reviews.dto.ReviewsResponseDTO;
 import com.team5.WalkingWithWorld.reviews.entity.Reviews;
 import com.team5.WalkingWithWorld.reviews.repository.ReviewsRepository;
 import com.team5.WalkingWithWorld.reviews.service.ReviewsService;
-import com.team5.WalkingWithWorld.service.FileUpload;
+import com.team5.WalkingWithWorld.global.service.FileUpload;
 import com.team5.WalkingWithWorld.users.dto.UsersDTO;
 import com.team5.WalkingWithWorld.users.entity.Users;
 import com.team5.WalkingWithWorld.users.repository.UsersRepository;

@@ -19,15 +19,20 @@ public class WalkingPaths extends AuditingFields {
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
+    @ToString.Exclude
     private Users users;
     private String title;
     private String addr;
 
-    public static WalkingPaths of(int id,
+    public void setUsers(Users users) {
+        this.users = users;
+    }
+
+    public static WalkingPaths of(Long id,
                                   Users users,
                                   String title,
                                   String addr) {
-        return new WalkingPaths(id, users, title, addr);
+        return new WalkingPaths(null, users, title, addr);
     }
 
     public  void updateTitle(String title){

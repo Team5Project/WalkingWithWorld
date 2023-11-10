@@ -1,7 +1,6 @@
 package com.team5.WalkingWithWorld.walkingPaths.service;
 
 import com.team5.WalkingWithWorld.global.domain.FileVo;
-import com.team5.WalkingWithWorld.global.domain.PageResponseDTO;
 import com.team5.WalkingWithWorld.global.dto.RequestMapDTO;
 import com.team5.WalkingWithWorld.global.entity.Map;
 import com.team5.WalkingWithWorld.global.entity.Photos;
@@ -10,7 +9,7 @@ import com.team5.WalkingWithWorld.global.exception.ExceptionCode;
 import com.team5.WalkingWithWorld.global.repository.MapRepository;
 import com.team5.WalkingWithWorld.global.repository.PhotosRepository;
 import com.team5.WalkingWithWorld.global.service.PageService;
-import com.team5.WalkingWithWorld.service.FileUpload;
+import com.team5.WalkingWithWorld.global.service.FileUpload;
 import com.team5.WalkingWithWorld.users.entity.Users;
 import com.team5.WalkingWithWorld.users.repository.UsersRepository;
 import com.team5.WalkingWithWorld.walkingPaths.dto.RequestWalkingPathDTO;
