@@ -8,6 +8,7 @@ import com.team5.WalkingWithWorld.global.Login;
 import com.team5.WalkingWithWorld.global.domain.FileVo;
 import com.team5.WalkingWithWorld.global.exception.BusinessLogicException;
 import com.team5.WalkingWithWorld.global.exception.ExceptionCode;
+import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
 import com.team5.WalkingWithWorld.reviews.dto.ReviewsRequestDTO;
 import com.team5.WalkingWithWorld.reviews.entity.Reviews;
 import com.team5.WalkingWithWorld.reviews.service.ReviewsService;
@@ -18,14 +19,15 @@ import com.team5.WalkingWithWorld.walkingPaths.dto.WalkingPathsMapDTO;
 import com.team5.WalkingWithWorld.walkingPaths.service.WalkingPathService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
@@ -56,6 +58,14 @@ public class ReviewsController {
 //
 //        return "reviews_write_form";
 //    }
+    @GetMapping("/{walking-paths-id}/reviews")
+    @ResponseBody
+    public ResponseEntity getReviewsList(@PathVariable("walking-paths-id") Long id,
+                                         @PageableDefault Pageable pageable){
+        PageResponseDto pageResponseDto = reviewsService.readReviewsList(id, pageable);
+
+        return new ResponseEntity(pageResponseDto, HttpStatus.OK);
+    }
 
 //    @PostMapping("/reviews/list/{walking-paths-id}")
 //    public String getReviewList(Model model,
@@ -98,13 +108,13 @@ public class ReviewsController {
 //        return "redirect:/walking-path/" + id;
 //    }
 
-    @PostMapping("/rest/{walking-paths-id}/reviews")
+    @PostMapping(value = "/rest/{walking-paths-id}/reviews",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity createReviews(@Login UsersDTO loginUser,
                                         @PathVariable("walking-paths-id") Long id,
-                                        ReviewsRequestDTO reviewsRequestDTO,
-                                        FileVo fileVo) throws IOException {
+                                        @RequestPart ReviewsRequestDTO reviewsRequestDTO,
+                                        @RequestPart List<MultipartFile> files) throws IOException {
 
-        Reviews reviews = reviewsService.createReviews(reviewsRequestDTO, loginUser, fileVo, id);
+        Reviews reviews = reviewsService.createReviews(reviewsRequestDTO, loginUser,files , id);
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 
