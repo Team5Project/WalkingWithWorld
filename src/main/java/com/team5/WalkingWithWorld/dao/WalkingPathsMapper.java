@@ -1,6 +1,6 @@
 package com.team5.WalkingWithWorld.dao;
 
-import com.team5.WalkingWithWorld.global.domain.PageInfo;
+
 import com.team5.WalkingWithWorld.global.domain.SearchDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.WalkingPathsDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.WalkingPathsMapDTO;
@@ -39,8 +39,6 @@ public interface WalkingPathsMapper {
             "<if test='maxDistance > 0'> <![CDATA[and distance <= ${maxDistance}]]></if>" +
             "</where>group by walking_paths.id order by created_at desc</script>"})
     List<WalkingPathsMapDTO> searchWalkingPathWithSearchDTO(SearchDTO dto);
-    @Select("select * from walking_paths order by created_at desc limit ${pageNum},${size}")
-    List<WalkingPathsMapDTO> getList(PageInfo info);
 
     @Select({"<script> select walking_paths.id, users_id, title, addr, created_at, created_by, modified_at, modified_by",
             "from walking_paths inner join map on walking_paths.id = map.walking_paths_id" +

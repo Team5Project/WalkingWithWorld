@@ -11,7 +11,7 @@ import lombok.*;
 @Getter
 @ToString
 @Entity
-
+@Builder
 public class Photos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

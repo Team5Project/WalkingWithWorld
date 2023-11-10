@@ -1,11 +1,9 @@
 package com.team5.WalkingWithWorld.walkingPaths.controller;
 
-import com.github.pagehelper.PageHelper;
 import com.team5.WalkingWithWorld.dao.WalkingPathsMapper;
 import com.team5.WalkingWithWorld.global.Login;
 import com.team5.WalkingWithWorld.global.domain.FileVo;
 import com.team5.WalkingWithWorld.global.domain.MapDTO;
-import com.team5.WalkingWithWorld.global.domain.PageInfo;
 import com.team5.WalkingWithWorld.global.domain.SearchDTO;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
 import com.team5.WalkingWithWorld.global.pagination.PaginationService;
@@ -21,7 +19,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
@@ -93,11 +94,10 @@ public class WalkingPathsController {
                                     @Login UsersDTO loginUser, FileVo files, MapDTO mapDTO, String course, Model model) throws IOException {
         int result = walkingPathService.createWalkingPath(dto, loginUser, files, mapDTO, course);
 
-        if(result == -1) {
+        if (result == -1) {
             model.addAttribute("url", "/walking-path");
             model.addAttribute("message", "게시글 작성을 실패하였습니다.");
-        }
-        else {
+        } else {
             model.addAttribute("url", "/walking-path/" + result);
             model.addAttribute("message", "게시글이 작성되었습니다.");
         }
@@ -110,7 +110,7 @@ public class WalkingPathsController {
         ModelAndView mav = new ModelAndView();
 
         WalkingPathsMapDTO walkingPathsMapDTO = walkingPathService.readWalkingPathById(walkingPathId);
-        if(walkingPathsMapDTO == null) {
+        if (walkingPathsMapDTO == null) {
             System.out.println("존재하지 않는 데이터 접근");
             mav.setViewName("redirect:/walking-path");
             return mav;
@@ -125,14 +125,14 @@ public class WalkingPathsController {
     // 산책로 수정
     @PostMapping("/walking-path/modify")
     public String modifyWalkingPath(WalkingPathsDTO walkingPathsDTO, @Login UsersDTO loginUser, Model model) {
-        if(loginUser.getId() != walkingPathsMapper.readWalkingPath(walkingPathsDTO.getId()).getUsersId()) {
+        if (loginUser.getId() != walkingPathsMapper.readWalkingPath(walkingPathsDTO.getId()).getUsersId()) {
             model.addAttribute("url", "/walking-path/" + walkingPathsDTO.getId());
             model.addAttribute("message", "수정권한이 없습니다.");
             return "message";
         }
 
         walkingPathService.modifyWalkingPathWithUserName(walkingPathsDTO, loginUser.getName());
-        model.addAttribute("url", "/walking-path/"  + walkingPathsDTO.getId());
+        model.addAttribute("url", "/walking-path/" + walkingPathsDTO.getId());
         model.addAttribute("message", "게시글이 수정되었습니다.");
         return "message";
     }
@@ -143,7 +143,7 @@ public class WalkingPathsController {
         ModelAndView mav = new ModelAndView();
 
         WalkingPathsMapDTO walkingPaths = walkingPathService.readWalkingPathById(id);
-        if(walkingPaths == null) {
+        if (walkingPaths == null) {
             System.out.println("존재하지 않는 데이터 접근");
             mav.setViewName("redirect:/walking-path");
             return mav;
@@ -159,9 +159,9 @@ public class WalkingPathsController {
     public String deleteWalkingPathById(@PathVariable("walking-path-id") Long id,
                                         @Login UsersDTO login, Model model) {
 
-        if(walkingPathsMapper.readWalkingPathMap(id) == null || login.getId() != walkingPathsMapper.readWalkingPath(id).getUsersId()){
+        if (walkingPathsMapper.readWalkingPathMap(id) == null || login.getId() != walkingPathsMapper.readWalkingPath(id).getUsersId()) {
             model.addAttribute("message", "삭제 권한이 없거나 존재하지 않는 게시글입니다.");
-            model.addAttribute("url", "/walking-path/"+id);
+            model.addAttribute("url", "/walking-path/" + id);
             return "message";
         }
 

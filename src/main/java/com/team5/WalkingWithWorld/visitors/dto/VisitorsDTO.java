@@ -1,4 +1,4 @@
-package com.team5.WalkingWithWorld.global.domain;
+package com.team5.WalkingWithWorld.visitors.dto;
 
 
 import lombok.AllArgsConstructor;

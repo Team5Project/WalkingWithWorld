@@ -1,6 +1,8 @@
 package com.team5.WalkingWithWorld.comments.controller;
 
+
 import com.team5.WalkingWithWorld.comments.dto.CommentsDTO;
+import com.team5.WalkingWithWorld.comments.entity.Comments;
 import com.team5.WalkingWithWorld.users.dto.UsersDTO;
 import com.team5.WalkingWithWorld.global.Login;
 import com.team5.WalkingWithWorld.comments.service.CommentService;
@@ -36,18 +38,18 @@ public class CommentsController {
     @ResponseBody
     public List<CommentsDTO> list(@PathVariable("walking-paths-id") Long id) {
 
-        return commentService.getAllCommentsByWalkingPathsId(id);
+        return commentService.findTop5ByWalkingPathsIdOrderByCreatedAtDesc(id);
     }
 
-    @PostMapping(value = "/comments/{walking-paths-id}",produces = "application/json; charset=utf-8")
+    @PostMapping(value = "/comments/{walking-paths-id}", produces = "application/json; charset=utf-8")
     public String writeComment(@RequestBody CommentsDTO dto,
                                @Login UsersDTO usersDto,
                                @PathVariable("walking-paths-id") Long id,
                                Model model,
                                HttpServletRequest request) {
         String ref = request.getHeader("Referer");
-        commentService.createComment(dto, usersDto.getId(),id);
-        List<CommentsDTO> list = commentService.getAllCommentsByWalkingPathsId(id);
+        commentService.createComment(dto, usersDto.getId(), id);
+        List<CommentsDTO> list = commentService.findTop5ByWalkingPathsIdOrderByCreatedAtDesc(id);
         model.addAttribute("commentList", list);
         return "comments :: #comments";
     }

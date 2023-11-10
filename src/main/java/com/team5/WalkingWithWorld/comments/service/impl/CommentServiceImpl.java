@@ -10,6 +10,9 @@ import com.team5.WalkingWithWorld.comments.repository.CommentsRepository;
 import com.team5.WalkingWithWorld.users.repository.UsersRepository;
 import com.team5.WalkingWithWorld.walkingPaths.repository.WalkingPathsRepository;
 import com.team5.WalkingWithWorld.comments.service.CommentService;
+import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +36,13 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentsDTO> getAllCommentsByWalkingPathsId(Long walkingPathsId){
         return commentsRepository.findAllByWalkingPathsId(walkingPathsId).stream().map(CommentsDTO::from).collect(Collectors.toList());
     }
+
+    @Override
+    public Page<CommentsDTO> findAllByWalkingPathsIdOrderByCreatedAtDesc(int walkingPathsId,
+                                                                         Pageable pageable){
+        return commentsRepository.findAllByWalkingPathsIdOrderByCreatedAtDesc(walkingPathsId, pageable).map(CommentsDTO::from);
+    }
+
     @Override
     public Comments createComment(CommentsDTO dto, Long userId, Long walkingPathsId){
         Users users = usersRepository.findById(Math.toIntExact(userId)).orElseThrow(()->new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));

@@ -40,4 +40,7 @@ public class Comments extends AuditingFields {
         );
     }
 
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }

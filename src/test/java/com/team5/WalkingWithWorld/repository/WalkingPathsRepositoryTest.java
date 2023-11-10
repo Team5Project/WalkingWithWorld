@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 class WalkingPathsRepositoryTest {
     @MockBean
     WalkingPathsRepository walkingPathsRepository;
-
     @MockBean
     PhotosRepository photosRepository;
     @MockBean
@@ -94,5 +93,11 @@ class WalkingPathsRepositoryTest {
                 .title(walkingPaths.getTitle())
                 .build();
         System.out.println(walkingPaths);
+    }
+    @Test
+    void findByTitleContainingOrAddrContaining() {
+        List<WalkingPaths> walkingPathsList = walkingPathsRepository.findByTitleContainingOrAddrContaining("송파", "송파");
+        walkingPathsList.stream().forEach(System.out::println);
+        //assertThat(walkingPathsList).isEqualTo(walkingPathsMapper.searchWalkingPathByKeyword("송파"));
     }
 }
