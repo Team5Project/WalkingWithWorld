@@ -35,11 +35,14 @@ public class Comments extends AuditingFields {
                                String content
     ){
         return new Comments(
-                null,
+                id,
                 users,
                 walkingPaths,
                 content
         );
     }
 
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }

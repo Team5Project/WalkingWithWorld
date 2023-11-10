@@ -21,6 +21,7 @@ public class CommentsDTO  {
 
     public static CommentsDTO from(Comments comments){
         return CommentsDTO.builder()
+                .id(comments.getId())
                 .walkingPathsId(comments.getWalkingPaths().getId())
                 .usersId(comments.getUsers().getId())
                 .name(comments.getUsers().getName())
