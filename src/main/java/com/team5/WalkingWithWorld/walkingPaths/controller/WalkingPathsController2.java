@@ -1,7 +1,7 @@
 package com.team5.WalkingWithWorld.walkingPaths.controller;
 
-import com.team5.WalkingWithWorld.walkingPaths.dto.RequestWalkingPathDTO;
 import com.team5.WalkingWithWorld.global.domain.PageResponseDTO;
+import com.team5.WalkingWithWorld.walkingPaths.dto.RequestWalkingPathDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDetailDTO;
 import com.team5.WalkingWithWorld.walkingPaths.repository.WalkingPathsRepository;
@@ -25,10 +25,15 @@ public class WalkingPathsController2 {
         this.walkingPathsRepository = walkingPathsRepository;
         this.walkingPathService = walkingPathService;
     }
-    // 페이지
+    // 전체 리스트 페이지
     @GetMapping("/page")
     public PageResponseDTO<ResponseWalkingPathDTO> getWalkingPathsPage(@PageableDefault Pageable pageable) {
         return walkingPathService.getPage(pageable);
+    }
+    // 산책로 검색 페이지
+    @PostMapping("/search/page")
+    public PageResponseDTO<ResponseWalkingPathDTO> serachWalkingPathsPage(@PageableDefault Pageable pageable, String keyword) {
+        return walkingPathService.getSearchPage(pageable, keyword);
     }
     // 전체 리스트
     @GetMapping

@@ -15,4 +15,5 @@ public interface WalkingPathsRepository extends JpaRepository<WalkingPaths, Inte
     List<WalkingPaths> findByTitleContainingOrAddrContaining(String keyword1, String keyword2);
     // page
     Page<WalkingPaths> findAllBy(Pageable pageable);
+    Page<WalkingPaths> findByTitleContainingOrAddrContaining(Pageable pageable, String keyword1, String keyword2);
 }

@@ -56,6 +56,12 @@ public class WalkingPathService2 {
         List<Integer> barNumber = pageService.getPaginationBarNumbers(pageable.getPageNumber(), walkingPaths.getTotalPages());
         return new PageResponseDTO<>(responseWalkingPathDTOList, walkingPaths, barNumber);
     }
+    public PageResponseDTO<ResponseWalkingPathDTO> getSearchPage(Pageable pageable, String keyword) {
+        Page<WalkingPaths> walkingPaths = walkingPathsRepository.findByTitleContainingOrAddrContaining(pageable, keyword, keyword);
+        List<ResponseWalkingPathDTO> responseWalkingPathDTOList = walkingPaths.stream().map(walkingPath -> ResponseWalkingPathDTO.from(walkingPath, mapRepository.findTop1ByWalkingPaths(walkingPath), photosRepository.findTop1ByWalkingPaths(walkingPath))).toList();
+        List<Integer> barNumber = pageService.getPaginationBarNumbers(pageable.getPageNumber(), walkingPaths.getTotalPages());
+        return new PageResponseDTO<>(responseWalkingPathDTOList, walkingPaths, barNumber);
+    }
     // 전체 리스트
     public List<ResponseWalkingPathDTO> readAll() {
         List<WalkingPaths> walkingPathsList = walkingPathsRepository.findAllByOrderByCreatedAtDesc();
