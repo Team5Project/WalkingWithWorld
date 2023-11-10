@@ -4,7 +4,6 @@ import com.team5.WalkingWithWorld.comments.dto.CommentsDTO;
 import com.team5.WalkingWithWorld.comments.repository.CommentsRepository;
 import com.team5.WalkingWithWorld.comments.service.impl.CommentServiceImpl;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +13,9 @@ import java.util.List;
 @RestController
 @RequestMapping("comments/tested")
 public class CommentsControllerTest {
-    private CommentServiceImpl commentServiceImpl;
+    private final CommentServiceImpl commentServiceImpl;
 
-    public CommentsControllerTest(CommentsRepository commentsRepository, CommentServiceImpl commentServiceImpl){
+    public CommentsControllerTest(CommentServiceImpl commentServiceImpl){
         this.commentServiceImpl = commentServiceImpl;
     }
 
@@ -39,9 +38,8 @@ public class CommentsControllerTest {
     }
 
 
-    @DeleteMapping("{id}")
-    public Long deleteComment(@PathVariable("id") Long id){
-        commentServiceImpl.deleteComment(id);
-        return id;
+    @DeleteMapping("{comments-id}")
+    public void deleteComment(@PathVariable("comments-id") Long commentId){
+        commentServiceImpl.deleteComment(commentId);
     }
 }

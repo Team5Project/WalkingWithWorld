@@ -12,13 +12,10 @@ import com.team5.WalkingWithWorld.walkingPaths.repository.WalkingPathsRepository
 import com.team5.WalkingWithWorld.comments.service.CommentService;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,9 +58,7 @@ public class CommentServiceImpl implements CommentService {
         Users users = usersRepository.getReferenceById(userId);
         if(!comments.getUsers().equals(users))
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
-//        WalkingPaths walkingPaths = walkingPathsRepository.getReferenceById(walkingPathsId);
         comments.updateContent(dto.getContent());
-//        commentsRepository.save(comments);
     }
 
     @Override
