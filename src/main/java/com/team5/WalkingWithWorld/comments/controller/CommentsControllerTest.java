@@ -6,6 +6,8 @@ import com.team5.WalkingWithWorld.comments.service.impl.CommentServiceImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +23,14 @@ public class CommentsControllerTest {
 
     //무한스크롤 페이지네이션 소스 테스트
     @GetMapping("{walking-path-id}")
-    public Page<CommentsDTO> listEntities(@PageableDefault(size=5) Pageable pageable,
-                                          @PathVariable("walking-path-id") int walkingPathId) {
-        return commentServiceImpl.findAllByWalkingPathsIdOrderByCreatedAtDesc(walkingPathId, pageable);
+    public ResponseEntity<Page<CommentsDTO>> listEntities(@PageableDefault(size=5) Pageable pageable,
+                                                    @PathVariable("walking-path-id") int walkingPathId) {
+        Page<CommentsDTO> comments =  commentServiceImpl.findAllByWalkingPathsIdOrderByCreatedAtDesc(walkingPathId, pageable);
+        if(comments.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }else{
+            return ResponseEntity.ok(comments);
+        }
     }
 
     @PostMapping
@@ -33,8 +40,9 @@ public class CommentsControllerTest {
     }
 
     @PutMapping("/{comments-id}")
-    public void modifyComment(@RequestBody CommentsDTO dto, @PathVariable("comments-id") Long commentsId) {
+    public ResponseEntity<Void> modifyComment(@RequestBody CommentsDTO dto, @PathVariable("comments-id") Long commentsId) {
         commentServiceImpl.updateComment(dto, 1, commentsId);
+        return new ResponseEntity(HttpStatus.RESET_CONTENT);
     }
 
 
