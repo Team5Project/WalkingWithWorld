@@ -17,4 +17,7 @@ public interface ReviewsService {
     PageResponseDto<ReviewsResponseDTO> readReviewsList(Long walkingPathsId, Pageable pageable);
 
     Reviews createReviews(ReviewsRequestDTO reviewsRequestDTO, UsersDTO usersDto, List<MultipartFile> files, Long walkingPathsId) throws IOException;
+
+    // 리뷰 수정
+    Reviews updateReviews(Long walkingPathsId, Long reviewsId, ReviewsRequestDTO reviewsRequestDTO, List<MultipartFile> files);
 }

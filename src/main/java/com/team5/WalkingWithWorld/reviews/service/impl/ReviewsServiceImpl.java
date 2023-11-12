@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class ReviewsServiceImpl implements ReviewsService {
@@ -80,4 +81,14 @@ public class ReviewsServiceImpl implements ReviewsService {
         }
         return reviews;
     }
+    // 리뷰 수정
+    @Override
+    public Reviews updateReviews(Long walkingPathsId, Long reviewsId, ReviewsRequestDTO reviewsRequestDTO,List<MultipartFile> files){
+        Reviews reviews = reviewsRepository.findById(reviewsId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.REVIEW_NOT_FOUND));
+
+        Optional.ofNullable(reviewsRequestDTO.getContent()).ifPresent(reviews::updateContent);
+        reviewsRepository.save(reviews);
+        return reviews;
+    }
+
 }

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class UserController {
     private final UserService userService;
 
@@ -25,8 +25,8 @@ public class UserController {
         this.userService = userService;
     }
 
-
-    @GetMapping("/login")
+    // MVC 방식 컨트롤러
+/*    @GetMapping("/login")
     public String loginIndex(@RequestParam(defaultValue = "/") String redirectURL,
                              Model model,
                              HttpSession session,
@@ -74,14 +74,30 @@ public class UserController {
         }
         return "redirect:/";
     }
+@GetMapping("/signup")
+public String signup(HttpServletRequest request,
+                     Model model){
+    String referer = request.getHeader("Referer");
+    model.addAttribute("referer", referer);
+    return "signup_Form";
+}
 
-    @PostMapping("/rest/login")
-    @ResponseBody
-    public ResponseEntity loginUserRest(LoginDto loginDto,
-                            HttpSession session,
-                            BindingResult bindingResult,
-                            HttpServletRequest requet
-    ) {
+    @PostMapping("/signup")
+    public String signUpUser(RequestUsersDTO usersDto) {
+        userService.createUser(usersDto);
+        return "login_Form";
+    }
+*/
+    @PostMapping("/signup")
+    public ResponseEntity signIn(RequestUsersDTO usersDTO){
+        userService.createUser(usersDTO);
+        return new ResponseEntity<>(usersDTO, HttpStatus.CREATED);
+    }
+    @PostMapping("/login")
+    public ResponseEntity login(LoginDto loginDto,
+                                HttpSession session,
+                                BindingResult bindingResult,
+                                HttpServletRequest requet) {
 
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -99,36 +115,17 @@ public class UserController {
 
         if (redirectURL != null && !redirectURL.equals("/logout")) {
             System.out.println("리다이렉트 확인" + redirectURL);
-            return new ResponseEntity(redirectURL,HttpStatus.OK
+            return new ResponseEntity(redirectURL, HttpStatus.OK
             );
         }
-        return new ResponseEntity("로그인 성공입니다.",HttpStatus.OK);
+        return new ResponseEntity("로그인 성공입니다.", HttpStatus.OK);
     }
 
-    @GetMapping("/signup")
-    public String index(HttpServletRequest request,
-                        Model model){
-        String referer = request.getHeader("Referer");
-        model.addAttribute("referer", referer);
-        return "signup_Form";
-    }
 
-    @PostMapping("/signup")
-    public String signUpUser(RequestUsersDTO usersDto) {
-        userService.createUser(usersDto);
-        return "login_Form";
-    }
-
-    @GetMapping("/users")
-    @ResponseBody
-    public ResponseEntity findAll(){
-        List<UsersDTO> userList =userService.getAllUsers();
-        return new ResponseEntity(userList, HttpStatus.OK);
-    }
-
+    // 유저 단건 조회 프로필 조회용
     @GetMapping("/users/{users-id}")
     @ResponseBody
-    public ResponseEntity findAll(@PathVariable("users-id") int id){
+    public ResponseEntity findAll(@PathVariable("users-id") int id) {
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 

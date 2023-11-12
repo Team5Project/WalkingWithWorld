@@ -4,13 +4,14 @@ import com.team5.WalkingWithWorld.comments.dto.CommentsDTO;
 import com.team5.WalkingWithWorld.comments.entity.Comments;
 import com.team5.WalkingWithWorld.global.exception.BusinessLogicException;
 import com.team5.WalkingWithWorld.global.exception.ExceptionCode;
+import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
+import com.team5.WalkingWithWorld.global.pagination.PaginationService;
 import com.team5.WalkingWithWorld.users.entity.Users;
 import com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths;
 import com.team5.WalkingWithWorld.comments.repository.CommentsRepository;
 import com.team5.WalkingWithWorld.users.repository.UsersRepository;
 import com.team5.WalkingWithWorld.walkingPaths.repository.WalkingPathsRepository;
 import com.team5.WalkingWithWorld.comments.service.CommentService;
-import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,13 +24,16 @@ public class CommentServiceImpl implements CommentService {
     private final UsersRepository usersRepository;
     private final WalkingPathsRepository walkingPathsRepository;
     private final CommentsRepository commentsRepository;
+    private final PaginationService paginationService;
 
     public CommentServiceImpl(UsersRepository usersRepository,
                               WalkingPathsRepository walkingPathsRepository,
-                              CommentsRepository commentsRepository) {
+                              CommentsRepository commentsRepository,
+                              PaginationService paginationService) {
         this.usersRepository = usersRepository;
         this.walkingPathsRepository = walkingPathsRepository;
         this.commentsRepository = commentsRepository;
+        this.paginationService = paginationService;
     }
 
     @Override
@@ -38,9 +42,12 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Page<CommentsDTO> findAllByWalkingPathsIdOrderByCreatedAtDesc(int walkingPathsId,
-                                                                         Pageable pageable){
-        return commentsRepository.findAllByWalkingPathsIdOrderByCreatedAtDesc(walkingPathsId, pageable).map(CommentsDTO::from);
+    public PageResponseDto<CommentsDTO> findAllByWalkingPathsIdOrderByCreatedAtDesc(Long walkingPathsId,
+                                                                                    Pageable pageable){
+        Page<CommentsDTO> commentsDTOS = commentsRepository.findAllByWalkingPathsIdOrderByCreatedAtDesc(walkingPathsId, pageable).map(CommentsDTO::from);
+        List<CommentsDTO> commentsDTOList = commentsDTOS.getContent();
+        List<Integer> barNumber = paginationService.getPaginationBarNumbers(commentsDTOS.getNumber(), commentsDTOS.getTotalPages());
+        return new PageResponseDto<>(commentsDTOList, commentsDTOS, barNumber);
     }
 
     @Override

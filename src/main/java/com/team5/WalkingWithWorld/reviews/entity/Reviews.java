@@ -22,9 +22,11 @@ public class Reviews extends AuditingFields {
     private String content;
 
 
-
-
     public static Reviews of(Long id,Users users, WalkingPaths walkingPaths, String content) {
         return new Reviews(null,users, walkingPaths, content);
+    }
+
+    public void updateContent(String content){
+        this.content = content;
     }
 }
