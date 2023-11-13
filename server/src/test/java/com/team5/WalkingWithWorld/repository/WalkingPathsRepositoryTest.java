@@ -78,7 +78,7 @@ class WalkingPathsRepositoryTest {
     void findById2(){
         WalkingPaths walkingPaths = walkingPathsRepository.getReferenceById(1);
         Users user = Users.of(
-                1,
+                1L,
                 "테스트",
                 "password123",
                 "email@gmail.com",
@@ -87,7 +87,7 @@ class WalkingPathsRepositoryTest {
         List<Photos> photos = new ArrayList<>();
         List<Map> maps = new ArrayList<>();
         WalkingPaths walkingPathsMapDTO = WalkingPaths.builder()
-                .id(1)
+                .id(1L)
                 .users(user)
                 .addr(walkingPaths.getAddr())
                 .title(walkingPaths.getTitle())

@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
+import java.util.ArrayList;
+
 @Getter
 @Setter
 @ToString
@@ -47,7 +49,8 @@ public class UsersDTO {
                 name,
                 password,
                 email,
-                addr
+                addr,
+                new ArrayList<>()
         );
     }
 }

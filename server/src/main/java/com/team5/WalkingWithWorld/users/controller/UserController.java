@@ -3,19 +3,13 @@ package com.team5.WalkingWithWorld.users.controller;
 import com.team5.WalkingWithWorld.users.dto.LoginDto;
 import com.team5.WalkingWithWorld.users.dto.RequestUsersDTO;
 import com.team5.WalkingWithWorld.users.dto.UsersDTO;
-import com.team5.WalkingWithWorld.global.Login;
-import com.team5.WalkingWithWorld.global.SessionConst;
 import com.team5.WalkingWithWorld.users.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class UserController {
@@ -95,7 +89,6 @@ public String signup(HttpServletRequest request,
     }
     @PostMapping("/login")
     public ResponseEntity login(LoginDto loginDto,
-                                HttpSession session,
                                 BindingResult bindingResult,
                                 HttpServletRequest requet) {
 
@@ -110,7 +103,6 @@ public String signup(HttpServletRequest request,
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        session.setAttribute(SessionConst.LONGIN_USERS, user);
         String redirectURL = requet.getParameter("redirectURL");
 
         if (redirectURL != null && !redirectURL.equals("/logout")) {

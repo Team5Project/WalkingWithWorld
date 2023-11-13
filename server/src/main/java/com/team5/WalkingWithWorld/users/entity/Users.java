@@ -1,10 +1,10 @@
 package com.team5.WalkingWithWorld.users.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -25,14 +25,22 @@ public class Users {
 
     private String addr;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
+
 
 
     public static Users of(Long id,
                            String name,
                            String password,
                            String email,
-                           String addr){
-        return new Users(null,name, password, email, addr);
+                           String addr,
+                           List<String> roles){
+        return new Users(null,name, password, email, addr, roles);
+    }
+
+    public void updateRole(String roles){
+        this.roles.add(roles);
     }
 }
 

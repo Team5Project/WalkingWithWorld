@@ -1,6 +1,5 @@
 package com.team5.WalkingWithWorld.reviews.controller;
 
-import com.team5.WalkingWithWorld.global.Login;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
 import com.team5.WalkingWithWorld.reviews.dto.ReviewsRequestDTO;
 import com.team5.WalkingWithWorld.reviews.entity.Reviews;
@@ -11,7 +10,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -135,7 +133,7 @@ public class ReviewsController {
 
     //리뷰 작성
     @PostMapping(value = "/{walking-paths-id}/reviews",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity createReviews(@Login UsersDTO loginUser,
+    public ResponseEntity createReviews(UsersDTO loginUser,
                                         @PathVariable("walking-paths-id") Long id,
                                         @RequestPart ReviewsRequestDTO reviewsRequestDTO,
                                         @RequestPart List<MultipartFile> files) throws IOException {
@@ -145,7 +143,7 @@ public class ReviewsController {
     }
 
     @PatchMapping(value = "/{walking-paths-id}/reviews/{reviews-id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity updateReviews(@Login UsersDTO loginUser,
+    public ResponseEntity updateReviews(UsersDTO loginUser,
                                         @PathVariable("walking-paths-id") Long walkingPathsId,
                                         @PathVariable("reviews-id") Long reviewId,
                                         @RequestPart ReviewsRequestDTO reviewsRequestDTO,

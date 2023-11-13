@@ -1,6 +1,7 @@
 package com.team5.WalkingWithWorld.global.config;
 
-import com.team5.WalkingWithWorld.global.SessionConst;
+import com.team5.WalkingWithWorld.global.config.auth.CustomPrincipal;
+import com.team5.WalkingWithWorld.global.config.auth.CustomUserDetails;
 import com.team5.WalkingWithWorld.users.dto.UsersDTO;
 import com.team5.WalkingWithWorld.users.entity.Users;
 import jakarta.servlet.http.HttpSession;
@@ -9,6 +10,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
@@ -20,9 +24,12 @@ public class JpaConfig {
 
     @Bean
     public AuditorAware<String> auditorAware(){
-        return () -> Optional.ofNullable(session.getAttribute(SessionConst.LONGIN_USERS))
-                .map(UsersDTO.class::cast)
-                .map(UsersDTO::getName);
+        return () -> Optional.ofNullable(SecurityContextHolder.getContext())
+                .map(SecurityContext::getAuthentication)
+                .filter(Authentication::isAuthenticated)
+                .map(Authentication::getPrincipal)
+                .map(CustomPrincipal.class::cast)
+                .map(CustomPrincipal::name);
 
     }
 
