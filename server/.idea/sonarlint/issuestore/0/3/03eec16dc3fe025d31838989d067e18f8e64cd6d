@@ -1,12 +1,15 @@
 
-Q
-java:S3740."/Provide the parametrized type for this generic.(÷åù¸ùÿÿÿÿ8¸ÜÙ°¼1
-L
-java:S37400"/Provide the parametrized type for this generic.(éú¥€8¸ÜÙ°¼1
-L
-java:S3740<"/Provide the parametrized type for this generic.(¤®Ç¡8×ıÜ°¼1
-L
-java:S3740?"/Provide the parametrized type for this generic.(Š¹Ôé8×ıÜ°¼1
+J
+java:S37401"/Provide the parametrized type for this generic.(÷åù¸ùÿÿÿÿ
+E
+java:S37403"/Provide the parametrized type for this generic.(éú¥€
+E
+java:S3740?"/Provide the parametrized type for this generic.(¤®Ç¡
+E
+java:S3740D"/Provide the parametrized type for this generic.(Š¹Ôé
 t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(€‚‚ûÿÿÿÿ
-z
-java:S1128"XRemove this unused import 'com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths'.(š»‚†ûÿÿÿÿ8¿èê°¼1
+~
+java:S1128"\Remove this unused import 'com.team5.WalkingWithWorld.global.config.auth.CustomUserDetails'.(çàØ½ùÿÿÿÿ8ï±§Ë¼1
+s
+java:S1128
+"XRemove this unused import 'com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths'.(š»‚†ûÿÿÿÿ

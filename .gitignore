@@ -213,3 +213,7 @@ $RECYCLE.BIN/
 /.gradle/
 /.idea/
 /.gradle/
+/server/.gradle/
+/server/.idea/
+/server/build/
+/server/gradle/

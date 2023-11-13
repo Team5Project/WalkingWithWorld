@@ -1,10 +1,0 @@
-
-o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Ò®¿“
-X	java:S125 "<This block of commented-out lines of code should be removed.(œºÚ–8Á€Ÿ∞º1
-]	java:S125&"<This block of commented-out lines of code should be removed.(Íó¬ôˇˇˇˇˇ8Ë€Ÿ∞º1
-Ä
-java:S1128"^Remove this unused import 'com.team5.WalkingWithWorld.comments.repository.CommentsRepository'.(ﬁúÚæ˝ˇˇˇˇ8∂ë„±º1
-c
-java:S1128"ARemove this unused import 'org.springframework.data.domain.Page'.(ò‚éé¸ˇˇˇˇ8∂ë„±º1
-M
-java:S1128"+Remove this unused import 'java.util.List'.(’Î±ƒ¯ˇˇˇˇ8∂ë„±º1

@@ -1,9 +1,0 @@
-
-`	java:S112y"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
-q
-java:S1488T"[Immediately return this expression instead of assigning it to the temporary variable "dto".(ÁØÏ
-o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(çÛüú
-m
-java:S6204;"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(¹Ô­€ûÿÿÿÿ
-H
-java:S1135c"2Complete the task associated to this TODO comment.(©ğıŒ
