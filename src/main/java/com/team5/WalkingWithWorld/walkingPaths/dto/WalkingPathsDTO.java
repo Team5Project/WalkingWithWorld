@@ -12,8 +12,8 @@ import java.util.List;
 @Setter
 @ToString
 public class WalkingPathsDTO {
-    private int id;
-    private int usersId;
+    private Long id;
+    private Long usersId;
     private String title;
     private String addr;
     private LocalDateTime createdAt;

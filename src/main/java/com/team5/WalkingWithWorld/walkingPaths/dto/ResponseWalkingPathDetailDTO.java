@@ -15,7 +15,7 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 public class ResponseWalkingPathDetailDTO {
-    private int id;
+    private Long id;
     @JsonIgnore
     private Users users;
     private String title;
