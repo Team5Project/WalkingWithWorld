@@ -43,12 +43,14 @@ public class WalkingPathsController {
     }
     // 산책로 하나 조회
     @GetMapping("/{id}")
-    public ResponseWalkingPathDetailDTO getWalkingPath(@PathVariable(value = "id") int id){
-        return walkingPathService.readWalkingPath(id);
+    public ResponseEntity getWalkingPath(@PathVariable(value = "id") int id){
+        ResponseWalkingPathDetailDTO responseWalkingPathDetailDTO = walkingPathService.readWalkingPath(id);
+        return new ResponseEntity(responseWalkingPathDetailDTO, HttpStatus.OK
+        );
     }
     // 산책로 검색 필터 이용(searchDTO)
     // 산책로 검색
-    @PostMapping("/search")
+    @GetMapping("/search")
     public List<ResponseWalkingPathDTO> searchWalkingPaths(String keyword) {
         return  walkingPathService.searchByKeyword(keyword);
     }
