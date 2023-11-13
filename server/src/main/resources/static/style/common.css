@@ -1,0 +1,275 @@
+@import url("https://font.elice.io/css?family=Elice+Digital+Baeum");
+
+body {
+    font-family: "Elice Digital Baeum", sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+input {
+    /* 모든 기본 스타일을 초기화합니다. */
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    /* 선택 시 파란 테두리 제거 */
+    /* 기타 스타일 속성을 필요에 따라 추가할 수 있습니다. */
+}
+
+input:focus {
+    outline: none;
+}
+
+input:-webkit-autofill {
+    background-color: transparent !important;
+    -webkit-box-shadow: 0 0 0 1000px white inset;
+    box-shadow: 0 0 0 1000px white inset;
+    font-family: inherit;
+}
+
+input:-webkit-autofill:active {
+    background-color: transparent !important;
+    -webkit-box-shadow: 0 0 0 1000px white inset;
+    box-shadow: 0 0 0 1000px white inset;
+    font-family: inherit;
+}
+
+/* ----- 헤더 스타일 ----- */
+
+header {
+    width: 1440px;
+    margin: 0 auto;
+    height: 100px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    text-align: center;
+
+}
+
+.logo {
+    justify-self: start;
+    background-image: url(/images/logo.png);
+    background-size: cover;
+    width: 124px;
+    height: 61px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    gap: 60px;
+}
+
+nav a {
+    font-size: 32px;
+    color: #000;
+}
+
+.member {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+/* 로그인 상태 */
+.profile_image {
+    display: block;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    background-color: #97bf04;
+    background-image: url(/images/profile_thumb.svg);
+    background-position: center center;
+    background-size: 50%;
+    background-repeat: no-repeat;
+
+}
+
+.name {
+    margin-right: 20px;
+    font-size: 24px;
+}
+
+.date {
+    color: #888;
+    font-size: 16px;
+}
+
+/* 비로그인 상태 */
+.header_sign {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+}
+
+.header_hr {
+    width: 1440px;
+    margin: 0 auto;
+}
+
+/* ----- 메인 관련 ----- */
+
+main {
+    width: 1440px;
+    margin: 0 auto;
+
+}
+
+footer {
+    width: 100%;
+    height: 180px;
+    background-color: #665956;
+    margin: 0 auto;
+}
+
+.foot_ctn {
+    display: flex;
+    width: 1440px;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.foot_ctn p {
+    color: #fff;
+    line-height: 1.5;
+}
+
+.foot_logo {
+    background-image: url(/images/logo_white.png);
+    background-size: cover;
+    width: 199px;
+    height: 98px;
+}
+
+/* ----- 게시글 리스트 공유 스타일 ----- */
+
+.path_content {
+    line-height: 1.5;
+}
+
+.path_content h4 {
+    font-size: 24px;
+}
+
+.rating {
+    color: #97bf04;
+}
+
+/* ----- 버튼 ----- */
+.btns {
+    display: block;
+    border-radius: 25px;
+    text-align: center;
+    width: 120px;
+    line-height: 40px;
+    color: #fff;
+}
+
+.btns:hover {
+    background-color: #A8DE33;
+    transition: 0.6s;
+}
+
+
+.btn_signin {
+    background-color: #97bf04;
+}
+
+.btn_signup {
+    width: 200px;
+    line-height: 40px;
+    background-color: #d4d9b4;
+    color: #666;
+}
+
+.sign_icon {
+    margin-right: 5px;
+}
+
+.btn_logout {
+    width: 80px;
+    line-height: 32px;
+    background-color: #d4d9b4;
+    color: #000;
+}
+
+.btn_write_big {
+    width: 200px;
+    line-height: 50px;
+    background-color: #97bf04;
+    font-size: 24px;
+}
+
+.btn_comments {
+    width: 80px;
+    line-height: 32px;
+    background-color: #97bf04;
+    color: #fff;
+
+}
+
+.btn_path_submit {
+    background-color: #97bf04;
+    font-size: 20px;
+}
+
+
+.btn_search {
+    width: 75px;
+    line-height: 30px;
+    border-radius: 25px;
+    background-color: #97bf04;
+    position: absolute;
+    top: calc(50% - 15px);
+    right: 8px
+}
+
+.btn_signup_main {
+    width: 240px;
+    line-height: 80px;
+    background-color: #97bf04;
+    margin: 10px 30px;
+    font-size: 24px;
+}
+
+.btn_cat {
+    width: 200px;
+    line-height: 40px;
+    background-color: #97bf04;
+    margin: 0 auto;
+    font-size: 20px;
+    border-radius: 10px;
+}
+
+.btn_vdelete {
+    border-radius: 25px;
+    width: 80px;
+    line-height: 32px;
+    text-align: center;
+    color: #000;
+    background-color: #d4d9b4;
+}
+
+.btn_wp_return {
+    background-color: #d4d9b4;
+    color: #666;
+    font-size: 20px;
+}

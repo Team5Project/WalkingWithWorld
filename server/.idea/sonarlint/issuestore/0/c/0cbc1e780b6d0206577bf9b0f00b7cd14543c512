@@ -1,0 +1,36 @@
+
+Q
+java:S3740D"/Provide the parametrized type for this generic.(ÍÛ´ûÿÿÿÿ8ƒ©÷°¼1
+L
+java:S3740G"/Provide the parametrized type for this generic.(÷–üç8„©÷°¼1
+L
+java:S3740K"/Provide the parametrized type for this generic.(èÓÒ´8øçÁº1
+Q
+java:S3740M"/Provide the parametrized type for this generic.(Ó°ıËşÿÿÿÿ8øçÁº1
+Q
+java:S3740X"/Provide the parametrized type for this generic.(ûÃéüÿÿÿÿ8øçÁº1
+L
+java:S3740Z"/Provide the parametrized type for this generic.(»®æ·8²òèÁº1
+v	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ñ¨ÀÒ8„øçÁº1
+]	java:S125 "<This block of commented-out lines of code should be removed.(Œå‘Óıÿÿÿÿ8œ©÷°¼1
+]	java:S125R"<This block of commented-out lines of code should be removed.(Ê¨Ìºøÿÿÿÿ8øçÁº1
+]	java:S125U"<This block of commented-out lines of code should be removed.(éØ»Úûÿÿÿÿ8£©÷°¼1
+N
+java:S1135O"2Complete the task associated to this TODO comment.(‰øÿ98øçÁº1
+r
+java:S1128"PRemove this unused import 'com.team5.WalkingWithWorld.comments.entity.Comments'.(ªºúâşÿÿÿÿ8¦©÷°¼1
+g
+java:S1128"JRemove this unused import 'com.team5.WalkingWithWorld.users.dto.UsersDTO'.(Á•õÚ8¦©÷°¼1
+f
+java:S1128"DRemove this unused import 'com.team5.WalkingWithWorld.global.Login'.(‹…ôıÿÿÿÿ8¦©÷°¼1
+`
+java:S1128
+"DRemove this unused import 'jakarta.servlet.http.HttpServletRequest'.(õ38§©÷°¼1
+c
+java:S1128"ARemove this unused import 'org.springframework.data.domain.Page'.(˜âüÿÿÿÿ8§©÷°¼1
+h
+java:S1128"FRemove this unused import 'org.springframework.stereotype.Controller'.(øŠ—Öùÿÿÿÿ8§©÷°¼1
+[
+java:S1128"9Remove this unused import 'org.springframework.ui.Model'.(ê†ıÿÿÿÿ8§©÷°¼1
+M
+java:S1128"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ8§©÷°¼1
