@@ -13,6 +13,11 @@
               <span class="name">산책마니아1</span>
               <a href="" class="btns btn_logout">logout</a>
     </div>
+        <!-- <div class="header_sign">
+            <a th:href="@{/login}" class="btns btn_signin"><i class="sign_icon fa-solid fa-key"></i>Sign in</a>
+            <a th:href="@{/signup}" class="btns btn_signup"><i class="sign_icon fa-solid fa-user-plus"></i>Sign up for
+                free</a>
+        </div> -->
   </header>
 </template>
 <script>

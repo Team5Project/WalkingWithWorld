@@ -1,6 +1,6 @@
 <template>
     <Header/>
-
+    <!-- 헤더 입력 -->
     <div class="search overwidth">
         <div class="content">
             <p>오늘은 어디로 떠나볼까요?</p>
@@ -72,14 +72,18 @@
             <a href="" class="btns btn_signup_main">회원가입하기</a>
         </div>
     </div>
+    <!-- 푸터 입력 -->
+    <Footer/>
 </template>
 
 <script>
 import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer.vue';
 
 export default {
   components: {
     Header,
+    Footer,
   },
 }
 </script>
