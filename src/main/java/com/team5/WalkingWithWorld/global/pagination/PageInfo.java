@@ -1,4 +1,4 @@
-package com.team5.WalkingWithWorld.global.domain;
+package com.team5.WalkingWithWorld.global.pagination;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

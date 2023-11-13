@@ -19,10 +19,10 @@ public interface WalkingPathsMapper {
     int addWalkingPath(WalkingPathsDTO dto);
 
     @Select("select id, users_id, title, addr, created_at, created_by, modified_at, modified_by from walking_paths where id = #{walkingPathId}")
-    WalkingPathsMapDTO readWalkingPathMap(int WalkingPathId);
+    WalkingPathsMapDTO readWalkingPathMap(Long WalkingPathId);
 
     @Select("select id, users_id, title, addr, created_at, created_by, modified_at, modified_by from walking_paths where id = #{walkingPathId}")
-    WalkingPathsDTO readWalkingPath(int WalkingPathId);
+    WalkingPathsDTO readWalkingPath(Long WalkingPathId);
 
     @Select("select id, users_id, title, addr, created_at, created_by, modified_at, modified_by " +
             "from walking_paths where title like concat('%', #{keyword}, '%') or addr like concat('%', #{keyword}, '%') order by created_at desc")
@@ -55,7 +55,7 @@ public interface WalkingPathsMapper {
     int updateWalkingPath(WalkingPathsDTO dto);
 
     @Delete("delete from walking_paths where id = #{WalkingPathId}")
-    int deleteWalkingPath(int WalkingPathId);
+    int deleteWalkingPath(Long WalkingPathId);
 
     //@Select("select id,title,addr,created_at,created_by from walking_paths where users_id=#{userId}")
     //List<WalkingPathsDTO> realWithUserId(int userId);

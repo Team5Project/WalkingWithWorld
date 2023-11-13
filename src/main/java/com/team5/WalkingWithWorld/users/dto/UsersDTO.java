@@ -12,7 +12,7 @@ import org.hibernate.validator.constraints.Length;
 @ToString
 @Builder(access = AccessLevel.PROTECTED)
 public class UsersDTO {
-    private int id;
+    private Long id;
     @NotBlank(message = "아이디 입력은 필수입니다.")
     @Length(max = 30, message = "아이디 길이는 30자 를 넘으면 안됩니다.")
     private String name;

@@ -11,8 +11,8 @@ import lombok.Data;
 @Builder
 public class CommentsDTO  {
     private Long id;
-    private int walkingPathsId;
-    private int usersId;
+    private Long walkingPathsId;
+    private Long usersId;
     private String name;
 
     @NotBlank(message = "댓글을 입력해주세요.")
@@ -21,6 +21,7 @@ public class CommentsDTO  {
 
     public static CommentsDTO from(Comments comments){
         return CommentsDTO.builder()
+                .id(comments.getId())
                 .walkingPathsId(comments.getWalkingPaths().getId())
                 .usersId(comments.getUsers().getId())
                 .name(comments.getUsers().getName())
@@ -28,10 +29,10 @@ public class CommentsDTO  {
                 .build();
     }
 
-    public  Comments toEntity(Users user, WalkingPaths walkingPaths){
+    public  Comments toEntity(Users users, WalkingPaths walkingPaths){
         return Comments.of(
                 null,
-                user,
+                users,
                 walkingPaths,
                 content
         );

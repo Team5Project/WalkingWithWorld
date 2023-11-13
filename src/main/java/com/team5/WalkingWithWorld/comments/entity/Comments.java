@@ -6,8 +6,6 @@ import com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -42,4 +40,7 @@ public class Comments extends AuditingFields {
         );
     }
 
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }

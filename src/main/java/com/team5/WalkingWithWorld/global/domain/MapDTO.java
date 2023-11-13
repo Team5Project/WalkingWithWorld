@@ -8,8 +8,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class MapDTO {
-    private int id;
-    private int walkingPathsId;
+    private Long id;
+    private Long walkingPathsId;
     private Long time;
     private String distance;
     private String coordinateX;

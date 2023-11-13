@@ -52,7 +52,7 @@ class UsersRepositoryTest {
     @Transactional
     void insertUsers(){
         Users user = Users.of(
-                1,
+                null,
                 "테스트",
                 "password123",
                 "email@gmail.com",

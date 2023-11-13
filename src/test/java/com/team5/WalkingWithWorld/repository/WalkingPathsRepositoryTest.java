@@ -46,7 +46,7 @@ class WalkingPathsRepositoryTest {
         List<PhotosDTO1> photos = photosRepository.findByWalkingPaths(walkingPaths).stream().map(PhotosDTO1::from).collect(Collectors.toList());
         List<MapDTO1> maps = mapRepository.findByWalkingPaths(walkingPaths).stream().map(MapDTO1::from).collect(Collectors.toList());
         WalkingPathsMapDTO walkingPathsMapDTO = WalkingPathsMapDTO.builder()
-                .id(1)
+                .id(1L)
                 .usersId(walkingPaths.getUsers().getId())
                 .addr(walkingPaths.getAddr())
                 .title(walkingPaths.getTitle())

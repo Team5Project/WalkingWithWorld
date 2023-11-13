@@ -11,14 +11,14 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 public class ResponseWalkingPathDTO {
-    private int id;
+    private Long id;
     private String title;
     private String addr;
     private Long time;
     private String distance;
     private Photos photos;
 
-    public ResponseWalkingPathDTO(int id, String title, String addr) {
+    public ResponseWalkingPathDTO(Long id, String title, String addr) {
         this.id = id;
         this.title = title;
         this.addr = addr;
