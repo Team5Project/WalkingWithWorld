@@ -40,59 +40,63 @@ public class WalkingPathsController {
     public PageResponseDto<ResponseWalkingPathDTO> getWalkingPathsPage(@PageableDefault Pageable pageable) {
         return walkingPathService.getPage(pageable);
     }
+
     // 산책로 검색 페이지
     @PostMapping("/search/page")
     public PageResponseDto<ResponseWalkingPathDTO> serachWalkingPathsPage(@PageableDefault Pageable pageable, String keyword) {
         return walkingPathService.getSearchPage(pageable, keyword);
     }
+
     // 전체 리스트
     @GetMapping
     public List<ResponseWalkingPathDTO> getAll() {
         return walkingPathService.readAll();
     }
+
     // 산책로 하나 조회
     @GetMapping("/{id}")
-    public ResponseEntity getWalkingPath(@PathVariable(value = "id") int id){
+    public ResponseEntity getWalkingPath(@PathVariable(value = "id") int id) {
         ResponseWalkingPathDetailDTO responseWalkingPathDetailDTO = walkingPathService.readWalkingPath(id);
         return new ResponseEntity(responseWalkingPathDetailDTO, HttpStatus.OK
         );
     }
+
     // 산책로 검색 필터 이용(searchDTO)
     // 산책로 검색
     @GetMapping("/search")
     public List<ResponseWalkingPathDTO> searchWalkingPaths(String keyword) {
-        return  walkingPathService.searchByKeyword(keyword);
+        return walkingPathService.searchByKeyword(keyword);
     }
+
     // 산책로 작성 폼으로 이동
     // 산책로 작성
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity writeWalkingPath(@RequestPart RequestWalkingPathDTO requestDTO,
-                                           @RequestPart List<MultipartFile> files,
-                                           @AuthenticationPrincipal CustomPrincipal customPrincipal) { // @Login UsersDTO usersDTO
-        System.out.println(customPrincipal.name());
+                                           @RequestPart List<MultipartFile> files) { // @Login UsersDTO usersDTO  @AuthenticationPrincipal CustomPrincipal customPrincipal
         WalkingPathsMapDTO walkingPaths = walkingPathService.createWalkingPath(requestDTO, files);
         return new ResponseEntity(walkingPaths, HttpStatus.CREATED);
     }
+
     // 산책로 수정 폼으로 이동(walking-path-id 참조)
     // 산책로 수정
     @PutMapping("/{id}")
     public int modifyWalkingPath(@RequestBody RequestWalkingPathDTO requestWalkingPathDTO,
-                                          @PathVariable(value = "id") int id) { // @Login UsersDTO usersDTO로 확인하기
+                                 @PathVariable(value = "id") int id) { // @Login UsersDTO usersDTO로 확인하기
         walkingPathService.modifyWalkingPath(requestWalkingPathDTO, id);
         return id;
     }
+
     // 산책로 삭제
     @DeleteMapping("/{id}")
     public void deleteWalkingPath(@PathVariable(value = "id") int id) {
-       walkingPathService.deleteWalkingPath(id);
+        walkingPathService.deleteWalkingPath(id);
     }
 
     //Test queryDSL
     @GetMapping("/test")
-    public PageResponseDto<WalkingPaths> getQ(){
-        Page<WalkingPaths> walkingPaths = walkingPathService.getQ();
-        List<WalkingPaths> walkingPathsList = walkingPaths.getContent();
-        List<Integer> barNumber = paginationService.getPaginationBarNumbers(walkingPaths.getNumber(), walkingPaths.getTotalPages());
-        return new PageResponseDto<>(walkingPathsList, walkingPaths, barNumber);
+    public PageResponseDto<WalkingPathsMapDTO> getQ(@RequestParam(required = false) String keyword) {
+
+
+        return walkingPathService.getQ(keyword);
     }
 }

@@ -23,13 +23,15 @@ public class JpaConfig {
     private final HttpSession session;
 
     @Bean
-    public AuditorAware<String> auditorAware(){
+    public AuditorAware<String> auditorAware() {
+        //시큐리티 적용
         return () -> Optional.ofNullable(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
                 .filter(Authentication::isAuthenticated)
                 .map(Authentication::getPrincipal)
                 .map(CustomPrincipal.class::cast)
                 .map(CustomPrincipal::name);
+
 
     }
 

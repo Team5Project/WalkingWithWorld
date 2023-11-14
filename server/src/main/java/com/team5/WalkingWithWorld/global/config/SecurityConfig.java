@@ -4,6 +4,7 @@ import com.team5.WalkingWithWorld.global.config.auth.CustomAuthorityUtils;
 import com.team5.WalkingWithWorld.global.config.jwt.JwtAuthenticationFilter;
 import com.team5.WalkingWithWorld.global.config.jwt.JwtAuthorizationFilter;
 import com.team5.WalkingWithWorld.users.repository.UsersRepository;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -57,8 +58,10 @@ public class SecurityConfig {
                 .httpBasic().disable()
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilter(jwtAuthorizationFilter())
-                .authorizeHttpRequests()
+                .authorizeRequests()
+                .requestMatchers(PathRequest.toH2Console()).permitAll()
                 .anyRequest().permitAll();
+
         return http.build();
     }
 

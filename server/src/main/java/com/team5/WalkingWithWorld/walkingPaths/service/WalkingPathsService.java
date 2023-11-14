@@ -45,5 +45,5 @@ public interface WalkingPathsService {
     @Transactional
     void deleteWalkingPath(int id);
 
-    Page<WalkingPaths> getQ();
+    PageResponseDto getQ(String keyword);
 }

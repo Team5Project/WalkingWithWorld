@@ -1,6 +1,7 @@
 package com.team5.WalkingWithWorld.users.service;
 
 import com.team5.WalkingWithWorld.global.config.auth.CustomAuthorityUtils;
+import com.team5.WalkingWithWorld.global.config.auth.CustomPrincipal;
 import com.team5.WalkingWithWorld.users.dto.LoginDto;
 import com.team5.WalkingWithWorld.users.dto.RequestUsersDTO;
 import com.team5.WalkingWithWorld.users.dto.UsersDTO;
@@ -10,6 +11,8 @@ import com.team5.WalkingWithWorld.global.exception.ExceptionCode;
 import com.team5.WalkingWithWorld.users.repository.UsersRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,10 +30,21 @@ public class UserService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+    //프로필 조회용
     public UsersDTO getUserById(int id){
         Users users = usersRepository.findById(id).orElseThrow(()-> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
         return UsersDTO.from(users);
     }
+
+
+    //이메일 인증
+    @Transactional(readOnly = true)
+    public void verifyExistEmail(String email){
+        if(usersRepository.findUsersByEmail(email).isPresent()){
+            throw new BusinessLogicException(ExceptionCode.USER_EXIST);
+        }
+    }
+
 
     public UsersDTO getUserInfo(LoginDto loginDto) {
         LoginDto encryptLogin;
@@ -40,11 +54,6 @@ public class UserService {
         Optional<Users> users = usersRepository.findUsersByEmailAndPassword(encryptLogin.getEmail(), encryptLogin.getPassword());
 
         return UsersDTO.from(users.get());
-    }
-
-    public List<UsersDTO> getAllUsers() {
-        List<UsersDTO> userList = usersRepository.findAll().stream().map(UsersDTO::from).collect(Collectors.toList());
-        return userList;
     }
 
     public Users createUser(RequestUsersDTO usersDto) {
