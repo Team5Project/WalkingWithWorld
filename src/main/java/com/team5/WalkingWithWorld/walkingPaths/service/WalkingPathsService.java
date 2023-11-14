@@ -32,7 +32,14 @@ public interface WalkingPathsService {
     @Transactional
     WalkingPathsMapDTO createWalkingPath(RequestWalkingPathDTO requestDTO, List<MultipartFile> files);
 
+    // 산책로 수정
+    public void modifyWalkingPath(RequestWalkingPathDTO requestWalkingPathDTO, int walkingPathsId);
+
     // 산책로 삭제
     @Transactional
     void deleteWalkingPath(int id);
+
+    // 조회수 업데이트
+    @Transactional
+    public void updateView(Long walkingPathsId);
 }
