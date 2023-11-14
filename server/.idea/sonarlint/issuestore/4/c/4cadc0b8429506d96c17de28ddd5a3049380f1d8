@@ -1,8 +1,0 @@
-
-‚
-java:S1488."`Immediately return this expression instead of assigning it to the temporary variable "userList".(÷¦³„þÿÿÿÿ8š“ûÈ¼1
-u	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(å³£u8œ“ûÈ¼1
-g
-java:S3655*"JCall "users.isPresent()" or "!users.isEmpty()" before accessing the value.(°ãù“8§“ûÈ¼1
-t
-java:S6204."RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(÷¦³„þÿÿÿÿ8­“ûÈ¼1
