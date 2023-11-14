@@ -78,7 +78,7 @@ class WalkingPathsRepositoryTest {
     void findById2(){
         WalkingPaths walkingPaths = walkingPathsRepository.getReferenceById(1);
         Users user = Users.of(
-                1,
+                Long.valueOf(1),
                 "테스트",
                 "password123",
                 "email@gmail.com",
@@ -87,17 +87,11 @@ class WalkingPathsRepositoryTest {
         List<Photos> photos = new ArrayList<>();
         List<Map> maps = new ArrayList<>();
         WalkingPaths walkingPathsMapDTO = WalkingPaths.builder()
-                .id(1)
+                .id(1L)
                 .users(user)
                 .addr(walkingPaths.getAddr())
                 .title(walkingPaths.getTitle())
                 .build();
         System.out.println(walkingPaths);
-    }
-    @Test
-    void findByTitleContainingOrAddrContaining() {
-        List<WalkingPaths> walkingPathsList = walkingPathsRepository.findByTitleContainingOrAddrContaining("페이", "페이");
-        walkingPathsList.stream().forEach(System.out::println);
-        //assertThat(walkingPathsList).isEqualTo(walkingPathsMapper.searchWalkingPathByKeyword("송파"));
     }
 }

@@ -9,8 +9,8 @@ import com.team5.WalkingWithWorld.global.exception.ExceptionCode;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
 import com.team5.WalkingWithWorld.global.repository.MapRepository;
 import com.team5.WalkingWithWorld.global.repository.PhotosRepository;
-import com.team5.WalkingWithWorld.global.service.PageService;
 import com.team5.WalkingWithWorld.global.service.FileUpload;
+import com.team5.WalkingWithWorld.global.service.PageService;
 import com.team5.WalkingWithWorld.users.entity.Users;
 import com.team5.WalkingWithWorld.users.repository.UsersRepository;
 import com.team5.WalkingWithWorld.walkingPaths.dto.RequestWalkingPathDTO;
@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -55,45 +54,46 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
     // 페이지 - 전체 가져오기, 검색, 조건 필터
     @Override
     public PageResponseDto<ResponseWalkingPathDTO> getPage(Pageable pageable) {
-        Page<WalkingPaths> walkingPaths = walkingPathsRepository.findAllBy(pageable);
+        Page<WalkingPaths> walkingPaths = walkingPathsRepository.findAllByOrderByCreatedAtDesc(pageable);
         List<ResponseWalkingPathDTO> responseWalkingPathDTOList = walkingPaths.stream().map(walkingPath -> ResponseWalkingPathDTO.from(walkingPath, mapRepository.findTop1ByWalkingPaths(walkingPath), photosRepository.findTop1ByWalkingPaths(walkingPath))).collect(Collectors.toList());
         List<Integer> barNumber = pageService.getPaginationBarNumbers(pageable.getPageNumber(), walkingPaths.getTotalPages());
         return new PageResponseDto<>(responseWalkingPathDTOList, walkingPaths, barNumber);
     }
     @Override
-    public PageResponseDto<ResponseWalkingPathDTO> getSearchPage(Pageable pageable, String keyword) {
-        Page<WalkingPaths> walkingPaths = walkingPathsRepository.findByTitleContainingOrAddrContaining(pageable, keyword, keyword);
+    public PageResponseDto<ResponseWalkingPathDTO> getSearchPage( String keyword,Pageable pageable) {
+        Page<WalkingPaths> walkingPaths = walkingPathsRepository.findByTitleContainingOrAddrContaining(keyword, keyword,pageable);
         List<ResponseWalkingPathDTO> responseWalkingPathDTOList = walkingPaths.stream().map(walkingPath -> ResponseWalkingPathDTO.from(walkingPath, mapRepository.findTop1ByWalkingPaths(walkingPath), photosRepository.findTop1ByWalkingPaths(walkingPath))).toList();
         List<Integer> barNumber = pageService.getPaginationBarNumbers(pageable.getPageNumber(), walkingPaths.getTotalPages());
         return new PageResponseDto<>(responseWalkingPathDTOList, walkingPaths, barNumber);
     }
-    // 전체 리스트
-    @Override
-    public List<ResponseWalkingPathDTO> readAll() {
-        List<WalkingPaths> walkingPathsList = walkingPathsRepository.findAllByOrderByCreatedAtDesc();
-        List<ResponseWalkingPathDTO> responseWalkingPathDTOList = new ArrayList<>();
-        for(WalkingPaths walkingPaths : walkingPathsList) {
-            responseWalkingPathDTOList.add(ResponseWalkingPathDTO.from(walkingPaths, mapRepository.findTop1ByWalkingPaths(walkingPaths), photosRepository.findTop1ByWalkingPaths(walkingPaths)));
-        }
-        return responseWalkingPathDTOList;
-    }
+
+//    // 전체 리스트
+//    @Override
+//    public List<ResponseWalkingPathDTO> readAll() {
+//        List<WalkingPaths> walkingPathsList = walkingPathsRepository.findAllByOrderByCreatedAtDesc();
+//        List<ResponseWalkingPathDTO> responseWalkingPathDTOList = new ArrayList<>();
+//        for(WalkingPaths walkingPaths : walkingPathsList) {
+//            responseWalkingPathDTOList.add(ResponseWalkingPathDTO.from(walkingPaths, mapRepository.findTop1ByWalkingPaths(walkingPaths), photosRepository.findTop1ByWalkingPaths(walkingPaths)));
+//        }
+//        return responseWalkingPathDTOList;
+//    }
     // 산책로 하나 조회
     @Override
-    public ResponseWalkingPathDetailDTO readWalkingPath(int id){
+    public ResponseWalkingPathDetailDTO readWalkingPath(long id){
         WalkingPaths walkingPaths = walkingPathsRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));
         ResponseWalkingPathDetailDTO dto = ResponseWalkingPathDetailDTO.from(walkingPaths, mapRepository.findByWalkingPaths(walkingPaths), photosRepository.findByWalkingPaths(walkingPaths));
         return dto;
     }
-    // 산책로 검색
-    @Override
-    public List<ResponseWalkingPathDTO> searchByKeyword(String keyword) {
-        List<WalkingPaths> walkingPathsList = walkingPathsRepository.findByTitleContainingOrAddrContaining(keyword, keyword);
-        List<ResponseWalkingPathDTO> responseWalkingPathDTOList = new ArrayList<>();
-        for(WalkingPaths walkingPaths : walkingPathsList) {
-            responseWalkingPathDTOList.add(ResponseWalkingPathDTO.from(walkingPaths, mapRepository.findTop1ByWalkingPaths(walkingPaths), photosRepository.findTop1ByWalkingPaths(walkingPaths)));
-        }
-        return responseWalkingPathDTOList;
-    }
+//    // 산책로 검색
+//    @Override
+//    public List<ResponseWalkingPathDTO> searchByKeyword(String keyword) {
+//        List<WalkingPaths> walkingPathsList = walkingPathsRepository.findByTitleContainingOrAddrContaining(keyword, keyword);
+//        List<ResponseWalkingPathDTO> responseWalkingPathDTOList = new ArrayList<>();
+//        for(WalkingPaths walkingPaths : walkingPathsList) {
+//            responseWalkingPathDTOList.add(ResponseWalkingPathDTO.from(walkingPaths, mapRepository.findTop1ByWalkingPaths(walkingPaths), photosRepository.findTop1ByWalkingPaths(walkingPaths)));
+//        }
+//        return responseWalkingPathDTOList;
+//    }
     // 산책로 조건 필터
     // 산책로 작성
     //TODO 산책로 작성 시 FileIOException이 발생하여도 트랜잭션이 발동하지 않음
@@ -138,6 +138,12 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
         Optional.ofNullable(requestWalkingPathDTO.getAddr()).ifPresent(walkingPaths::updateAddr);
 
         walkingPathsRepository.save(walkingPaths);
+    }
+    // 조회수 업데이트
+    @Transactional
+    public void updateView(Long walkingPathsId) {
+        WalkingPaths walkingPaths = walkingPathsRepository.findById(walkingPathsId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));
+        walkingPathsRepository.updateView(walkingPathsId);
     }
     // 산책로 삭제
     @Override
