@@ -22,6 +22,7 @@ import com.team5.WalkingWithWorld.walkingPaths.repository.WalkingPathsRepository
 import com.team5.WalkingWithWorld.walkingPaths.service.WalkingPathsService;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,15 +42,20 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
     private final FileUpload fileUpload;
     private final PageService pageService;
 
-    public WalkingPathServiceImpl(WalkingPathsRepository walkingPathsRepository, UsersRepository usersRepository,
+
+    public WalkingPathServiceImpl(WalkingPathsRepository walkingPathsRepository,
+                                  UsersRepository usersRepository,
                                   MapRepository mapRepository,
-                                  PhotosRepository photosRepository, FileUpload fileUpload, PageService pageService) {
+                                  PhotosRepository photosRepository,
+                                  FileUpload fileUpload,
+                                  PageService pageService) {
         this.walkingPathsRepository = walkingPathsRepository;
         this.usersRepository = usersRepository;
         this.mapRepository = mapRepository;
         this.photosRepository = photosRepository;
         this.fileUpload = fileUpload;
         this.pageService = pageService;
+
     }
 
     // 페이지 - 전체 가져오기, 검색, 조건 필터
@@ -149,5 +155,17 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
         photosRepository.deleteAllByWalkingPaths(walkingPaths);
         walkingPathsRepository.deleteById(id);
         //
+    }
+    @Override
+    public Page<WalkingPaths> getQ(){
+        String keyword = "";
+        List<String> location = new ArrayList<>();
+        location.add("서울");
+        int minTime = 0;
+        int maxTime = 100;
+        String minDistance = "";
+        String maxDistance = "";
+        Pageable pageable = PageRequest.of(0, 1);
+        return walkingPathsRepository.filterWalkingPaths(keyword,location,minTime,maxTime,minDistance,maxDistance,pageable);
     }
 }

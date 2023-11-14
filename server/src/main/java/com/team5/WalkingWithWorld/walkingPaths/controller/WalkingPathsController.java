@@ -1,14 +1,16 @@
 package com.team5.WalkingWithWorld.walkingPaths.controller;
 
 import com.team5.WalkingWithWorld.global.config.auth.CustomPrincipal;
-import com.team5.WalkingWithWorld.global.config.auth.CustomUserDetails;
+import com.team5.WalkingWithWorld.global.entity.Map;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
+import com.team5.WalkingWithWorld.global.pagination.PaginationService;
 import com.team5.WalkingWithWorld.walkingPaths.dto.RequestWalkingPathDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDetailDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.WalkingPathsMapDTO;
 import com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths;
 import com.team5.WalkingWithWorld.walkingPaths.service.impl.WalkingPathServiceImpl;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -25,10 +27,14 @@ import java.util.List;
 @RequestMapping("/walking-path")
 public class WalkingPathsController {
     private final WalkingPathServiceImpl walkingPathService;
+    private final PaginationService paginationService;
 
-    WalkingPathsController(WalkingPathServiceImpl walkingPathService) {
+    public WalkingPathsController(WalkingPathServiceImpl walkingPathService,
+                                  PaginationService paginationService) {
         this.walkingPathService = walkingPathService;
+        this.paginationService = paginationService;
     }
+
     // 전체 리스트 페이지
     @GetMapping("/page")
     public PageResponseDto<ResponseWalkingPathDTO> getWalkingPathsPage(@PageableDefault Pageable pageable) {
@@ -79,5 +85,14 @@ public class WalkingPathsController {
     @DeleteMapping("/{id}")
     public void deleteWalkingPath(@PathVariable(value = "id") int id) {
        walkingPathService.deleteWalkingPath(id);
+    }
+
+    //Test queryDSL
+    @GetMapping("/test")
+    public PageResponseDto<WalkingPaths> getQ(){
+        Page<WalkingPaths> walkingPaths = walkingPathService.getQ();
+        List<WalkingPaths> walkingPathsList = walkingPaths.getContent();
+        List<Integer> barNumber = paginationService.getPaginationBarNumbers(walkingPaths.getNumber(), walkingPaths.getTotalPages());
+        return new PageResponseDto<>(walkingPathsList, walkingPaths, barNumber);
     }
 }
