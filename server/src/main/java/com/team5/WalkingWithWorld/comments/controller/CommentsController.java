@@ -2,21 +2,12 @@ package com.team5.WalkingWithWorld.comments.controller;
 
 
 import com.team5.WalkingWithWorld.comments.dto.CommentsDTO;
-import com.team5.WalkingWithWorld.comments.entity.Comments;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
-import com.team5.WalkingWithWorld.users.dto.UsersDTO;
-import com.team5.WalkingWithWorld.global.Login;
 import com.team5.WalkingWithWorld.comments.service.CommentService;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class CommentsController {

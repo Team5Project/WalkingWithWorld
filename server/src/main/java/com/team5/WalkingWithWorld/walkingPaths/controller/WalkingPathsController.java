@@ -1,5 +1,7 @@
 package com.team5.WalkingWithWorld.walkingPaths.controller;
 
+import com.team5.WalkingWithWorld.global.config.auth.CustomPrincipal;
+import com.team5.WalkingWithWorld.global.config.auth.CustomUserDetails;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
 import com.team5.WalkingWithWorld.walkingPaths.dto.RequestWalkingPathDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDTO;
@@ -12,6 +14,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -58,7 +61,9 @@ public class WalkingPathsController {
     // 산책로 작성
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity writeWalkingPath(@RequestPart RequestWalkingPathDTO requestDTO,
-                                           @RequestPart List<MultipartFile> files) { // @Login UsersDTO usersDTO
+                                           @RequestPart List<MultipartFile> files,
+                                           @AuthenticationPrincipal CustomPrincipal customPrincipal) { // @Login UsersDTO usersDTO
+        System.out.println(customPrincipal.name());
         WalkingPathsMapDTO walkingPaths = walkingPathService.createWalkingPath(requestDTO, files);
         return new ResponseEntity(walkingPaths, HttpStatus.CREATED);
     }
