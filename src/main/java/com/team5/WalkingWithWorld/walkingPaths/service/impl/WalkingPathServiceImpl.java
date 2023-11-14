@@ -131,6 +131,7 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
         return WalkingPathsMapDTO.from(walkingPaths);
     }
     // 산책로 수정
+    @Override
     public void modifyWalkingPath(RequestWalkingPathDTO requestWalkingPathDTO, int walkingPathsId){
         WalkingPaths walkingPaths = walkingPathsRepository.findById(walkingPathsId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));
 
@@ -140,6 +141,7 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
         walkingPathsRepository.save(walkingPaths);
     }
     // 조회수 업데이트
+    @Override
     @Transactional
     public void updateView(Long walkingPathsId) {
         WalkingPaths walkingPaths = walkingPathsRepository.findById(walkingPathsId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));
@@ -150,10 +152,8 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
     @Transactional
     public void deleteWalkingPath(int id){
         WalkingPaths walkingPaths = walkingPathsRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));
-        //
         mapRepository.deleteAllByWalkingPaths(walkingPaths);
         photosRepository.deleteAllByWalkingPaths(walkingPaths);
         walkingPathsRepository.deleteById(id);
-        //
     }
 }
