@@ -11,7 +11,7 @@
         </div>
     </div>
     <main>
-        <section class="recent_path" style="opacity: 50%;">
+        <section class="recent_path">
             <div class="recent_header">
                 <h3>최근 산책길</h3>
                 <a href="">더보기</a>
@@ -88,6 +88,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 @import "../assets/main.css";
 </style>

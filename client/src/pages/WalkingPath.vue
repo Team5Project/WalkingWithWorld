@@ -1,160 +1,25 @@
 <template>
- <main>
-        <section>
-            <aside class="category">
-                <div class="cat_location">
-                    <div class="cat_location">
-                        <h3>지역</h3>
-                        <div class="cat_location_list">
-                            <p id="location_check_all">
-                                <i class="check_all_i fa-solid fa-circle-check"></i>
-                                서울 전체
-                            </p>
-                            <p>
-                                <input type="checkbox" name="location" value="강남구" class="location_check"
-                                    id="radio_gangnam">
-                                <label for="radio_gangnam" class="location_name">
-                                    <i class="fa-solid fa-circle-check"></i>
-                                    강남구
-                                </label>
-                            </p>
-                            <p>
-                                <input type="checkbox" name="location" value="강동구" class="location_check"
-                                    id="radio_gangdong">
-                                <label for="radio_gangdong" class="location_name">
-                                    <i class="fa-solid fa-circle-check"></i>
-                                    강동구
-                                </label>
-                            </p>
-                            <p>
-                                <input type="checkbox" name="location" value="관악구" class="location_check"
-                                    id="radio_Gwanak">
-                                <label for="radio_Gwanak" class="location_name">
-                                    <i class="fa-solid fa-circle-check"></i>
-                                    관악구
-                                </label>
-                            </p>
-                            <p>
-                                <input type="checkbox" name="location" value="송파구" class="location_check"
-                                    id="radio_songpa">
-                                <label for="radio_songpa" class="location_name">
-                                    <i class="fa-solid fa-circle-check"></i>
-                                    송파구
-                                </label>
-                            </p>
-                            <p>
-                                <input type="checkbox" name="location" value="종로구" class="location_check"
-                                    id="radio_jongro">
-                                <label for="radio_jongro" class="location_name">
-                                    <i class="fa-solid fa-circle-check"></i>
-                                    종로구
-                                </label>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <hr class="cat_hr">
-                <div class="cat_time">
-                    <h3>소요 시간</h3>
-                    <div class="cat_time_range multi-range-slider">
-                        <p id="showtime"></p>
-                        <!-- 입력 받을 슬라이더 -->
-                        <input type="range" name="minTime" id="minTime" value="0" min="0" max="180" step="10"
-                            onchange="set()" />
-                        <input type="range" name="maxTime" id="maxTime" value="180" min="0" max="180" step="10"
-                            onchange="set()" />
-                        <!-- 양방향 슬라이더 보여주기 -->
-                        <div class="slider">
-                            <div class="track"></div>
-                            <div class="range"></div>
-                            <div class="thumb left"></div>
-                            <div class="thumb right"></div>
-                        </div>
-                    </div>
-                </div>
-                <hr class="cat_hr">
-                <div class="cat_distance">
-                    <h3>거리</h3>
-                    <div class="cat_distance_range multi-range-slider">
-                        <p id="show-distance"></p>
-                        <!-- 입력 받을 슬라이더 -->
-                        <input type="range" name="minDistance" id="minDistance" value="0" min="0" max="20000" step="100"
-                            onchange="setDistance()" />
-                        <input type="range" name="maxDistance" id="maxDistance" value="20000" min="0" max="20000"
-                            step="100" onchange="setDistance()" />
-                        <!-- 양방향 슬라이더 보여주기 -->
-                        <div class="distance-slider">
-                            <div class="track"></div>
-                            <div class="range"></div>
-                            <div class="thumb left"></div>
-                            <div class="thumb right"></div>
-                        </div>
-                    </div>
-                </div>
-                <hr class="cat_hr">
-                <input class="btns btn_cat" input type="button" th:data-word="${keyword}"
-                    th:onclick="searchWalkingPath(this.getAttribute('data-word'))" value="검색하기">
-            </aside>
-            <article id="walking-path">
-                <div id="walking-path_wrapper">
-                    <h3 th:if="${keyword}" th:text="|'${keyword}' 검색 결과입니다.|"></h3>
-                    <h3 th:text="|검색 결과 ${#lists.size(walkingPathList)}건|"></h3>
-                    <div class="path_list" th:each="walkingPath:${walkingPathList}">
-                        <div class="path_wrapper">
-                            <a class="path_img" th:href="@{|/walking-path/${walkingPath.getId()}|}">
-                                <img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}"
-                                    th:src="@{|/ex_images/${walkingPath.getPhotosList().get(0).getImgName()}|}" alt="">
-                                <img th:unless="${#lists.size(walkingPath.getPhotosList()) > 0}"
-                                    th:src="@{/images/noimage.png}" alt="">
-                            </a>
-                            <div class="path_content">
-                                <a th:text="${walkingPath.title}" th:href="@{|/walking-path/${walkingPath.getId()}|}"
-                                    class="path_title">제목</a>
-                                <address th:text="${walkingPath.addr}">주소</address>
-                                <p class="path_dtinfo" th:if="${#lists.size(walkingPath.mapList) > 0}">
-                                    <th:block th:if="${walkingPath.mapList.get(0).distance > 1000}">
-                                        <b
-                                            th:text="${#numbers.formatDecimal(walkingPath.mapList.get(0).distance/1000,2,2)}">10</b>
-                                        Km
-                                    </th:block>
-                                    <th:block th:unless="${walkingPath.mapList.get(0).distance > 1000}">
-                                        <b th:text="${walkingPath.mapList.get(0).distance}"></b> m
-                                    </th:block>
-                                    |
-                                    <th:block th:if="${walkingPath.mapList.get(0).time > 60}">
-                                        <b th:text="${walkingPath.mapList.get(0).time / 60}"></b> 시간
-                                        <b th:text="${walkingPath.mapList.get(0).time % 60}"></b> 분
-                                    </th:block>
-                                    <th:block th:unless="${walkingPath.mapList.get(0).time > 60}">
-                                        <b th:text="${walkingPath.mapList.get(0).time}"></b> 분
-                                    </th:block>
-                                </p>
-                                <p class="rating">★★★★★</p>
-                            </div>
-                            <div class="path_auth">
-                                <p th:text="${walkingPath.createdBy}">작성자</p>
-                                <p th:text="${walkingPath.createdAt}">날짜</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="path_ctrl">
-                    <a th:href="@{/walking-path}" class="btns btn_wp_return">전체목록</a>
-                    <p class="pagenation">&lt;&lt; &lt; 1 2 3 4 5 &gt; &gt;&gt;</p>
-                    <a th:if="${session.auth != null}" th:href="@{/walking-path/write}" class="btns btn_path_submit">산책로
-                        등록</a>
-                    <a th:if="${session.auth == null}" th:href="@{'/login?redirectURL=/walking-path'}"
-                        class="btns btn_path_submit">산책로 등록</a>
-                </div>
-            </article>
-        </section>
-    </main>
+	<Header/>
+	<!-- 헤더 입력 -->
+	<hr class="header_hr">
+	<WalkingPathList v-if="compMode === 'default'" @pageMode="modeChange"/>
+	<WalkingPathModify v-if="compMode === 'modify'" @pageMode="modeChange"/>
+	<!-- <WalkingPathDetail/> -->
+  <!-- 푸터 입력 -->
+  <Footer/>
 </template>
 
 
-<script>
+<script setup>
+import { ref } from 'vue';
 
-export default {
-    name:'WalkingPath'
+import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer.vue';
+import WalkingPathList from '@/components/walkingpath/WalkingPathList.vue';
+import WalkingPathModify from '@/components/walkingpath/WalkingPathModify.vue';
+
+const compMode = ref('default');
+const modeChange = (changed) => {
+	compMode.value = changed;
 }
 </script>

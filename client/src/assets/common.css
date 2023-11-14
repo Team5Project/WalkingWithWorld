@@ -14,6 +14,10 @@ h3 {
     margin-bottom: 10px;
 }
 
+label {
+    cursor: pointer;
+}
+
 input {
     /* 모든 기본 스타일을 초기화합니다. */
     background: none;
@@ -47,7 +51,7 @@ input:-webkit-autofill:active {
 
 /* ----- 헤더 스타일 ----- */
 
-header {
+.header_wrap {
     width: 1440px;
     margin: 0 auto;
     height: 100px;
@@ -74,7 +78,7 @@ nav {
     gap: 60px;
 }
 
-nav a {
+nav .header_link {
     font-size: 32px;
     color: #000;
 }
