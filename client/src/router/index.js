@@ -4,8 +4,8 @@ import Main from '@/pages/Main.vue'
 import WalkingPath from '@/pages/WalkingPath.vue'
 import WalkingPathDetail from '@/pages/WalkingPathDetail.vue'
 import Visitor from '@/pages/Visitor.vue'
-import Login from '@/pages/Login.vue'
-import SignUp from '@/pages/SignUp.vue'
+import login from '@/pages/login.vue'
+import signup from '@/pages/signup.vue'
 
 const routes = [
   { path: '/', component: Main },
