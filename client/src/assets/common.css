@@ -1,5 +1,6 @@
 @import "reset.css";
 @import url("https://font.elice.io/css?family=Elice+Digital+Baeum");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css");
 
 body {
     font-family: "Elice Digital Baeum", sans-serif;
