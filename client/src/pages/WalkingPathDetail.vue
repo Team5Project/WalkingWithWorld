@@ -53,20 +53,9 @@
                     </div>
                 </div>
             </article>
-            <div class="comments_wrapper">
-                <div class="comments_content">
-                    <!--                    여기에 댓글이 들어감-->
-                </div>
-                <form action="" method="post" id="comments_write" onsubmit="return false;">
-                    <input type="text" id="comment_content" class="comments_input" name="content"
-                           placeholder="댓글을 입력해주세요" required/>
-                    <input type="button" class="btns btn_comments" th:if="${session.auth !=null}"
-                           th:onclick="|writeComment(${walkingPaths.getId()})|" value="등록"/>
-                    <input type="button" class="btns btn_comments" th:if="${session.auth == null}"
-                           th:onclick="|location.href='@{/login?redirectURL=/walking-path/{id}(id=${walkingPaths.getId()})}'|"
-                           value="등록">
-                </form>
-            </div>
+						<!-- 코멘트 컴포넌트 -->
+            <Comments/>
+						<!-- 코멘트 컴포넌트 -->
         </div>
     </section>
     <section class="map">
@@ -76,20 +65,9 @@
             <div class="readMap" id="map"></div>
         </div>
     </section>
-    <section class="review">
-        <h3>리뷰</h3>
-        <div class="review_container">
-            <i class="rv-chav left fa-solid fa-circle-chevron-left"></i>
-            <i class="rv-chav right fa-solid fa-circle-chevron-right"></i>
-            <div class="review_none">
-                <p>아직 리뷰가 작성되지 않았습니다.</p>
-                <p>첫 리뷰를 작성해 주세요!</p>
-                <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}" class="btns btn_write_big">
-                    리뷰작성
-                </a>
-            </div>
-        </div>
-    </section>
+		<!-- 리뷰 컴포넌트 -->
+		<Review/>
+		<!-- 리뷰 컴포넌트 -->
 </main>
 <Footer/>
 </template>
@@ -99,6 +77,8 @@ import { ref,computed } from 'vue';
 import axios from 'axios';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
+	import Comments from '@/components/Comments.vue'
+	import Review from '@/components/Review.vue'
 
 const props = defineProps(['id']);
 const WalkingPathId = computed(() => props.id);
@@ -108,7 +88,6 @@ const getDetail = ref([]);
 
 const fetchDetail = async() => {
 	const response = await axios.get(`http://localhost:8089/walking-path/${WalkingPathId.value}`);
-	// const response = await axios.get(`http://localhost:8089/walking-path/2`);
 	return response.data;
 }
 
@@ -122,5 +101,5 @@ setDetail().then(()=>{
 
 </script>
 <style scoped>
-    @import "../assets/walking_path_detail.css";
+    @import "@/assets/walking_path_detail.css";
 </style>
