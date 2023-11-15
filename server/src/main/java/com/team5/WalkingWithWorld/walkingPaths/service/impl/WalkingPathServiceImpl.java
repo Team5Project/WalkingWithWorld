@@ -9,8 +9,8 @@ import com.team5.WalkingWithWorld.global.exception.ExceptionCode;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
 import com.team5.WalkingWithWorld.global.repository.MapRepository;
 import com.team5.WalkingWithWorld.global.repository.PhotosRepository;
-import com.team5.WalkingWithWorld.global.service.PageService;
 import com.team5.WalkingWithWorld.global.service.FileUpload;
+import com.team5.WalkingWithWorld.global.service.PageService;
 import com.team5.WalkingWithWorld.users.entity.Users;
 import com.team5.WalkingWithWorld.users.repository.UsersRepository;
 import com.team5.WalkingWithWorld.walkingPaths.dto.RequestWalkingPathDTO;
@@ -21,7 +21,9 @@ import com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths;
 import com.team5.WalkingWithWorld.walkingPaths.repository.WalkingPathsRepository;
 import com.team5.WalkingWithWorld.walkingPaths.service.WalkingPathsService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,15 +43,20 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
     private final FileUpload fileUpload;
     private final PageService pageService;
 
-    public WalkingPathServiceImpl(WalkingPathsRepository walkingPathsRepository, UsersRepository usersRepository,
+
+    public WalkingPathServiceImpl(WalkingPathsRepository walkingPathsRepository,
+                                  UsersRepository usersRepository,
                                   MapRepository mapRepository,
-                                  PhotosRepository photosRepository, FileUpload fileUpload, PageService pageService) {
+                                  PhotosRepository photosRepository,
+                                  FileUpload fileUpload,
+                                  PageService pageService) {
         this.walkingPathsRepository = walkingPathsRepository;
         this.usersRepository = usersRepository;
         this.mapRepository = mapRepository;
         this.photosRepository = photosRepository;
         this.fileUpload = fileUpload;
         this.pageService = pageService;
+
     }
 
     // 페이지 - 전체 가져오기, 검색, 조건 필터
@@ -149,5 +156,25 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
         photosRepository.deleteAllByWalkingPaths(walkingPaths);
         walkingPathsRepository.deleteById(id);
         //
+    }
+    @Override
+    public PageResponseDto getQ(String keyword){
+        List<String> location = new ArrayList<>();
+        location.add("주소");
+        System.out.println("위치 리스트 : " + location);
+        int minTime = 0;
+        int maxTime = 1000;
+        String minDistance = "0";
+        String maxDistance = "1000";
+        Pageable pageable = PageRequest.of(0, 1);
+        Page<WalkingPaths> walkingPathsMapDTOPage = walkingPathsRepository.filterWalkingPaths(keyword,null,minTime,maxTime,minDistance,maxDistance,pageable);
+        List<WalkingPaths> list = walkingPathsMapDTOPage.getContent();
+        List<WalkingPathsMapDTO> walkingPathsMapDTOList = new ArrayList<>();
+        for(WalkingPaths w : list){
+            walkingPathsMapDTOList.add(WalkingPathsMapDTO.from(w, photosRepository.findByWalkingPaths(w),mapRepository.findByWalkingPaths(w)));
+        }
+        List<Integer> barNumber = pageService.getPaginationBarNumbers(walkingPathsMapDTOPage.getNumber(), walkingPathsMapDTOPage.getTotalPages());
+
+        return new PageResponseDto(list, walkingPathsMapDTOPage, barNumber);
     }
 }

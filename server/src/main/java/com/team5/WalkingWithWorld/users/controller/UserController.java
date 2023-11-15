@@ -113,10 +113,14 @@ public String signup(HttpServletRequest request,
         return new ResponseEntity("로그인 성공입니다.", HttpStatus.OK);
     }
 
+    @GetMapping("/signup/email")
+    public ResponseEntity verifyEmail(String email){
+        userService.verifyExistEmail(email);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
     // 유저 단건 조회 프로필 조회용
     @GetMapping("/users/{users-id}")
-    @ResponseBody
     public ResponseEntity findAll(@PathVariable("users-id") int id) {
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }

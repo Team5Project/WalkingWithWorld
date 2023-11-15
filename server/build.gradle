@@ -1,3 +1,6 @@
+// queryDsl Settings
+
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.4'
@@ -22,7 +25,20 @@ repositories {
 }
 
 dependencies {
-	//Security
+	//TODO queryDSL 공부
+	//queryDsl Settings
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	implementation "com.querydsl:querydsl-core"
+	implementation "com.querydsl:querydsl-collections"
+	//querydsl JPAAnnotationProcess
+	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+	// java.lang.NoClassDefFoundError (javax.annotation.Generated) 대응코드
+	annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+	// java.lang.NoClassDefFoundError (javax.annotation.Entity) 대응코드
+	annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+
+
+	//TODO Security 공부
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	//JWT
 	implementation 'com.auth0:java-jwt:4.3.0'
@@ -53,4 +69,26 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+	/**QueryDsl
+ 	*
+ 	*/
+
+// Querydsl 설정부
+// Querydsl 설정부
+def generated = 'src/main/generated'
+
+// querydsl QClass 파일 생성 위치를 지정
+tasks.withType(JavaCompile).configureEach {
+	options.getGeneratedSourceOutputDirectory().set(file(generated))
+}
+
+// java source set 에 querydsl QClass 위치 추가
+sourceSets {
+	main.java.srcDirs += [generated]
+}
+
+// gradle clean 시에 QClass 디렉토리 삭제
+clean {
+	delete file(generated)
 }

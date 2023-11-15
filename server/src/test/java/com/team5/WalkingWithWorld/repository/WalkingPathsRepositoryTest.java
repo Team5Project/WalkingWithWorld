@@ -1,7 +1,7 @@
 package com.team5.WalkingWithWorld.repository;
 
-import com.team5.WalkingWithWorld.global.domain.MapDTO1;
-import com.team5.WalkingWithWorld.global.domain.PhotosDTO1;
+import com.team5.WalkingWithWorld.global.domain.MapDTO;
+import com.team5.WalkingWithWorld.global.domain.PhotosDTO;
 import com.team5.WalkingWithWorld.global.entity.Map;
 import com.team5.WalkingWithWorld.global.entity.Photos;
 import com.team5.WalkingWithWorld.global.repository.MapRepository;
@@ -43,8 +43,8 @@ class WalkingPathsRepositoryTest {
     @DisplayName("DTO 활용")
     void findById() {
         WalkingPaths walkingPaths = walkingPathsRepository.getReferenceById(1);
-        List<PhotosDTO1> photos = photosRepository.findByWalkingPaths(walkingPaths).stream().map(PhotosDTO1::from).collect(Collectors.toList());
-        List<MapDTO1> maps = mapRepository.findByWalkingPaths(walkingPaths).stream().map(MapDTO1::from).collect(Collectors.toList());
+        List<PhotosDTO> photos = photosRepository.findByWalkingPaths(walkingPaths).stream().map(PhotosDTO::from).collect(Collectors.toList());
+        List<MapDTO> maps = mapRepository.findByWalkingPaths(walkingPaths).stream().map(MapDTO::from).collect(Collectors.toList());
         WalkingPathsMapDTO walkingPathsMapDTO = WalkingPathsMapDTO.builder()
                 .id(1L)
                 .usersId(walkingPaths.getUsers().getId())

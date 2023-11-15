@@ -1,5 +1,6 @@
 package com.team5.WalkingWithWorld.walkingPaths.service;
 
+import com.team5.WalkingWithWorld.global.entity.Map;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
 import com.team5.WalkingWithWorld.global.repository.MapRepository;
 import com.team5.WalkingWithWorld.global.repository.PhotosRepository;
@@ -10,8 +11,10 @@ import com.team5.WalkingWithWorld.walkingPaths.dto.RequestWalkingPathDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDetailDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.WalkingPathsMapDTO;
+import com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths;
 import com.team5.WalkingWithWorld.walkingPaths.repository.WalkingPathsRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,4 +44,6 @@ public interface WalkingPathsService {
     // 산책로 삭제
     @Transactional
     void deleteWalkingPath(int id);
+
+    PageResponseDto getQ(String keyword);
 }
