@@ -46,6 +46,8 @@ public class QWalkingPaths extends EntityPathBase<WalkingPaths> {
 
     public final com.team5.WalkingWithWorld.users.entity.QUsers users;
 
+    public final NumberPath<Integer> view = createNumber("view", Integer.class);
+
     public QWalkingPaths(String variable) {
         this(WalkingPaths.class, forVariable(variable), INITS);
     }

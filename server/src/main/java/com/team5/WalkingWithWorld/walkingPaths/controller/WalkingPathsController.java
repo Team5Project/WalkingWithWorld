@@ -85,6 +85,7 @@ public class WalkingPathsController {
     public ResponseEntity deleteWalkingPath(@PathVariable(value = "id") int id) {
         walkingPathService.deleteWalkingPath(id);
         return new ResponseEntity(HttpStatus.RESET_CONTENT);
+    }
 
     //Test queryDSL
     @GetMapping("/test")
