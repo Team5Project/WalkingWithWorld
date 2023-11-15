@@ -98,12 +98,15 @@
 					<input class="btns btn_cat" input type="button" th:data-word="${keyword}"
 							th:onclick="searchWalkingPath(this.getAttribute('data-word'))" value="검색하기">
 			</aside>
+			<!--  -->
+			<!-- 리스트 출력부분 -->
+			<!--  -->
 			<article id="walking-path">
 					<div id="walking-path_wrapper">
 							<h3 th:if="${keyword}" th:text="|'${keyword}' 검색 결과입니다.|"></h3>
 							<h3 th:text="|검색 결과 ${#lists.size(walkingPathList)}건|"></h3>
 							<div class="path_list" th:each="walkingPath:${walkingPathList}">
-									<div class="path_wrapper">
+									<div class="path_wrapper" v-for="item in getList">
 											<a class="path_img" th:href="@{|/walking-path/${walkingPath.getId()}|}">
 													<img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}"
 															th:src="@{|/ex_images/${walkingPath.getPhotosList().get(0).getImgName()}|}" alt="">
@@ -111,26 +114,11 @@
 															th:src="@{/images/noimage.png}" alt="">
 											</a>
 											<div class="path_content">
-													<a th:text="${walkingPath.title}" th:href="@{|/walking-path/${walkingPath.getId()}|}"
-															class="path_title">제목</a>
-													<address th:text="${walkingPath.addr}">주소</address>
-													<p class="path_dtinfo" th:if="${#lists.size(walkingPath.mapList) > 0}">
-															<th:block th:if="${walkingPath.mapList.get(0).distance > 1000}">
-																	<b
-																			th:text="${#numbers.formatDecimal(walkingPath.mapList.get(0).distance/1000,2,2)}">10</b>
-																	Km
-															</th:block>
-															<th:block th:unless="${walkingPath.mapList.get(0).distance > 1000}">
-																	<b th:text="${walkingPath.mapList.get(0).distance}"></b> m
-															</th:block>
-															|
-															<th:block th:if="${walkingPath.mapList.get(0).time > 60}">
-																	<b th:text="${walkingPath.mapList.get(0).time / 60}"></b> 시간
-																	<b th:text="${walkingPath.mapList.get(0).time % 60}"></b> 분
-															</th:block>
-															<th:block th:unless="${walkingPath.mapList.get(0).time > 60}">
-																	<b th:text="${walkingPath.mapList.get(0).time}"></b> 분
-															</th:block>
+													<a class="path_title">{{ item.title }}</a>
+													<address>{{ item.addr }}</address>
+													<p class="path_dtinfo">
+														<b>{{ item.distance }}</b>Km |
+															
 													</p>
 													<p class="rating">★★★★★</p>
 											</div>
@@ -157,12 +145,23 @@
 
 </template>
 <script setup>
-  import { defineEmits } from 'vue';
+  import { defineEmits, ref } from 'vue';
+	import axios from 'axios';
 
   const emit = defineEmits(['pageMode']);
   const modeToModify = () => {
     emit('pageMode', 'modify');
   }
+
+	const getList = ref([]);
+	const fetchList = async () =>{
+		const response = await axios.get('http://localhost:8089/walking-path')
+		return response.data;
+	}
+	const setList = async() => {
+		getList.value = await fetchList();
+	}
+	setList().then(()=>{console.log(getList.value)})
 </script>
 <style scoped>
     @import "@/assets/walking_path.css";

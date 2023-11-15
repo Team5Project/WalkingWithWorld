@@ -27,5 +27,5 @@
 </script>
 
 <style scoped>
-  @import "../assets/signup_form.css";
+  @import "@/assets/signup_form.css";
 </style>

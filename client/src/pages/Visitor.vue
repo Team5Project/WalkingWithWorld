@@ -51,5 +51,5 @@ export default {
 }
 </script>
 <style scoped>
-    @import "../assets/visitor.css";
+    @import "@/assets/visitor.css";
 </style>
