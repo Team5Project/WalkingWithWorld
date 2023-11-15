@@ -1,0 +1,90 @@
+.body {
+    display: flex;
+    justify-content: space-between;
+}
+
+body>div {
+    width: 50%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.login_img img {
+    object-fit: cover;
+    object-position: center center;
+    width: 100%;
+    height: 100%;
+}
+
+.login_form {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    text-align: center;
+
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo-img {
+    margin-bottom: 30px
+}
+
+.find {
+    text-align: center;
+}
+
+.find a {
+    display: block;
+}
+
+.forward-signup {
+    text-align: center;
+    margin-top: 120px;
+}
+
+.forward-signup a {
+    display: block;
+    color: #333;
+    text-decoration: underline;
+}
+
+.input {
+    width: 360px;
+    height: 40px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+
+.btn-login {
+    width: 100px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 30px;
+    background: var(--97BF04, #97BF04);
+    margin-bottom: 20px;
+}
+
+.find-a {
+    color: #AAA;
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.find-a>a {
+    color: #333;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-decoration-line: underline;
+}
