@@ -17,7 +17,7 @@ public class Map {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(optional = false)
     private WalkingPaths walkingPaths;
     private Long time;
     private String distance;

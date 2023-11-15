@@ -21,6 +21,7 @@ public class Users {
     //숫자, 알파벳, 특수문자(!@#$%^&*) 포함 8자 이상 20자 이하
     private String password;
 
+    @Column(unique = true)
     private String email;
 
     private String addr;
