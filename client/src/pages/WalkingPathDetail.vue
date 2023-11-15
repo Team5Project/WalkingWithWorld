@@ -60,10 +60,11 @@
     </section>
     <section class="map">
         <h3>상세 경로</h3>
-        <h4 id="exist">게시자가 상세 경로를 입력하지 않았습니다.</h4>
+        <Map/>
+        <!-- <h4 id="exist">게시자가 상세 경로를 입력하지 않았습니다.</h4>
         <div class="map_wrap">
             <div class="readMap" id="map"></div>
-        </div>
+        </div> -->
     </section>
 		<!-- 리뷰 컴포넌트 -->
 		<Review/>
@@ -77,8 +78,11 @@ import { ref,computed } from 'vue';
 import axios from 'axios';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
-	import Comments from '@/components/Comments.vue'
-	import Review from '@/components/Review.vue'
+
+import Comments from '@/components/Comments.vue'
+import Review from '@/components/Review.vue'
+import Map from '@/components/walkingpath/Map.vue';
+
 
 const props = defineProps(['id']);
 const WalkingPathId = computed(() => props.id);
