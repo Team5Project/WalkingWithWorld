@@ -45,7 +45,7 @@ public class WalkingPathsController {
         return new ResponseEntity(pageResponseDto, HttpStatus.OK);
     }
     // 산책로 검색 필터 이용 : 위랑 합치기?
-    @GetMapping("/condition")
+    @GetMapping("/filter")
     public ResponseEntity searchConditionWalkingPathsPage(@PageableDefault Pageable pageable, String keyword, String filters) {
         PageResponseDto<ResponseWalkingPathDTO> pageResponseDto = walkingPathService.searchConditionPage(keyword, filters, pageable);
         return new ResponseEntity(pageResponseDto, HttpStatus.OK);
