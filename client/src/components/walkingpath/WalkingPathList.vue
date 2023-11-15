@@ -98,27 +98,29 @@
 					<input class="btns btn_cat" input type="button" th:data-word="${keyword}"
 							th:onclick="searchWalkingPath(this.getAttribute('data-word'))" value="검색하기">
 			</aside>
-			<!--  -->
-			<!-- 리스트 출력부분 -->
-			<!--  -->
+
 			<article id="walking-path">
 					<div id="walking-path_wrapper">
 							<h3 th:if="${keyword}" th:text="|'${keyword}' 검색 결과입니다.|"></h3>
 							<h3 th:text="|검색 결과 ${#lists.size(walkingPathList)}건|"></h3>
 							<div class="path_list" th:each="walkingPath:${walkingPathList}">
-									<div class="path_wrapper" v-for="item in getList">
-											<a class="path_img" th:href="@{|/walking-path/${walkingPath.getId()}|}">
-													<img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}"
-															th:src="@{|/ex_images/${walkingPath.getPhotosList().get(0).getImgName()}|}" alt="">
-													<img th:unless="${#lists.size(walkingPath.getPhotosList()) > 0}"
-															th:src="@{/images/noimage.png}" alt="">
+
+									<!--  -->
+									<!-- 리스트 출력부분 -->
+									<!--  -->
+									<div class="path_wrapper" v-for="item in getList.data">
+											<a href="/walking-path/" class="path_img">
+													<img v-if="item.photos == null"
+															src="/images/noimage.png" alt="">
+													<img v-if="item.photos != null"
+															:src="'http://localhost:8089/ex_images/'+item.photos.imgName" alt="">
 											</a>
 											<div class="path_content">
 													<a class="path_title">{{ item.title }}</a>
 													<address>{{ item.addr }}</address>
 													<p class="path_dtinfo">
-														<b>{{ item.distance }}</b>Km |
-															
+														<b>{{ item.distance >= 1000 ? (item.distance/1000).toFixed(1) +'k' : item.distance }}</b>m | 
+														<b>{{ item.time >= 60 ? (item.time/60).toFixed(0)+'시간'+ ' '+ (item.time%60) + '분' : item.time + '분' }}</b> 
 													</p>
 													<p class="rating">★★★★★</p>
 											</div>
@@ -127,6 +129,9 @@
 													<p th:text="${walkingPath.createdAt}">날짜</p>
 											</div>
 									</div>
+										<!--  -->
+									<!-- 리스트 출력부분 -->
+									<!--  -->
 							</div>
 					</div> 
 					<div class="path_ctrl">
@@ -161,7 +166,9 @@
 	const setList = async() => {
 		getList.value = await fetchList();
 	}
-	setList().then(()=>{console.log(getList.value)})
+	setList().then(()=>{
+		console.log(getList.value.data);
+		})
 </script>
 <style scoped>
     @import "@/assets/walking_path.css";
