@@ -109,18 +109,18 @@
 									<!-- 리스트 출력부분 -->
 									<!--  -->
 									<div class="path_wrapper" v-for="item in getList.data">
-											<a href="/walking-path/" class="path_img">
+										<router-link :to="'/walking-path/'+item.id" class="path_img">
 													<img v-if="item.photos == null"
 															src="/images/noimage.png" alt="">
 													<img v-if="item.photos != null"
 															:src="'http://localhost:8089/ex_images/'+item.photos.imgName" alt="">
-											</a>
+											</router-link>
 											<div class="path_content">
-													<a class="path_title">{{ item.title }}</a>
+													<router-link :to="'/walking-path/'+item.id" class="path_title">{{ item.title }}</router-link>
 													<address>{{ item.addr }}</address>
 													<p class="path_dtinfo">
 														<b>{{ item.distance >= 1000 ? (item.distance/1000).toFixed(1) +'k' : item.distance }}</b>m | 
-														<b>{{ item.time >= 60 ? (item.time/60).toFixed(0)+'시간'+ ' '+ (item.time%60) + '분' : item.time + '분' }}</b> 
+														<b>{{ item.time >= 60 ? (item.time/60).toFixed(0)+'시간'+ ' ' + (item.time%60) + '분' : item.time + '분' }}</b> 
 													</p>
 													<p class="rating">★★★★★</p>
 											</div>

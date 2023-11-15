@@ -1,9 +1,10 @@
 <template>
+	<Header/>
     <hr class="header_hr">
     <main>
     <section class="detail_header">
         <div class="detail_title">
-            <h2 th:text="${walkingPaths.title}">타이틀 미입력</h2>
+            <h2>{{ getDetail.title }}</h2>
             <th:block th:if="${session.auth !=null && session.auth.getName()==walkingPaths.getCreatedBy()}">
                 <div class="up_del">
                     <a th:href="|/walking-path/modify/${walkingPaths.id}|"><span class="info_modi">수정</span></a>
@@ -15,23 +16,10 @@
             <span class="star_score">★★★★★</span>
             <i></i>리뷰 <b>8</b>
             <i>|</i> 댓글 <b>22</b>
-            <th:block th:if="${walkingPaths.mapList}">
-                <th:block th:if="${walkingPaths.getMapList().get(0).getDistance()>1000}">
-                    <i>|</i> 거리 <b
-                        th:text="${#numbers.formatDecimal(walkingPaths.getMapList().get(0).getDistance()/1000,1,2)}">10</b>
-                    Km
-                </th:block>
-                <th:block th:unless="${walkingPaths.getMapList().get(0).getDistance()>1000}">
-                    <i>|</i> 거리 <b th:text="${walkingPaths.getMapList().get(0).getDistance()}">10</b> m
-                </th:block>
-                <th:block th:if="${walkingPaths.getMapList().get(0).getTime()>60}">
-                    <i>|</i> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()/60}">3</b> 시간 <b
-                        th:text="${walkingPaths.getMapList().get(0).getTime()%60}"></b> 분
-                </th:block>
-                <th:block th:unless="${walkingPaths.getMapList().get(0).getTime()>60}">
-                    <i>|</i> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()}"></b> 분
-                </th:block>
-            </th:block>
+						<!-- <i>|</i> 거리 <b>{{ getDetail.distance >= 1000 ? (getDetail.distance/1000).toFixed(1) +'k' : getDetail.distance }}m</b>             
+						<i>|</i> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()/60}">3</b> 시간 <b></b> -->
+
+        
         </p>
         <address th:text="${walkingPaths.addr}">주소 미입력</address>
     </section>
@@ -103,18 +91,35 @@
         </div>
     </section>
 </main>
+<Footer/>
 </template>
 
-<script>
+<script setup>
+import { ref,computed } from 'vue';
+import axios from 'axios';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 
-export default {
-  components: {
-    Header,
-    Footer,
-  },
+const props = defineProps(['id']);
+const WalkingPathId = computed(() => props.id);
+console.log(WalkingPathId.value);
+
+const getDetail = ref([]);
+
+const fetchDetail = async() => {
+	const response = await axios.get(`http://localhost:8089/walking-path/${WalkingPathId.value}`);
+	// const response = await axios.get(`http://localhost:8089/walking-path/2`);
+	return response.data;
 }
+
+const setDetail = async () => {
+	getDetail.value = await fetchDetail();
+}
+
+setDetail().then(()=>{
+		console.log(getDetail.value);
+		})
+
 </script>
 <style scoped>
     @import "../assets/walking_path_detail.css";

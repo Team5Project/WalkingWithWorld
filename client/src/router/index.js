@@ -7,17 +7,18 @@ import Visitor from '@/pages/Visitor.vue'
 import Login from '@/pages/Login.vue'
 import SignUp from '@/pages/SignUp.vue'
 
+const routes = [
+  { path: '/', component: Main },
+  { path: '/walking-path', component: WalkingPath },
+  { path: '/walking-path/:id', component: WalkingPathDetail, props: true },
+  { path: '/visitor', component: Visitor },
+  { path: '/login', component: Login },
+  { path: '/signUp', component: SignUp },
+];
 
 const router = createRouter({
-  history : createWebHistory(),
-  routes : [
-    { path: '/', component: Main },
-    { path: '/walking-path', component: WalkingPath },
-    { path: '/walking-path-detail', component: WalkingPathDetail },
-    { path: '/visitor', component: Visitor },
-    { path: '/login', component: Login },
-    { path: '/signUp', component: SignUp },
-  ],
+  history: createWebHistory(),
+  routes,
 })
 
 export default router;
