@@ -106,7 +106,7 @@
 							<h3 th:if="${keyword}" th:text="|'${keyword}' 검색 결과입니다.|"></h3>
 							<h3 th:text="|검색 결과 ${#lists.size(walkingPathList)}건|"></h3>
 							<div class="path_list" th:each="walkingPath:${walkingPathList}">
-									<div class="path_wrapper" v-for="item in getList">
+									<div class="path_wrapper" v-for="item in getList.data">
 											<a class="path_img" th:href="@{|/walking-path/${walkingPath.getId()}|}">
 													<img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}"
 															th:src="@{|/ex_images/${walkingPath.getPhotosList().get(0).getImgName()}|}" alt="">
@@ -161,7 +161,9 @@
 	const setList = async() => {
 		getList.value = await fetchList();
 	}
-	setList().then(()=>{console.log(getList.value)})
+	setList().then(()=>{
+		console.log(getList.value)
+		})
 </script>
 <style scoped>
     @import "@/assets/walking_path.css";

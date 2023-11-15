@@ -88,9 +88,9 @@ public String signup(HttpServletRequest request,
         return new ResponseEntity<>(usersDTO, HttpStatus.CREATED);
     }
     @PostMapping("/login")
-    public ResponseEntity login(LoginDto loginDto,
+    public ResponseEntity login(@RequestBody LoginDto loginDto,
                                 BindingResult bindingResult,
-                                HttpServletRequest requet) {
+                                HttpServletRequest request) {
 
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -103,7 +103,7 @@ public String signup(HttpServletRequest request,
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        String redirectURL = requet.getParameter("redirectURL");
+        String redirectURL = request.getParameter("redirectURL");
 
         if (redirectURL != null && !redirectURL.equals("/logout")) {
             System.out.println("리다이렉트 확인" + redirectURL);
