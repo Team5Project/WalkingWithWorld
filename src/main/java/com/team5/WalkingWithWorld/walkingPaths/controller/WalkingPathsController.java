@@ -31,17 +31,6 @@ public class WalkingPathsController {
         PageResponseDto<ResponseWalkingPathDTO> pageResponseDto = walkingPathService.getPage(pageable);
         return new ResponseEntity(pageResponseDto, HttpStatus.OK);
     }
-    // 산책로 검색(페이지)
-    @PostMapping("/search")
-    public ResponseEntity serachWalkingPathsPage(@PageableDefault Pageable pageable, String keyword) {
-        PageResponseDto<ResponseWalkingPathDTO> pageResponseDto = walkingPathService.getSearchPage(keyword,pageable);
-        return new ResponseEntity(pageResponseDto, HttpStatus.OK);
-    }
-//    // 전체 리스트
-//    @GetMapping("/test")
-//    public List<ResponseWalkingPathDTO> getAll() {
-//        return walkingPathService.readAll();
-//    }
     // 산책로 하나 조회
     @GetMapping("/{id}")
     public ResponseEntity getWalkingPath(@PathVariable(value = "id") long id){
@@ -49,16 +38,19 @@ public class WalkingPathsController {
         ResponseWalkingPathDetailDTO responseWalkingPathDetailDTO = walkingPathService.readWalkingPath(id);
         return new ResponseEntity(responseWalkingPathDetailDTO, HttpStatus.OK);
     }
-    // 산책로 검색 필터 이용(searchDTO)
-    @PostMapping("/condition")
-    public ResponseEntity searchConditionWalkingPathsPage(String keyword) {
-        return new ResponseEntity(HttpStatus.OK);
+    // 산책로 검색(페이지)
+    @GetMapping("/search")
+    public ResponseEntity serachWalkingPathsPage(@PageableDefault Pageable pageable, String keyword) {
+        PageResponseDto<ResponseWalkingPathDTO> pageResponseDto = walkingPathService.getSearchPage(keyword,pageable);
+        return new ResponseEntity(pageResponseDto, HttpStatus.OK);
     }
-//    // 산책로 검색
-//    @GetMapping("/search/test")
-//    public List<ResponseWalkingPathDTO> searchWalkingPaths(String keyword) {
-//        return  walkingPathService.searchByKeyword(keyword);
-//    }
+    // 산책로 검색 필터 이용 : 위랑 합치기?
+    @GetMapping("/condition")
+    public ResponseEntity searchConditionWalkingPathsPage(@PageableDefault Pageable pageable, String keyword, String filters) {
+        PageResponseDto<ResponseWalkingPathDTO> pageResponseDto = walkingPathService.searchConditionPage(keyword, filters, pageable);
+        return new ResponseEntity(pageResponseDto, HttpStatus.OK);
+    }
+
     // 산책로 작성 폼으로 이동
     // 산책로 작성
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})

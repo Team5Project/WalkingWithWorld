@@ -13,21 +13,18 @@ import java.util.List;
 
 public interface WalkingPathsService {
 
-    // 페이지 - 전체 가져오기, 검색, 조건 필터
-    PageResponseDto<ResponseWalkingPathDTO> getPage(Pageable pageable);
-
-    PageResponseDto<ResponseWalkingPathDTO> getSearchPage(String keyword,Pageable pageable);
-
     // 전체 리스트
-//    List<ResponseWalkingPathDTO> readAll();
+    PageResponseDto<ResponseWalkingPathDTO> getPage(Pageable pageable);
 
     // 산책로 하나 조회
     ResponseWalkingPathDetailDTO readWalkingPath(long id);
 
     // 산책로 검색
-//    List<ResponseWalkingPathDTO> searchByKeyword(String keyword);
+    PageResponseDto<ResponseWalkingPathDTO> getSearchPage(String keyword,Pageable pageable);
 
     // 산책로 조건 필터
+    PageResponseDto<ResponseWalkingPathDTO> searchConditionPage(String keyword, String filters, Pageable pageable);
+
     // 산책로 작성
     @Transactional
     WalkingPathsMapDTO createWalkingPath(RequestWalkingPathDTO requestDTO, List<MultipartFile> files);

@@ -16,7 +16,7 @@ public interface WalkingPathsRepository extends JpaRepository<WalkingPaths, Inte
     // 전체 리스트 최신순
     Page<WalkingPaths> findAllByOrderByCreatedAtDesc(Pageable pageable);
     // keyword로 찾기
-    Page<WalkingPaths> findByTitleContainingOrAddrContaining(String keyword1, String keyword2, Pageable pageable);
+    Page<WalkingPaths> findByTitleContainingOrderByCreatedAtDesc(String keyword, Pageable pageable);
 
     // long id로 읽어오기
     Optional<WalkingPaths> findById(long id);
@@ -26,7 +26,4 @@ public interface WalkingPathsRepository extends JpaRepository<WalkingPaths, Inte
     @Query("update WalkingPaths w set w.view = w.view + 1 where w.id = :id")
     int updateView(@Param("id") Long id);
 
-//    // 삭제예정
-//    List<WalkingPaths> findAllByOrderByCreatedAtDesc();
-//    List<WalkingPaths> findByTitleContainingOrAddrContaining(String keyword1, String keyword2);
 }
