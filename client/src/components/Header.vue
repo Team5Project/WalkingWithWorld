@@ -38,11 +38,12 @@
 </template>
 
 <script>
+
   export default {
     name: 'Header',
     computed : {
       auth(){
-        return localStorage.getItem('token')
+        return localStorage.getItem("token")
       }
     }
   }
