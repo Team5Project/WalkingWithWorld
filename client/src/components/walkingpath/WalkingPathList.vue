@@ -119,7 +119,7 @@
 													<router-link :to="'/walking-path/'+item.id" class="path_title">{{ item.title }}</router-link>
 													<address>{{ item.addr }}</address>
 													<p class="path_dtinfo">
-														<b>{{ item.distance >= 1000 ? (item.distance/1000).toFixed(1) +'k' : item.distance }}</b>m | 
+														<b>{{ item.distance >= 1000 ? (item.distance/1000).toFixed(1) +'k' : item.distance }}m</b> | 
 														<b>{{ item.time >= 60 ? (item.time/60).toFixed(0)+'시간'+ ' ' + (item.time%60) + '분' : item.time + '분' }}</b> 
 													</p>
 													<p class="rating">★★★★★</p>
