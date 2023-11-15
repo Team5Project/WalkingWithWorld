@@ -6,14 +6,17 @@ import com.team5.WalkingWithWorld.visitors.entity.Visitors;
 import com.team5.WalkingWithWorld.visitors.repository.VisitorsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Optional;
 
-@Controller
+@RestController
 public class VisitorsController {
     @Autowired
     VisitorsMapper dao;
@@ -21,18 +24,14 @@ public class VisitorsController {
     VisitorsRepository visitorsRepository;
 
 
-    @GetMapping("/visitorslist")
-    public ModelAndView list(){
-        List<Visitors> list = visitorsRepository.findAll();
-        ModelAndView mav = new ModelAndView();
-        System.out.println(list);
-        mav.addObject("list", list);
-        mav.setViewName("visitorView");
-        return mav;
+    @GetMapping("/list")
+    public ResponseEntity <List<Visitors>> list(){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(visitorsRepository.findAll());
     }
 
-    @PostMapping("/visitor/delete")
-    @Transactional
+    @PostMapping("/visitors/delete")
     public ModelAndView delete(@RequestBody VisitorsDTO visitorsDTO) {
         ModelAndView mav = new ModelAndView();
         try {
@@ -47,25 +46,30 @@ public class VisitorsController {
         }
         return mav;
     }
-
-    @PostMapping("/insertVisitors")
+    @PostMapping("/{id}")
     @Transactional
-    public ModelAndView insert(Visitors vo){
-        ModelAndView mav=new ModelAndView();
+    public ResponseEntity<Object> delete(@PathVariable int id, @RequestBody Visitors vo){
+        visitorsRepository.findAll();
+        visitorsRepository.deleteByIdAndPassword(vo.getId(), vo.getPassword());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(visitorsRepository.findAll());
+    }
+
+    @PostMapping("/visitors")
+    public ResponseEntity insert(@RequestBody Visitors vo){
+        Visitors visitors;
        try{
-           visitorsRepository.save(vo);
-           mav.addObject("list", visitorsRepository.findAll());
+           visitors =  visitorsRepository.save(vo);
         }catch (Exception e){
-           mav.addObject("msg", "오류가 발생했습니다.");
+            e.printStackTrace();
+           return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
        }
-        mav.setViewName("visitorView");
-        return mav;
+        return new ResponseEntity(visitors, HttpStatus.OK);
     }
 
     @RequestMapping(value="/insertVisitorsForm")
     public String showInsertForm(){
         return "insertVisitorsForm";
     }
-
-
 }

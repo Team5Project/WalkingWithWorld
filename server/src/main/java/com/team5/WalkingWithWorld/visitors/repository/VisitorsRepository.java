@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface VisitorsRepository extends JpaRepository<Visitors, Long> {
-    public List<Visitors> deleteByIdAndPassword(int id, String password);
+    public List<Visitors> deleteByIdAndPassword(long id, String password);
 }

@@ -37,7 +37,7 @@ class UserControllerTest {
 
     @Test
     void index() throws Exception {
-        List<Users> usersList = List.of(Users.of(null, "AAA", "AAABBB123", "AAA@gmail.com", "AAA"));
+//        List<Users> usersList = List.of(Users.of(null, "AAA", "AAABBB123", "AAA@gmail.com", "AAA"));
         mockMvc.perform(get("/users"))
                 .andExpect(status().is(200));
     }

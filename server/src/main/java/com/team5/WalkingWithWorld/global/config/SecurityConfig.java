@@ -74,6 +74,9 @@ public class SecurityConfig {
 //                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll() // request
 //                                .requestMatchers(new AntPathRequestMatcher("/walking-path","POST")).hasRole("USER")
 //                                .requestMatchers(new AntPathRequestMatcher("/walking-path","GET")).hasRole("ADMIN")
+                                .requestMatchers(new AntPathRequestMatcher("/visitors")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/list")).permitAll()
+
                                 .anyRequest().permitAll()
                 );
         return http.build();

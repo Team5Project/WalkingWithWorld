@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<article id="walking-path-list">
+    <div id="walking-path_wrapper">
+        <h3 th:if="${keyword != 'null'}" th:text="|'${keyword}' 검색 결과입니다.|"></h3>
+        <h3 th:text="|검색 결과 ${#lists.size(walkingPathList)}건|"></h3>
+        <div class="path_list" th:each="walkingPath:${walkingPathList}">
+            <div class="path_wrapper">
+                <a class="path_img" th:href="@{|/walking-path/${walkingPath.getId()}|}">
+                    <img th:if="${#lists.size(walkingPath.getPhotosList()) > 0}" th:src="@{|/ex_images/${walkingPath.getPhotosList().get(0).getImgName()}|}"/>
+                    <img th:unless="${#lists.size(walkingPath.getPhotosList()) > 0}" th:src="@{/images/noimage.png}" alt="">
+                </a>
+                <div class="path_content">
+                    <a th:text="${walkingPath.title}" th:href="@{|/walking-path/${walkingPath.getId()}|}"  class="path_title">제목</a>
+                    <address th:text="${walkingPath.addr}">주소</address>
+                    <p class="path_dtinfo" th:if="${#lists.size(walkingPath.mapList) > 0}">
+                        <th:block th:if="${walkingPath.mapList.get(0).distance > 1000}">
+                            <b th:text="${#numbers.formatDecimal(walkingPath.mapList.get(0).distance/1000,2,2)}">10</b> Km
+                        </th:block>
+                        <th:block th:unless="${walkingPath.mapList.get(0).distance > 1000}">
+                            <b th:text="${walkingPath.mapList.get(0).distance}">10</b> m
+                        </th:block>
+                        |
+                        <th:block th:if="${walkingPath.mapList.get(0).time > 60}">
+                            <b th:text="${walkingPath.mapList.get(0).time / 60}">10</b> 시간
+                            <b th:text="${walkingPath.mapList.get(0).time % 60}"></b> 분
+                        </th:block>
+                        <th:block th:unless="${walkingPath.mapList.get(0).time > 60}">
+                            <b th:text="${walkingPath.mapList.get(0).time}">10</b> 분
+                        </th:block>
+                    </p>
+                    <p class="rating">★★★★★</p>
+                </div>
+                <div class="path_auth">
+                    <p th:text="${walkingPath.createdBy}">작성자</p>
+                    <p th:text="${walkingPath.createdAt}">등록일</p>
+                </div>
+            </div>
+        </div>
+        <div class="path_ctrl">
+            <a th:href="@{/walking-path}" class="btns btn_wp_return">전체목록</a>
+            <p class="pagenation">&lt;&lt; &lt; 1 2 3 4 5 &gt; &gt;&gt;</p>
+            <a th:if="${session.auth != null}" th:href="@{/walking-path/write}" class="btns btn_path_submit">산책로 등록</a>
+            <a th:if="${session.auth == null}" th:href="@{'/login?redirectURL=/walking-path'}" class="btns btn_path_submit">산책로 등록</a>
+        </div>
+    </div>
+</article>
+</body>
+</html>
