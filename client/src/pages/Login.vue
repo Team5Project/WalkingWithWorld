@@ -28,5 +28,5 @@
 </template>
 
 <style scoped>
-  @import "../assets/login_form.css";
+  @import "@/assets/login_form.css";
 </style>
