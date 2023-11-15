@@ -14,6 +14,7 @@ public class ResponseWalkingPathDTO {
     private Long id;
     private String title;
     private String addr;
+    private int view;
     private Long time;
     private String distance;
     private Photos photos;
@@ -27,6 +28,6 @@ public class ResponseWalkingPathDTO {
     public static ResponseWalkingPathDTO from(WalkingPaths walkingPaths, Map map, Photos photos) {
         Long time = (map == null)?null:map.getTime();
         String distance = (map == null)?null:map.getDistance();
-        return new ResponseWalkingPathDTO(walkingPaths.getId(), walkingPaths.getTitle(), walkingPaths.getAddr(), time, distance, photos);
+        return new ResponseWalkingPathDTO(walkingPaths.getId(), walkingPaths.getTitle(), walkingPaths.getAddr(), walkingPaths.getView(), time, distance, photos);
     }
 }

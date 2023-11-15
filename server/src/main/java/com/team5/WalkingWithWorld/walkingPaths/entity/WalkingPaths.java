@@ -25,8 +25,12 @@ public class WalkingPaths extends AuditingFields {
     @JoinColumn(name = "users_id")
     @ToString.Exclude
     private Users users;
+    @Column(nullable = false)
     private String title;
+    @Column(nullable = false)
     private String addr;
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private int view;
     @OneToMany(mappedBy = "walkingPaths")
     private final List<Map> mapList = new ArrayList<>();
 
@@ -37,8 +41,9 @@ public class WalkingPaths extends AuditingFields {
     public static WalkingPaths of(Long id,
                                   Users users,
                                   String title,
-                                  String addr) {
-        return new WalkingPaths(null, users, title, addr);
+                                  String addr,
+                                  int view) {
+        return new WalkingPaths(null, users, title, addr, view);
     }
 
     public  void updateTitle(String title){

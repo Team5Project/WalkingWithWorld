@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.Rollback;
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -50,6 +51,7 @@ class UsersRepositoryTest {
     @Order(4)
     @DisplayName("회원가입")
     @Transactional
+    @Rollback(false)
     void insertUsers(){
         Users user = Users.of(
                 null,
