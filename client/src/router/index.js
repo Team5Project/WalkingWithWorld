@@ -4,8 +4,8 @@ import Main from '@/pages/Main.vue'
 import WalkingPath from '@/pages/WalkingPath.vue'
 import WalkingPathDetail from '@/pages/WalkingPathDetail.vue'
 import Visitor from '@/pages/Visitor.vue'
-import login from '@/pages/login.vue'
-import signup from '@/pages/signup.vue'
+import Login from '@/pages/Login.vue'
+import SignUp from '@/pages/SignUp.vue'
 
 const routes = [
   { path: '/', component: Main },
@@ -13,7 +13,7 @@ const routes = [
   { path: '/walking-path/:id', component: WalkingPathDetail, props: true },
   { path: '/visitor', component: Visitor },
   { path: '/login', component: Login },
-  { path: '/signUp', component: SignUp },
+  { path: '/signup', component: SignUp },
 ];
 
 const router = createRouter({
