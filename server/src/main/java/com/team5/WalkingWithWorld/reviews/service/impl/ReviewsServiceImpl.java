@@ -1,5 +1,6 @@
 package com.team5.WalkingWithWorld.reviews.service.impl;
 
+import com.team5.WalkingWithWorld.global.config.auth.CustomPrincipal;
 import com.team5.WalkingWithWorld.global.domain.FileVo;
 import com.team5.WalkingWithWorld.global.domain.PhotosDTO;
 import com.team5.WalkingWithWorld.global.exception.BusinessLogicException;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewsServiceImpl implements ReviewsService {
@@ -54,18 +56,18 @@ public class ReviewsServiceImpl implements ReviewsService {
     //리뷰 리스트 조회
     @Override
     public PageResponseDto<ReviewsResponseDTO> readReviewsList(Long walkingPathsId, Pageable pageable){
-        Page<ReviewsResponseDTO> reviewsPage =  reviewsRepository.findAllByWalkingPathsId(walkingPathsId, pageable).map(ReviewsResponseDTO::from);
-        List<ReviewsResponseDTO> reviewsResponseDTOList = reviewsPage.getContent();
-        List<Integer> barNumber = paginationService.getPaginationBarNumbers(reviewsPage.getNumber(), reviewsPage.getTotalPages());
-        return new PageResponseDto<>(reviewsResponseDTOList,reviewsPage, barNumber);
+        Page<Reviews> reviews = reviewsRepository.findAllByWalkingPathsId(walkingPathsId,pageable);
+        List<ReviewsResponseDTO> reviewsResponseDTOList = reviews.stream().map(review -> ReviewsResponseDTO.from(review,photosRepository.findALLByReviews(review))).toList();
+        List<Integer> barNumber = paginationService.getPaginationBarNumbers(reviews.getNumber(), reviews.getTotalPages());
+        return new PageResponseDto<>(reviewsResponseDTOList,reviews, barNumber);
     }
 
 
     // 리뷰 작성
     @Override
-    public Reviews createReviews(ReviewsRequestDTO reviewsRequestDTO, UsersDTO usersDto, List<MultipartFile> files, Long walkingPathsId) throws IOException {
+    public Reviews createReviews(ReviewsRequestDTO reviewsRequestDTO, CustomPrincipal customPrincipal, List<MultipartFile> files, Long walkingPathsId) throws IOException {
 
-        Users users = usersRepository.findById(Math.toIntExact(usersDto.getId())).orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+        Users users = usersRepository.findById(Math.toIntExact(customPrincipal.userId())).orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
         WalkingPaths walkingPaths = walkingPathsRepository.findById(Math.toIntExact(walkingPathsId)).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));
 
         Reviews reviews = reviewsRepository.save(reviewsRequestDTO.toEntity(users, walkingPaths));

@@ -5,6 +5,8 @@ import com.team5.WalkingWithWorld.reviews.entity.Reviews;
 import com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,9 +19,11 @@ public class Photos {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @JsonBackReference
+    @NotFound(action = NotFoundAction.IGNORE)
     @ManyToOne
     private Reviews reviews;
     @JsonBackReference
+    @NotFound(action = NotFoundAction.IGNORE)
     @ManyToOne
     private WalkingPaths walkingPaths;
     private String imgName;

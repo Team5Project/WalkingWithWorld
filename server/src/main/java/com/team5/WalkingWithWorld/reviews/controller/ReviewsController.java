@@ -1,5 +1,6 @@
 package com.team5.WalkingWithWorld.reviews.controller;
 
+import com.team5.WalkingWithWorld.global.config.auth.CustomPrincipal;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
 import com.team5.WalkingWithWorld.reviews.dto.ReviewsRequestDTO;
 import com.team5.WalkingWithWorld.reviews.entity.Reviews;
@@ -10,6 +11,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -126,6 +128,7 @@ public class ReviewsController {
     @GetMapping("/{walking-paths-id}/reviews")
     public ResponseEntity getReviewsList(@PathVariable("walking-paths-id") Long id,
                                          @PageableDefault Pageable pageable){
+
         PageResponseDto pageResponseDto = reviewsService.readReviewsList(id, pageable);
 
         return new ResponseEntity(pageResponseDto, HttpStatus.OK);
@@ -133,12 +136,12 @@ public class ReviewsController {
 
     //리뷰 작성
     @PostMapping(value = "/{walking-paths-id}/reviews",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity createReviews(UsersDTO loginUser,
+    public ResponseEntity createReviews(@AuthenticationPrincipal CustomPrincipal customPrincipal,
                                         @PathVariable("walking-paths-id") Long id,
                                         @RequestPart ReviewsRequestDTO reviewsRequestDTO,
                                         @RequestPart List<MultipartFile> files) throws IOException {
 
-        Reviews reviews = reviewsService.createReviews(reviewsRequestDTO, loginUser,files , id);
+        Reviews reviews = reviewsService.createReviews(reviewsRequestDTO, customPrincipal,files , id);
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 
