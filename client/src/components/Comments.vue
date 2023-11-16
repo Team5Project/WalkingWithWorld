@@ -20,13 +20,9 @@
             <p> {{ item.content }} </p>
         </article>
     </div>
-    <form action="" method="post" id="comments_write" onsubmit="return false;">
-      <input type="text" id="comment_content" class="comments_input" name="content"
-              placeholder="댓글을 입력해주세요" required/>
-      <input type="button" class="btns btn_comments"
-               value="등록"/>
-      <input type="button" class="btns btn_comments"
-              value="등록">
+    <form action="" method="post" id="comments_write">
+      <input type="text" id="comment_content" class="comments_input" name="content" placeholder="댓글을 입력해주세요"  v-model="comment_content" required/>
+      <input type="button" class="btns btn_comments" value="등록" @click="writeComments()"/>
     </form>
   </div>
 </template>
@@ -36,19 +32,47 @@ import { ref, defineProps } from 'vue';
 import axios from 'axios';
 
 const props = defineProps(['id']);
-console.log(props)
 const getComments = ref([]);
-const fetchComments = async () =>{
-  const response = await axios.get(`http://localhost:8089/${props.id}/comments`);
-  return response.data
-}
-const setComments = async () => {
-  getComments.value = await fetchComments(); 
-}
-setComments().then(()=>{
-  console.log(getComments.value.data);
-})
 
+const commentsUrl = `http://localhost:8089/${props.id}/comments`
+
+function listRead(){
+  const fetchComments = async () =>{
+    const response = await axios.get(commentsUrl);
+    return response.data
+  }
+  const setComments = async () => {
+    getComments.value = await fetchComments(); 
+  }
+  setComments().then(()=>{
+    console.log(getComments.value.data);
+  })
+}
+
+listRead();
+
+const comment_content = ref('');
+
+const token = localStorage.getItem('token');
+
+let bearer;
+if(token != null){
+  bearer = token.split('"')[3]
+}
+console.log(bearer);
+
+async function writeComments(){
+  const postComments = {
+    "content": comment_content.value
+  }
+  await axios.post(commentsUrl, postComments, {
+    headers: {
+    'Content-Type': 'application/json',
+    'authorization': bearer,
+  },
+  });
+  listRead();
+}
 
 </script>
 <style scoped>
