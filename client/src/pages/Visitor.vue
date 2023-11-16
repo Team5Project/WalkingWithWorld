@@ -18,11 +18,9 @@
               <p class="vcontent">{{ vo.content }}</p>
             </div>
             <div class="visitor_footer">
-              <p
-                class="vcreatedAt"
-                th:text="${#temporals.format(vo.createdAt, 'yyyy년 MM월 dd일 HH:mm')}"
-              ></p>
-              <!--<p th:text="${#temporals.format(orderDto.orderDate, 'yy-mm-dd HH:mm')}"></p>-->
+              <p class="vcreatedAt">
+                {{ formatDate(vo.createdAt) }}
+              </p>
               <div class="visitor_mod">
                 <p
                   class="btns btn_vdelete"
@@ -36,8 +34,8 @@
         </article>
       </div>
       <div class="btn_write_wrapper">
-        <a href="@{/insertVisitorsForm}" class="visitor_write btns btn_vwrite"
-          >글쓰기</a
+        <router-link to="/visitor-modify" class="visitor_write btns btn_vwrite"
+          >글쓰기</router-link
         >
       </div>
     </section>
@@ -63,6 +61,18 @@ const setList = async () => {
 setList().then(() => {
   console.log(list.value);
 });
+const formatDate = (dateString) => {
+  const options = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  };
+  const formattedDate = new Date(dateString).toLocaleDateString(
+    "ko-KR",
+    options
+  );
+  return formattedDate;
+};
 </script>
 <style scoped>
 @import "@/assets/visitor.css";

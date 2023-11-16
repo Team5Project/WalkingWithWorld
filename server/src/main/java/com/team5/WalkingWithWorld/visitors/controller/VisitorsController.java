@@ -31,7 +31,7 @@ public class VisitorsController {
                 .body(visitorsRepository.findAll());
     }
 
-    @PostMapping("/visitors/delete")
+/*     @PostMapping("/visitors/delete")
     public ModelAndView delete(@RequestBody VisitorsDTO visitorsDTO) {
         ModelAndView mav = new ModelAndView();
         try {
@@ -45,7 +45,7 @@ public class VisitorsController {
             mav.setViewName("visitorView::#deleteList");
         }
         return mav;
-    }
+    } */
     @PostMapping("/{id}")
     @Transactional
     public ResponseEntity<Object> delete(@PathVariable int id, @RequestBody Visitors vo){
@@ -56,7 +56,7 @@ public class VisitorsController {
                 .body(visitorsRepository.findAll());
     }
 
-    @PostMapping("/visitors")
+    @PostMapping("/visitor")
     public ResponseEntity insert(@RequestBody Visitors vo){
         Visitors visitors;
        try{
@@ -68,8 +68,8 @@ public class VisitorsController {
         return new ResponseEntity(visitors, HttpStatus.OK);
     }
 
-    @RequestMapping(value="/insertVisitorsForm")
+/*     @RequestMapping(value="/insertVisitorsForm")
     public String showInsertForm(){
         return "insertVisitorsForm";
-    }
+    } */
 }
