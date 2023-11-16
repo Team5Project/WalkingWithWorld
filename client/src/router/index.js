@@ -13,7 +13,7 @@ const routes = [
   { path: '/walking-path/:id', component: WalkingPathDetail, props: true },
   { path: '/visitor', component: Visitor },
   { path: '/login', component: Login },
-  { path: '/signUp', component: SignUp },
+  { path: '/signup', component: SignUp },
 ];
 
 const router = createRouter({
