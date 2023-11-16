@@ -35,6 +35,12 @@ body>div {
     margin-bottom: 30px;
     outline: none;
 }
+.email {
+    flex-direction: column;
+    align-items: center;
+    align-items: flex-start;
+    position: relative;
+}
 
 .address {
     flex-direction: column;
@@ -42,7 +48,19 @@ body>div {
     align-items: flex-start;
     position: relative;
 }
-
+.btn-email {
+    position: absolute;
+    width: 100px;
+    height: 40px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 30px;
+    background: var(--97BF04, #97BF04);
+    margin: 0px;
+    right: 0px;
+    top: 10px;
+    font: inherit;
+}
 .btn-address {
     position: absolute;
     width: 100px;
