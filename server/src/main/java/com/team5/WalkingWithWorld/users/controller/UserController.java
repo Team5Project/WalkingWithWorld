@@ -83,7 +83,7 @@ public String signup(HttpServletRequest request,
     }
 */
     @PostMapping("/signup")
-    public ResponseEntity signIn(RequestUsersDTO usersDTO){
+    public ResponseEntity signIn(@RequestBody RequestUsersDTO usersDTO){
         userService.createUser(usersDTO);
         return new ResponseEntity<>(usersDTO, HttpStatus.CREATED);
     }
