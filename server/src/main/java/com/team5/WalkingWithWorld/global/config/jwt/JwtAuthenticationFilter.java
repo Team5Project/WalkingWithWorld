@@ -58,7 +58,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         System.out.println("Auth 성공");
         String jwtToken = JWT.create()
                 .withSubject(customUserDetails.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 36000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 600000))
                 .withClaim("id", customUserDetails.getUsers().getId())
                 .withClaim("email", customUserDetails.getUsers().getEmail())
                 .sign(Algorithm.HMAC512("오조의마법사"));

@@ -13,7 +13,7 @@
             </div>
                 <div class="up_del" style="visibility:visible;">
                     <span id="update" class="info_modi">수정</span>
-                    <span id="delete" class="info_del">삭제</span>
+                    <span id="delete" class="info_del" @click="deleteComments(item.id)">삭제</span>
                 </div>
           </div>
         </div>
@@ -21,7 +21,7 @@
         </article>
     </div>
     <form action="" method="post" id="comments_write">
-      <input type="text" id="comment_content" class="comments_input" name="content" placeholder="댓글을 입력해주세요"  v-model="comment_content" required/>
+      <input type="text" id="comment_content" class="comments_input" name="content" placeholder="댓글을 입력해주세요" v-model="comment_content" required/>
       <input type="button" class="btns btn_comments" value="등록" @click="writeComments()"/>
     </form>
   </div>
@@ -33,10 +33,12 @@ import axios from 'axios';
 
 const props = defineProps(['id']);
 const getComments = ref([]);
-
 const commentsUrl = `http://localhost:8089/${props.id}/comments`
+const comment_content = ref('');
+const token = localStorage.getItem('token');
+let bearer;
 
-function listRead(){
+function CommentsRead(){
   const fetchComments = async () =>{
     const response = await axios.get(commentsUrl);
     return response.data
@@ -49,29 +51,40 @@ function listRead(){
   })
 }
 
-listRead();
+CommentsRead();
 
-const comment_content = ref('');
-
-const token = localStorage.getItem('token');
-
-let bearer;
 if(token != null){
   bearer = token.split('"')[3]
 }
 console.log(bearer);
 
 async function writeComments(){
+  console.log(bearer);
   const postComments = {
     "content": comment_content.value
   }
   await axios.post(commentsUrl, postComments, {
     headers: {
-    'Content-Type': 'application/json',
-    'authorization': bearer,
+      'Content-Type': 'application/json',
+      'authorization': bearer,
   },
   });
-  listRead();
+  CommentsRead();
+}
+
+async function deleteComments(commentsId){
+  console.log(bearer);
+  const result = window.confirm("정말 삭제하겠습니까?");
+  if(result){
+    await axios.delete(`http://localhost:8089/comments/${commentsId}`,{
+      headers:{
+        'authorization': bearer,
+      }
+    });
+    CommentsRead();
+  }else{
+    return;
+  }
 }
 
 </script>
