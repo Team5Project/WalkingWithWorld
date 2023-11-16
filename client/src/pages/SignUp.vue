@@ -8,10 +8,13 @@
 				<form @submit.prevent="submitForm">
 					<input type="text" v-model="name" class="input" placeholder="이름" required><br>
 					<input type="password" v-model="password"  class="input" placeholder="패스워드" required><br>
-					<input type="email" v-model="email" class="input" placeholder="Email" required><br>
+					<section class="email">
+						<input type="email" v-model="email" class="input" placeholder="Email" required>
+						<button v-on:click.self.prevent="verifyEmail" value="중복 검사" class="btn-email">중복 검사</button>
+					</section>
 					<section class="address">
 						<input type="text" v-model="addr"  id="address" class="input" placeholder="주소">
-						<button v-on:click="searchAddr" value="주소 찾기" class="btn-address">주소 찾기</button>
+						<button v-on:click.self.prevent="searchAddr" value="주소 찾기" class="btn-address">주소 찾기</button>
 					</section>
 					<input type="submit" value="확인" class="btn-signup">
 					<button class="btn-ref"><a th:href="${referer}" style="text-decoration: none">뒤로가기</a></button>
@@ -69,7 +72,22 @@ function submitForm(){
 		alert("회원가입이 실패하였습니다. 입력을 다시 확인해주세요", err)
 		router.push('/signup')
 	})
-	
+};
+
+function verifyEmail(){
+	if(email.value === null || email.value ===""){
+		alert("이메일을 입력해주세요.")
+		return;
+	}
+	axios.get('http://localhost:8089/signup/email?email='+email.value)
+	.then((response)=>{
+		if(response.status == 200){
+			alert("사용하셔도 좋은 이메일 입니다.")
+		}
+	})
+	.catch((err)=>{
+		alert(err);
+	})
 }
 </script>
 <style scoped>

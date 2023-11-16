@@ -114,7 +114,7 @@ public String signup(HttpServletRequest request,
     }
 
     @GetMapping("/signup/email")
-    public ResponseEntity verifyEmail(String email){
+    public ResponseEntity verifyEmail(@RequestParam String email){
         userService.verifyExistEmail(email);
         return new ResponseEntity(HttpStatus.OK);
     }
