@@ -8,14 +8,14 @@
     <section>
       <div id="article">
         <article id="deleteList">
-          <div class="vwrapper" v-for="vo in list.data">
+          <div class="vwrapper" v-for="vo in list">
             <div class="visit_header">
               <span>작성자</span>
               <span>내용</span>
             </div>
             <div class="visitor_body">
-              <p class="vname">[[${vo.name}]]</p>
-              <p class="vcontent">[[${vo.content}]]</p>
+              <p class="vname">{{ vo.name }}</p>
+              <p class="vcontent">{{ vo.content }}</p>
             </div>
             <div class="visitor_footer">
               <p
@@ -54,14 +54,14 @@ import axios from "axios";
 
 const list = ref([]);
 const fetchList = async () => {
-  const response = await axios.get("http://localhost : 8089/visitors");
+  const response = await axios.get("http://localhost:8089/list");
   return response.data;
 };
 const setList = async () => {
   list.value = await fetchList();
 };
 setList().then(() => {
-  console.log(list.value.data);
+  console.log(list.value);
 });
 </script>
 <style scoped>
