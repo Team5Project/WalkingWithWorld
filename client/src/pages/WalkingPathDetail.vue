@@ -54,7 +54,7 @@
                 </div>
             </article>
 						<!-- 코멘트 컴포넌트 -->
-            <Comments/>
+            <Comments :id="WalkingPathId" />
 						<!-- 코멘트 컴포넌트 -->
         </div>
     </section>
@@ -66,7 +66,7 @@
         </div>
     </section>
 		<!-- 리뷰 컴포넌트 -->
-		<Review/>
+		<Review :id="WalkingPathId" />
 		<!-- 리뷰 컴포넌트 -->
 </main>
 <Footer/>
@@ -74,31 +74,28 @@
 
 <script setup>
 import { ref,computed } from 'vue';
+
 import axios from 'axios';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
-	import Comments from '@/components/Comments.vue'
-	import Review from '@/components/Review.vue'
+import Comments from '@/components/Comments.vue'
+import Review from '@/components/Review.vue'
 
 const props = defineProps(['id']);
 const WalkingPathId = computed(() => props.id);
 console.log(WalkingPathId.value);
-
 const getDetail = ref([]);
 
 const fetchDetail = async() => {
 	const response = await axios.get(`http://localhost:8089/walking-path/${WalkingPathId.value}`);
 	return response.data;
 }
-
 const setDetail = async () => {
 	getDetail.value = await fetchDetail();
 }
-
 setDetail().then(()=>{
 		console.log(getDetail.value);
 		})
-
 </script>
 <style scoped>
     @import "@/assets/walking_path_detail.css";

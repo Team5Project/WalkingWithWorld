@@ -125,8 +125,7 @@
 													<p class="rating">★★★★★</p>
 											</div>
 											<div class="path_auth">
-													<p th:text="${walkingPath.createdBy}">작성자</p>
-													<p th:text="${walkingPath.createdAt}">날짜</p>
+													<p th:text="${walkingPath.createdBy}">조회수 : {{ item.view }}</p>
 											</div>
 									</div>
 										<!--  -->

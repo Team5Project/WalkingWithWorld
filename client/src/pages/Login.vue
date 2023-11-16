@@ -47,6 +47,7 @@ function login() {
   })
   .then((response)=> {
     localStorage.setItem("token",JSON.stringify(response.headers));
+    alert(response.data)
     //TODO 네비게이트 설정
     router.push("/");
   })
