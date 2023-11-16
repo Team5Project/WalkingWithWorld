@@ -2,11 +2,13 @@ package com.team5.WalkingWithWorld.comments.controller;
 
 
 import com.team5.WalkingWithWorld.comments.dto.CommentsDTO;
+import com.team5.WalkingWithWorld.global.config.auth.CustomPrincipal;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
 import com.team5.WalkingWithWorld.comments.service.CommentService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -64,8 +66,9 @@ public class CommentsController {
 
     @PostMapping("/{walking-paths-id}/comments")
     public ResponseEntity writeCommentRest(@RequestBody CommentsDTO dto,
+                                           @AuthenticationPrincipal CustomPrincipal customPrincipal,
                                            @PathVariable("walking-paths-id") Long id){
-        return new ResponseEntity(commentService.createComment(dto, dto.getUsersId(), id), HttpStatus.OK);
+        return new ResponseEntity(commentService.createComment(dto, customPrincipal.userId(), id), HttpStatus.OK);
     }
     //TODO 댓글 수정 구현
 //    @RequestMapping(value = "/comments/updateComments", produces = "application/json; charset=utf-8")

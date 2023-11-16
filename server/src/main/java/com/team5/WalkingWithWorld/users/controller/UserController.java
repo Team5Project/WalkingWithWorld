@@ -83,7 +83,7 @@ public String signup(HttpServletRequest request,
     }
 */
     @PostMapping("/signup")
-    public ResponseEntity signIn(RequestUsersDTO usersDTO){
+    public ResponseEntity signIn(@RequestBody RequestUsersDTO usersDTO){
         userService.createUser(usersDTO);
         return new ResponseEntity<>(usersDTO, HttpStatus.CREATED);
     }
@@ -114,7 +114,7 @@ public String signup(HttpServletRequest request,
     }
 
     @GetMapping("/signup/email")
-    public ResponseEntity verifyEmail(String email){
+    public ResponseEntity verifyEmail(@RequestParam String email){
         userService.verifyExistEmail(email);
         return new ResponseEntity(HttpStatus.OK);
     }
