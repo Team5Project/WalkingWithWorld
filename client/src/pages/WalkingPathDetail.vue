@@ -150,12 +150,15 @@ const setDetail = async () => {
 	getDetail.value = await fetchDetail();
 }
 setDetail().then(()=>{
+    import('@/utils/image_list.js')
     console.log(getDetail.value);
     mapAry.value = getDetail.value.mapList;
     console.log(mapAry.value.length);
     if(mapAry.value.length > 0) {
         drawLine();
     }
+
+
 })
 </script>
 <style scoped>
