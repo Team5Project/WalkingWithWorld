@@ -108,9 +108,6 @@ const loadMap = function() {
         level: 6 // 지도의 확대 레벨
     };
     map.value = new window.kakao.maps.Map(mapContainer, mapOption); // 지도 생성
-    if(mapAry.value.length > 0) {
-        drawLine();
-    }
 };
 const drawLine = function () {
     // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
@@ -142,6 +139,9 @@ setDetail().then(()=>{
     console.log(getDetail.value);
     mapAry.value = getDetail.value.mapList;
     console.log(mapAry.value.length);
+    if(mapAry.value.length > 0) {
+        drawLine();
+    }
 })
 </script>
 <style scoped>
