@@ -5,41 +5,42 @@
     <section class="detail_header">
         <div class="detail_title">
             <h2>{{ getDetail.title }}</h2>
-            <th:block th:if="${session.auth !=null && session.auth.getName()==walkingPaths.getCreatedBy()}">
-                <div class="up_del">
-                    <a th:href="|/walking-path/modify/${walkingPaths.id}|"><span class="info_modi">수정</span></a>
-                    <span th:onclick="|deleteWalkingPath(${walkingPaths.id})|" class="info_del">삭제</span>
-                </div>
-            </th:block>
+            <div class="up_del">
+                <span class="info_modi">수정</span>
+                <span class="info_del">삭제</span>
+            </div>
         </div>
         <p>
             <span class="star_score">★★★★★</span>
             <i></i>리뷰 <b>8</b>
             <i>|</i> 댓글 <b>22</b>
-						<!-- <i>|</i> 거리 <b>{{ getDetail.distance >= 1000 ? (getDetail.distance/1000).toFixed(1) +'k' : getDetail.distance }}m</b>             
-						<i>|</i> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()/60}">3</b> 시간 <b></b> -->
+						<span class="detail_info_from_map" v-if="getDetail.mapList && getDetail.mapList.length > 0">
+							<i>|</i> 거리 <b>{{getDetail.mapList[0].distance >= 1000 ? 
+							(getDetail.mapList[0].distance/1000).toFixed(1) +' k' : 
+							getDetail.mapList[0].distance }}m</b>     
 
-        
+							<i>|</i> 시간 <b>{{ getDetail.mapList[0].time >= 60 ? 
+							(getDetail.mapList[0].time/60).toFixed(0)+' 시간'+ ' ' + (getDetail.mapList[0].time%60) + ' 분' : 
+							getDetail.mapList[0].time + ' 분' }}</b>
+						</span>
         </p>
-        <address th:text="${walkingPaths.addr}">주소 미입력</address>
+        <address>{{getDetail.addr}}</address>
     </section>
     <section class="infoAndcomments">
         <div class="iac_wrapper">
             <article class="detail_info">
-                <aside class="images">
+                <!-- <aside class="images">
                     <figure class="viewer">
-                        <img th:if="${walkingPaths.photosList}"
-                             th:src="@{|/ex_images/${walkingPaths.photosList[0].imgName}|}"/>
-                        <img th:unless="${walkingPaths.photosList}" th:src="@{/images/noimage.png}"/>
+                        <img v-if="getDetail.photosList && getDetail.photosList.length > 0" :src="'http://localhost:8089/ex_images/'+getDetail.photosList[0].imgName"/>
+                        <img v-if="getDetail.photosList && getDetail.photosList.length === 0" src="/images/noimage.png"/>
                     </figure>
 
                     <div class="img_list">
-                        <figcaption class="thumb" th:if="${walkingPaths.photosList}"
-                                    th:each=" wp : ${walkingPaths.photosList}">
-                            <img th:src="@{|/ex_images/${wp.imgName}|}">
+                        <figcaption class="thumb" v-if="getDetail.photosList && getDetail.photosList.length > 0" v-for="photo in getDetail.photosList">
+                            <img :src="'http://localhost:8089/ex_images/'+photo.imgName">
                         </figcaption>
                     </div>
-                </aside>
+                </aside> -->
                 <div class="review_write">
                     <p>
                         이 산책로는 어땠나요?<br>
@@ -47,9 +48,9 @@
                     </p>
                     <div>
 
-                        <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}" class="btns btn_write_big">
+                        <!-- <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}" class="btns btn_write_big">
                             리뷰작성
-                        </a>
+                        </a> -->
                     </div>
                 </div>
             </article>
@@ -60,7 +61,7 @@
     </section>
     <section class="map">
         <h3>상세 경로</h3>
-        <h4 id="exist">게시자가 상세 경로를 입력하지 않았습니다.</h4>
+        <h4 :class="mapAry && mapAry.length > 0 ? 'showMap' : 'hiddenMap'">게시자가 상세 경로를 입력하지 않았습니다.</h4>
         <div class="map_wrap">
             <div class="readMap" id="map"></div>
         </div>
@@ -73,7 +74,7 @@
 </template>
 
 <script setup>
-import { ref,computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 import axios from 'axios';
 import Header from '@/components/Header.vue';
@@ -83,9 +84,59 @@ import Review from '@/components/Review.vue'
 
 const props = defineProps(['id']);
 const WalkingPathId = computed(() => props.id);
-console.log(WalkingPathId.value);
 const getDetail = ref([]);
+const token = localStorage.getItem('token');
+let bearer;
 
+if(token != null){
+  bearer = token.split('"')[3]
+}
+console.log(bearer);
+
+// ----------------------------------
+// get
+// ----------------------------------
+
+onMounted(()=> {
+    if(window.kakao && window.kakao.maps) {
+        loadMap();
+    } else {
+        loadScript();
+    }
+});
+const loadScript = function() {
+    const script = document.createElement("script");
+    script.src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d753200077e444dd40df1e458903dfd3&autoload=false";
+    script.onload = () => window.kakao.maps.load(loadMap);
+    document.head.appendChild(script);
+};
+const loadMap = function() {
+    const mapContainer = document.getElementById('map'); // 지도를 표시할 div
+    const mapOption = {
+        center: new window.kakao.maps.LatLng(37.541, 126.986), // 지도의 중심좌표
+        level: 6 // 지도의 확대 레벨
+    };
+    map.value = new window.kakao.maps.Map(mapContainer, mapOption); // 지도 생성
+};
+const drawLine = function () {
+    // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
+    var linePath = [];
+    mapAry.value.forEach(function (map) {
+        linePath.push(new kakao.maps.LatLng(map.coordinateY, map.coordinateX));
+    });
+
+    // 지도에 표시할 선을 생성합니다
+    var polyline = new kakao.maps.Polyline({
+        path: linePath, // 선을 구성하는 좌표배열 입니다
+        strokeWeight: 5, // 선의 두께 입니다
+        strokeColor: 'red', // 선의 색깔입니다
+        strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+        strokeStyle: 'solid' // 선의 스타일입니다
+    });
+
+    // 지도에 선을 표시합니다
+    polyline.setMap(map.value);
+}
 const fetchDetail = async() => {
 	const response = await axios.get(`http://localhost:8089/walking-path/${WalkingPathId.value}`);
 	return response.data;
@@ -94,9 +145,18 @@ const setDetail = async () => {
 	getDetail.value = await fetchDetail();
 }
 setDetail().then(()=>{
-		console.log(getDetail.value);
-		})
+    console.log(getDetail.value);
+    mapAry.value = getDetail.value.mapList;
+    console.log(mapAry.value.length);
+    if(mapAry.value.length > 0) {
+        drawLine();
+    }
+})
 </script>
 <style scoped>
     @import "@/assets/walking_path_detail.css";
+    #map {
+    width: 100%;
+    height: 400px;
+    }
 </style>

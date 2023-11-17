@@ -76,21 +76,21 @@ public class WalkingPathsController {
     // 산책로 수정
     @PutMapping("/{id}")
     public ResponseEntity modifyWalkingPath(@RequestBody RequestWalkingPathDTO requestWalkingPathDTO,
-                                          @PathVariable(value = "id") int id) { // @Login UsersDTO usersDTO로 확인하기
+                                          @PathVariable(value = "id") int id) { // @AuthenticationPrincipal CustomPrincipal customPrincipal
         walkingPathService.modifyWalkingPath(requestWalkingPathDTO, id);
         return new ResponseEntity(id, HttpStatus.RESET_CONTENT);
     }
 
     // 산책로 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteWalkingPath(@PathVariable(value = "id") int id) {
+    public ResponseEntity deleteWalkingPath(@PathVariable(value = "id") int id) { // @AuthenticationPrincipal CustomPrincipal customPrincipal
         walkingPathService.deleteWalkingPath(id);
         return new ResponseEntity(HttpStatus.RESET_CONTENT);
     }
 
-    //Test queryDSL
-    @GetMapping("/test")
-    public PageResponseDto<WalkingPathsMapDTO> getQ(@RequestParam(required = false) String keyword) {
-        return walkingPathService.getQ(keyword);
-    }
+//    //Test queryDSL
+//    @GetMapping("/test")
+//    public PageResponseDto<WalkingPathsMapDTO> getQ(@RequestParam(required = false) String keyword) {
+//        return walkingPathService.getQ(keyword);
+//    }
 }
