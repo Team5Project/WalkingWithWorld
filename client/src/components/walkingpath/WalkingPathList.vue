@@ -61,10 +61,8 @@
                   
 									<!-- 입력 받을 슬라이더 -->
 
-									<input type="range" name="minTime" id="minTime" class="time_Slider" value="0" min="0" max="180" step="10"
-											 />
-									<input type="range" name="maxTime" id="maxTime" class="time_Slider" value="180" min="0" max="180" step="10"
-											onchange="set()" /> 
+									<input type="range" name="minTime" id="minTime" class="time_Slider" value="0" min="0" max="180" step="10" @change="set()" />
+									<input type="range" name="maxTime" id="maxTime" class="time_Slider" value="180" min="0" max="180" step="10" @change="set()" /> 
 									<!-- 양방향 슬라이더 보여주기 -->
 									<div class="slider">
 											<div class="track"></div>

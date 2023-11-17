@@ -1,7 +1,7 @@
 <template>  
     <div id="write-form">
         <h1>산책로 등록</h1>
-        <form method="post" action="/walking-path" enctype="multipart/form-data">
+        <form method="post" action="" enctype="multipart/form-data">
             <div id="input-items">
                 <div id="left-form">
                     <label>산책로 이름<br><input type="text" class="text-box" name="title" required></label><br>
@@ -11,11 +11,12 @@
                     </label><br>
                     <span>사진(5개 제한)</span><br>
                     <section class="img-area">
-                        <div class="filebox">
+                        <input type="file" @change="uploadFile" ref="imgUpload" multiple />
+                        <!-- <div class="filebox">
                             <label for="file" class="fileImg">+</label>
-                            <input id="file" type="file" name="files" onchange="setThumbnail(event)" multiple />
+                            <v-file-input id="file" type="file" name="files" multiple />
                         </div>
-                        <div id="image_container" class="image_container"></div>
+                        <div id="image_container" class="image_container"></div> -->
                     </section><br>
                     <label>
                         <input type="hidden" name="course" id="course">
@@ -34,7 +35,7 @@
                 <div id="clear"></div>
             </div>
             <div id="buttons">
-                <input type="submit" class="submit-button" value="확인">
+                <input type="submit" class="submit-button" value="확인" @click="writeWalkingPaths">
                 <a th:href="${referer}">&nbsp; 뒤로가기 &nbsp;</a>
             </div>
         </form>
@@ -44,6 +45,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import searchAddr from '@/utils/addr.js'
+import axios from 'axios';
+import { getBaseTransformPreset } from '@vue/compiler-core';
 const map = ref(null);
 const coordsX = ref(null);
 const coordsY = ref(null);
@@ -286,6 +289,29 @@ const getTimeHTML = function(distance) {
     console.log(totalTime.value);
 
     return content;
+}
+// walking-path 생성
+const files = ref(null);
+async function writeWalkingPaths() {
+    const bearer = localStorage.getItem('token').split('"')[3];
+    console.log(bearer);
+    const data = {title:"제목", addr:"주소"};
+    const formData = new FormData();
+    formData.append(
+        'requestDTO',
+        new Blob([JSON.stringify(data)], {type:'application/json'})
+    );
+    formData.append('files', files.value);
+    
+    await axios.post('http://localhost:8089/walking-path', formData, {
+        headers: {
+            'authorization' : bearer,
+        },
+    });
+}
+const uploadFile = function(e) {
+    files.value = e.target.files;
+    console.log(files.value);
 }
 </script>
 <style scoped>
