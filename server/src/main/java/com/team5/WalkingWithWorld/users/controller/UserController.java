@@ -1,5 +1,6 @@
 package com.team5.WalkingWithWorld.users.controller;
 
+import com.team5.WalkingWithWorld.global.config.auth.CustomPrincipal;
 import com.team5.WalkingWithWorld.users.dto.LoginDto;
 import com.team5.WalkingWithWorld.users.dto.RequestUsersDTO;
 import com.team5.WalkingWithWorld.users.dto.UsersDTO;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -120,9 +122,9 @@ public String signup(HttpServletRequest request,
     }
 
     // 유저 단건 조회 프로필 조회용
-    @GetMapping("/users/{users-id}")
-    public ResponseEntity findAll(@PathVariable("users-id") int id) {
-        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
+    @GetMapping("/usersinfo")
+    public ResponseEntity findAll(@AuthenticationPrincipal CustomPrincipal customPrincipal) {
+        return new ResponseEntity<>(userService.getUserById(customPrincipal.userId()), HttpStatus.OK);
     }
 
 }

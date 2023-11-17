@@ -68,7 +68,7 @@
             </div>
         </section>
         <!-- 리뷰 컴포넌트 -->
-        <Review />
+        <Review :walkingPathdId="WalkingPathId"/>
         <!-- 리뷰 컴포넌트 -->
     </main>
     <Footer />
@@ -83,7 +83,6 @@ import Footer from '@/components/Footer.vue';
 import Comments from '@/components/Comments.vue';
 import Review from '@/components/Review.vue';
 import router from '@/router/index.js'
-import ReviewModify from './ReviewModify.vue';
 
 
 

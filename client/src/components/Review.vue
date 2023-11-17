@@ -1,5 +1,5 @@
 <template>
-  <section class="review" v-if="getReviewList.length == 1">
+  <section class="review" v-if="getReviewList.length == 0">
     <h3>리뷰</h3>
     <div class="review_container">
       <i class="rv-chav left fa-solid fa-circle-chevron-left"></i>
@@ -7,9 +7,9 @@
       <div class="review_none">
         <p>아직 리뷰가 작성되지 않았습니다.</p>
         <p>첫 리뷰를 작성해 주세요!</p>
-        <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}" class="btns btn_write_big">
-          리뷰작성
-        </a>
+        <button @click="clickParam" class="btns btn_write_big">
+          리뷰작성 
+        </button>
       </div>
     </div>
   </section>
@@ -19,7 +19,7 @@
       <section v-if="review.photosList.length > 0">
         <aside class="images">
           <figure class="viewer">
-            <img th:src="@{|/ex_images/${review.photosList[0].imgName}|}" src="/images/sample/1.jpg" alt="">
+            <img :src="'/ex_images/'+ review.photosList[0].imgName" src="/images/sample/1.jpg" alt="">
           </figure>
           <div class="img_list">
             <figcaption class="thumb" th:each="photo : ${review.photosList}">
@@ -31,7 +31,7 @@
       <section v-else="review.photosList.length>0">
         <aside class="images">
           <figure class="viewer">
-            <img th:src="@{/images/noimage.png}" src="/images/sample/1.jpg" alt="">
+            <img :src="'/images/noimage.png'" src="/images/sample/1.jpg" alt="">
           </figure>
         </aside>
       </section>
@@ -61,17 +61,22 @@
 </template>
 <script setup>
 import axios from 'axios';
-import { ref, defineProps } from 'vue';
+import { ref, defineProps} from 'vue';
+import router from '@/router/index.js'
 
 
-const p = defineProps({
-  walkingPathdId: Number
-})
+const props = defineProps(['id','walkingPathdId']);
 
+const clickParam = () =>{
+    router.push({
+        path : "/"+props.walkingPathdId+"/reviews",
+    })
+}
 
 const reviewList = ref([]);
+
 const getReviewList = async () => {
-  await axios.get('http://localhost:8089/' + 1 + '/reviews')
+  await axios.get(`http://localhost:8089/${props.walkingPathdId}/reviews`)
     .then((response) => {
       return response.data
     })

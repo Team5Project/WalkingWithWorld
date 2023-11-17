@@ -1,11 +1,13 @@
 <template>
   <header class="header_wrap">
-    <router-link to="/"><h1 class="logo"></h1></router-link>
+    <router-link to="/">
+      <h1 class="logo"></h1>
+    </router-link>
     <nav>
       <router-link class="header_link" to="/walking-path">산책로</router-link>
       <router-link class="header_link" to="/visitor">자유게시판</router-link>
     </nav>
-  
+
     <!-- <div class="member">
       <span class="profile_image">
         
@@ -16,36 +18,65 @@
     </div> -->
     <div class="header_sign" v-if="auth">
       <router-link class="btns btn_signup" to="/signup"> <!--마이페이지 구현 하면 마이페이지로-->
-          <i class="sign_icon fa-solid fa-user-plus"></i>
-          유저네임 바인딩
-        </router-link>
-        <router-link  class="btns btn_signin" to="/logout">
-          <i class="sign_icon fa-solid fa-key"></i>
-          Logout
-        </router-link>
+        <i class="sign_icon fa-solid fa-user-plus"></i>
+        유저네임 바인딩
+      </router-link>
+      <router-link class="btns btn_signin" to="/logout">
+        <i class="sign_icon fa-solid fa-key"></i>
+        Logout
+      </router-link>
     </div>
     <div class="header_sign" v-else="auth">
-        <router-link  class="btns btn_signin" to="/login">
-          <i class="sign_icon fa-solid fa-key"></i>
-          Login
-        </router-link>
-        <router-link class="btns btn_signup" to="/signup">
-          <i class="sign_icon fa-solid fa-user-plus"></i>
-          Sign up for free
-        </router-link>
+      <router-link class="btns btn_signin" to="/login">
+        <i class="sign_icon fa-solid fa-key"></i>
+        Login
+      </router-link>
+      <router-link class="btns btn_signup" to="/signup">
+        <i class="sign_icon fa-solid fa-user-plus"></i>
+        Sign up for free
+      </router-link>
     </div>
   </header>
 </template>
 
 <script>
+import axios from 'axios';
 
-  export default {
-    name: 'Header',
-    computed : {
-      auth(){
-        return localStorage.getItem("token")
-      }
+ 
+
+export default {
+  name: 'Header',
+  data(){
+    return{
+      result : String
     }
-  }
+  },
+  computed: {
+    auth() {
+      return localStorage.getItem("token")
+    }
+  },
+  // methods: {
+  //   getUserInfo() {
+  //     const config = {
+  //       headers: {
+  //         Authorizaiton: JSON.parse(localStorage.getItem('token')).authorization,
+  //       },
+  //     };
+  //     axios.get('http://localhost:8089/usersinfo', config)
+  //       .then((response) => {
+  //         return response.data
+  //       })
+  //       .then((data) => {
+  //         console.log(data);
+  //       });
+  //   }
+  // },
+  // mounted() {
+  //    this.getUserInfo();
+//}
+}
+
+
 
 </script>
