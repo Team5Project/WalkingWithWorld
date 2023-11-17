@@ -29,7 +29,7 @@
     <section class="infoAndcomments">
         <div class="iac_wrapper">
             <article class="detail_info">
-                <!-- <aside class="images">
+                <aside class="images">
                     <figure class="viewer">
                         <img v-if="getDetail.photosList && getDetail.photosList.length > 0" :src="'http://localhost:8089/ex_images/'+getDetail.photosList[0].imgName"/>
                         <img v-if="getDetail.photosList && getDetail.photosList.length === 0" src="/images/noimage.png"/>
@@ -40,7 +40,7 @@
                             <img :src="'http://localhost:8089/ex_images/'+photo.imgName">
                         </figcaption>
                     </div>
-                </aside> -->
+                </aside>
                 <div class="review_write">
                     <p>
                         이 산책로는 어땠나요?<br>
@@ -85,6 +85,8 @@ import Review from '@/components/Review.vue'
 const props = defineProps(['id']);
 const WalkingPathId = computed(() => props.id);
 const getDetail = ref([]);
+const map = ref(null);
+const mapAry = ref();
 const token = localStorage.getItem('token');
 let bearer;
 
@@ -93,9 +95,7 @@ if(token != null){
 }
 console.log(bearer);
 
-// ----------------------------------
-// get
-// ----------------------------------
+
 
 onMounted(()=> {
     if(window.kakao && window.kakao.maps) {
@@ -137,6 +137,11 @@ const drawLine = function () {
     // 지도에 선을 표시합니다
     polyline.setMap(map.value);
 }
+
+// ----------------------------------
+// get
+// ----------------------------------
+
 const fetchDetail = async() => {
 	const response = await axios.get(`http://localhost:8089/walking-path/${WalkingPathId.value}`);
 	return response.data;
