@@ -6,7 +6,7 @@
                 <div id="left-form">
                     <label>산책로 이름<br><input type="text" class="text-box" name="title" required></label><br>
                     <label>주소
-                        <input type="button" class="button" onclick="searchAddr()" value="주소 찾기"><br>
+                        <input type="button" class="button" @click.self.prevent="searchAddr" value="주소 찾기"><br>
                         <input type="text" name="addr" class="text-box" id="address" required><br>
                     </label><br>
                     <span>사진(5개 제한)</span><br>
@@ -43,6 +43,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
+import searchAddr from '@/utils/addr.js'
 const map = ref(null);
 const coordsX = ref(null);
 const coordsY = ref(null);
@@ -170,8 +171,6 @@ const deleteClickLine = function() {
     if (clickLine) {
         clickLine.setMap(null);
         clickLine = null;
-        resultLat = [];
-
     }
 }
 // 마우스 드래그로 그려지고 있는 선의 총거리 정보를 표시하기
