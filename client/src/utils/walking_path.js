@@ -5,8 +5,13 @@
 // 양방향 슬라이더
 const minTime = document.getElementById("minTime");
 const maxTime = document.getElementById("maxTime");
+const timeSlider = document.querySelectorAll(".time_slider");
 
-set();
+// for(ts of timeSlider){
+//     ts.addEventListener("change",()=>{
+        set();
+//     })
+// }
 
 function set() {
     let minTimeValue = minTime.value;
