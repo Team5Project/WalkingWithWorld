@@ -44,5 +44,5 @@ public interface WalkingPathsService {
     @Transactional
     public void updateView(Long walkingPathsId);
 
-    PageResponseDto getQ(String keyword);
+//    PageResponseDto getQ(String keyword);
 }

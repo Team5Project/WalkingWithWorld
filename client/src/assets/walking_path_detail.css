@@ -114,11 +114,12 @@ section:nth-child(4) {
     border-bottom: 1px solid #9D9393;
 }
 
-h4 {
+.showMap {
     visibility: hidden;
+}
+.hiddenMap {
     color: red;
 }
-
 /* ----- 리뷰 관련 스타일 ----- */
 
 .review_container {
