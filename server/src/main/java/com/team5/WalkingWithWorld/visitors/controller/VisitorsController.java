@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 public class VisitorsController {
     @Autowired
     VisitorsMapper dao;
@@ -46,7 +47,7 @@ public class VisitorsController {
         }
         return mav;
     } */
-    @PostMapping("/{id}")
+    @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<Object> delete(@PathVariable int id, @RequestBody Visitors vo){
         visitorsRepository.findAll();

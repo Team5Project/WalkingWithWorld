@@ -8,11 +8,11 @@
         </aside>
         <article>
           <div class="insert_visitor">
-            <form @submit.prevent="submitForm" method="post" action="/visitor">
+            <form method="post" action="/visitor">
               <p class="inline_insert">
                 <label for="visitor_name_input">작성자명</label>
                 <input
-                  v-model="name"
+                  v-model="vname"
                   type="text"
                   name="name"
                   placeholder="작성자명"
@@ -24,7 +24,7 @@
               <p class="inline_insert">
                 <label for="visitor_password_input">비밀번호</label>
                 <input
-                  v-model="password"
+                  v-model="vpassword"
                   type="password"
                   name="password"
                   placeholder="비밀번호"
@@ -36,18 +36,24 @@
               <p class="inline_textarea">
                 <label for="visitor_content_input">내용</label>
                 <textarea
-                  v-model="content"
+                  v-model="vcontent"
                   name="content"
                   id="visitor_content_input"
                   required
                 ></textarea>
               </p>
               <div class="visitor_mod">
-                <router-link to="/visitor" class="btns btn_vback"
-                  >이전화면</router-link
-                >
+                <button class="btns btn_vback" @click="modeToList">
+                  이전화면
+                </button>
+
                 <input type="reset" value="초기화" class="btns btn_vreset" />
-                <input type="submit" value="등록" class="btns btn_vsubmit" />
+                <input
+                  type="button"
+                  value="등록"
+                  class="btns btn_vsubmit"
+                  @click="submitForm()"
+                />
               </div>
             </form>
           </div>
@@ -57,36 +63,38 @@
   </main>
 </template>
 
-<script>
+<script setup>
+import { defineEmits, ref } from "vue";
 import axios from "axios";
-export default {
-  data: function () {
-    return {
-      name: "",
-      password: "",
-      content: "",
-    };
-  },
-  methods: {
-    submitForm: function () {
-      console.log(this.name, this.content, this.password);
-      var url = "http://localhost:8089/visitor";
-      var data = {
-        name: this.name,
-        password: this.password,
-        content: this.content,
-      };
-      axios
-        .post(url, data)
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-  },
+
+const emit = defineEmits(["pageMode"]);
+const modeToList = () => {
+  emit("pageMode", "list");
 };
+
+const url = "http://localhost:8089/visitor";
+const vname = ref("");
+const vpassword = ref("");
+const vcontent = ref("");
+
+async function submitForm() {
+  const data = {};
+  (data.name = vname.value),
+    (data.password = vpassword.value),
+    (data.content = vcontent.value),
+    await axios
+      .post(url, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+}
 </script>
 
 <style scoped>
