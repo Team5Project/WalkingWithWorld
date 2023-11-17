@@ -12,11 +12,13 @@ import com.team5.WalkingWithWorld.comments.repository.CommentsRepository;
 import com.team5.WalkingWithWorld.users.repository.UsersRepository;
 import com.team5.WalkingWithWorld.walkingPaths.repository.WalkingPathsRepository;
 import com.team5.WalkingWithWorld.comments.service.CommentService;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,7 +60,15 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(Long id){
-        commentsRepository.deleteById(Math.toIntExact(id));
+    @Transactional
+    public void deleteComment(Long commentId,String email){
+        // 이메일이 있는 사용자 인지 검증하고
+        // 삭제 하자 그리고 그 이메일과 댓글 작성자의 이메일이 같은지 확인해서 삭제하자
+        Users users = usersRepository.findUsersByEmail(email).orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+        Comments comment = commentsRepository.findById(commentId.intValue()).orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENTS_NOT_FOUND));
+        if(!Objects.equals(email, comment.getUsers().getEmail())){
+            throw new RuntimeException("사용자가 다릅니다 확인해주세요");
+        }
+        commentsRepository.deleteByIdAndUsers(commentId,users);
     }
 }
