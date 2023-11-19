@@ -30,31 +30,34 @@ public class WalkingPathsRepositoryCustomImpl extends QuerydslRepositorySupport 
                 from(map)
                         .select(walkingPath)
                         .innerJoin(map.walkingPaths, walkingPath)
-                        .where(eqTitle(keyword),(eqAddr(location)));
-
-//                                .and(map.time.between(minTime,maxTime).and(map.distance.between(minDistance,maxDistance)))
-//                        );
-//                        .groupBy(walkingPath);
-//                        .orderBy(walkingPath.createdAt.desc())
+                        .where(eqTitle(keyword),
+                                eqAddr(location),
+                                (map.time.between(minTime,maxTime).and(map.distance.between(minDistance,maxDistance)))
+                        )
+                        .groupBy(walkingPath)
+                        .orderBy(walkingPath.createdAt.desc());
 
 
         List<WalkingPaths> walkingPaths = Objects.requireNonNull(getQuerydsl()).applyPagination(pageable, query).fetch();
         Long count =
-                from(walkingPath)
+                from(map)
                         .select(walkingPath.count())
-//                        .where(eqTitle(keyword),eqAddr(location)
-//                                .and(map.time.between(minTime,maxTime).or(map.distance.between(minDistance,maxDistance)))
-//                        )
+                        .innerJoin(map.walkingPaths, walkingPath)
+                        .where(eqTitle(keyword),
+                                eqAddr(location),
+                                (map.time.between(minTime,maxTime).and(map.distance.between(minDistance,maxDistance)))
+                        )
+//                        .distinct()
                         .fetchOne();
         return new PageImpl<>(walkingPaths, pageable, count);
     }
 
 
     private BooleanExpression eqTitle(String keyword){
-        return keyword != null ? walkingPaths.title.contains(keyword) : null;
+        return keyword == null ? null : walkingPaths.title.contains(keyword);
     }
 
     private BooleanExpression eqAddr(List<String> location){
-        return location != null ? walkingPaths.addr.in(location) : null;
+        return location == null ? null : walkingPaths.addr.in(location);
     }
 }

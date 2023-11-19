@@ -17,11 +17,11 @@ public class Comments extends AuditingFields {
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "users_id")
+//    @JoinColumn(name = "users_id")
     private Users users;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "walking_paths_id")
+//    @JoinColumn(name = "walking_paths_id")
     private WalkingPaths walkingPaths;
 
     private String content;

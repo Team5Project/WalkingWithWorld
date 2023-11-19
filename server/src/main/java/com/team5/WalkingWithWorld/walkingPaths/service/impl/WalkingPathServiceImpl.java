@@ -31,10 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -81,21 +78,18 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
 
     // 페이지 - 산책로 조건 필터
     @Override
-    public PageResponseDto<ResponseWalkingPathDTO> searchConditionPage(String keyword, String filters, Pageable pageable){
-        Page<WalkingPaths> walkingPaths = walkingPathsRepository.findByTitleContainingOrderByCreatedAtDesc(keyword, pageable);
+    public PageResponseDto<ResponseWalkingPathDTO> searchConditionPage(String keyword, String filters, Pageable pageable) {
+        List<String> locations;
+        HashMap<String, Integer> filtersMap;
+        keyword = keyword.isEmpty()?null:keyword;
         try {
             String[] filterAry = divideFilters(filters);
-            HashMap<String, String[]> locationMap = readLocation(filterAry[0]);
-            HashMap<String, Integer> filtersMap = readFilters(filterAry[1]);
-
-            if(locationMap.get("location") != null)
-                for(String s : locationMap.get("location")){
-                    System.out.println(s);
-                }
-            System.out.println(filtersMap);
+            locations = readLocation(filterAry[0]);
+            filtersMap = readFilters(filterAry[1]);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
+        Page<WalkingPaths> walkingPaths = walkingPathsRepository.filterWalkingPaths(keyword, locations, filtersMap.get("minTime"), filtersMap.get("maxTime"), String.valueOf(filtersMap.get("minDistance")), String.valueOf(filtersMap.get("maxDistance")), pageable);
         List<ResponseWalkingPathDTO> responseWalkingPathDTOList = walkingPaths.stream().map(walkingPath -> ResponseWalkingPathDTO.from(walkingPath, mapRepository.findTop1ByWalkingPaths(walkingPath), photosRepository.findTop1ByWalkingPaths(walkingPath))).toList();
         List<Integer> barNumber = pageService.getPaginationBarNumbers(pageable.getPageNumber(), walkingPaths.getTotalPages());
         return new PageResponseDto<>(responseWalkingPathDTOList, walkingPaths, barNumber);
@@ -109,20 +103,20 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
         filterAry[1] = filterString.substring(idx + 1);
         return  filterAry;
     }
-    public HashMap<String, String[]> readLocation(String location) {
+    public List<String> readLocation(String location) {
         // location[]
         String[] readDetail = location.split(":");
-        HashMap<String, String[]> locationMap = new HashMap<>();
+        List<String> locations;
         if(readDetail.length < 2)
-            locationMap.put(readDetail[0], null);
+            locations = null;
         else if(readDetail[1].contains(",")) {
-            String[] locations = readDetail[1].split(",");
-            locationMap.put(readDetail[0], locations);
+            String[] locationAry = readDetail[1].split(",");
+            locations = Arrays.stream(locationAry).toList();
         }
         else
-            locationMap.put(readDetail[0], new String[] {readDetail[1]});
+            locations = new ArrayList<>() {{add(readDetail[1]);}};
 
-        return  locationMap;
+        return  locations;
     }
     public HashMap<String, Integer> readFilters(String filters) {
         // (minTime, maxTime, minDistance, maxDistance)
@@ -130,8 +124,7 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
         HashMap<String, Integer> filterMap = new HashMap<>();
         for(String detail : filterAry) {
             String[] readDetail = detail.split(":");
-            if(readDetail.length > 1)
-                filterMap.put(readDetail[0], Integer.valueOf(readDetail[1]));
+            filterMap.put(readDetail[0], Integer.valueOf(readDetail[1]));
         }
         return filterMap;
     }
@@ -205,24 +198,24 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
         photosRepository.deleteAllByWalkingPaths(walkingPaths);
         walkingPathsRepository.deleteById(id);
     }
-    @Override
-    public PageResponseDto getQ(String keyword){
-        List<String> location = new ArrayList<>();
-        location.add("주소");
-        System.out.println("위치 리스트 : " + location);
-        int minTime = 0;
-        int maxTime = 1000;
-        String minDistance = "0";
-        String maxDistance = "1000";
-        Pageable pageable = PageRequest.of(0, 1);
-        Page<WalkingPaths> walkingPathsMapDTOPage = walkingPathsRepository.filterWalkingPaths(keyword,null,minTime,maxTime,minDistance,maxDistance,pageable);
-        List<WalkingPaths> list = walkingPathsMapDTOPage.getContent();
-        List<WalkingPathsMapDTO> walkingPathsMapDTOList = new ArrayList<>();
-        for(WalkingPaths w : list){
-            walkingPathsMapDTOList.add(WalkingPathsMapDTO.from(w, photosRepository.findByWalkingPaths(w),mapRepository.findByWalkingPaths(w)));
-        }
-        List<Integer> barNumber = pageService.getPaginationBarNumbers(walkingPathsMapDTOPage.getNumber(), walkingPathsMapDTOPage.getTotalPages());
-
-        return new PageResponseDto(list, walkingPathsMapDTOPage, barNumber);
-    }
+//    @Override
+//    public PageResponseDto getQ(String keyword){
+//        List<String> location = new ArrayList<>();
+//        location.add("주소");
+//        System.out.println("위치 리스트 : " + location);
+//        int minTime = 0;
+//        int maxTime = 1000;
+//        String minDistance = "0";
+//        String maxDistance = "1000";
+//        Pageable pageable = PageRequest.of(0, 1);
+//        Page<WalkingPaths> walkingPathsMapDTOPage = walkingPathsRepository.filterWalkingPaths(keyword,null,minTime,maxTime,minDistance,maxDistance,pageable);
+//        List<WalkingPaths> list = walkingPathsMapDTOPage.getContent();
+//        List<WalkingPathsMapDTO> walkingPathsMapDTOList = new ArrayList<>();
+//        for(WalkingPaths w : list){
+//            walkingPathsMapDTOList.add(WalkingPathsMapDTO.from(w, photosRepository.findByWalkingPaths(w),mapRepository.findByWalkingPaths(w)));
+//        }
+//        List<Integer> barNumber = pageService.getPaginationBarNumbers(walkingPathsMapDTOPage.getNumber(), walkingPathsMapDTOPage.getTotalPages());
+//
+//        return new PageResponseDto(list, walkingPathsMapDTOPage, barNumber);
+//    }
 }

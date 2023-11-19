@@ -5,6 +5,13 @@
 // 양방향 슬라이더
 const minTime = document.getElementById("minTime");
 const maxTime = document.getElementById("maxTime");
+const timeSlide = document.querySelectorAll(".cat_time_range>input");
+
+for(let ts of timeSlide){
+    ts.addEventListener("change",()=>{
+        set();
+    })
+}
 
 set();
 
@@ -40,6 +47,13 @@ maxTime.addEventListener("input", setMax);
 // 거리 슬라이더
 const minDistance = document.getElementById("minDistance");
 const maxDistance = document.getElementById("maxDistance");
+const distSlide = document.querySelectorAll(".cat_distance_range>input");
+
+for(let ds of distSlide){
+    ds.addEventListener("change",()=>{
+    setDistance();
+    })
+}
 
 setDistance();
 

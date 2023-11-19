@@ -61,10 +61,8 @@
                   
 									<!-- 입력 받을 슬라이더 -->
 
-									<input type="range" name="minTime" id="minTime" value="0" min="0" max="180" step="10"
-											onchange="set()" />
-									<input type="range" name="maxTime" id="maxTime" value="180" min="0" max="180" step="10"
-											onchange="set()" /> 
+									<input type="range" name="minTime" id="minTime" value="0" min="0" max="180" step="10" />
+									<input type="range" name="maxTime" id="maxTime" value="180" min="0" max="180" step="10" /> 
 									<!-- 양방향 슬라이더 보여주기 -->
 									<div class="slider">
 											<div class="track"></div>
@@ -81,10 +79,8 @@
 									<p id="show-distance"></p> 
                
 									<!-- 입력 받을 슬라이더 -->
-									<input type="range" name="minDistance" id="minDistance" value="0" min="0" max="20000" step="100"
-											onchange="setDistance()" />
-									<input type="range" name="maxDistance" id="maxDistance" value="20000" min="0" max="20000"
-											step="100" onchange="setDistance()" />
+									<input type="range" name="minDistance" id="minDistance" class="dist_Slider" value="0" min="0" max="20000" step="100" />
+									<input type="range" name="maxDistance" id="maxDistance" class="dist_Slider" value="20000" min="0" max="20000" step="100" />
 									<!-- 양방향 슬라이더 보여주기 -->
 									<div class="distance-slider">
 											<div class="track"></div>
@@ -95,8 +91,9 @@
 							</div>
 					</div>
 					<hr class="cat_hr">
-					<input class="btns btn_cat" input type="button" th:data-word="${keyword}"
-							th:onclick="searchWalkingPath(this.getAttribute('data-word'))" value="검색하기">
+					<!-- <input class="btns btn_cat" type="button" th:data-word="${keyword}"
+							th:onclick="searchWalkingPath(this.getAttribute('data-word'))" value="검색하기"> -->
+					<input class="btns btn_cat" type="button" value="검색하기" @click="getFilteredList()">
 			</aside>
 
 			<article id="walking-path">
@@ -149,7 +146,7 @@
 
 </template>
 <script setup>
-  import { defineEmits, ref } from 'vue';
+  import { defineEmits, ref, onMounted } from 'vue';
 	import axios from 'axios';
 
   const emit = defineEmits(['pageMode']);
@@ -157,17 +154,44 @@
     emit('pageMode', 'modify');
   }
 
+	// --------------------
+	// 리스트 불러오기 - 전체
+	// --------------------
+
 	const getList = ref([]);
 	const fetchList = async () =>{
 		const response = await axios.get('http://localhost:8089/walking-path')
 		return response.data;
 	}
+
+	// --------------------
+	// 리스트 불러오기 - 필터링
+	// --------------------
+	// let FilterKeyword = "";
+	// let locationStr = "";
+	// const urlStr = ref(`http://localhost:8089/walking-path/filter?keyword=${FilterKeyword}&filters=location%3A${locationStr}%7C${minTime}%3A5%7C${maxTime}%3A30%7C${minDistance}%3A1%7C${maxDistance}%3A10`)
+	// function getFilteredList(){
+	// 	const fetchListFilter = async () =>{
+	// 		const response = await axios.get(urlStr)
+	// 		return response.data;
+	// 	}
+	// 	const setListFilter = async() => {
+	// 		getList.value = await fetchListFilter();
+	// 	}
+	// }
+
+
+
 	const setList = async() => {
 		getList.value = await fetchList();
 	}
 	setList().then(()=>{
 		console.log(getList.value.data);
 		})
+	onMounted(() => {
+		import('@/utils/walking_path.js')
+
+	})	
 </script>
 <style scoped>
     @import "@/assets/walking_path.css";
