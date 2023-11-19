@@ -83,10 +83,9 @@ async function submitForm() {
     (data.password = vpassword.value),
     (data.content = vcontent.value),
     await axios
-      .post(url, data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
+      .post(url, {
+        headers: { "Content-Type": "application/json" },
+        data,
       })
       .then(function (response) {
         console.log(response);

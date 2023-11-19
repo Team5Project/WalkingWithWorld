@@ -37,4 +37,6 @@ public class Visitors {
     @LastModifiedDate
     @Column(nullable = true)
     private LocalDateTime modifiedAt; //수정일시
+
+
 }

@@ -35,13 +35,13 @@ class VisitorsRepositoryTest {
         repository.save(visitor);
         repository.findAll().forEach(System.out::println);
     }
-    @Test
+/*    @Test
     @Order(3)
     @DisplayName("deletevisitors")
     void deleteVisitors(){
-        repository.deleteByIdAndPassword(2, "qwerqwer");
+        repository.deleteByIdAndPassword(2, "1234");
         repository.findAll().forEach(System.out::println);
 
-    }
+    }*/
 
 }

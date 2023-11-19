@@ -15,7 +15,7 @@ public interface VisitorsMapper {
     @Insert("insert into visitors(name, content, created_at, password) values (#{name}, #{content}, now(), #{password})")
     public boolean insertVisitors(VisitorsDTO dto);
 
-    @Delete("delete from visitors where id=#{id} and password=#{password}")
-    public boolean deleteVisitors(int id ,String password);
+    @Delete("delete from visitors where id=${id} and password=${password}")
+    public boolean deleteVisitors(Long id ,String password);
 
 }

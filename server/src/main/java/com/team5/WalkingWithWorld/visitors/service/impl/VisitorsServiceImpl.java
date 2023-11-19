@@ -21,13 +21,13 @@ public class VisitorsServiceImpl implements VisitorsService {
 
     @Override
     @Transactional
-    public void deleteVisitors(VisitorsDTO visitorsDTO, Long visitorsId){
-        System.out.println(visitorsDTO);
-        Visitors visitors =visitorsRepository.findById(visitorsId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.VISITORS_ERROR_FOUND));
-        if(Objects.equals(visitors.getPassword(), visitorsDTO.getPassword())){
-            visitorsRepository.deleteByIdAndPassword(visitorsId, visitorsDTO.getPassword());
+    public void deleteVisitors(Long id, String password){
+        /*System.out.println(visitorsDTO);*/
+        Visitors visitors =visitorsRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.VISITORS_ERROR_FOUND));
+        if(Objects.equals(password, visitors.getPassword())){
+            visitorsRepository.deleteByIdAndPassword(id, password);
         } else {
-            throw new RuntimeException("패스워드가 다릅니다");
+            throw new RuntimeException("패스워드가 다릅니다: "+ password);
         }
     }
 

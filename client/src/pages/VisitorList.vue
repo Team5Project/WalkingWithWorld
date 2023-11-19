@@ -19,10 +19,7 @@
                 {{ formatDate(vo.createdAt) }}
               </p>
               <div class="visitor_mod">
-                <p
-                  class="btns btn_vdelete"
-                  @click="deleteVisitorList(visitorId)"
-                >
+                <p class="btns btn_vdelete" @click="deleteVisitorList(vo.id)">
                   삭제
                 </p>
               </div>
@@ -76,31 +73,30 @@ const props = defineProps(["id"]);
 const visitorId = computed(() => props.id);
 console.log(visitorId.value);
 
-const deleteVisitorList = (visitorId) => {
+async function deleteVisitorList(visitorId) {
   const password = prompt("비밀번호를 입력하세요:");
-
+  console.log("password:", password);
   if (password) {
-    // 삭제 API 엔드포인트가 "http://localhost:8089/delete"로 가정됩니다.
-    const VisitorId = visitorId.value;
+    /* const VisitorId = visitorId.value; */
     const url = `http://localhost:8089/${visitorId}`;
-    const data = {
+    /* const data = {
       id: VisitorId,
       password: password,
-    };
-    axios
-      .delete(url, data, {})
+    }; */
+    await axios
+      .delete(url, {
+        headers: { "Content-Type": "application/json" },
+        data: { password: password },
+      })
       .then((response) => {
-        // 성공적인 삭제 처리 (예: 목록에서 삭제된 항목 제거)
         console.log(response.data);
-        // 삭제 후 목록을 새로고침하려면 setList()를 호출할 수 있습니다.
         setList();
       })
       .catch((error) => {
-        // 에러 처리 (예: 비밀번호가 잘못된 경우, 서버 오류)
         console.error(error);
       });
   }
-};
+}
 </script>
 
 <style scoped>
