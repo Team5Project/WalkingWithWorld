@@ -47,10 +47,9 @@
                         리뷰를 남겨주세요!
                     </p>
                     <div>
-
-                        <!-- <a th:href="@{|/reviews/${walkingPaths.getId()}/write|}" class="btns btn_write_big">
+                        <span class="btns btn_write_big">
                             리뷰작성
-                        </a> -->
+                        </span>
                     </div>
                 </div>
             </article>
