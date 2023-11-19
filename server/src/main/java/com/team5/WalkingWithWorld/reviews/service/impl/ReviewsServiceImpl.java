@@ -55,11 +55,11 @@ public class ReviewsServiceImpl implements ReviewsService {
 
     //리뷰 리스트 조회
     @Override
-    public PageResponseDto<ReviewsResponseDTO> readReviewsList(Long walkingPathsId, Pageable pageable){
-        Page<Reviews> reviews = reviewsRepository.findAllByWalkingPathsId(walkingPathsId,pageable);
-        List<ReviewsResponseDTO> reviewsResponseDTOList = reviews.stream().map(review -> ReviewsResponseDTO.from(review,photosRepository.findALLByReviews(review))).toList();
+    public PageResponseDto<ReviewsResponseDTO> readReviewsList(Long walkingPathsId, Pageable pageable) {
+        Page<Reviews> reviews = reviewsRepository.findAllByWalkingPathsId(walkingPathsId, pageable);
+        List<ReviewsResponseDTO> reviewsResponseDTOList = reviews.stream().map(review -> ReviewsResponseDTO.from(review, photosRepository.findALLByReviews(review))).toList();
         List<Integer> barNumber = paginationService.getPaginationBarNumbers(reviews.getNumber(), reviews.getTotalPages());
-        return new PageResponseDto<>(reviewsResponseDTOList,reviews, barNumber);
+        return new PageResponseDto<>(reviewsResponseDTOList, reviews, barNumber);
     }
 
 
@@ -72,20 +72,23 @@ public class ReviewsServiceImpl implements ReviewsService {
 
         Reviews reviews = reviewsRepository.save(reviewsRequestDTO.toEntity(users, walkingPaths));
 
-        FileVo fileVo = new FileVo(files);
-        Map<String, String> filesName = fileUpload.upload(fileVo);
-        PhotosDTO photosDTO = new PhotosDTO();
-        photosDTO.setReviewsId(reviews.getId());
-        for(Map.Entry<String,String> entry:filesName.entrySet()){
-            photosDTO.setImgName(entry.getKey());
-            photosDTO.setImgPath(entry.getValue());
-            photosRepository.save(photosDTO.toEntity(reviews,null));
+        if (!files.isEmpty()) {
+            FileVo fileVo = new FileVo(files);
+            Map<String, String> filesName = fileUpload.upload(fileVo);
+            PhotosDTO photosDTO = new PhotosDTO();
+            photosDTO.setReviewsId(reviews.getId());
+            for (Map.Entry<String, String> entry : filesName.entrySet()) {
+                photosDTO.setImgName(entry.getKey());
+                photosDTO.setImgPath(entry.getValue());
+                photosRepository.save(photosDTO.toEntity(reviews, null));
+            }
         }
         return reviews;
     }
+
     // 리뷰 수정
     @Override
-    public Reviews updateReviews(Long walkingPathsId, Long reviewsId, ReviewsRequestDTO reviewsRequestDTO,List<MultipartFile> files){
+    public Reviews updateReviews(Long walkingPathsId, Long reviewsId, ReviewsRequestDTO reviewsRequestDTO, List<MultipartFile> files) {
         Reviews reviews = reviewsRepository.findById(reviewsId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.REVIEW_NOT_FOUND));
 
         Optional.ofNullable(reviewsRequestDTO.getContent()).ifPresent(reviews::updateContent);

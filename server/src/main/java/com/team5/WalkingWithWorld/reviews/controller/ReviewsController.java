@@ -1,5 +1,6 @@
 package com.team5.WalkingWithWorld.reviews.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.WalkingWithWorld.global.config.auth.CustomPrincipal;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
 import com.team5.WalkingWithWorld.reviews.dto.ReviewsRequestDTO;
@@ -135,15 +136,28 @@ public class ReviewsController {
     }
 
     //리뷰 작성
-    @PostMapping(value = "/{walking-paths-id}/reviews",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+//    @PostMapping(value = "/{walking-paths-id}/reviews",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+//    public ResponseEntity createReviews(@AuthenticationPrincipal CustomPrincipal customPrincipal,
+//                                        @PathVariable("walking-paths-id") Long id,
+//                                        @RequestPart("reviewsRequestDTO") ReviewsRequestDTO reviewsRequestDTO,
+//                                        @RequestPart(value = "files",required = false) List<MultipartFile> files) throws IOException {
+//
+//        Reviews reviews = reviewsService.createReviews(reviewsRequestDTO, customPrincipal,files , id);
+//        return new ResponseEntity<>(reviews, HttpStatus.OK);
+//    }
+    @PostMapping(value = "/{walking-paths-id}/reviews", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity createReviews(@AuthenticationPrincipal CustomPrincipal customPrincipal,
                                         @PathVariable("walking-paths-id") Long id,
-                                        @RequestPart ReviewsRequestDTO reviewsRequestDTO,
-                                        @RequestPart List<MultipartFile> files) throws IOException {
+                                        @RequestParam("reviewsRequestDTO") String reviewsRequestDTO,
+                                        @RequestParam(value = "files", required = false) List<MultipartFile> files) throws IOException {
 
-        Reviews reviews = reviewsService.createReviews(reviewsRequestDTO, customPrincipal,files , id);
+        ObjectMapper objectMapper = new ObjectMapper();
+        ReviewsRequestDTO requestDTO = objectMapper.readValue(reviewsRequestDTO, ReviewsRequestDTO.class);
+
+        Reviews reviews = reviewsService.createReviews(requestDTO, customPrincipal, files, id);
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
+
 
     @PatchMapping(value = "/{walking-paths-id}/reviews/{reviews-id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity updateReviews(UsersDTO loginUser,
