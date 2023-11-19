@@ -5,23 +5,13 @@
       <router-link class="header_link" to="/walking-path">산책로</router-link>
       <router-link class="header_link" to="/visitor">자유게시판</router-link>
     </nav>
-  
-    <!-- <div class="member">
-      <span class="profile_image">
-        
-
-      </span>
-      <span class="name">산책마니아1</span>
-      <a href="" class="btns btn_logout">logout</a>
-    </div> -->
-    <div class="header_sign" v-if="auth">
-      <router-link class="btns btn_signup" to="/signup"> <!--마이페이지 구현 하면 마이페이지로-->
-          <i class="sign_icon fa-solid fa-user-plus"></i>
+    <div class="member" v-if="auth">
+      <span class="profile_image"></span>
+      <router-link class="name" to="/signup"> <!--마이페이지 구현 하면 마이페이지로-->
           유저네임 바인딩
         </router-link>
-        <router-link  class="btns btn_signin" to="/logout">
-          <i class="sign_icon fa-solid fa-key"></i>
-          Logout
+        <router-link class="btns btn_logout" to="/logout">
+          logout
         </router-link>
     </div>
     <div class="header_sign" v-else="auth">
