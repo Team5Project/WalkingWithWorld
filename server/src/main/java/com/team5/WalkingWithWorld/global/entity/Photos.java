@@ -21,6 +21,7 @@ public class Photos {
     @JsonBackReference
     @NotFound(action = NotFoundAction.IGNORE)
     @ManyToOne
+    @JoinColumn(name="reviews_id")
     private Reviews reviews;
     @JsonBackReference
     @NotFound(action = NotFoundAction.IGNORE)

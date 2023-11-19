@@ -3,6 +3,7 @@ package com.team5.WalkingWithWorld.reviews.service.impl;
 import com.team5.WalkingWithWorld.global.config.auth.CustomPrincipal;
 import com.team5.WalkingWithWorld.global.domain.FileVo;
 import com.team5.WalkingWithWorld.global.domain.PhotosDTO;
+import com.team5.WalkingWithWorld.global.entity.Photos;
 import com.team5.WalkingWithWorld.global.exception.BusinessLogicException;
 import com.team5.WalkingWithWorld.global.exception.ExceptionCode;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
@@ -57,7 +58,10 @@ public class ReviewsServiceImpl implements ReviewsService {
     @Override
     public PageResponseDto<ReviewsResponseDTO> readReviewsList(Long walkingPathsId, Pageable pageable) {
         Page<Reviews> reviews = reviewsRepository.findAllByWalkingPathsId(walkingPathsId, pageable);
-        List<ReviewsResponseDTO> reviewsResponseDTOList = reviews.stream().map(review -> ReviewsResponseDTO.from(review, photosRepository.findALLByReviews(review))).toList();
+        List<Photos> photos = photosRepository.findByReviews(reviews.getContent().get(0));
+        System.out.println(photos);
+        List<ReviewsResponseDTO> reviewsResponseDTOList = reviews.stream().map(review -> ReviewsResponseDTO.from(review, photosRepository.findByReviews(review))).toList();
+
         List<Integer> barNumber = paginationService.getPaginationBarNumbers(reviews.getNumber(), reviews.getTotalPages());
         return new PageResponseDto<>(reviewsResponseDTOList, reviews, barNumber);
     }
@@ -80,7 +84,7 @@ public class ReviewsServiceImpl implements ReviewsService {
             for (Map.Entry<String, String> entry : filesName.entrySet()) {
                 photosDTO.setImgName(entry.getKey());
                 photosDTO.setImgPath(entry.getValue());
-                photosRepository.save(photosDTO.toEntity(reviews, null));
+                photosRepository.save(photosDTO.toEntity(reviews, reviews.getWalkingPaths()));
             }
         }
         return reviews;

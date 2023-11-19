@@ -23,7 +23,7 @@ public class ReviewsResponseDTO {
     private String content;
     private String createdBy;
     private LocalDateTime createdAt;
-    private List<PhotosDTO> photosList;
+    private List<Photos> photosList;
 
     public static ReviewsResponseDTO from(Reviews reviews) {
         return ReviewsResponseDTO.builder()
@@ -42,7 +42,7 @@ public class ReviewsResponseDTO {
                 .content(reviews.getContent())
                 .createdBy(reviews.getCreatedBy())
                 .createdAt(reviews.getCreatedAt())
-                .photosList(photos.stream().map(PhotosDTO::from).collect(Collectors.toList()))
+                .photosList(photos)
                 .build();
     }
 }

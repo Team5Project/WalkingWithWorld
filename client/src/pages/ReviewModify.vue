@@ -128,7 +128,7 @@ function postReview() {
     axios.post(`http://localhost:8089/${props.id}/reviews`, formData, {
         headers: {
             // Authorization : JSON.parse(localStorage.getItem("token")).authorization,
-            Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MTIzNEBnbWFpbC5jb20iLCJpZCI6MSwiZXhwIjoxNzAwMzY5MzY4LCJlbWFpbCI6InRlc3QxMjM0QGdtYWlsLmNvbSJ9.ASwziNzopKy8Q67MLVFemHw7UWVA0yUrfAsKCkqA0aFvIEmo2IflS53kc1Aeyw2KJ0tQ4Vei63fjYfEjj6mgsA",
+            Authorization: JSON.parse(localStorage.getItem("token")).authorization ,
             'Content-Type': 'multipart/form-data',  // 수정된 부분
         },
     })
