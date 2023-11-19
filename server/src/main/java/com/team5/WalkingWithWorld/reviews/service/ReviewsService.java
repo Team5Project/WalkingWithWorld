@@ -1,5 +1,6 @@
 package com.team5.WalkingWithWorld.reviews.service;
 
+import com.team5.WalkingWithWorld.global.config.auth.CustomPrincipal;
 import com.team5.WalkingWithWorld.global.domain.FileVo;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
 import com.team5.WalkingWithWorld.reviews.dto.ReviewsRequestDTO;
@@ -16,7 +17,7 @@ public interface ReviewsService {
     //리뷰 리스트 조회
     PageResponseDto<ReviewsResponseDTO> readReviewsList(Long walkingPathsId, Pageable pageable);
 
-    Reviews createReviews(ReviewsRequestDTO reviewsRequestDTO, UsersDTO usersDto, List<MultipartFile> files, Long walkingPathsId) throws IOException;
+    Reviews createReviews(ReviewsRequestDTO reviewsRequestDTO, CustomPrincipal customPrincipal, List<MultipartFile> files, Long walkingPathsId) throws IOException;
 
     // 리뷰 수정
     Reviews updateReviews(Long walkingPathsId, Long reviewsId, ReviewsRequestDTO reviewsRequestDTO, List<MultipartFile> files);

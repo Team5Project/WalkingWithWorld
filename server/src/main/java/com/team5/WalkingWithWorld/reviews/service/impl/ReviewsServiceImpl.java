@@ -1,7 +1,9 @@
 package com.team5.WalkingWithWorld.reviews.service.impl;
 
+import com.team5.WalkingWithWorld.global.config.auth.CustomPrincipal;
 import com.team5.WalkingWithWorld.global.domain.FileVo;
 import com.team5.WalkingWithWorld.global.domain.PhotosDTO;
+import com.team5.WalkingWithWorld.global.entity.Photos;
 import com.team5.WalkingWithWorld.global.exception.BusinessLogicException;
 import com.team5.WalkingWithWorld.global.exception.ExceptionCode;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
@@ -27,6 +29,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewsServiceImpl implements ReviewsService {
@@ -53,37 +56,43 @@ public class ReviewsServiceImpl implements ReviewsService {
 
     //리뷰 리스트 조회
     @Override
-    public PageResponseDto<ReviewsResponseDTO> readReviewsList(Long walkingPathsId, Pageable pageable){
-        Page<ReviewsResponseDTO> reviewsPage =  reviewsRepository.findAllByWalkingPathsId(walkingPathsId, pageable).map(ReviewsResponseDTO::from);
-        List<ReviewsResponseDTO> reviewsResponseDTOList = reviewsPage.getContent();
-        List<Integer> barNumber = paginationService.getPaginationBarNumbers(reviewsPage.getNumber(), reviewsPage.getTotalPages());
-        return new PageResponseDto<>(reviewsResponseDTOList,reviewsPage, barNumber);
+    public PageResponseDto<ReviewsResponseDTO> readReviewsList(Long walkingPathsId, Pageable pageable) {
+        Page<Reviews> reviews = reviewsRepository.findAllByWalkingPathsId(walkingPathsId, pageable);
+        List<Photos> photos = photosRepository.findByReviews(reviews.getContent().get(0));
+        System.out.println(photos);
+        List<ReviewsResponseDTO> reviewsResponseDTOList = reviews.stream().map(review -> ReviewsResponseDTO.from(review, photosRepository.findByReviews(review))).toList();
+
+        List<Integer> barNumber = paginationService.getPaginationBarNumbers(reviews.getNumber(), reviews.getTotalPages());
+        return new PageResponseDto<>(reviewsResponseDTOList, reviews, barNumber);
     }
 
 
     // 리뷰 작성
     @Override
-    public Reviews createReviews(ReviewsRequestDTO reviewsRequestDTO, UsersDTO usersDto, List<MultipartFile> files, Long walkingPathsId) throws IOException {
+    public Reviews createReviews(ReviewsRequestDTO reviewsRequestDTO, CustomPrincipal customPrincipal, List<MultipartFile> files, Long walkingPathsId) throws IOException {
 
-        Users users = usersRepository.findById(Math.toIntExact(usersDto.getId())).orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+        Users users = usersRepository.findById(Math.toIntExact(customPrincipal.userId())).orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
         WalkingPaths walkingPaths = walkingPathsRepository.findById(Math.toIntExact(walkingPathsId)).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));
 
         Reviews reviews = reviewsRepository.save(reviewsRequestDTO.toEntity(users, walkingPaths));
 
-        FileVo fileVo = new FileVo(files);
-        Map<String, String> filesName = fileUpload.upload(fileVo);
-        PhotosDTO photosDTO = new PhotosDTO();
-        photosDTO.setReviewsId(reviews.getId());
-        for(Map.Entry<String,String> entry:filesName.entrySet()){
-            photosDTO.setImgName(entry.getKey());
-            photosDTO.setImgPath(entry.getValue());
-            photosRepository.save(photosDTO.toEntity(reviews,null));
+        if (!files.isEmpty()) {
+            FileVo fileVo = new FileVo(files);
+            Map<String, String> filesName = fileUpload.upload(fileVo);
+            PhotosDTO photosDTO = new PhotosDTO();
+            photosDTO.setReviewsId(reviews.getId());
+            for (Map.Entry<String, String> entry : filesName.entrySet()) {
+                photosDTO.setImgName(entry.getKey());
+                photosDTO.setImgPath(entry.getValue());
+                photosRepository.save(photosDTO.toEntity(reviews, reviews.getWalkingPaths()));
+            }
         }
         return reviews;
     }
+
     // 리뷰 수정
     @Override
-    public Reviews updateReviews(Long walkingPathsId, Long reviewsId, ReviewsRequestDTO reviewsRequestDTO,List<MultipartFile> files){
+    public Reviews updateReviews(Long walkingPathsId, Long reviewsId, ReviewsRequestDTO reviewsRequestDTO, List<MultipartFile> files) {
         Reviews reviews = reviewsRepository.findById(reviewsId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.REVIEW_NOT_FOUND));
 
         Optional.ofNullable(reviewsRequestDTO.getContent()).ifPresent(reviews::updateContent);

@@ -31,8 +31,8 @@ public class UserService {
     }
 
     //프로필 조회용
-    public UsersDTO getUserById(int id){
-        Users users = usersRepository.findById(id).orElseThrow(()-> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+    public UsersDTO getUserById(Long id){
+        Users users = usersRepository.findUsersById(id).orElseThrow(()-> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
         return UsersDTO.from(users);
     }
 
