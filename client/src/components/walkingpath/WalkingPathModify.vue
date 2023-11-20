@@ -12,6 +12,7 @@
                     <span>사진(5개 제한)</span><br>
                     <section class="img-area">
                         <input type="file" @change="uploadFile" ref="imgUpload" multiple />
+                        <div id="img_preview"></div>
                         <!-- <div class="filebox">
                             <label for="file" class="fileImg">+</label>
                             <v-file-input id="file" type="file" name="files" multiple />
@@ -47,6 +48,7 @@ import { ref, computed, onMounted } from 'vue';
 import searchAddr from '@/utils/addr.js'
 import axios from 'axios';
 import { getBaseTransformPreset } from '@vue/compiler-core';
+import router from '@/router/index.js'
 const map = ref(null);
 const coordsX = ref(null);
 const coordsY = ref(null);
@@ -80,11 +82,14 @@ let dots = {}; // 선이 그려지고 있을때 클릭할 때마다 클릭 지�
 let clickLa = [];
 let clickMa = [];
 const clickMap = function(mouseEvent) {
-    console.log("click");
     let clickPosition = mouseEvent.latLng;
 
     clickLa.push(clickPosition.La);
     clickMa.push(clickPosition.Ma);
+
+    // post 해야 할 정보
+    coordsX.value = clickLa;
+    coordsY.value = clickMa;
 
     if (!drawingFlag) {
 
@@ -112,6 +117,7 @@ const clickMap = function(mouseEvent) {
 
         // 클릭한 지점에 대한 정보를 지도에 표시합니다
         displayCircleDot(clickPosition, 0);
+
     } else { // 선이 그려지고 있는 상태이면
 
         // 그려지고 있는 선의 좌표 배열을 얻어옵니다
@@ -148,21 +154,18 @@ const rightClickMap = function (mouseEvent) {
             }
 
             var distance = Math.round(clickLine.getLength()), // 선의 총 거리를 계산합니다
-                content = getTimeHTML(distance); // 커스텀오버레이에 추가될 내용입니다
+            content = getTimeHTML(distance); // 커스텀오버레이에 추가될 내용입니다
 
             document.getElementById("distance").value = distance;
             document.getElementById("time").value = distance / 67 | 0;
             // 그려진 선의 거리정보를 지도에 표시합니다
             showDistance(content, path[path.length - 1]);
-
         } else {
-
             // 선을 구성하는 좌표의 개수가 1개 이하이면 
             // 지도에 표시되고 있는 선과 정보들을 지도에서 제거합니다.
             deleteClickLine();
             deleteCircleDot();
             deleteDistnce();
-
         }
 
         // 상태를 false로, 그리지 않고 있는 상태로 변경합니다
@@ -185,7 +188,6 @@ const showDistance = function(content, position) {
         // 커스텀 오버레이의 위치와 표시할 내용을 설정합니다
         distanceOverlay.setPosition(position);
         distanceOverlay.setContent(content);
-
     } else { // 커스텀 오버레이가 생성되지 않은 상태이면
 
         // 커스텀 오버레이를 생성하고 지도에 표시합니다
@@ -232,6 +234,9 @@ const displayCircleDot = function(position, distance) {
 
         // 지도에 표시합니다
         distanceOverlay.setMap(map.value);
+        // post할 정보
+        totalDistance.value = distance;
+        totalTime.value = distance / 67 | 0;
     }
 
     // 배열에 추가합니다
@@ -278,11 +283,8 @@ const getTimeHTML = function(distance) {
     content += '    </li>';
     content += '</ul>'
 
-    // post 해야 할 정보
-    coordsX.value = clickLa;
-    coordsY.value = clickMa;
-    totalDistance.value = distance;
-    totalTime.value = walkTime;
+    clickLa = [];
+    clickMa = [];
 
     return content;
 }
@@ -313,9 +315,17 @@ async function writeWalkingPaths() {
             'authorization' : bearer,
             'Content-Type' : 'multipart/form-data'
         },
+    })
+    .then(response => {
+        if(response.status  == 201){
+            alert("산책로 작성이 완료되었습니다.");
+            router.push('/walking-path/' + response.data.id);
+        }
     });
 }
 const uploadFile = function(e) {
+    const preview = document.getElementById('img_preview')
+    preview.innerHTML = '';
     var file = e.target.files;
     var fileArr = Array.from(file);
     files.value = [];
@@ -324,6 +334,14 @@ const uploadFile = function(e) {
             alert("이미지 파일만 업로드 가능합니다.");
         } else{
             files.value.push(f);
+            var reader = new FileReader();
+            reader.onload = function(e){
+                const img = document.createElement('img');
+                img.style.width = "100px";
+                img.src = e.target.result;
+                preview.appendChild(img);
+            };
+        reader.readAsDataURL(f);
         }
     });
     console.log(files.value);

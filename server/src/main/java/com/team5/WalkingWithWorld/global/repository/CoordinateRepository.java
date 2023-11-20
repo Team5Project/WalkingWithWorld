@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface CoordinateRepository extends JpaRepository<Coordinate, Long> {
     List<Coordinate> findByWalkingPaths(WalkingPaths walkingPaths);
+    void deleteAllByWalkingPaths(WalkingPaths walkingPaths);
 }

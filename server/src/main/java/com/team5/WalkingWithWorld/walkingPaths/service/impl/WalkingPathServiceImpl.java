@@ -1,5 +1,6 @@
 package com.team5.WalkingWithWorld.walkingPaths.service.impl;
 
+import com.team5.WalkingWithWorld.global.config.auth.CustomPrincipal;
 import com.team5.WalkingWithWorld.global.domain.FileVo;
 import com.team5.WalkingWithWorld.global.entity.Coordinate;
 import com.team5.WalkingWithWorld.global.entity.Map;
@@ -156,13 +157,14 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
                 .build();
         WalkingPaths walkingPaths = walkingPathsRepository.save(entity);
         // 지도
-        Map map = Map.from(walkingPaths, requestDTO.getRequestMapDTO());
-        mapRepository.save(map);
-        for(int i = 0; i < requestDTO.getRequestMapDTO().getCoordinateX().size(); i++) {
-            Coordinate coordinate = Coordinate.of(walkingPaths, requestDTO.getRequestMapDTO().getCoordinateX().get(i), requestDTO.getRequestMapDTO().getCoordinateY().get(i));
-            coordinateRepository.save(coordinate);
+        if(requestDTO.getRequestMapDTO().getDistance() != null) {
+            Map map = Map.from(walkingPaths, requestDTO.getRequestMapDTO());
+            mapRepository.save(map);
+            for (int i = 0; i < requestDTO.getRequestMapDTO().getCoordinateX().size(); i++) {
+                Coordinate coordinate = Coordinate.of(walkingPaths, requestDTO.getRequestMapDTO().getCoordinateX().get(i), requestDTO.getRequestMapDTO().getCoordinateY().get(i));
+                coordinateRepository.save(coordinate);
+            }
         }
-
         // 사진
         if (files != null) {
             FileVo fileVo = new FileVo(files);
@@ -206,10 +208,13 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
     // 산책로 삭제
     @Override
     @Transactional
-    public void deleteWalkingPath(int id) {
+    public void deleteWalkingPath(int id, CustomPrincipal customPrincipal) {
         WalkingPaths walkingPaths = walkingPathsRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));
+        if(customPrincipal == null || !Objects.equals(walkingPaths.getUsers().getId(), customPrincipal.userId()))
+            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
         mapRepository.deleteAllByWalkingPaths(walkingPaths);
         photosRepository.deleteAllByWalkingPaths(walkingPaths);
+        coordinateRepository.deleteAllByWalkingPaths(walkingPaths);
         walkingPathsRepository.deleteById(id);
     }
 //    @Override
