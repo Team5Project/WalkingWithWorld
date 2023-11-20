@@ -1,21 +1,22 @@
 <template>  
     <div id="write-form">
         <h1>산책로 등록</h1>
-        <form method="post" action="/walking-path" enctype="multipart/form-data">
+        <form @submit.prevent="writeWalkingPaths">
             <div id="input-items">
                 <div id="left-form">
-                    <label>산책로 이름<br><input type="text" class="text-box" name="title" required></label><br>
+                    <label>산책로 이름<br><input type="text" class="text-box" name="title" v-model="title" required></label><br>
                     <label>주소
-                        <input type="button" class="button" onclick="searchAddr()" value="주소 찾기"><br>
-                        <input type="text" name="addr" class="text-box" id="address" required><br>
+                        <input type="button" class="button" @click.self.prevent="searchAddr" value="주소 찾기"><br>
+                        <input type="text" name="addr" class="text-box" id="address" v-model="addr" required><br>
                     </label><br>
                     <span>사진(5개 제한)</span><br>
                     <section class="img-area">
-                        <div class="filebox">
+                        <input type="file" @change="uploadFile" ref="imgUpload" multiple />
+                        <!-- <div class="filebox">
                             <label for="file" class="fileImg">+</label>
-                            <input id="file" type="file" name="files" onchange="setThumbnail(event)" multiple />
+                            <v-file-input id="file" type="file" name="files" multiple />
                         </div>
-                        <div id="image_container" class="image_container"></div>
+                        <div id="image_container" class="image_container"></div> -->
                     </section><br>
                     <label>
                         <input type="hidden" name="course" id="course">
@@ -27,7 +28,7 @@
                 <div id="right-form">
                     <label>경로 그리기
                         <div class="map_wrap">
-                            <div @click="mapClickEvent" class="readMap" id="map"></div>
+                            <div @click.prevent="mapClickEvent" class="readMap" id="map"></div>
                         </div>
                     </label>
                 </div>
@@ -43,6 +44,9 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
+import searchAddr from '@/utils/addr.js'
+import axios from 'axios';
+import { getBaseTransformPreset } from '@vue/compiler-core';
 const map = ref(null);
 const coordsX = ref(null);
 const coordsY = ref(null);
@@ -170,8 +174,6 @@ const deleteClickLine = function() {
     if (clickLine) {
         clickLine.setMap(null);
         clickLine = null;
-        resultLat = [];
-
     }
 }
 // 마우스 드래그로 그려지고 있는 선의 총거리 정보를 표시하기
@@ -281,12 +283,50 @@ const getTimeHTML = function(distance) {
     coordsY.value = clickMa;
     totalDistance.value = distance;
     totalTime.value = walkTime;
-    console.log(coordsX.value);
-    console.log(coordsY.value);
-    console.log(totalDistance.value);
-    console.log(totalTime.value);
 
     return content;
+}
+// walking-path 생성
+const files = ref([]);
+const title = ref(null);
+const addr = ref(null);
+const result = ref([]);
+
+async function writeWalkingPaths() {
+    let mapInstance = {distance:totalDistance.value, time:totalTime.value, coordinateX:coordsX.value, coordinateY:coordsY.value};
+    result.value = mapInstance;
+    console.log(result.value);
+
+    const bearer = localStorage.getItem('token').split('"')[3];
+    const data = {title:title.value, addr:addr.value, requestMapDTO:result.value};
+    const formData = new FormData();
+    formData.append(
+        'requestDTO',
+        new Blob([JSON.stringify(data)], {type:'application/json'})
+    );
+    for(let i = 0; i < files.value.length; i++) {
+        formData.append('files', files.value[i]);
+    }
+    
+    await axios.post('http://localhost:8089/walking-path', formData, {
+        headers: {
+            'authorization' : bearer,
+            'Content-Type' : 'multipart/form-data'
+        },
+    });
+}
+const uploadFile = function(e) {
+    var file = e.target.files;
+    var fileArr = Array.from(file);
+    files.value = [];
+    fileArr.forEach(function(f) {
+        if(!f.type.match("image/.*")){
+            alert("이미지 파일만 업로드 가능합니다.");
+        } else{
+            files.value.push(f);
+        }
+    });
+    console.log(files.value);
 }
 </script>
 <style scoped>

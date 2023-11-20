@@ -1,7 +1,6 @@
 package com.team5.WalkingWithWorld.walkingPaths.controller;
 
-import com.team5.WalkingWithWorld.global.config.auth.CustomPrincipal;
-import com.team5.WalkingWithWorld.global.entity.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
 import com.team5.WalkingWithWorld.global.pagination.PaginationService;
 import com.team5.WalkingWithWorld.walkingPaths.dto.RequestWalkingPathDTO;
@@ -9,13 +8,11 @@ import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDetailDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.WalkingPathsMapDTO;
 import com.team5.WalkingWithWorld.walkingPaths.service.impl.WalkingPathServiceImpl;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -66,8 +63,11 @@ public class WalkingPathsController {
     // 산책로 작성 폼으로 이동
     // 산책로 작성
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity writeWalkingPath(@RequestPart RequestWalkingPathDTO requestDTO,
-                                           @RequestPart List<MultipartFile> files) { // @Login UsersDTO usersDTO  @AuthenticationPrincipal CustomPrincipal customPrincipal
+    public ResponseEntity writeWalkingPath(@RequestPart("requestDTO") RequestWalkingPathDTO requestDTO,
+                                           @RequestPart(value = "files",required = false) List<MultipartFile> files) { // @Login UsersDTO usersDTO  @AuthenticationPrincipal CustomPrincipal customPrincipal
+        System.out.println(requestDTO);
+        System.out.println(files);
+
         WalkingPathsMapDTO walkingPaths = walkingPathService.createWalkingPath(requestDTO, files);
         return new ResponseEntity(walkingPaths, HttpStatus.CREATED);
     }
