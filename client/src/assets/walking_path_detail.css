@@ -112,7 +112,9 @@ section:nth-child(4) {
     display: flex;
     justify-content: space-between;
 }
-
+.comments_content{
+    overflow-y: scroll;
+}
 .comments_input {
     width: 450px;
     border-bottom: 1px solid #9D9393;
