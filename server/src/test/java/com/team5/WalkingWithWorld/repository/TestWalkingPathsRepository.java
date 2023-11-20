@@ -34,7 +34,7 @@ public class TestWalkingPathsRepository {
     @Order(1)
     @Rollback(value = false)
     void insertWalkingPath() {
-        WalkingPaths entity = WalkingPaths.of(null, users, "제목", "주소", 0);
+        WalkingPaths entity = WalkingPaths.of(null, users, "제목", "주소", 0, null);
         walkingPathsRepository.save(entity);
     }
 }

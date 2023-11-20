@@ -13,5 +13,5 @@ import java.util.List;
 public class RequestWalkingPathDTO {
     private String title;
     private String addr;
-    private List<RequestMapDTO> requestMapDTO;
+    private RequestMapDTO requestMapDTO;
 }
