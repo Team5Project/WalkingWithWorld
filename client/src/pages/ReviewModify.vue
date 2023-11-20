@@ -104,7 +104,10 @@ function postReview() {
         content: content.value
     }
 
-    formData.append('reviewsRequestDTO', JSON.stringify(reviewsRequestDTO));
+    const json = JSON.stringify(reviewsRequestDTO);
+    const blob = new Blob([json],{type: 'application/json'});
+
+    formData.append('reviewsRequestDTO',blob );
 
     if (files.value.length > 0) {
         files.value.forEach((file) => {
