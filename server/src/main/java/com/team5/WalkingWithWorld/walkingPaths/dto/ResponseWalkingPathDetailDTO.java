@@ -1,6 +1,7 @@
 package com.team5.WalkingWithWorld.walkingPaths.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.team5.WalkingWithWorld.global.entity.Coordinate;
 import com.team5.WalkingWithWorld.global.entity.Map;
 import com.team5.WalkingWithWorld.global.entity.Photos;
 import com.team5.WalkingWithWorld.users.entity.Users;
@@ -20,13 +21,15 @@ public class ResponseWalkingPathDetailDTO {
     private Users users;
     private String title;
     private String addr;
-    private List<Map> mapList;
+    private Map map;
+    private List<Coordinate> coordinateList;
     private List<Photos> photosList;
 
     public static ResponseWalkingPathDetailDTO from(WalkingPaths walkingPaths,
-                                                                     List<Map> mapList,
+                                                                     Map map,
+                                                                     List<Coordinate> coordinateList,
                                                                      List<Photos> photosList) {
         return new ResponseWalkingPathDetailDTO(walkingPaths.getId(), walkingPaths.getUsers(), walkingPaths.getTitle(),
-                walkingPaths.getAddr(), mapList, photosList);
+                walkingPaths.getAddr(), map, coordinateList, photosList);
     }
 }
