@@ -31,6 +31,8 @@ public class WalkingPaths extends AuditingFields {
     private String addr;
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
+    @OneToMany(mappedBy = "walkingPaths")
+    private final List<Map> mapList = new ArrayList<>();
 
     public void setUsers(Users users) {
         this.users = users;

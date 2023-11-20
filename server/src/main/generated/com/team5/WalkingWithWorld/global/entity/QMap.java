@@ -22,6 +22,10 @@ public class QMap extends EntityPathBase<Map> {
 
     public static final QMap map = new QMap("map");
 
+    public final StringPath coordinateX = createString("coordinateX");
+
+    public final StringPath coordinateY = createString("coordinateY");
+
     public final StringPath distance = createString("distance");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);

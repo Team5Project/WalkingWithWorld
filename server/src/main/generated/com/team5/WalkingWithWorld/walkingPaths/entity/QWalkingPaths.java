@@ -34,6 +34,8 @@ public class QWalkingPaths extends EntityPathBase<WalkingPaths> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final ListPath<com.team5.WalkingWithWorld.global.entity.Map, com.team5.WalkingWithWorld.global.entity.QMap> mapList = this.<com.team5.WalkingWithWorld.global.entity.Map, com.team5.WalkingWithWorld.global.entity.QMap>createList("mapList", com.team5.WalkingWithWorld.global.entity.Map.class, com.team5.WalkingWithWorld.global.entity.QMap.class, PathInits.DIRECT2);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
 

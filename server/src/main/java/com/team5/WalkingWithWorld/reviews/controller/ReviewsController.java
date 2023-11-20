@@ -148,11 +148,13 @@ public class ReviewsController {
     @PostMapping(value = "/{walking-paths-id}/reviews", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity createReviews(@AuthenticationPrincipal CustomPrincipal customPrincipal,
                                         @PathVariable("walking-paths-id") Long id,
-                                        @RequestPart("reviewsRequestDTO") ReviewsRequestDTO reviewsRequestDTO,
-                                        @RequestPart(value = "files", required = false) List<MultipartFile> files) throws IOException {
+                                        @RequestParam("reviewsRequestDTO") String reviewsRequestDTO,
+                                        @RequestParam(value = "files", required = false) List<MultipartFile> files) throws IOException {
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        ReviewsRequestDTO requestDTO = objectMapper.readValue(reviewsRequestDTO, ReviewsRequestDTO.class);
 
-        Reviews reviews = reviewsService.createReviews(reviewsRequestDTO, customPrincipal, files, id);
+        Reviews reviews = reviewsService.createReviews(requestDTO, customPrincipal, files, id);
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 

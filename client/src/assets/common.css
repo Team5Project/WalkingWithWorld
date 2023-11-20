@@ -15,9 +15,7 @@ h3 {
     margin-bottom: 10px;
 }
 
-label,
-.btns
- {
+label {
     cursor: pointer;
 }
 
