@@ -4,7 +4,7 @@
       <h1 class="logo"></h1>
     </router-link>
     <nav>
-      <router-link class="header_link" to="/walking-path">산책로</router-link>
+      <router-link class="header_link" to="/walking-path" @click="modeToDefault">산책로</router-link>
       <router-link class="header_link" to="/visitor">자유게시판</router-link>
     </nav>
 
@@ -43,6 +43,7 @@
 </template>
 
 <script setup>
+import { defineEmits } from 'vue';
 import axios from 'axios';
 import router from '@/router/index.js'
 
@@ -58,7 +59,10 @@ import router from '@/router/index.js'
   location.reload();
  }
 
-
+  const emit = defineEmits(['pageMode']);
+  const modeToDefault = () => {
+    emit('pageMode', 'default');
+  }
   // methods: {
   //   getUserInfo() {
   //     const config = {
