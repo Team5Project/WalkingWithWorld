@@ -9,7 +9,7 @@
             <div class="detail_member">
                 <span href="" class="profile_image"></span>
                 <span class="name"> {{ item.name }} </span>
-                <span class="date">{{ dateFormat(item.createdAt) }}</span>
+                <span class="date">{{ item.createdAt }}</span>
             </div>
                 <div class="up_del" style="visibility:visible;">
                     <span id="update" class="info_modi">수정</span>
@@ -31,7 +31,6 @@
 <script setup>
 import { ref, defineProps } from 'vue';
 import axios from 'axios';
-import dayjs from 'dayjs';
 
 const props = defineProps(['id']);
 const getComments = ref([]);
@@ -69,9 +68,7 @@ async function CommentsRead() {
   }
 }
 
-function dateFormat(date) {
-  return dayjs(date).format('YYYY-MM-DD HH:mm:ss');
-}
+
 
 function moreGetComments(){
   CommentsRead();
