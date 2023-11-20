@@ -11,7 +11,7 @@
                     <div class="walking-path">
                         <img v-if="walkingPath.photosList == 0" src="/images/noimage.png" alt="">
                         <img v-if="walkingPath.photosList > 0"
-                            v-bind:src="'http://localhost:8089/ex_images/' + walkingPath.photosList[0].imgName" alt="" />
+                            :src="'http://localhost:8089/ex_images/' + walkingPath.photosList[0].imgName" alt="" />
                         <span>{{ walkingPath.title }}</span>
                         <section v-if="walkingPath.mapList > 0">
                             <span>{{ walkingPath.mapList[0].distance }}</span>

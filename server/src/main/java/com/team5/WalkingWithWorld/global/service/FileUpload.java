@@ -19,7 +19,7 @@ public class FileUpload {
     @Value("${file.path}")
     private String path;
 
-    public Map<String, String> upload(List<MultipartFile> files) throws IOException {
+    public Map<String, String> upload(FileVo files) throws IOException {
 
         Map<String, String> filesName = new HashMap<>();
 

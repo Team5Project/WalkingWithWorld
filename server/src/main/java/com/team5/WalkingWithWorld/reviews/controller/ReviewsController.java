@@ -168,4 +168,11 @@ public class ReviewsController {
         return new ResponseEntity(reviews, HttpStatus.OK);
     }
 
+    @DeleteMapping("/reviews/{reviews-id}")
+    public ResponseEntity deleteReviews(@PathVariable("reviews-id") Long reviewsId,
+                                        @AuthenticationPrincipal CustomPrincipal customPrincipal){
+        reviewsService.deleteReviews(reviewsId,customPrincipal.email());
+        return new ResponseEntity(HttpStatus.RESET_CONTENT);
+    }
+
 }
