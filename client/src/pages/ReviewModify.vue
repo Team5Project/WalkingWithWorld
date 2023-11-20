@@ -33,10 +33,11 @@
                             <span>사진(5개 제한)</span><br>
                             <section class="img-area">
                                 <div id="review_image_container" class="image_container">
+                                    
                                 </div>
                                 <div class="filebox">
                                     <label for="file">+</label>
-                                    <input id="file" type="file" accept='image/jpg,impge/png,image/jpeg,image/gif'
+                                    <input id="file" type="file" accept='image/jpg,image/png,image/jpeg,image/gif'
                                         @change="readInputFile" multiple />
                                 </div>
                             </section>
@@ -77,22 +78,25 @@ function getWalkingPath() {
 }
 getWalkingPath();
 
-function readInputFile(e) {
-    const review = document.getElementById('review_image_container');
-    var file = e.target.files
-    var fileArr = Array.from(file)
-    console.log(fileArr);
+const readInputFile = (e) => {// 미리보기 기능구현
 
-    fileArr.forEach(function (f) {
-        if (!f.type.match("image/.*")) {
-            alert("이미지 파일만 업로드 가능합니다.");
+    const review = document.getElementById('review_image_container')
+    review.innerHTML = '';
+
+    var files = e.target.files;
+    var fileArr = Array.from(files);
+    console.log(fileArr);
+    fileArr.forEach(function(f){
+    	if(!f.type.match("image/.*")){
+        	alert("이미지 확장자만 업로드 가능합니다.");
             return;
         };
-        files.value.push(f);
         var reader = new FileReader();
-        reader.onload = function (e) {
-            var html = `<img src=${e.target.result}/>`;
-            review.append(html);
+        reader.onload = function(e){
+            const img = document.createElement('img');
+            img.style.width = "100px";
+            img.src = e.target.result;
+            review.appendChild(img);
         };
         reader.readAsDataURL(f);
     })
@@ -105,35 +109,35 @@ function postReview() {
     }
 
     const json = JSON.stringify(reviewsRequestDTO);
-    const blob = new Blob([json],{type: 'application/json'});
+    const blob = new Blob([json], { type: 'application/json' });
 
-    formData.append('reviewsRequestDTO',blob );
+    formData.append('reviewsRequestDTO', blob);
 
     if (files.value.length > 0) {
         files.value.forEach((file) => {
-            console.log("여기")
             console.log(file);
             formData.append('files', file);
         });
     } else {
-        console.log("아님 여기")
         formData.append('files', new Blob(), '');
     }
 
     // formData의 내용을 로그로 출력
-    for (let pair of formData.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
-    }
+    // for (let pair of formData.entries()) {
+    //     console.log(pair[0] + ', ' + pair[1]);
+    // }
 
-
-    console.log(JSON.parse(localStorage.getItem("token")).authorization);
 
     axios.post(`http://localhost:8089/${props.id}/reviews`, formData, {
         headers: {
             // Authorization : JSON.parse(localStorage.getItem("token")).authorization,
-            Authorization: JSON.parse(localStorage.getItem("token")).authorization ,
+            Authorization: JSON.parse(localStorage.getItem("token")).authorization,
             'Content-Type': 'multipart/form-data',  // 수정된 부분
         },
+    }).then(response => {
+        if (response.status == 201) {
+            router.push('/walking-pahts/' + props.id)
+        }
     })
         .then(() => close(undefined))
         .catch(error => console.log(error))
