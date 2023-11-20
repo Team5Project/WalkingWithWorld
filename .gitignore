@@ -218,3 +218,4 @@ $RECYCLE.BIN/
 /server/build/
 /server/gradle/
 server/build/tmp/compileJava/previous-compilation-data.bin
+server/build/tmp/compileJava/previous-compilation-data.bin

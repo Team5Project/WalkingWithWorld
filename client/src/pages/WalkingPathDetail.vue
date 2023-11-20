@@ -3,42 +3,41 @@
     <hr class="header_hr">
     <main>
         <section class="detail_header">
-            <div class="detail_title">
-                <h2>{{ getDetail.title }}</h2>
-                <th:block th:if="${session.auth !=null && session.auth.getName()==walkingPaths.getCreatedBy()}">
-                    <div class="up_del">
-                        <a th:href="|/walking-path/modify/${walkingPaths.id}|"><span class="info_modi">수정</span></a>
-                        <span th:onclick="|deleteWalkingPath(${walkingPaths.id})|" class="info_del">삭제</span>
-                    </div>
-                </th:block>
+        <div class="detail_title">
+            <h2>{{ getDetail.title }}</h2>
+            <div class="up_del">
+                <span class="info_modi">수정</span>
+                <span class="info_del">삭제</span>
             </div>
-            <p>
-                <span class="star_score">★★★★★</span>
-                <i></i>리뷰 <b>8</b>
-                <i>|</i> 댓글 <b>22</b>
-                <!-- <i>|</i> 거리 <b>{{ getDetail.distance >= 1000 ? (getDetail.distance/1000).toFixed(1) +'k' : getDetail.distance }}m</b>             
-						<i>|</i> 시간 <b th:text="${walkingPaths.getMapList().get(0).getTime()/60}">3</b> 시간 <b></b> -->
-
-
-            </p>
-            <address th:text="${walkingPaths.addr}">주소 미입력</address>
-        </section>
+        </div>
+        <p>
+            <span class="star_score">★★★★★</span>
+            <!-- <i></i>리뷰 <b>8</b>
+            <i>|</i> 댓글 <b>22</b> -->
+            <span class="detail_info_from_map" v-if="getDetail.mapList && getDetail.mapList.length > 0">
+                <i>|</i> 거리 <b>{{getDetail.mapList[0].distance >= 1000 ? 
+                (getDetail.mapList[0].distance/1000).toFixed(1) +' k' : 
+                getDetail.mapList[0].distance }}m</b>     
+                <i>|</i> 시간 <b>{{ getDetail.mapList[0].time >= 60 ? 
+                (getDetail.mapList[0].time/60).toFixed(0)+' 시간'+ ' ' + (getDetail.mapList[0].time%60) + ' 분' : 
+                getDetail.mapList[0].time + ' 분' }}</b>
+            </span>
+        </p>
+        <address>{{getDetail.addr}}</address>
+    </section>
         <section class="infoAndcomments">
             <div class="iac_wrapper">
                 <article class="detail_info">
                     <aside class="images">
                         <figure class="viewer">
-                            <img th:if="${walkingPaths.photosList}"
-                                th:src="@{|/ex_images/${walkingPaths.photosList[0].imgName}|}" />
-                            <img th:unless="${walkingPaths.photosList}" th:src="@{/images/noimage.png}" />
-                        </figure>
-
-                        <div class="img_list">
-                            <figcaption class="thumb" th:if="${walkingPaths.photosList}"
-                                th:each=" wp : ${walkingPaths.photosList}">
-                                <img th:src="@{|/ex_images/${wp.imgName}|}">
-                            </figcaption>
-                        </div>
+                        <img v-if="getDetail.photosList && getDetail.photosList.length > 0" :src="'http://localhost:8089/ex_images/'+getDetail.photosList[0].imgName"/>
+                        <img v-if="getDetail.photosList && getDetail.photosList.length === 0" src="/images/noimage.png"/>
+                    </figure>
+                    <div class="img_list">
+                        <figcaption class="thumb" v-if="getDetail.photosList && getDetail.photosList.length > 0" v-for="photo in getDetail.photosList">
+                            <img :src="'http://localhost:8089/ex_images/'+photo.imgName">
+                        </figcaption>
+                    </div>
                     </aside>
                     <div class="review_write">
                         <p>
@@ -56,7 +55,7 @@
                     </div>
                 </article>
                 <!-- 코멘트 컴포넌트 -->
-                <Comments />
+                <Comments :id="WalkingPathId"/>
                 <!-- 코멘트 컴포넌트 -->
             </div>
         </section>
@@ -76,15 +75,13 @@
 
 <script setup>
 
-import { ref, computed } from 'vue';
+import { ref, computed,onMounted } from 'vue';
 import axios from 'axios';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import Comments from '@/components/Comments.vue';
 import Review from '@/components/Review.vue';
 import router from '@/router/index.js'
-
-
 
 const props = defineProps(['id']);
 const WalkingPathId = computed(() => props.id);
@@ -99,8 +96,6 @@ if(token != null){
   bearer = token.split('"')[3]
 }
 console.log(bearer);
-
-
 
 onMounted(()=> {
     if(window.kakao && window.kakao.maps) {
@@ -159,15 +154,18 @@ const fetchDetail = async () => {
 }
 const setDetail = async () => {
     getDetail.value = await fetchDetail();
-    
 }
 
 setDetail().then(() => {
+    import('@/utils/image_list.js')
     console.log(getDetail.value);
+    mapAry.value = getDetail.value.mapList;
+    console.log(mapAry.value.length);
+    if(mapAry.value.length > 0) {
+        drawLine();
+    }
 })
 
-
-})
 </script>
 
 <style scoped>
