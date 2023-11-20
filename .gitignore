@@ -217,5 +217,4 @@ $RECYCLE.BIN/
 /server/.idea/
 /server/build/
 /server/gradle/
-!/server/.gradle/
-!/server/.gradle/
+server/build/tmp/compileJava/previous-compilation-data.bin

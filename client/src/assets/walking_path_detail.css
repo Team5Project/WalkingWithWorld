@@ -90,6 +90,7 @@ section:nth-child(4) {
 }
 
 .comments_wrapper {
+    height: 650px;
     border-radius: 20px;
     border: 1px solid #97bf04;
     padding: 20px;
@@ -97,7 +98,10 @@ section:nth-child(4) {
     flex-direction: column;
     justify-content: space-between;
 }
-
+.comments_content{
+    padding: 10px;
+    overflow-y: hidden;
+}
 .comments p {
     margin-top: 10px;
     margin-bottom: 47px;
