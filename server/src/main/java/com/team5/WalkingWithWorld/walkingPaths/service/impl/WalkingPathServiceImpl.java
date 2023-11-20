@@ -158,7 +158,7 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
         FileVo fileVo = new FileVo(files);
         java.util.Map<String, String> filesName = null;
         try {
-            filesName = fileUpload.upload(fileVo);
+            filesName = fileUpload.upload(files);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -26,7 +26,8 @@ public class ReviewsController {
     public ReviewsController(ReviewsService reviewsService) {
         this.reviewsService = reviewsService;
     }
-//MVC Controller
+
+    //MVC Controller
 /*    @PostMapping("/reviews/{walking-paths-id}/write")
     public String createReview(@Login UsersDTO loginUser,
                                @PathVariable("walking-paths-id") int id,
@@ -128,7 +129,7 @@ public class ReviewsController {
     }*/
     @GetMapping("/{walking-paths-id}/reviews")
     public ResponseEntity getReviewsList(@PathVariable("walking-paths-id") Long id,
-                                         @PageableDefault Pageable pageable){
+                                         @PageableDefault Pageable pageable) {
 
         PageResponseDto pageResponseDto = reviewsService.readReviewsList(id, pageable);
 
@@ -151,9 +152,9 @@ public class ReviewsController {
                                         @RequestPart("reviewsRequestDTO") ReviewsRequestDTO reviewsRequestDTO,
                                         @RequestPart(value = "files", required = false) List<MultipartFile> files) throws IOException {
 
-
         Reviews reviews = reviewsService.createReviews(reviewsRequestDTO, customPrincipal, files, id);
-        return new ResponseEntity<>(reviews, HttpStatus.OK);
+
+        return new ResponseEntity<>(reviews, HttpStatus.CREATED);
     }
 
 
@@ -162,7 +163,7 @@ public class ReviewsController {
                                         @PathVariable("walking-paths-id") Long walkingPathsId,
                                         @PathVariable("reviews-id") Long reviewId,
                                         @RequestPart ReviewsRequestDTO reviewsRequestDTO,
-                                        @RequestPart List<MultipartFile> files){
+                                        @RequestPart List<MultipartFile> files) {
         Reviews reviews = reviewsService.updateReviews(walkingPathsId, reviewId, reviewsRequestDTO, files);
         return new ResponseEntity(reviews, HttpStatus.OK);
     }

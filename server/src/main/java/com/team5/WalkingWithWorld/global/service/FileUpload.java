@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 //이미지 업로드 구현
@@ -18,11 +19,12 @@ public class FileUpload {
     @Value("${file.path}")
     private String path;
 
-    public Map<String, String> upload(FileVo files) throws IOException {
+    public Map<String, String> upload(List<MultipartFile> files) throws IOException {
 
         Map<String, String> filesName = new HashMap<>();
 
-        for (MultipartFile mfile : files.getFiles()) {
+
+        for (MultipartFile mfile : files) {
             if(mfile.isEmpty())
                 return filesName;
             String fileName = LocalDateTime.now().getNano() + mfile.getOriginalFilename();

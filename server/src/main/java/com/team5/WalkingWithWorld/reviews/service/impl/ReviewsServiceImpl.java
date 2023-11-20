@@ -58,8 +58,7 @@ public class ReviewsServiceImpl implements ReviewsService {
     @Override
     public PageResponseDto<ReviewsResponseDTO> readReviewsList(Long walkingPathsId, Pageable pageable) {
         Page<Reviews> reviews = reviewsRepository.findAllByWalkingPathsId(walkingPathsId, pageable);
-        List<Photos> photos = photosRepository.findByReviews(reviews.getContent().get(0));
-        System.out.println(photos);
+
         List<ReviewsResponseDTO> reviewsResponseDTOList = reviews.stream().map(review -> ReviewsResponseDTO.from(review, photosRepository.findByReviews(review))).toList();
 
         List<Integer> barNumber = paginationService.getPaginationBarNumbers(reviews.getNumber(), reviews.getTotalPages());
@@ -76,17 +75,19 @@ public class ReviewsServiceImpl implements ReviewsService {
 
         Reviews reviews = reviewsRepository.save(reviewsRequestDTO.toEntity(users, walkingPaths));
 
-        if (!files.isEmpty()) {
-            FileVo fileVo = new FileVo(files);
-            Map<String, String> filesName = fileUpload.upload(fileVo);
-            PhotosDTO photosDTO = new PhotosDTO();
-            photosDTO.setReviewsId(reviews.getId());
-            for (Map.Entry<String, String> entry : filesName.entrySet()) {
-                photosDTO.setImgName(entry.getKey());
-                photosDTO.setImgPath(entry.getValue());
-                photosRepository.save(photosDTO.toEntity(reviews, reviews.getWalkingPaths()));
-            }
+
+        FileVo fileVo = new FileVo(files);
+
+        Map<String, String> filesName = fileUpload.upload(files);
+        PhotosDTO photosDTO = new PhotosDTO();
+        photosDTO.setReviewsId(reviews.getId());
+        for (Map.Entry<String, String> entry : filesName.entrySet()) {
+            photosDTO.setImgName(entry.getKey());
+            photosDTO.setImgPath(entry.getValue());
+            System.out.println("사진 확인" + photosDTO);
+            photosRepository.save(photosDTO.toEntity(reviews, reviews.getWalkingPaths()));
         }
+
         return reviews;
     }
 
