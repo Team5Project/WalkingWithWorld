@@ -154,10 +154,9 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
                 .build();
         WalkingPaths walkingPaths = walkingPathsRepository.save(entity);
         // 지도
-        for (RequestMapDTO dto : requestDTO.getRequestMapDTO()) {
-            Map map = Map.from(walkingPaths, dto);
-            mapRepository.save(map);
-        }
+        Map map = Map.from(walkingPaths, requestDTO.getRequestMapDTO());
+        mapRepository.save(map);
+
         // 사진
         if (files != null) {
             FileVo fileVo = new FileVo(files);

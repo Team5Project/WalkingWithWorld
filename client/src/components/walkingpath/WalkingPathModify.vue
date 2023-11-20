@@ -4,10 +4,10 @@
         <form @submit.prevent="writeWalkingPaths">
             <div id="input-items">
                 <div id="left-form">
-                    <label>산책로 이름<br><input type="text" class="text-box" name="title" required></label><br>
+                    <label>산책로 이름<br><input type="text" class="text-box" name="title" v-model="title" required></label><br>
                     <label>주소
                         <input type="button" class="button" @click.self.prevent="searchAddr" value="주소 찾기"><br>
-                        <input type="text" name="addr" class="text-box" id="address" required><br>
+                        <input type="text" name="addr" class="text-box" id="address" v-model="addr" required><br>
                     </label><br>
                     <span>사진(5개 제한)</span><br>
                     <section class="img-area">
@@ -283,32 +283,29 @@ const getTimeHTML = function(distance) {
     coordsY.value = clickMa;
     totalDistance.value = distance;
     totalTime.value = walkTime;
-    console.log(coordsX.value);
-    console.log(coordsY.value);
-    console.log(totalDistance.value);
-    console.log(totalTime.value);
 
     return content;
 }
 // walking-path 생성
 const files = ref([]);
+const title = ref(null);
+const addr = ref(null);
+const result = ref([]);
+
 async function writeWalkingPaths() {
+    let mapInstance = {distance:totalDistance.value, time:totalTime.value, coordinateX:coordsX.value, coordinateY:coordsY.value};
+    result.value = mapInstance;
+    console.log(result.value);
+
     const bearer = localStorage.getItem('token').split('"')[3];
-    console.log(bearer);
-    
-    const data = {title:"제목", addr:"주소", requestMapDTO:[]};
+    const data = {title:title.value, addr:addr.value, requestMapDTO:result.value};
     const formData = new FormData();
     formData.append(
         'requestDTO',
         new Blob([JSON.stringify(data)], {type:'application/json'})
     );
-    if(files){
-        formData.append('files', files.value);
-    } else{
-        formData.append('files', new Blob(),'');
-    }
-    for (let pair of formData.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
+    for(let i = 0; i < files.value.length; i++) {
+        formData.append('files', files.value[i]);
     }
     
     await axios.post('http://localhost:8089/walking-path', formData, {
@@ -319,7 +316,17 @@ async function writeWalkingPaths() {
     });
 }
 const uploadFile = function(e) {
-    files.value = e.target.files;
+    var file = e.target.files;
+    var fileArr = Array.from(file);
+    files.value = [];
+    fileArr.forEach(function(f) {
+        if(!f.type.match("image/.*")){
+            alert("이미지 파일만 업로드 가능합니다.");
+        } else{
+            files.value.push(f);
+        }
+    });
+    console.log(files.value);
 }
 </script>
 <style scoped>

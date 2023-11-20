@@ -35,6 +35,6 @@ public class Map {
     }
 
     public static Map from(WalkingPaths walkingPaths, RequestMapDTO requestMapDTO) {
-        return new Map(walkingPaths, requestMapDTO.getTime(), requestMapDTO.getDistance(), requestMapDTO.getCoordinateX(), requestMapDTO.getCoordinateY());
+        return new Map(walkingPaths, requestMapDTO.getTime(), requestMapDTO.getDistance(), requestMapDTO.getCoordinateX().toString(), requestMapDTO.getCoordinateY().toString());
     }
 }
