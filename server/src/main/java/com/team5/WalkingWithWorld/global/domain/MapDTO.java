@@ -15,8 +15,6 @@ public class MapDTO {
     private Long walkingPathsId;
     private Long time;
     private String distance;
-    private String coordinateX;
-    private String coordinateY;
 
     public static MapDTO from(Map map){
         return MapDTO.builder()
@@ -24,8 +22,6 @@ public class MapDTO {
                 .walkingPathsId(map.getWalkingPaths().getId())
                 .time(map.getTime())
                 .distance(map.getDistance())
-                .coordinateX(map.getCoordinateX())
-                .coordinateY(map.getCoordinateY())
                 .build();
     }
 }

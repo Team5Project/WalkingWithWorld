@@ -1,12 +1,13 @@
 package com.team5.WalkingWithWorld.walkingPaths.service.impl;
 
 import com.team5.WalkingWithWorld.global.domain.FileVo;
-import com.team5.WalkingWithWorld.global.dto.RequestMapDTO;
+import com.team5.WalkingWithWorld.global.entity.Coordinate;
 import com.team5.WalkingWithWorld.global.entity.Map;
 import com.team5.WalkingWithWorld.global.entity.Photos;
 import com.team5.WalkingWithWorld.global.exception.BusinessLogicException;
 import com.team5.WalkingWithWorld.global.exception.ExceptionCode;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
+import com.team5.WalkingWithWorld.global.repository.CoordinateRepository;
 import com.team5.WalkingWithWorld.global.repository.MapRepository;
 import com.team5.WalkingWithWorld.global.repository.PhotosRepository;
 import com.team5.WalkingWithWorld.global.service.FileUpload;
@@ -21,9 +22,7 @@ import com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths;
 import com.team5.WalkingWithWorld.walkingPaths.repository.WalkingPathsRepository;
 import com.team5.WalkingWithWorld.walkingPaths.service.WalkingPathsService;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,6 +39,7 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
     private final UsersRepository usersRepository;
     private final MapRepository mapRepository;
     private final PhotosRepository photosRepository;
+    private final CoordinateRepository coordinateRepository;
     private final FileUpload fileUpload;
     private final PageService pageService;
 
@@ -48,12 +48,14 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
                                   UsersRepository usersRepository,
                                   MapRepository mapRepository,
                                   PhotosRepository photosRepository,
+                                  CoordinateRepository coordinateRepository,
                                   FileUpload fileUpload,
                                   PageService pageService) {
         this.walkingPathsRepository = walkingPathsRepository;
         this.usersRepository = usersRepository;
         this.mapRepository = mapRepository;
         this.photosRepository = photosRepository;
+        this.coordinateRepository = coordinateRepository;
         this.fileUpload = fileUpload;
         this.pageService = pageService;
 
@@ -63,7 +65,7 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
     @Override
     public PageResponseDto<ResponseWalkingPathDTO> getPage(Pageable pageable) {
         Page<WalkingPaths> walkingPaths = walkingPathsRepository.findAllByOrderByCreatedAtDesc(pageable);
-        List<ResponseWalkingPathDTO> responseWalkingPathDTOList = walkingPaths.stream().map(walkingPath -> ResponseWalkingPathDTO.from(walkingPath, mapRepository.findTop1ByWalkingPaths(walkingPath), photosRepository.findTop1ByWalkingPaths(walkingPath))).collect(Collectors.toList());
+        List<ResponseWalkingPathDTO> responseWalkingPathDTOList = walkingPaths.stream().map(walkingPath -> ResponseWalkingPathDTO.from(walkingPath, mapRepository.findByWalkingPaths(walkingPath), photosRepository.findTop1ByWalkingPaths(walkingPath))).collect(Collectors.toList());
         List<Integer> barNumber = pageService.getPaginationBarNumbers(pageable.getPageNumber(), walkingPaths.getTotalPages());
         return new PageResponseDto<>(responseWalkingPathDTOList, walkingPaths, barNumber);
     }
@@ -72,7 +74,7 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
     @Override
     public PageResponseDto<ResponseWalkingPathDTO> getSearchPage(String keyword, Pageable pageable) {
         Page<WalkingPaths> walkingPaths = walkingPathsRepository.findByTitleContainingOrderByCreatedAtDesc(keyword, pageable);
-        List<ResponseWalkingPathDTO> responseWalkingPathDTOList = walkingPaths.stream().map(walkingPath -> ResponseWalkingPathDTO.from(walkingPath, mapRepository.findTop1ByWalkingPaths(walkingPath), photosRepository.findTop1ByWalkingPaths(walkingPath))).toList();
+        List<ResponseWalkingPathDTO> responseWalkingPathDTOList = walkingPaths.stream().map(walkingPath -> ResponseWalkingPathDTO.from(walkingPath, mapRepository.findByWalkingPaths(walkingPath), photosRepository.findTop1ByWalkingPaths(walkingPath))).toList();
         List<Integer> barNumber = pageService.getPaginationBarNumbers(pageable.getPageNumber(), walkingPaths.getTotalPages());
         return new PageResponseDto<>(responseWalkingPathDTOList, walkingPaths, barNumber);
     }
@@ -91,7 +93,7 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
             throw new RuntimeException(e);
         }
         Page<WalkingPaths> walkingPaths = walkingPathsRepository.filterWalkingPaths(keyword, locations, filtersMap.get("minTime"), filtersMap.get("maxTime"), String.valueOf(filtersMap.get("minDistance")), String.valueOf(filtersMap.get("maxDistance")), pageable);
-        List<ResponseWalkingPathDTO> responseWalkingPathDTOList = walkingPaths.stream().map(walkingPath -> ResponseWalkingPathDTO.from(walkingPath, mapRepository.findTop1ByWalkingPaths(walkingPath), photosRepository.findTop1ByWalkingPaths(walkingPath))).toList();
+        List<ResponseWalkingPathDTO> responseWalkingPathDTOList = walkingPaths.stream().map(walkingPath -> ResponseWalkingPathDTO.from(walkingPath, mapRepository.findByWalkingPaths(walkingPath), photosRepository.findTop1ByWalkingPaths(walkingPath))).toList();
         List<Integer> barNumber = pageService.getPaginationBarNumbers(pageable.getPageNumber(), walkingPaths.getTotalPages());
         return new PageResponseDto<>(responseWalkingPathDTOList, walkingPaths, barNumber);
     }
@@ -137,7 +139,7 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
     @Override
     public ResponseWalkingPathDetailDTO readWalkingPath(long id) {
         WalkingPaths walkingPaths = walkingPathsRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));
-        ResponseWalkingPathDetailDTO dto = ResponseWalkingPathDetailDTO.from(walkingPaths, mapRepository.findByWalkingPaths(walkingPaths), photosRepository.findByWalkingPaths(walkingPaths));
+        ResponseWalkingPathDetailDTO dto = ResponseWalkingPathDetailDTO.from(walkingPaths, mapRepository.findByWalkingPaths(walkingPaths), coordinateRepository.findByWalkingPaths(walkingPaths), photosRepository.findByWalkingPaths(walkingPaths));
         return dto;
     }
 
@@ -156,6 +158,10 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
         // 지도
         Map map = Map.from(walkingPaths, requestDTO.getRequestMapDTO());
         mapRepository.save(map);
+        for(int i = 0; i < requestDTO.getRequestMapDTO().getCoordinateX().size(); i++) {
+            Coordinate coordinate = Coordinate.of(walkingPaths, requestDTO.getRequestMapDTO().getCoordinateX().get(i), requestDTO.getRequestMapDTO().getCoordinateY().get(i));
+            coordinateRepository.save(coordinate);
+        }
 
         // 사진
         if (files != null) {

@@ -11,42 +11,42 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QMap is a Querydsl query type for Map
+ * QCoordinate is a Querydsl query type for Coordinate
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QMap extends EntityPathBase<Map> {
+public class QCoordinate extends EntityPathBase<Coordinate> {
 
-    private static final long serialVersionUID = 1949535684L;
+    private static final long serialVersionUID = -223426544L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QMap map = new QMap("map");
+    public static final QCoordinate coordinate = new QCoordinate("coordinate");
 
-    public final StringPath distance = createString("distance");
+    public final StringPath coordinateX = createString("coordinateX");
+
+    public final StringPath coordinateY = createString("coordinateY");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Long> time = createNumber("time", Long.class);
-
     public final com.team5.WalkingWithWorld.walkingPaths.entity.QWalkingPaths walkingPaths;
 
-    public QMap(String variable) {
-        this(Map.class, forVariable(variable), INITS);
+    public QCoordinate(String variable) {
+        this(Coordinate.class, forVariable(variable), INITS);
     }
 
-    public QMap(Path<? extends Map> path) {
+    public QCoordinate(Path<? extends Coordinate> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QMap(PathMetadata metadata) {
+    public QCoordinate(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QMap(PathMetadata metadata, PathInits inits) {
-        this(Map.class, metadata, inits);
+    public QCoordinate(PathMetadata metadata, PathInits inits) {
+        this(Coordinate.class, metadata, inits);
     }
 
-    public QMap(Class<? extends Map> type, PathMetadata metadata, PathInits inits) {
+    public QCoordinate(Class<? extends Coordinate> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.walkingPaths = inits.isInitialized("walkingPaths") ? new com.team5.WalkingWithWorld.walkingPaths.entity.QWalkingPaths(forProperty("walkingPaths"), inits.get("walkingPaths")) : null;
     }
