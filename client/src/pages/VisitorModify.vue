@@ -54,6 +54,12 @@
                   class="btns btn_vsubmit"
                   @click="submitForm()"
                 />
+                <input
+                  type="button"
+                  value="수정"
+                  class="btns btn_vsubmit"
+                  @click="submitModifyForm()"
+                />
               </div>
             </form>
           </div>
@@ -92,6 +98,28 @@ async function submitForm() {
       console.log(response);
       if (response.status == 200) {
         alert("게시글이 작성되었습니다.");
+        modeToList();
+      }
+    })
+    .catch(function (error) {
+      console.log("error: ", error);
+    });
+}
+async function submitModifyForm() {
+  const data = {
+    name: vname.value,
+    password: vpassword.value,
+    content: vcontent.value,
+  };
+
+  await axios
+    .post(url, data, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then(function (response) {
+      console.log(response);
+      if (response.status == 200) {
+        alert("게시글이 수정되었습니다.");
         modeToList();
       }
     })

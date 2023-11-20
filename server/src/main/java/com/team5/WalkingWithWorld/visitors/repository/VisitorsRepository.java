@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface VisitorsRepository extends JpaRepository<Visitors, Long> {
     void deleteByIdAndPassword(Long id, String password);
+
 }

@@ -19,6 +19,9 @@
                 {{ formatDate(vo.createdAt) }}
               </p>
               <div class="visitor_mod">
+                <p class="btns btn_vdelete" @click="updateVisitorList(vo.id)">
+                  수정
+                </p>
                 <p class="btns btn_vdelete" @click="deleteVisitorList(vo.id)">
                   삭제
                 </p>
@@ -61,6 +64,9 @@ const formatDate = (dateString) => {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
   };
   const formattedDate = new Date(dateString).toLocaleDateString(
     "ko-KR",
@@ -79,10 +85,7 @@ async function deleteVisitorList(visitorId) {
   if (password) {
     /* const VisitorId = visitorId.value; */
     const url = `http://localhost:8089/${visitorId}`;
-    /* const data = {
-      id: VisitorId,
-      password: password,
-    }; */
+
     await axios
       .delete(url, {
         headers: { "Content-Type": "application/json" },
@@ -90,15 +93,23 @@ async function deleteVisitorList(visitorId) {
       })
       .then((response) => {
         console.log(response.data);
-        if (response.status == 200) {
-          alert("게시글이 삭제되었습니다.");
-        }
+        alert("게시글이 삭제되었습니다.");
         setList();
       })
       .catch((error) => {
         console.error(error);
-        alert(error);
+        alert("비밀번호가 일치하지 않습니다.");
       });
+  }
+}
+function updateVisitorList(visitorId) {
+  const password = prompt("비밀번호를 입력하세요:");
+  console.log("password:", password);
+  if (password) {
+    modeToModify();
+  } else {
+    console.error;
+    alert("비밀번호가 일치하지 않습니다.");
   }
 }
 </script>

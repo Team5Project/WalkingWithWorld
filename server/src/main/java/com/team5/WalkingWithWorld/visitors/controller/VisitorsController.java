@@ -81,8 +81,18 @@ public class VisitorsController {
         return new ResponseEntity(visitors, HttpStatus.OK);
     }
 
-/*     @RequestMapping(value="/insertVisitorsForm")
-    public String showInsertForm(){
-        return "insertVisitorsForm";
-    } */
+    @PutMapping("/visitor")
+    @Transactional
+    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody Visitors vo){
+        Visitors visitors;
+        try{
+            visitors =  visitorsService.updateVisitors(id, vo.getPassword(), vo.getContent());
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity(visitors, HttpStatus.OK);
+    }
+
+
 }
