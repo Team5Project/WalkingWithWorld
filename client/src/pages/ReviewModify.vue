@@ -85,6 +85,7 @@ const readInputFile = (e) => {// 미리보기 기능구현
 
     var files = e.target.files;
     var fileArr = Array.from(files);
+    files.value = fileArr;
     console.log(fileArr);
     fileArr.forEach(function(f){
     	if(!f.type.match("image/.*")){
