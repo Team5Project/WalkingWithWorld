@@ -78,21 +78,26 @@ const vpassword = ref("");
 const vcontent = ref("");
 
 async function submitForm() {
-  const data = {};
-  (data.name = vname.value),
-    (data.password = vpassword.value),
-    (data.content = vcontent.value),
-    await axios
-      .post(url, {
-        headers: { "Content-Type": "application/json" },
-        data,
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  const data = {
+    name: vname.value,
+    password: vpassword.value,
+    content: vcontent.value,
+  };
+
+  await axios
+    .post(url, data, {
+      headers: { "Content-Type": "application/json" },
+    })
+    .then(function (response) {
+      console.log(response);
+      if (response.status == 200) {
+        alert("게시글이 작성되었습니다.");
+        modeToList();
+      }
+    })
+    .catch(function (error) {
+      console.log("error: ", error);
+    });
 }
 </script>
 

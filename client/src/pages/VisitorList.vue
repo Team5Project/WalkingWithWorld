@@ -90,10 +90,14 @@ async function deleteVisitorList(visitorId) {
       })
       .then((response) => {
         console.log(response.data);
+        if (response.status == 200) {
+          alert("게시글이 삭제되었습니다.");
+        }
         setList();
       })
       .catch((error) => {
         console.error(error);
+        alert(error);
       });
   }
 }

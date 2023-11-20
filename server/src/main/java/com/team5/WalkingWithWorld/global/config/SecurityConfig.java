@@ -53,7 +53,8 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .requestMatchers(new AntPathRequestMatcher("/h2/**"));
+                .requestMatchers(new AntPathRequestMatcher("/h2/**"))
+                .requestMatchers(new AntPathRequestMatcher("/visitor/**"));
     }
 
     @Bean
@@ -74,7 +75,6 @@ public class SecurityConfig {
 //                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll() // request
 //                                .requestMatchers(new AntPathRequestMatcher("/walking-path","POST")).hasRole("USER")
 //                                .requestMatchers(new AntPathRequestMatcher("/walking-path","GET")).hasRole("ADMIN")
-                                .requestMatchers(new AntPathRequestMatcher("/visitor")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/list")).permitAll()
 
                                 .anyRequest().permitAll()
