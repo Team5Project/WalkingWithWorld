@@ -21,4 +21,6 @@ public interface ReviewsService {
 
     // 리뷰 수정
     Reviews updateReviews(Long walkingPathsId, Long reviewsId, ReviewsRequestDTO reviewsRequestDTO, List<MultipartFile> files);
+
+    void deleteReviews(Long reviewsId, String email);
 }

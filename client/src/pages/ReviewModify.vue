@@ -11,7 +11,7 @@
                     <div class="walking-path">
                         <img v-if="walkingPath.photosList == 0" src="/images/noimage.png" alt="">
                         <img v-if="walkingPath.photosList > 0"
-                            v-bind:src="'http://localhost:8089/ex_images/' + walkingPath.photosList[0].imgName" alt="" />
+                            :src="'http://localhost:8089/ex_images/' + walkingPath.photosList[0].imgName" alt="" />
                         <span>{{ walkingPath.title }}</span>
                         <section v-if="walkingPath.mapList > 0">
                             <span>{{ walkingPath.mapList[0].distance }}</span>
@@ -37,8 +37,7 @@
                                 </div>
                                 <div class="filebox">
                                     <label for="file">+</label>
-                                    <input id="file" type="file" accept='image/jpg,image/png,image/jpeg,image/gif'
-                                        @change="readInputFile" multiple />
+                                    <input id="file" type="file" @change="readInputFile" multiple />
                                 </div>
                             </section>
                         </section>
@@ -83,9 +82,14 @@ const readInputFile = (e) => {// 미리보기 기능구현
     const review = document.getElementById('review_image_container')
     review.innerHTML = '';
 
-    var files = e.target.files;
-    var fileArr = Array.from(files);
-    console.log(fileArr);
+    var file = e.target.files;
+    
+    //e.target.files;
+    
+    var fileArr = Array.from(file);
+    files.value = fileArr;
+    console.log(fileArr)
+    
     fileArr.forEach(function(f){
     	if(!f.type.match("image/.*")){
         	alert("이미지 확장자만 업로드 가능합니다.");
@@ -113,19 +117,20 @@ function postReview() {
 
     formData.append('reviewsRequestDTO', blob);
 
-    if (files.value.length > 0) {
+    if (files.value && files.value.length > 0) {
         files.value.forEach((file) => {
-            console.log(file);
+            console.log("여기"+file);
             formData.append('files', file);
         });
     } else {
+        console.log("없")
         formData.append('files', new Blob(), '');
     }
 
     // formData의 내용을 로그로 출력
-    // for (let pair of formData.entries()) {
-    //     console.log(pair[0] + ', ' + pair[1]);
-    // }
+    for (let pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+    }
 
 
     axios.post(`http://localhost:8089/${props.id}/reviews`, formData, {
@@ -136,10 +141,10 @@ function postReview() {
         },
     }).then(response => {
         if (response.status == 201) {
-            router.push('/walking-pahts/' + props.id)
+            router.push('/walking-path/' + props.id)
         }
     })
-        .then(() => close(undefined))
+        // .then(() => close(undefined))
         .catch(error => console.log(error))
 }
 
