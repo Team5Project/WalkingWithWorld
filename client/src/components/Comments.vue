@@ -21,9 +21,9 @@
         </article>
         <span @click="moreGetComments()">more + </span>
     </div>
-    <form action="" method="post" id="comments_write">
+    <form id="comments_write" @submit.prevent="handleSubmit">
       <input type="text" id="comment_content" class="comments_input" name="content" placeholder="댓글을 입력해주세요" v-model="comment_content" required/>
-      <input type="button" class="btns btn_comments" value="등록" @click="writeComments()"/>
+      <input type="button" class="btns btn_comments" value="등록" @click="writeComments"/>
     </form>
   </div>
 </template>
@@ -58,17 +58,10 @@ async function CommentsRead() {
     getComments.value = [...getComments.value, ...data];
     totalPages.value = pageInfo.totalPages;
     currentPage.value++ ;
-    if(currentPage.value === 1){
-      document.querySelector('.comments_content').style.overflowY = "hidden"
-    }else{
-      document.querySelector('.comments_content').style.overflowY = "scroll"
-    }
   } catch (error) {
     console.error('Error fetching comments:', error);
   }
 }
-
-
 
 function moreGetComments(){
   CommentsRead();
