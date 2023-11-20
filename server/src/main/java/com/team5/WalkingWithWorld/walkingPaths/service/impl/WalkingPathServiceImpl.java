@@ -67,6 +67,7 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
         List<Integer> barNumber = pageService.getPaginationBarNumbers(pageable.getPageNumber(), walkingPaths.getTotalPages());
         return new PageResponseDto<>(responseWalkingPathDTOList, walkingPaths, barNumber);
     }
+
     // 페이지 - 검색
     @Override
     public PageResponseDto<ResponseWalkingPathDTO> getSearchPage(String keyword, Pageable pageable) {
@@ -81,7 +82,7 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
     public PageResponseDto<ResponseWalkingPathDTO> searchConditionPage(String keyword, String filters, Pageable pageable) {
         List<String> locations;
         HashMap<String, Integer> filtersMap;
-        keyword = keyword.isEmpty()?null:keyword;
+        keyword = keyword.isEmpty() ? null : keyword;
         try {
             String[] filterAry = divideFilters(filters);
             locations = readLocation(filterAry[0]);
@@ -101,28 +102,31 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
         String[] filterAry = new String[2];
         filterAry[0] = filterString.substring(0, idx);
         filterAry[1] = filterString.substring(idx + 1);
-        return  filterAry;
+        return filterAry;
     }
+
     public List<String> readLocation(String location) {
         // location[]
         String[] readDetail = location.split(":");
         List<String> locations;
-        if(readDetail.length < 2)
+        if (readDetail.length < 2)
             locations = null;
-        else if(readDetail[1].contains(",")) {
+        else if (readDetail[1].contains(",")) {
             String[] locationAry = readDetail[1].split(",");
             locations = Arrays.stream(locationAry).toList();
-        }
-        else
-            locations = new ArrayList<>() {{add(readDetail[1]);}};
+        } else
+            locations = new ArrayList<>() {{
+                add(readDetail[1]);
+            }};
 
-        return  locations;
+        return locations;
     }
+
     public HashMap<String, Integer> readFilters(String filters) {
         // (minTime, maxTime, minDistance, maxDistance)
         String[] filterAry = filters.split("\\|");
         HashMap<String, Integer> filterMap = new HashMap<>();
-        for(String detail : filterAry) {
+        for (String detail : filterAry) {
             String[] readDetail = detail.split(":");
             filterMap.put(readDetail[0], Integer.valueOf(readDetail[1]));
         }
@@ -131,7 +135,7 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
 
     // 산책로 하나 조회
     @Override
-    public ResponseWalkingPathDetailDTO readWalkingPath(long id){
+    public ResponseWalkingPathDetailDTO readWalkingPath(long id) {
         WalkingPaths walkingPaths = walkingPathsRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));
         ResponseWalkingPathDetailDTO dto = ResponseWalkingPathDetailDTO.from(walkingPaths, mapRepository.findByWalkingPaths(walkingPaths), photosRepository.findByWalkingPaths(walkingPaths));
         return dto;
@@ -141,7 +145,7 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
     //TODO 산책로 작성 시 FileIOException이 발생하여도 트랜잭션이 발동하지 않음
     @Override
     @Transactional
-    public WalkingPathsMapDTO createWalkingPath(RequestWalkingPathDTO requestDTO, List<MultipartFile> files){ // , UsersDTO usersDTO
+    public WalkingPathsMapDTO createWalkingPath(RequestWalkingPathDTO requestDTO, List<MultipartFile> files) { // , UsersDTO usersDTO
         Users users = usersRepository.getReferenceById(1);
         WalkingPaths entity = WalkingPaths.builder()
                 .users(users)
@@ -150,31 +154,34 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
                 .build();
         WalkingPaths walkingPaths = walkingPathsRepository.save(entity);
         // 지도
-        for(RequestMapDTO dto : requestDTO.getRequestMapDTO()) {
+        for (RequestMapDTO dto : requestDTO.getRequestMapDTO()) {
             Map map = Map.from(walkingPaths, dto);
             mapRepository.save(map);
         }
         // 사진
-        FileVo fileVo = new FileVo(files);
-        java.util.Map<String, String> filesName = null;
-        try {
-            filesName = fileUpload.upload(fileVo);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        for(java.util.Map.Entry<String, String> entry : filesName.entrySet()) {
-            Photos photos = Photos.builder()
-                    .walkingPaths(walkingPaths)
-                    .imgName(entry.getKey())
-                    .imgPath(entry.getValue())
-                    .build();
-            photosRepository.save(photos);
+        if (files != null) {
+            FileVo fileVo = new FileVo(files);
+            java.util.Map<String, String> filesName = null;
+            try {
+                filesName = fileUpload.upload(fileVo);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            for (java.util.Map.Entry<String, String> entry : filesName.entrySet()) {
+                Photos photos = Photos.builder()
+                        .walkingPaths(walkingPaths)
+                        .imgName(entry.getKey())
+                        .imgPath(entry.getValue())
+                        .build();
+                photosRepository.save(photos);
+            }
         }
         return WalkingPathsMapDTO.from(walkingPaths);
     }
+
     // 산책로 수정
     @Override
-    public void modifyWalkingPath(RequestWalkingPathDTO requestWalkingPathDTO, int walkingPathsId){
+    public void modifyWalkingPath(RequestWalkingPathDTO requestWalkingPathDTO, int walkingPathsId) {
         WalkingPaths walkingPaths = walkingPathsRepository.findById(walkingPathsId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));
 
         Optional.ofNullable(requestWalkingPathDTO.getTitle()).ifPresent(walkingPaths::updateTitle);
@@ -182,6 +189,7 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
 
         walkingPathsRepository.save(walkingPaths);
     }
+
     // 조회수 업데이트
     @Override
     @Transactional
@@ -189,10 +197,11 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
         WalkingPaths walkingPaths = walkingPathsRepository.findById(walkingPathsId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));
         walkingPathsRepository.updateView(walkingPathsId);
     }
+
     // 산책로 삭제
     @Override
     @Transactional
-    public void deleteWalkingPath(int id){
+    public void deleteWalkingPath(int id) {
         WalkingPaths walkingPaths = walkingPathsRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));
         mapRepository.deleteAllByWalkingPaths(walkingPaths);
         photosRepository.deleteAllByWalkingPaths(walkingPaths);

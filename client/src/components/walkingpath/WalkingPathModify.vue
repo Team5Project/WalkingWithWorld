@@ -1,7 +1,7 @@
 <template>  
     <div id="write-form">
         <h1>산책로 등록</h1>
-        <form method="post" action="" enctype="multipart/form-data">
+        <form @submit.prevent="writeWalkingPaths">
             <div id="input-items">
                 <div id="left-form">
                     <label>산책로 이름<br><input type="text" class="text-box" name="title" required></label><br>
@@ -28,14 +28,14 @@
                 <div id="right-form">
                     <label>경로 그리기
                         <div class="map_wrap">
-                            <div @click="mapClickEvent" class="readMap" id="map"></div>
+                            <div @click.prevent="mapClickEvent" class="readMap" id="map"></div>
                         </div>
                     </label>
                 </div>
                 <div id="clear"></div>
             </div>
             <div id="buttons">
-                <input type="submit" class="submit-button" value="확인" @click="writeWalkingPaths">
+                <input type="submit" class="submit-button" value="확인">
                 <a th:href="${referer}">&nbsp; 뒤로가기 &nbsp;</a>
             </div>
         </form>
@@ -291,27 +291,35 @@ const getTimeHTML = function(distance) {
     return content;
 }
 // walking-path 생성
-const files = ref(null);
+const files = ref([]);
 async function writeWalkingPaths() {
     const bearer = localStorage.getItem('token').split('"')[3];
     console.log(bearer);
-    const data = {title:"제목", addr:"주소"};
+    
+    const data = {title:"제목", addr:"주소", requestMapDTO:[]};
     const formData = new FormData();
     formData.append(
         'requestDTO',
         new Blob([JSON.stringify(data)], {type:'application/json'})
     );
-    formData.append('files', files.value);
+    if(files){
+        formData.append('files', files.value);
+    } else{
+        formData.append('files', new Blob(),'');
+    }
+    for (let pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+    }
     
     await axios.post('http://localhost:8089/walking-path', formData, {
         headers: {
             'authorization' : bearer,
+            'Content-Type' : 'multipart/form-data'
         },
     });
 }
 const uploadFile = function(e) {
     files.value = e.target.files;
-    console.log(files.value);
 }
 </script>
 <style scoped>
