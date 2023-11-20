@@ -3,13 +3,13 @@
     
     <div class="comments_content">
       <!--                    여기에 댓글이 들어감-->
-      <article class="comments" v-for="item in getComments.data">
+      <article class="comments" v-for="item in getComments">
         <div class="comments_info">
           <div class="review_info">
             <div class="detail_member">
                 <span href="" class="profile_image"></span>
                 <span class="name"> {{ item.name }} </span>
-                <span class="date">{{ dateFormat(item.createdAt) }}</span>
+                <span class="date">{{ item.createdAt }}</span>
             </div>
                 <div class="up_del" style="visibility:visible;">
                     <span id="update" class="info_modi">수정</span>
@@ -19,10 +19,11 @@
         </div>
             <p> {{ item.content }} </p>
         </article>
+        <span @click="moreGetComments()">more + </span>
     </div>
-    <form action="" method="post" id="comments_write">
+    <form id="comments_write" @submit.prevent="writeComments">
       <input type="text" id="comment_content" class="comments_input" name="content" placeholder="댓글을 입력해주세요" v-model="comment_content" required/>
-      <input type="button" class="btns btn_comments" value="등록" @click="writeComments()"/>
+      <input type="button" class="btns btn_comments" value="등록" @click="writeComments"/>
     </form>
   </div>
 </template>
@@ -30,11 +31,12 @@
 <script setup>
 import { ref, defineProps } from 'vue';
 import axios from 'axios';
-import dayjs from 'dayjs';
 
 const props = defineProps(['id']);
 const getComments = ref([]);
-const commentsUrl = `http://localhost:8089/${props.id}/comments`
+const currentPage = ref(0);
+const totalPages = ref('');
+const commentsUrl = `http://localhost:8089/${props.id}/comments`;
 const comment_content = ref('');
 const token = localStorage.getItem('token');
 let bearer;
@@ -49,21 +51,27 @@ console.log(bearer);
 // get
 // ----------------------------------
 
-function CommentsRead(){
-  const fetchComments = async () =>{
-    const response = await axios.get(commentsUrl);
-    return response.data
+async function CommentsRead() {
+  try {
+    const response = await axios.get(`${commentsUrl}?page=${currentPage.value}&size=5`);
+    const { data, pageInfo } = response.data;
+    getComments.value = [...getComments.value, ...data];
+    totalPages.value = pageInfo.totalPages;
+    currentPage.value++ ;
+    if(currentPage.value === 1){
+      document.querySelector('.comments_content').style.overflowY = "hidden"
+    }else{
+      document.querySelector('.comments_content').style.overflowY = "scroll"
+    }
+  } catch (error) {
+    console.error('Error fetching comments:', error);
   }
-  const setComments = async () => {
-    getComments.value = await fetchComments(); 
-  }
-  setComments().then(()=>{
-    console.log(getComments.value.data);
-  })
 }
 
-function dateFormat(date){
-  return dayjs(date).format('YYYY-MM-DD HH:mm:ss');
+
+
+function moreGetComments(){
+  CommentsRead();
 }
 
 CommentsRead();

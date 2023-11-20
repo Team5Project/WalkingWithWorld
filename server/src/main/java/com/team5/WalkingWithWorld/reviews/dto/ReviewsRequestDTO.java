@@ -12,8 +12,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ReviewsRequestDTO {
-    private int usersId; // 세션에서 로그인한 유저의 id를 가져와서 넣어주면 됍니다
-    private int walkingPathsId; // 위 PathVariable("walking-paths-id") -> /walking-paths/ 1
+
     private String content;
 
     public  Reviews toEntity(Users users, WalkingPaths walkingPaths){

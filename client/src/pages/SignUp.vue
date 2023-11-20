@@ -13,7 +13,7 @@
 						<button v-on:click.self.prevent="verifyEmail" value="중복 검사" class="btn-email">중복 검사</button>
 					</section>
 					<section class="address">
-						<input type="text" v-model="addr"  id="address" class="input" placeholder="주소">
+						<input type="text" v-bind:value="addr" @input="addr = $event.target.value" id="address" class="input" placeholder="주소">
 						<button v-on:click.self.prevent="searchAddr" value="주소 찾기" class="btn-address">주소 찾기</button>
 					</section>
 					<input type="submit" value="확인" class="btn-signup">
@@ -27,13 +27,35 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import router from '@/router/index.js'
-import searchAddr from '@/utils/addr.js'
 
 const name = ref("");
 const password = ref("");
 const email = ref("");
 const addr = ref("");
 
+
+function searchAddr() {
+  new daum.Postcode({
+      oncomplete: function (data) {
+          // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+          // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+          // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+         // var addr = ''; // 주소 변수
+
+          //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+          if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+              addr.value = data.roadAddress;
+          } else { // 사용자가 지번 주소를 선택했을 경우(J)
+              addr.value = data.jibunAddress;
+          }
+
+          // 주소 정보를 해당 필드에 넣는다.
+          document.getElementById("address").value = addr;
+					
+      }
+  }).open();
+}
 
 function submitForm(){
 	const RequestUsersDTO = {};
@@ -68,7 +90,7 @@ function verifyEmail(){
 	.catch((err)=>{
 		alert(err);
 	})
-}
+};
 </script>
 <style scoped>
 @import "@/assets/signup_form.css";

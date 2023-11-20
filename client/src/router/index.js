@@ -6,6 +6,8 @@ import WalkingPathDetail from '@/pages/WalkingPathDetail.vue'
 import Visitor from '@/pages/Visitor.vue'
 import Login from '@/pages/Login.vue'
 import SignUp from '@/pages/SignUp.vue'
+import ReviewModify from '@/pages/ReviewModify.vue'
+
 
 const routes = [
   { path: '/', component: Main },
@@ -14,6 +16,7 @@ const routes = [
   { path: '/visitor', component: Visitor },
   { path: '/login', component: Login },
   { path: '/signup', component: SignUp },
+  { name : ReviewModify , path: '/:id/reviews' , component: ReviewModify , props:true}
 ];
 
 const router = createRouter({

@@ -96,12 +96,12 @@ h1 {
     align-items: center;
 }
 
-.image_container>img {
-    width: 100px;
-    height: 100px;
-    margin: 10px;
+.image_container img {
+    width: 25%; /* 부모 요소의 50% 크기로 설정 */
+    height: auto; /* 자동으로 높이 조절 */
     border-radius: 10px;
 }
+
 
 .filebox .upload-file {
     display: inline-block;
