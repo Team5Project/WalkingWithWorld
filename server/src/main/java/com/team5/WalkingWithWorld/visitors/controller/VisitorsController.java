@@ -2,6 +2,7 @@ package com.team5.WalkingWithWorld.visitors.controller;
 
 import com.team5.WalkingWithWorld.dao.VisitorsMapper;
 import com.team5.WalkingWithWorld.visitors.dto.VisitorsDTO;
+import com.team5.WalkingWithWorld.visitors.dto.VisitorsUpdateRequestDTO;
 import com.team5.WalkingWithWorld.visitors.entity.Visitors;
 import com.team5.WalkingWithWorld.visitors.repository.VisitorsRepository;
 import com.team5.WalkingWithWorld.visitors.service.VisitorsService;
@@ -81,17 +82,11 @@ public class VisitorsController {
         return new ResponseEntity(visitors, HttpStatus.OK);
     }
 
-    @PutMapping("/visitor")
+    @PutMapping("/visitor/{id}")
     @Transactional
-    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody Visitors vo){
-        Visitors visitors;
-        try{
-            visitors =  visitorsService.updateVisitors(id, vo.getPassword(), vo.getContent());
-        }catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity(visitors, HttpStatus.OK);
+    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody VisitorsUpdateRequestDTO requestDTO){
+        visitorsService.updateVisitors(id, requestDTO);
+        return new ResponseEntity(id, HttpStatus.RESET_CONTENT);
     }
 
 

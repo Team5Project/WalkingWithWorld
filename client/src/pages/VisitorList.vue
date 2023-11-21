@@ -31,7 +31,7 @@
         </article>
       </div>
       <div class="btn_write_wrapper">
-        <button class="visitor_write btns btn_vwrite" @click="modeToModify">
+        <button class="visitor_write btns btn_vwrite" @click="modeToModify()">
           글쓰기
         </button>
       </div>
@@ -40,12 +40,16 @@
 </template>
 
 <script setup>
-import { defineEmits, ref, computed } from "vue";
+import { defineProps, defineEmits, ref, computed } from "vue";
 import axios from "axios";
 
+const props = defineProps(["id"]);
+const visitorId = computed(() => props.id);
+console.log(visitorId.value);
+
 const emit = defineEmits(["pageMode"]);
-const modeToModify = () => {
-  emit("pageMode", "modify");
+const modeToModify = (id) => {
+  emit("pageMode", "modify", id);
 };
 
 const list = ref([]);
@@ -75,10 +79,6 @@ const formatDate = (dateString) => {
   return formattedDate;
 };
 
-const props = defineProps(["id"]);
-const visitorId = computed(() => props.id);
-console.log(visitorId.value);
-
 async function deleteVisitorList(visitorId) {
   const password = prompt("비밀번호를 입력하세요:");
   console.log("password:", password);
@@ -106,7 +106,7 @@ function updateVisitorList(visitorId) {
   const password = prompt("비밀번호를 입력하세요:");
   console.log("password:", password);
   if (password) {
-    modeToModify();
+    modeToModify(visitorId);
   } else {
     console.error;
     alert("비밀번호가 일치하지 않습니다.");

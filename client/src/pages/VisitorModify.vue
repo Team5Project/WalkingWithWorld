@@ -58,7 +58,7 @@
                   type="button"
                   value="수정"
                   class="btns btn_vsubmit"
-                  @click="submitModifyForm()"
+                  @click="submitModifyForm(visitorId)"
                 />
               </div>
             </form>
@@ -70,7 +70,7 @@
 </template>
 
 <script setup>
-import { defineEmits, ref } from "vue";
+import { defineProps, defineEmits, ref, computed } from "vue";
 import axios from "axios";
 
 const emit = defineEmits(["pageMode"]);
@@ -78,12 +78,12 @@ const modeToList = () => {
   emit("pageMode", "list");
 };
 
-const url = "http://localhost:8089/visitor";
 const vname = ref("");
 const vpassword = ref("");
 const vcontent = ref("");
 
 async function submitForm() {
+  const url = "http://localhost:8089/visitor";
   const data = {
     name: vname.value,
     password: vpassword.value,
@@ -105,7 +105,13 @@ async function submitForm() {
       console.log("error: ", error);
     });
 }
-async function submitModifyForm() {
+
+const props = defineProps(["id"]);
+const visitorId = computed(() => props.id);
+console.log(visitorId.value);
+
+async function submitModifyForm(visitorId) {
+  const url = `http://localhost:8089/visitor/${visitorId.value}`;
   const data = {
     name: vname.value,
     password: vpassword.value,
@@ -113,7 +119,7 @@ async function submitModifyForm() {
   };
 
   await axios
-    .post(url, data, {
+    .put(url, data, {
       headers: { "Content-Type": "application/json" },
     })
     .then(function (response) {

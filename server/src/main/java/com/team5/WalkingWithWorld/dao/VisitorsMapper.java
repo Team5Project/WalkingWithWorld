@@ -15,7 +15,7 @@ public interface VisitorsMapper {
     @Delete("delete from visitors where id=${id} and password=${password}")
     public boolean deleteVisitors(Long id ,String password);
 
-    @Update("update visitors set name = #{name}, password = ${password}, content = #{content}, modified_at = now(), where id=${id} and password=${password} ")
-    public boolean updateVisitors(Long id, String password);
+    @Update("update visitors set name = #{name}, password = ${password}, content = #{content}, modified_at = now() where id=${id}")
+    public boolean updateVisitors(VisitorsDTO dto);
 
 }

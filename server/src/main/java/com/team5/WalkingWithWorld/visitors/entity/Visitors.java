@@ -38,5 +38,8 @@ public class Visitors {
     @Column(nullable = true)
     private LocalDateTime modifiedAt; //수정일시
 
+    public void updateContent(String content){
+        this.content = content;
+    }
 
 }
