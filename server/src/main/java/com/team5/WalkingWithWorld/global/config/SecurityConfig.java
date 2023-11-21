@@ -53,7 +53,8 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .requestMatchers(new AntPathRequestMatcher("/h2/**"));
+                .requestMatchers(new AntPathRequestMatcher("/h2/**"))
+                .requestMatchers(new AntPathRequestMatcher("/visitor/**"));
     }
 
     @Bean
