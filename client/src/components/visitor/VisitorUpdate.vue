@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="visitors_write_header">게시글 작성</div>
+    <div class="visitors_write_header">게시글 수정</div>
     <section>
       <div class="visitors_write_wrap">
         <aside class="visitor_logo">
@@ -70,71 +70,54 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref, computed } from "vue";
+import { defineProps, defineEmits, ref, onMounted } from "vue";
 import axios from "axios";
-
+import { useRoute } from "vue-router";
 const emit = defineEmits(["pageMode"]);
+const vname = ref("");
+const vpassword = ref("");
+const vcontent = ref("");
+const props = defineProps(["data", "id"]);
+const visitorId = props.id;
 const modeToList = () => {
   emit("pageMode", "list");
 };
 
-const vname = ref("");
-const vpassword = ref("");
-const vcontent = ref("");
-
-async function submitForm() {
-  const url = "http://localhost:8089/visitor";
-  const data = {
-    name: vname.value,
-    password: vpassword.value,
-    content: vcontent.value,
-  };
-
-  await axios
-    .post(url, data, {
-      headers: { "Content-Type": "application/json" },
-    })
-    .then(function (response) {
-      console.log(response);
-      if (response.status == 200) {
-        alert("게시글이 작성되었습니다.");
-        modeToList();
-      }
-    })
-    .catch(function (error) {
-      console.log("error: ", error);
-    });
+for (let prop of props.data) {
+  if (prop.id == visitorId) {
+    console.log(prop);
+    vname.value = prop.name;
+    vcontent.value = prop.content;
+  }
 }
 
-const props = defineProps(["id"]);
-const visitorId = computed(() => props.id);
-console.log(visitorId.value);
+/* const visitorId = computed(() => props.id); */
 
-async function submitModifyForm(visitorId) {
-  const url = `http://localhost:8089/visitor/${visitorId.value}`;
-  const data = {
-    name: vname.value,
-    password: vpassword.value,
-    content: vcontent.value,
-  };
+// async function submitModifyForm(visitorId) {
+//   const url = `http://localhost:8089/visitor/${visitorId.value}`;
+//   const data = {
+//     name: vname.value,
+//     password: vpassword.value,
+//     content: vcontent.value,
+//   };
 
-  await axios
-    .put(url, data, {
-      headers: { "Content-Type": "application/json" },
-    })
-    .then(function (response) {
-      console.log(response);
-      if (response.status == 200) {
-        alert("게시글이 수정되었습니다.");
-        modeToList();
-      }
-    })
-    .catch(function (error) {
-      console.log("error: ", error);
-    });
-}
+//   await axios
+//     .put(url, data, {
+//       headers: { "Content-Type": "application/json" },
+//     })
+//     .then(function (response) {
+//       console.log(response);
+//       if (response.status == 200) {
+//         alert("게시글이 수정되었습니다.");
+//         modeToList();
+//       }
+//     })
+//     .catch(function (error) {
+//       console.log("error: ", error);
+//     });
+// }
 </script>
 
 <style scoped>
-@import "../assets/insert_visitors.css";
+@import "@/assets/insert_visitors.css";
 </style>
