@@ -220,3 +220,5 @@ $RECYCLE.BIN/
 server/build/tmp/compileJava/previous-compilation-data.bin
 server/build/tmp/compileJava/previous-compilation-data.bin
 client/node_modules/.vite/deps/_metadata.json
+server/src/main/generated/com/team5/WalkingWithWorld/global/entity/QCoordinate.java
+server/build/tmp/compileJava/previous-compilation-data.bin

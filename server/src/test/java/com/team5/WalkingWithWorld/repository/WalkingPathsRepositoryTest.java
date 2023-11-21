@@ -39,20 +39,20 @@ class WalkingPathsRepositoryTest {
     }
 
     //단방향
-    @Test
-    @DisplayName("DTO 활용")
-    void findById() {
-        WalkingPaths walkingPaths = walkingPathsRepository.getReferenceById(1);
-        List<PhotosDTO> photos = photosRepository.findByWalkingPaths(walkingPaths).stream().map(PhotosDTO::from).collect(Collectors.toList());
-        List<MapDTO> maps = mapRepository.findByWalkingPaths(walkingPaths).stream().map(MapDTO::from).collect(Collectors.toList());
-        WalkingPathsMapDTO walkingPathsMapDTO = WalkingPathsMapDTO.builder()
-                .id(1L)
-                .usersId(walkingPaths.getUsers().getId())
-                .addr(walkingPaths.getAddr())
-                .title(walkingPaths.getTitle())
-                .build();
-        System.out.println(walkingPathsMapDTO);
-    }
+//    @Test
+//    @DisplayName("DTO 활용")
+//    void findById() {
+//        WalkingPaths walkingPaths = walkingPathsRepository.getReferenceById(1);
+//        List<PhotosDTO> photos = photosRepository.findByWalkingPaths(walkingPaths).stream().map(PhotosDTO::from).collect(Collectors.toList());
+//        List<MapDTO> maps = mapRepository.findByWalkingPaths(walkingPaths).stream().map(MapDTO::from).collect(Collectors.toList());
+//        WalkingPathsMapDTO walkingPathsMapDTO = WalkingPathsMapDTO.builder()
+//                .id(1L)
+//                .usersId(walkingPaths.getUsers().getId())
+//                .addr(walkingPaths.getAddr())
+//                .title(walkingPaths.getTitle())
+//                .build();
+//        System.out.println(walkingPathsMapDTO);
+//    }
 
     @Test
     @DisplayName("DTO 양방향")

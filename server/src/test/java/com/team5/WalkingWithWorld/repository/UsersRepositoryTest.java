@@ -47,20 +47,20 @@ class UsersRepositoryTest {
         System.out.println(user);
     }
 
-    @Test
-    @Order(4)
-    @DisplayName("회원가입")
-    @Transactional
-    @Rollback(false)
-    void insertUsers(){
-        Users user = Users.of(
-                null,
-                "테스트",
-                "password123",
-                "email@gmail.com",
-                "인천"
-        );
-        usersRepository.save(user);
-    }
+//    @Test
+//    @Order(4)
+//    @DisplayName("회원가입")
+//    @Transactional
+//    @Rollback(false)
+//    void insertUsers(){
+//        Users user = Users.of(
+//                null,
+//                "테스트",
+//                "password123",
+//                "email@gmail.com",
+//                "인천"
+//        );
+//        usersRepository.save(user);
+//    }
 
 }

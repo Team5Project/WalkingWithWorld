@@ -19,7 +19,7 @@
         </div>
             <p> {{ item.content }} </p>
         </article>
-        <span @click="moreGetComments()">more + </span>
+        <div @click="CommentsRead"> 5개 더 보기 </div>
     </div>
     <form id="comments_write" @submit.prevent="writeComments">
       <input type="text" id="comment_content" class="comments_input" name="content" placeholder="댓글을 입력해주세요" v-model="comment_content" required/>
@@ -58,20 +58,21 @@ async function CommentsRead() {
     getComments.value = [...getComments.value, ...data];
     totalPages.value = pageInfo.totalPages;
     currentPage.value++ ;
-    if(currentPage.value === 1){
-      document.querySelector('.comments_content').style.overflowY = "hidden"
-    }else{
-      document.querySelector('.comments_content').style.overflowY = "scroll"
-    }
   } catch (error) {
     console.error('Error fetching comments:', error);
   }
 }
 
-
-
-function moreGetComments(){
-  CommentsRead();
+async function reGetComments(){
+  currentPage.value = 0;
+  try {
+    const response = await axios.get(`${commentsUrl}?page=${currentPage.value}&size=5`);
+    const { data, pageInfo } = response.data;
+    getComments.value = data;
+    totalPages.value = pageInfo.totalPages;
+  } catch (error) {
+    console.error('Error fetching comments:', error);
+  }
 }
 
 CommentsRead();
@@ -91,7 +92,7 @@ async function writeComments(){
     },
   });
   comment_content.value = '';
-  CommentsRead();
+  reGetComments();
 }
 
 // ----------------------------------
@@ -107,7 +108,7 @@ async function deleteComments(commentsId){
         'authorization': bearer,
       }
     });
-    CommentsRead();
+    reGetComments()
   }else{
     return;
   }

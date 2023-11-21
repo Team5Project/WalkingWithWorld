@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ReviewsRepository extends JpaRepository<Reviews, Long> {
 
     Page<Reviews> findAllByWalkingPathsId(Long walkingPathsId, Pageable pageable);
+
+    void deleteReviewsByIdAndUsersEmail(Long id, String email);
 }
