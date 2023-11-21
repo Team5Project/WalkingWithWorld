@@ -98,7 +98,7 @@
 
 			<article id="walking-path">
 					<div id="walking-path_wrapper">
-						<h3 v-if="keyword">"{{ keyword }}" 검색 결과입니다.</h3>
+						<h3 class="search_title" v-if="keyword">"{{ keyword }}" 검색 결과입니다.</h3>
 							<h3 th:text="|검색 결과 ${#lists.size(walkingPathList)}건|"></h3>
 							<div class="path_list">
 
@@ -161,7 +161,6 @@
 	// --------------------
 	// 리스트 불러오기 - 전체
 	// --------------------
-
 	const getList = ref([]);
 	const keyword = useRoute().query.keyword;
 	const fetchList = async () =>{
@@ -182,11 +181,11 @@
 	setList();
 		
 	watch(() => props.getPrintMode, async () => {
+		document.querySelector('.search_title').style.display='none';
 		printMode.value = props.getPrintMode;
 		const response = await axios.get('http://localhost:8089/walking-path');
 		getList.value = response.data;
 	});
-
 
 	onMounted(() => {
 		import('@/utils/walking_path.js')
