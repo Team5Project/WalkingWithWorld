@@ -26,7 +26,8 @@ public class ReviewsController {
     public ReviewsController(ReviewsService reviewsService) {
         this.reviewsService = reviewsService;
     }
-//MVC Controller
+
+    //MVC Controller
 /*    @PostMapping("/reviews/{walking-paths-id}/write")
     public String createReview(@Login UsersDTO loginUser,
                                @PathVariable("walking-paths-id") int id,
@@ -128,7 +129,7 @@ public class ReviewsController {
     }*/
     @GetMapping("/{walking-paths-id}/reviews")
     public ResponseEntity getReviewsList(@PathVariable("walking-paths-id") Long id,
-                                         @PageableDefault Pageable pageable){
+                                         @PageableDefault Pageable pageable) {
 
         PageResponseDto pageResponseDto = reviewsService.readReviewsList(id, pageable);
 
@@ -148,14 +149,12 @@ public class ReviewsController {
     @PostMapping(value = "/{walking-paths-id}/reviews", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity createReviews(@AuthenticationPrincipal CustomPrincipal customPrincipal,
                                         @PathVariable("walking-paths-id") Long id,
-                                        @RequestParam("reviewsRequestDTO") String reviewsRequestDTO,
-                                        @RequestParam(value = "files", required = false) List<MultipartFile> files) throws IOException {
+                                        @RequestPart("reviewsRequestDTO") ReviewsRequestDTO reviewsRequestDTO,
+                                        @RequestPart(value = "files", required = false) List<MultipartFile> files) throws IOException {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        ReviewsRequestDTO requestDTO = objectMapper.readValue(reviewsRequestDTO, ReviewsRequestDTO.class);
+        Reviews reviews = reviewsService.createReviews(reviewsRequestDTO, customPrincipal, files, id);
 
-        Reviews reviews = reviewsService.createReviews(requestDTO, customPrincipal, files, id);
-        return new ResponseEntity<>(reviews, HttpStatus.OK);
+        return new ResponseEntity<>(reviews, HttpStatus.CREATED);
     }
 
 
@@ -164,9 +163,16 @@ public class ReviewsController {
                                         @PathVariable("walking-paths-id") Long walkingPathsId,
                                         @PathVariable("reviews-id") Long reviewId,
                                         @RequestPart ReviewsRequestDTO reviewsRequestDTO,
-                                        @RequestPart List<MultipartFile> files){
+                                        @RequestPart List<MultipartFile> files) {
         Reviews reviews = reviewsService.updateReviews(walkingPathsId, reviewId, reviewsRequestDTO, files);
         return new ResponseEntity(reviews, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/reviews/{reviews-id}")
+    public ResponseEntity deleteReviews(@PathVariable("reviews-id") Long reviewsId,
+                                        @AuthenticationPrincipal CustomPrincipal customPrincipal){
+        reviewsService.deleteReviews(reviewsId,customPrincipal.email());
+        return new ResponseEntity(HttpStatus.RESET_CONTENT);
     }
 
 }

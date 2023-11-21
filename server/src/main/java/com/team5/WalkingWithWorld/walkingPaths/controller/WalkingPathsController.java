@@ -1,15 +1,15 @@
 package com.team5.WalkingWithWorld.walkingPaths.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.WalkingWithWorld.global.config.auth.CustomPrincipal;
-import com.team5.WalkingWithWorld.global.entity.Map;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
 import com.team5.WalkingWithWorld.global.pagination.PaginationService;
 import com.team5.WalkingWithWorld.walkingPaths.dto.RequestWalkingPathDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDetailDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.WalkingPathsMapDTO;
+import com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths;
 import com.team5.WalkingWithWorld.walkingPaths.service.impl.WalkingPathServiceImpl;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -66,25 +66,29 @@ public class WalkingPathsController {
     // 산책로 작성 폼으로 이동
     // 산책로 작성
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity writeWalkingPath(@RequestPart RequestWalkingPathDTO requestDTO,
-                                           @RequestPart List<MultipartFile> files) { // @Login UsersDTO usersDTO  @AuthenticationPrincipal CustomPrincipal customPrincipal
-        WalkingPathsMapDTO walkingPaths = walkingPathService.createWalkingPath(requestDTO, files);
+    public ResponseEntity writeWalkingPath(@RequestPart("requestDTO") RequestWalkingPathDTO requestWalkingPathDTO,
+                                           @RequestPart(value = "files",required = false) List<MultipartFile> files) { // @Login UsersDTO usersDTO  @AuthenticationPrincipal CustomPrincipal customPrincipal
+        System.out.println(requestWalkingPathDTO);
+        System.out.println(files);
+
+        WalkingPathsMapDTO walkingPaths = walkingPathService.createWalkingPath(requestWalkingPathDTO, files);
         return new ResponseEntity(walkingPaths, HttpStatus.CREATED);
     }
 
     // 산책로 수정 폼으로 이동(walking-path-id 참조)
     // 산책로 수정
-    @PutMapping("/{id}")
-    public ResponseEntity modifyWalkingPath(@RequestBody RequestWalkingPathDTO requestWalkingPathDTO,
+    @PutMapping(value = "/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity modifyWalkingPath(@RequestPart("requestDTO") RequestWalkingPathDTO requestWalkingPathDTO,
+                                            @RequestPart(value = "files",required = false) List<MultipartFile> files,
                                           @PathVariable(value = "id") int id) { // @AuthenticationPrincipal CustomPrincipal customPrincipal
-        walkingPathService.modifyWalkingPath(requestWalkingPathDTO, id);
-        return new ResponseEntity(id, HttpStatus.RESET_CONTENT);
+        walkingPathService.modifyWalkingPath(requestWalkingPathDTO, id, files);
+        return new ResponseEntity(HttpStatus.RESET_CONTENT);
     }
 
     // 산책로 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteWalkingPath(@PathVariable(value = "id") int id) { // @AuthenticationPrincipal CustomPrincipal customPrincipal
-        walkingPathService.deleteWalkingPath(id);
+    public ResponseEntity deleteWalkingPath(@PathVariable(value = "id") int id, @AuthenticationPrincipal CustomPrincipal customPrincipal) {
+        walkingPathService.deleteWalkingPath(id, customPrincipal);
         return new ResponseEntity(HttpStatus.RESET_CONTENT);
     }
 

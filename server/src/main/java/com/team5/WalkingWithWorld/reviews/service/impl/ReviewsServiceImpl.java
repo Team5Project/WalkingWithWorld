@@ -3,7 +3,6 @@ package com.team5.WalkingWithWorld.reviews.service.impl;
 import com.team5.WalkingWithWorld.global.config.auth.CustomPrincipal;
 import com.team5.WalkingWithWorld.global.domain.FileVo;
 import com.team5.WalkingWithWorld.global.domain.PhotosDTO;
-import com.team5.WalkingWithWorld.global.entity.Photos;
 import com.team5.WalkingWithWorld.global.exception.BusinessLogicException;
 import com.team5.WalkingWithWorld.global.exception.ExceptionCode;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
@@ -15,7 +14,6 @@ import com.team5.WalkingWithWorld.reviews.entity.Reviews;
 import com.team5.WalkingWithWorld.reviews.repository.ReviewsRepository;
 import com.team5.WalkingWithWorld.reviews.service.ReviewsService;
 import com.team5.WalkingWithWorld.global.service.FileUpload;
-import com.team5.WalkingWithWorld.users.dto.UsersDTO;
 import com.team5.WalkingWithWorld.users.entity.Users;
 import com.team5.WalkingWithWorld.users.repository.UsersRepository;
 import com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths;
@@ -23,13 +21,13 @@ import com.team5.WalkingWithWorld.walkingPaths.repository.WalkingPathsRepository
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ReviewsServiceImpl implements ReviewsService {
@@ -56,10 +54,10 @@ public class ReviewsServiceImpl implements ReviewsService {
 
     //리뷰 리스트 조회
     @Override
+    @Transactional(readOnly = true)
     public PageResponseDto<ReviewsResponseDTO> readReviewsList(Long walkingPathsId, Pageable pageable) {
         Page<Reviews> reviews = reviewsRepository.findAllByWalkingPathsId(walkingPathsId, pageable);
-        List<Photos> photos = photosRepository.findByReviews(reviews.getContent().get(0));
-        System.out.println(photos);
+
         List<ReviewsResponseDTO> reviewsResponseDTOList = reviews.stream().map(review -> ReviewsResponseDTO.from(review, photosRepository.findByReviews(review))).toList();
 
         List<Integer> barNumber = paginationService.getPaginationBarNumbers(reviews.getNumber(), reviews.getTotalPages());
@@ -69,6 +67,7 @@ public class ReviewsServiceImpl implements ReviewsService {
 
     // 리뷰 작성
     @Override
+    @Transactional
     public Reviews createReviews(ReviewsRequestDTO reviewsRequestDTO, CustomPrincipal customPrincipal, List<MultipartFile> files, Long walkingPathsId) throws IOException {
 
         Users users = usersRepository.findById(Math.toIntExact(customPrincipal.userId())).orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
@@ -76,28 +75,36 @@ public class ReviewsServiceImpl implements ReviewsService {
 
         Reviews reviews = reviewsRepository.save(reviewsRequestDTO.toEntity(users, walkingPaths));
 
-        if (!files.isEmpty()) {
-            FileVo fileVo = new FileVo(files);
-            Map<String, String> filesName = fileUpload.upload(fileVo);
-            PhotosDTO photosDTO = new PhotosDTO();
-            photosDTO.setReviewsId(reviews.getId());
-            for (Map.Entry<String, String> entry : filesName.entrySet()) {
-                photosDTO.setImgName(entry.getKey());
-                photosDTO.setImgPath(entry.getValue());
-                photosRepository.save(photosDTO.toEntity(reviews, reviews.getWalkingPaths()));
-            }
+
+        FileVo fileVo = new FileVo(files);
+
+        Map<String, String> filesName = fileUpload.upload(fileVo);
+        PhotosDTO photosDTO = new PhotosDTO();
+        photosDTO.setReviewsId(reviews.getId());
+        for (Map.Entry<String, String> entry : filesName.entrySet()) {
+            photosDTO.setImgName(entry.getKey());
+            photosDTO.setImgPath(entry.getValue());
+            System.out.println("사진 확인" + photosDTO);
+            photosRepository.save(photosDTO.toEntity(reviews, null));
         }
+
         return reviews;
     }
 
     // 리뷰 수정
     @Override
+    @Transactional
     public Reviews updateReviews(Long walkingPathsId, Long reviewsId, ReviewsRequestDTO reviewsRequestDTO, List<MultipartFile> files) {
         Reviews reviews = reviewsRepository.findById(reviewsId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.REVIEW_NOT_FOUND));
 
         Optional.ofNullable(reviewsRequestDTO.getContent()).ifPresent(reviews::updateContent);
         reviewsRepository.save(reviews);
         return reviews;
+    }
+    @Override
+    @Transactional
+    public void deleteReviews(Long reviewsId, String email){
+        reviewsRepository.deleteReviewsByIdAndUsersEmail(reviewsId,email);
     }
 
 }

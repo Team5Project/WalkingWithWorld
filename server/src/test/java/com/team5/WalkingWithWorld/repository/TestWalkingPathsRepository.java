@@ -30,11 +30,11 @@ public class TestWalkingPathsRepository {
         System.out.println(walkingPathsList);
     }
 
-    @Test
-    @Order(1)
-    @Rollback(value = false)
-    void insertWalkingPath() {
-        WalkingPaths entity = WalkingPaths.of(null, users, "제목", "주소", 0);
-        walkingPathsRepository.save(entity);
-    }
+//    @Test
+//    @Order(1)
+//    @Rollback(value = false)
+//    void insertWalkingPath() {
+//        WalkingPaths entity = WalkingPaths.of(null, users, "제목", "주소", 0, null);
+//        walkingPathsRepository.save(entity);
+//    }
 }

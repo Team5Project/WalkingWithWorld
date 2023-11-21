@@ -98,9 +98,9 @@
 
 			<article id="walking-path">
 					<div id="walking-path_wrapper">
-							<h3 th:if="${keyword}" th:text="|'${keyword}' 검색 결과입니다.|"></h3>
+						<h3 v-if="keyword">"{{ keyword }}" 검색 결과입니다.</h3>
 							<h3 th:text="|검색 결과 ${#lists.size(walkingPathList)}건|"></h3>
-							<div class="path_list" th:each="walkingPath:${walkingPathList}">
+							<div class="path_list">
 
 									<!--  -->
 									<!-- 리스트 출력부분 -->
@@ -146,22 +146,29 @@
 
 </template>
 <script setup>
-  import { defineEmits, ref, onMounted } from 'vue';
+  import { defineEmits, ref, onMounted, inject } from 'vue';
 	import axios from 'axios';
+import { useRoute } from 'vue-router';
 
   const emit = defineEmits(['pageMode']);
   const modeToModify = () => {
     emit('pageMode', 'modify');
   }
-
+	
 	// --------------------
 	// 리스트 불러오기 - 전체
 	// --------------------
 
 	const getList = ref([]);
+	const keyword = useRoute().query.keyword;
 	const fetchList = async () =>{
-		const response = await axios.get('http://localhost:8089/walking-path')
-		return response.data;
+		if(keyword == null) {
+			const response = await axios.get('http://localhost:8089/walking-path');
+			return response.data;
+		} else {
+			const response = await axios.get('http://localhost:8089/walking-path/search?keyword=' + keyword);
+			return response.data;
+		}
 	}
 
 	// --------------------

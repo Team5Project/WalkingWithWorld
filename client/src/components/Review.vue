@@ -1,5 +1,5 @@
 <template>
-  <section class="review" v-if="getReviewList.length == 0">
+  <section class="review" v-if="!reviewList.data || reviewList.data.length === 0">
     <h3>리뷰</h3>
     <div class="review_container">
       <i class="rv-chav left fa-solid fa-circle-chevron-left"></i>
@@ -8,34 +8,35 @@
         <p>아직 리뷰가 작성되지 않았습니다.</p>
         <p>첫 리뷰를 작성해 주세요!</p>
         <button @click="clickParam" class="btns btn_write_big">
-          리뷰작성 
+          리뷰작성
         </button>
       </div>
     </div>
   </section>
-  <section class="review" v-else="getReviewList.size >= 1">
-    <div id="reviews" class="review_content" v-for="review in reviewList" :key="review.in">
-      <!--    여서부터!-->
-      <section v-if="review.photosList.length > 0">
+  <section class="review" v-else>
+    <div id="reviews" class="review_content" v-for="review in reviewList.data" :key="review.id">
+      <section v-if="review.photosList && review.photosList.length > 0">
         <aside class="images">
           <figure class="viewer">
-            <img :src="'/ex_images/'+ review.photosList[0].imgName" src="/images/sample/1.jpg" alt="">
+            <img :src="'http://localhost:8089/ex_images/' + review.photosList[0].imgName" alt="">
           </figure>
           <div class="img_list">
-            <figcaption class="thumb" th:each="photo : ${review.photosList}">
-              <img th:src="@{|/ex_images/${photo.imgName}|}" src="/images/sample/1.jpg" alt="">
+            <figcaption class="thumb" v-for="photo in review.photosList" :key="photo.id">
+              <img :src="'http://localhost:8089/ex_images/' + photo.imgName" alt="">
             </figcaption>
           </div>
         </aside>
       </section>
-      <section v-else="review.photosList.length>0">
+      <section v-else>
         <aside class="images">
           <figure class="viewer">
-            <img :src="'/images/noimage.png'" src="/images/sample/1.jpg" alt="">
+            <img :src="'/images/noimage.png'" alt="">
           </figure>
         </aside>
       </section>
       <article class="review_main">
+        <!-- 나머지 리뷰 내용 표시 -->
+
         <div class="review_info">
           <div class="detail_member">
             <a href="" class="profile_image"></a>
@@ -44,8 +45,8 @@
           </div>
           <th:block th:if="${session.auth!=null && session.auth.getName()== review.createdBy}">
             <div class="up_del">
-              <span class="info_modi" th:onclick="|modifiedReview(${review.getId()})|">수정</span>
-              <span class="info_del" th:onclick="|deleteReview(${review.getId()})|">삭제</span>
+              <span class="info_modi" @click="modify">수정</span>
+              <span class="info_del" @click="deleteReviews(review.id)">삭제</span>
             </div>
           </th:block>
         </div>
@@ -55,22 +56,24 @@
             {{ review.content }}
           </p>
         </div>
+
       </article>
     </div>
   </section>
 </template>
+
 <script setup>
 import axios from 'axios';
-import { ref, defineProps} from 'vue';
+import { ref, defineProps } from 'vue';
 import router from '@/router/index.js'
 
 
-const props = defineProps(['id','walkingPathdId']);
+const props = defineProps(['id', 'walkingPathdId']);
 
-const clickParam = () =>{
-    router.push({
-        path : "/"+props.walkingPathdId+"/reviews",
-    })
+const clickParam = () => {
+  router.push({
+    path: "/" + props.walkingPathdId + "/reviews",
+  })
 }
 
 const reviewList = ref([]);
@@ -81,8 +84,10 @@ const getReviewList = async () => {
       return response.data
     })
     .then((data) => {
-      reviewList.value = data.data;
+      reviewList.value = data;
+      console.log(reviewList.data);
     })
+
 }
 getReviewList();
 
@@ -92,6 +97,21 @@ getReviewList();
 // 	setList().then(()=>{
 // 		console.log(getList.value.data);
 // 		})
+
+
+function deleteReviews(e){
+  axios.delete(`http://localhost:8089/reviews/`+e,{
+    headers:{
+      Authorization: JSON.parse(localStorage.getItem("token")).authorization,
+    }
+  })
+  .then(response =>{
+    if(response.status == 205){
+      alert("리뷰가 정상적으로 삭제되었습니다.")
+      window.location.reload(true);
+    }
+  })
+}
 </script>
 <style scoped>
 @import "@/assets/walking_path_detail.css";
