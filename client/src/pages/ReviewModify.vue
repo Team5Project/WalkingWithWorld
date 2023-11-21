@@ -89,7 +89,7 @@ const readInputFile = (e) => {// 미리보기 기능구현
     var fileArr = Array.from(file);
     files.value = fileArr;
     console.log(fileArr)
-    
+
     fileArr.forEach(function(f){
     	if(!f.type.match("image/.*")){
         	alert("이미지 확장자만 업로드 가능합니다.");

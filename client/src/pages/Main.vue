@@ -4,10 +4,10 @@
     <div class="search overwidth">
         <div class="content">
             <p>오늘은 어디로 떠나볼까요?</p>
-            <form method="post" action="/walking-path/search" class="search_form">
-                <input type="text" name="keyword" class="search_input">
-                <input type="submit" class="btns btn_search" value="GO">
-            </form>
+            <div class="search_form">
+                <input type="text" @input="updateWord" id="word" class="search_input">
+                <router-link :to="{name: 'Search', query: {keyword: word}}" class="btns btn_search">GO</router-link>
+            </div>
         </div>
     </div>
     <main>
@@ -76,15 +76,14 @@
     <Footer/>
 </template>
 
-<script>
+<script setup>
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
+import { ref } from 'vue';
 
-export default {
-  components: {
-    Header,
-    Footer,
-  },
+const word = ref(null);
+const updateWord = function(e) {
+    word.value = e.target.value;
 }
 </script>
 

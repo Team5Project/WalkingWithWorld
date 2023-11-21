@@ -1,5 +1,6 @@
 package com.team5.WalkingWithWorld.walkingPaths.service;
 
+import com.team5.WalkingWithWorld.global.config.auth.CustomPrincipal;
 import com.team5.WalkingWithWorld.global.entity.Map;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
 import com.team5.WalkingWithWorld.walkingPaths.dto.RequestWalkingPathDTO;
@@ -38,7 +39,7 @@ public interface WalkingPathsService {
 
     // 산책로 삭제
     @Transactional
-    void deleteWalkingPath(int id);
+    void deleteWalkingPath(int id, CustomPrincipal customPrincipal);
 
     // 조회수 업데이트
     @Transactional

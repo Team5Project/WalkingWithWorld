@@ -146,22 +146,29 @@
 
 </template>
 <script setup>
-  import { defineEmits, ref, onMounted } from 'vue';
+  import { defineEmits, ref, onMounted, inject } from 'vue';
 	import axios from 'axios';
+import { useRoute } from 'vue-router';
 
   const emit = defineEmits(['pageMode']);
   const modeToModify = () => {
     emit('pageMode', 'modify');
   }
-
+	
 	// --------------------
 	// 리스트 불러오기 - 전체
 	// --------------------
 
 	const getList = ref([]);
 	const fetchList = async () =>{
-		const response = await axios.get('http://localhost:8089/walking-path')
-		return response.data;
+		const keyword = useRoute().query.keyword;
+		if(keyword == null) {
+			const response = await axios.get('http://localhost:8089/walking-path');
+			return response.data;
+		} else {
+			const response = await axios.get('http://localhost:8089/walking-path/search?keyword=' + keyword);
+			return response.data;
+		}
 	}
 
 	// --------------------

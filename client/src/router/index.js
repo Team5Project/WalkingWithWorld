@@ -12,6 +12,7 @@ import ReviewModify from '@/pages/ReviewModify.vue'
 const routes = [
   { path: '/', component: Main },
   { path: '/walking-path', component: WalkingPath },
+  { path: '/walking-path/search', component: WalkingPath, name: 'Search', props: true },
   { path: '/walking-path/:id', component: WalkingPathDetail, props: true },
   { path: '/visitor', component: Visitor },
   { path: '/login', component: Login },

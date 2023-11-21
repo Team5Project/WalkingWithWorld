@@ -1,18 +1,21 @@
 package com.team5.WalkingWithWorld.walkingPaths.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.team5.WalkingWithWorld.global.config.auth.CustomPrincipal;
 import com.team5.WalkingWithWorld.global.pagination.PageResponseDto;
 import com.team5.WalkingWithWorld.global.pagination.PaginationService;
 import com.team5.WalkingWithWorld.walkingPaths.dto.RequestWalkingPathDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.ResponseWalkingPathDetailDTO;
 import com.team5.WalkingWithWorld.walkingPaths.dto.WalkingPathsMapDTO;
+import com.team5.WalkingWithWorld.walkingPaths.entity.WalkingPaths;
 import com.team5.WalkingWithWorld.walkingPaths.service.impl.WalkingPathServiceImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -83,8 +86,8 @@ public class WalkingPathsController {
 
     // 산책로 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteWalkingPath(@PathVariable(value = "id") int id) { // @AuthenticationPrincipal CustomPrincipal customPrincipal
-        walkingPathService.deleteWalkingPath(id);
+    public ResponseEntity deleteWalkingPath(@PathVariable(value = "id") int id, @AuthenticationPrincipal CustomPrincipal customPrincipal) {
+        walkingPathService.deleteWalkingPath(id, customPrincipal);
         return new ResponseEntity(HttpStatus.RESET_CONTENT);
     }
 
