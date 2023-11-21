@@ -15,7 +15,7 @@ public interface CommentService {
 
     Comments createComment(CommentsDTO dto, Long userId, Long walkingPathsId);
 
-    Comments updateComment(Long id, CommentsDTO dto, String email);
+    void updateComment(Long id, CommentsDTO dto, String email);
 
     void deleteComment(Long id,String email);
 

@@ -60,13 +60,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comments updateComment(Long commentId, CommentsDTO dto, String email){
+    public void updateComment(Long commentId, CommentsDTO dto, String email){
         Users users = usersRepository.findUsersByEmail(email).orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
         Comments comments = commentsRepository.findById(commentId.intValue()).orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENTS_NOT_FOUND));
+        comments.updateContent(dto.getContent());
         if(!Objects.equals(email, comments.getUsers().getEmail())){
             throw new RuntimeException("사용자가 다릅니다 확인해주세요");
         }
-        return commentsRepository.save(dto.toEntity(users, comments.getWalkingPaths()));
+        commentsRepository.save(comments);
     }
 
     @Override

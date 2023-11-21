@@ -19,7 +19,7 @@
         </div>
             <p> {{ item.content }} </p>
         </article>
-        <div @click="CommentsRead"> 5개 더 보기 </div>
+        <div class="moreBtn" @click="CommentsRead"> 5개 더 보기 </div>
     </div>
     <form id="comments_write" @submit.prevent="writeComments">
       <input type="text" class="comments_input" name="content" placeholder="댓글을 입력해주세요" v-model="comment_write" required/>
@@ -62,9 +62,18 @@ async function CommentsRead() {
   try {
     const response = await axios.get(`${commentsUrl}?page=${currentPage.value}&size=5`);
     const { data, pageInfo } = response.data;
-    getComments.value = [...getComments.value, ...data];
+    if(getComments.value.length > 0 && currentPage.value === 0){
+      getComments.value = data;
+    }else{
+      getComments.value = [...getComments.value, ...data];
+    }
     totalPages.value = pageInfo.totalPages;
     currentPage.value++ ;
+    if(pageInfo.totalPages == 1 || currentPage.value == pageInfo.totalPages){
+      document.querySelector('.moreBtn').style.display = 'none'
+    }else{
+      document.querySelector('.moreBtn').style.display = 'block'
+    }
   } catch (error) {
     console.error('Error fetching comments:', error);
   }
@@ -73,10 +82,11 @@ async function CommentsRead() {
 async function reGetComments(){
   currentPage.value = 0;
   try {
-    const response = await axios.get(`${commentsUrl}?page=${currentPage.value}&size=5`);
+    const response = await axios.get(`${commentsUrl}?page=0&size=5`);
     const { data, pageInfo } = response.data;
     getComments.value = data;
     totalPages.value = pageInfo.totalPages;
+    await CommentsRead();
   } catch (error) {
     console.error('Error fetching comments:', error);
   }
