@@ -108,7 +108,8 @@ section:nth-child(4) {
     margin-left: 30px;
 }
 
-#comments_write {
+#comments_write,
+#comments_update  {
     display: flex;
     justify-content: space-between;
 }

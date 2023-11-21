@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface CommentsRepository extends JpaRepository<Comments, Integer> {
     List<Comments> findAllByWalkingPathsId(Long id);
 
-    void deleteByIdAndUsers(Long id, Users users);
-
     Page<Comments>findAllByWalkingPathsIdOrderByCreatedAtDesc(Long walkingPathsId, Pageable pageable);
+
+    void deleteByIdAndUsers(Long id, Users users);
 }
