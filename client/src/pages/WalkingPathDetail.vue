@@ -1,24 +1,29 @@
 <template>
     <Header />
     <WalkingPathRead :id="WalkingPathId" v-if="compDetailMode === 'default'" @pageDetailMode="modeChange"/>
-    <WalkingPathUpdate :id="WalkingPathId" v-if="compDetailMode === 'update'" @pageDetailMode="modeChange"/>
+    <WalkingPathUpdate :id="WalkingPathId" :data="getDetail" v-if="compDetailMode === 'update'" @pageDetailMode="modeChange"/>
     <Footer />
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, onMounted, provide } from 'vue';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import WalkingPathRead from '@/components/walkingpath/WalkingPathRead.vue';
 import WalkingPathUpdate from '@/components/walkingpath/WalkingPathUpdate.vue';
+import axios from 'axios';
 
 const props = defineProps(['id']);
 const WalkingPathId = computed(() => props.id);
+const getDetail = ref(null);
+const mapAry = ref([]);
 
 const compDetailMode = ref('default');
 const modeChange = (changed) => {
 	compDetailMode.value = changed;
 }
+const bearer = localStorage.getItem('token').split('"')[3];
+console.log(bearer);
 
 onMounted(()=> {
     if(window.kakao && window.kakao.maps) {
@@ -26,25 +31,8 @@ onMounted(()=> {
     } else {
         loadScript();
     }
+    provide('detail', getDetail.value);
 });
-const removeWalkingPath = function() {
-    if(confirm("삭제하시겠습니까?")) {
-        axios.delete('http://localhost:8089/walking-path/' + getDetail.value.id, {
-            headers: {
-                'authorization' : bearer,
-            },
-        })
-        .then(response => {
-            if(response.status  == 205){
-                alert("게시글이 삭제되었습니다.");
-                router.push('/walking-path');
-            }
-        });
-        console.log("왜일까");
-    } else {
-        alert("취소되었습니다.");
-    }
-};
 const loadScript = function() {
     const script = document.createElement("script");
     script.src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d753200077e444dd40df1e458903dfd3&autoload=false";
@@ -106,7 +94,6 @@ setDetail().then(() => {
         drawLine();
     }
 })
-
 </script>
 
 <style scoped>

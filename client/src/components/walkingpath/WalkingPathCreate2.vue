@@ -1,23 +1,21 @@
 <template>  
     <div id="write-form">
         <h1>산책로 등록</h1>
-        <form @submit.prevent="writeWalkingPaths">
+        <form method="post" action="/walking-path" enctype="multipart/form-data">
             <div id="input-items">
                 <div id="left-form">
-                    <label>산책로 이름<br><input type="text" class="text-box" name="title" v-model="title" required></label><br>
+                    <label>산책로 이름<br><input type="text" class="text-box" name="title" required></label><br>
                     <label>주소
-                        <input type="button" class="button" @click.self.prevent="searchAddr" value="주소 찾기"><br>
-                        <input type="text" name="addr" class="text-box" id="address" v-model="addr" required><br>
+                        <input type="button" class="button" onclick="searchAddr()" value="주소 찾기"><br>
+                        <input type="text" name="addr" class="text-box" id="address" required><br>
                     </label><br>
                     <span>사진(5개 제한)</span><br>
                     <section class="img-area">
-                        <input type="file" @change="uploadFile" ref="imgUpload" multiple />
-                        <div id="img_preview"></div>
-                        <!-- <div class="filebox">
+                        <div class="filebox">
                             <label for="file" class="fileImg">+</label>
-                            <v-file-input id="file" type="file" name="files" multiple />
+                            <input id="file" type="file" name="files" onchange="setThumbnail(event)" multiple />
                         </div>
-                        <div id="image_container" class="image_container"></div> -->
+                        <div id="image_container" class="image_container"></div>
                     </section><br>
                     <label>
                         <input type="hidden" name="course" id="course">
@@ -29,7 +27,7 @@
                 <div id="right-form">
                     <label>경로 그리기
                         <div class="map_wrap">
-                            <div @click.prevent="mapClickEvent" class="readMap" id="map"></div>
+                            <div @click="mapClickEvent" class="readMap" id="map"></div>
                         </div>
                     </label>
                 </div>
@@ -37,7 +35,7 @@
             </div>
             <div id="buttons">
                 <input type="submit" class="submit-button" value="확인">
-                <a>&nbsp; 뒤로가기 &nbsp;</a>
+                <a th:href="${referer}">&nbsp; 뒤로가기 &nbsp;</a>
             </div>
         </form>
     </div>
@@ -45,10 +43,6 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import searchAddr from '@/utils/addr.js'
-import axios from 'axios';
-import { getBaseTransformPreset } from '@vue/compiler-core';
-import router from '@/router/index.js'
 const map = ref(null);
 const coordsX = ref(null);
 const coordsY = ref(null);
@@ -82,14 +76,11 @@ let dots = {}; // 선이 그려지고 있을때 클릭할 때마다 클릭 지�
 let clickLa = [];
 let clickMa = [];
 const clickMap = function(mouseEvent) {
+    console.log("click");
     let clickPosition = mouseEvent.latLng;
 
     clickLa.push(clickPosition.La);
     clickMa.push(clickPosition.Ma);
-
-    // post 해야 할 정보
-    coordsX.value = clickLa;
-    coordsY.value = clickMa;
 
     if (!drawingFlag) {
 
@@ -117,7 +108,6 @@ const clickMap = function(mouseEvent) {
 
         // 클릭한 지점에 대한 정보를 지도에 표시합니다
         displayCircleDot(clickPosition, 0);
-
     } else { // 선이 그려지고 있는 상태이면
 
         // 그려지고 있는 선의 좌표 배열을 얻어옵니다
@@ -154,18 +144,21 @@ const rightClickMap = function (mouseEvent) {
             }
 
             var distance = Math.round(clickLine.getLength()), // 선의 총 거리를 계산합니다
-            content = getTimeHTML(distance); // 커스텀오버레이에 추가될 내용입니다
+                content = getTimeHTML(distance); // 커스텀오버레이에 추가될 내용입니다
 
             document.getElementById("distance").value = distance;
             document.getElementById("time").value = distance / 67 | 0;
             // 그려진 선의 거리정보를 지도에 표시합니다
             showDistance(content, path[path.length - 1]);
+
         } else {
+
             // 선을 구성하는 좌표의 개수가 1개 이하이면 
             // 지도에 표시되고 있는 선과 정보들을 지도에서 제거합니다.
             deleteClickLine();
             deleteCircleDot();
             deleteDistnce();
+
         }
 
         // 상태를 false로, 그리지 않고 있는 상태로 변경합니다
@@ -177,6 +170,8 @@ const deleteClickLine = function() {
     if (clickLine) {
         clickLine.setMap(null);
         clickLine = null;
+        resultLat = [];
+
     }
 }
 // 마우스 드래그로 그려지고 있는 선의 총거리 정보를 표시하기
@@ -188,6 +183,7 @@ const showDistance = function(content, position) {
         // 커스텀 오버레이의 위치와 표시할 내용을 설정합니다
         distanceOverlay.setPosition(position);
         distanceOverlay.setContent(content);
+
     } else { // 커스텀 오버레이가 생성되지 않은 상태이면
 
         // 커스텀 오버레이를 생성하고 지도에 표시합니다
@@ -234,9 +230,6 @@ const displayCircleDot = function(position, distance) {
 
         // 지도에 표시합니다
         distanceOverlay.setMap(map.value);
-        // post할 정보
-        totalDistance.value = distance;
-        totalTime.value = distance / 67 | 0;
     }
 
     // 배열에 추가합니다
@@ -283,68 +276,17 @@ const getTimeHTML = function(distance) {
     content += '    </li>';
     content += '</ul>'
 
-    clickLa = [];
-    clickMa = [];
+    // post 해야 할 정보
+    coordsX.value = clickLa;
+    coordsY.value = clickMa;
+    totalDistance.value = distance;
+    totalTime.value = walkTime;
+    console.log(coordsX.value);
+    console.log(coordsY.value);
+    console.log(totalDistance.value);
+    console.log(totalTime.value);
 
     return content;
-}
-// walking-path 생성
-const files = ref([]);
-const title = ref(null);
-const addr = ref(null);
-const result = ref([]);
-
-async function writeWalkingPaths() {
-    let mapInstance = {distance:totalDistance.value, time:totalTime.value, coordinateX:coordsX.value, coordinateY:coordsY.value};
-    result.value = mapInstance;
-    console.log(result.value);
-
-    const bearer = localStorage.getItem('token').split('"')[3];
-    const data = {title:title.value, addr:addr.value, requestMapDTO:result.value};
-    const formData = new FormData();
-    formData.append(
-        'requestDTO',
-        new Blob([JSON.stringify(data)], {type:'application/json'})
-    );
-    for(let i = 0; i < files.value.length; i++) {
-        formData.append('files', files.value[i]);
-    }
-    
-    await axios.post('http://localhost:8089/walking-path', formData, {
-        headers: {
-            'authorization' : bearer,
-            'Content-Type' : 'multipart/form-data'
-        },
-    })
-    .then(response => {
-        if(response.status  == 201){
-            alert("산책로 작성이 완료되었습니다.");
-            router.push('/walking-path/' + response.data.id);
-        }
-    });
-}
-const uploadFile = function(e) {
-    const preview = document.getElementById('img_preview')
-    preview.innerHTML = '';
-    var file = e.target.files;
-    var fileArr = Array.from(file);
-    files.value = [];
-    fileArr.forEach(function(f) {
-        if(!f.type.match("image/.*")){
-            alert("이미지 파일만 업로드 가능합니다.");
-        } else{
-            files.value.push(f);
-            var reader = new FileReader();
-            reader.onload = function(e){
-                const img = document.createElement('img');
-                img.style.width = "100px";
-                img.src = e.target.result;
-                preview.appendChild(img);
-            };
-        reader.readAsDataURL(f);
-        }
-    });
-    console.log(files.value);
 }
 </script>
 <style scoped>
