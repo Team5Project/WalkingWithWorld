@@ -19,23 +19,13 @@ public class QVisitors extends EntityPathBase<Visitors> {
 
     public static final QVisitors visitors = new QVisitors("visitors");
 
-    public final com.team5.WalkingWithWorld.global.entity.QAuditingFields _super = new com.team5.WalkingWithWorld.global.entity.QAuditingFields(this);
-
     public final StringPath content = createString("content");
 
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
-
-    //inherited
-    public final StringPath createdBy = _super.createdBy;
+    public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
-
-    //inherited
-    public final StringPath modifiedBy = _super.modifiedBy;
+    public final DateTimePath<java.time.LocalDateTime> modifiedAt = createDateTime("modifiedAt", java.time.LocalDateTime.class);
 
     public final StringPath name = createString("name");
 

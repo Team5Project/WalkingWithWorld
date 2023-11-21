@@ -1,55 +1,51 @@
 <template>
-    <Header/>
-    <!-- 헤더 입력 -->
-    <hr class="header_hr">
-    <main>
-    <div class="visitors_list_header">
-        자유게시판
-    </div>
-
-    <section>
-        <div id="article">
-            <article id="deleteList">
-                <div class="vwrapper" th:each="vo : ${list}">
-                    <div class="visit_header">
-                        <span>작성자</span>
-                        <span>내용</span>
-                    </div>
-                    <div class="visitor_body">
-                        <p class="vname">[[${vo.name}]]</p>
-                        <p class="vcontent">[[${vo.content}]]</p>
-                    </div>
-                    <div class="visitor_footer">
-                        <p class="vcreatedAt" th:text="${#temporals.format(vo.createdAt, 'yyyy년 MM월 dd일 HH:mm')}">
-                        </p>
-                        <!--<p th:text="${#temporals.format(orderDto.orderDate, 'yy-mm-dd HH:mm')}"></p>-->
-                        <div class="visitor_mod">
-                            <p class="btns btn_vdelete" th:onclick="|deleteVisitorList(${vo.getId()})|">삭제</p>
-                        </div>
-                    </div>
-                </div>
-            </article>
-        </div>
-        <div class="btn_write_wrapper">
-            <a th:href="@{/insertVisitorsForm}" class="visitor_write btns btn_vwrite">글쓰기</a>
-        </div>
-    </section>
-</main>
-<!-- 푸터 입력 -->
-<Footer/>
+  <Header />
+  <hr class="header_hr" />
+  <VisitorList
+    v-if="compMode === 'list'"
+    @pageMode="modeChange"
+    @targetId="getTargetId"
+  />
+  <VisitorCreate v-if="compMode === 'create'" @pageMode="modeChange" />
+  <VisitorUpdate
+    v-if="compMode === 'update'"
+    @pageMode="modeChange"
+    :data="visitorList"
+    :id="target"
+  />
+  <Footer />
 </template>
 
-<script>
-import Header from '@/components/Header.vue';
-import Footer from '@/components/Footer.vue';
+<script setup>
+import { ref, defineProps } from "vue";
+import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer.vue";
+import VisitorList from "@/components/visitor/VisitorList.vue";
+import VisitorCreate from "@/components/visitor/VisitorCreate.vue";
+import VisitorUpdate from "@/components/visitor/VisitorUpdate.vue";
+import axios from "axios";
 
-export default {
-  components: {
-    Header,
-    Footer,
-  },
-}
+const visitorList = ref([""]);
+const visitorId = defineProps(["id"]);
+const compMode = ref("list");
+let target;
+
+const modeChange = (changed) => {
+  compMode.value = changed;
+};
+const getTargetId = (t) => {
+  target = t;
+  console.log(target);
+};
+
+const getVisitorList = async () => {
+  let response = await axios.get("http://localhost:8089/list");
+  const data = response.data;
+  visitorList.value = data;
+};
+
+getVisitorList();
 </script>
 <style scoped>
-    @import "@/assets/visitor.css";
+@import "@/assets/visitor.css";
 </style>
