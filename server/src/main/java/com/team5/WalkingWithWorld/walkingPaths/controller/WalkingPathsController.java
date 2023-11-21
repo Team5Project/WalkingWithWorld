@@ -66,22 +66,23 @@ public class WalkingPathsController {
     // 산책로 작성 폼으로 이동
     // 산책로 작성
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity writeWalkingPath(@RequestPart("requestDTO") RequestWalkingPathDTO requestDTO,
+    public ResponseEntity writeWalkingPath(@RequestPart("requestDTO") RequestWalkingPathDTO requestWalkingPathDTO,
                                            @RequestPart(value = "files",required = false) List<MultipartFile> files) { // @Login UsersDTO usersDTO  @AuthenticationPrincipal CustomPrincipal customPrincipal
-        System.out.println(requestDTO);
+        System.out.println(requestWalkingPathDTO);
         System.out.println(files);
 
-        WalkingPathsMapDTO walkingPaths = walkingPathService.createWalkingPath(requestDTO, files);
+        WalkingPathsMapDTO walkingPaths = walkingPathService.createWalkingPath(requestWalkingPathDTO, files);
         return new ResponseEntity(walkingPaths, HttpStatus.CREATED);
     }
 
     // 산책로 수정 폼으로 이동(walking-path-id 참조)
     // 산책로 수정
-    @PutMapping("/{id}")
-    public ResponseEntity modifyWalkingPath(@RequestBody RequestWalkingPathDTO requestWalkingPathDTO,
+    @PutMapping(value = "/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity modifyWalkingPath(@RequestPart("requestDTO") RequestWalkingPathDTO requestWalkingPathDTO,
+                                            @RequestPart(value = "files",required = false) List<MultipartFile> files,
                                           @PathVariable(value = "id") int id) { // @AuthenticationPrincipal CustomPrincipal customPrincipal
-        walkingPathService.modifyWalkingPath(requestWalkingPathDTO, id);
-        return new ResponseEntity(id, HttpStatus.RESET_CONTENT);
+        walkingPathService.modifyWalkingPath(requestWalkingPathDTO, id, files);
+        return new ResponseEntity(HttpStatus.RESET_CONTENT);
     }
 
     // 산책로 삭제

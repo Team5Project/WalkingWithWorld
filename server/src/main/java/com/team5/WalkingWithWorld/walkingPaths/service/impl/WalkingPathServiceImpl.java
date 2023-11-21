@@ -188,13 +188,50 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
 
     // 산책로 수정
     @Override
-    public void modifyWalkingPath(RequestWalkingPathDTO requestWalkingPathDTO, int walkingPathsId) {
+    @Transactional
+    public void modifyWalkingPath(RequestWalkingPathDTO requestWalkingPathDTO, int walkingPathsId, List<MultipartFile> files) {
         WalkingPaths walkingPaths = walkingPathsRepository.findById(walkingPathsId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));
 
         Optional.ofNullable(requestWalkingPathDTO.getTitle()).ifPresent(walkingPaths::updateTitle);
         Optional.ofNullable(requestWalkingPathDTO.getAddr()).ifPresent(walkingPaths::updateAddr);
 
-        walkingPathsRepository.save(walkingPaths);
+        WalkingPaths entity = walkingPathsRepository.save(walkingPaths);
+        // 지도
+        if(requestWalkingPathDTO.getRequestMapDTO().getDistance() != null) {
+            Map map = mapRepository.findByWalkingPaths(entity);
+            if(map != null) {
+                map.updateTime(requestWalkingPathDTO.getRequestMapDTO().getTime());
+                map.updateDistance(requestWalkingPathDTO.getRequestMapDTO().getDistance());
+                coordinateRepository.deleteAllByWalkingPaths(entity);
+            }
+            else {
+                map = Map.from(entity, requestWalkingPathDTO.getRequestMapDTO());
+            }
+            mapRepository.save(map);
+            for (int i = 0; i < requestWalkingPathDTO.getRequestMapDTO().getCoordinateX().size(); i++) {
+                Coordinate coordinate = Coordinate.of(entity, requestWalkingPathDTO.getRequestMapDTO().getCoordinateX().get(i), requestWalkingPathDTO.getRequestMapDTO().getCoordinateY().get(i));
+                coordinateRepository.save(coordinate);
+            }
+        }
+        // 사진
+        if (files != null) {
+            FileVo fileVo = new FileVo(files);
+            java.util.Map<String, String> filesName = null;
+            try {
+                filesName = fileUpload.upload(fileVo);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            photosRepository.deleteAllByWalkingPaths(entity);
+            for (java.util.Map.Entry<String, String> entry : filesName.entrySet()) {
+                Photos photos = Photos.builder()
+                        .walkingPaths(walkingPaths)
+                        .imgName(entry.getKey())
+                        .imgPath(entry.getValue())
+                        .build();
+                photosRepository.save(photos);
+            }
+        }
     }
 
     // 조회수 업데이트

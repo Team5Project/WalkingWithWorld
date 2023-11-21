@@ -30,4 +30,11 @@ public class Map {
     public static Map from(WalkingPaths walkingPaths, RequestMapDTO requestMapDTO) {
         return new Map(walkingPaths, requestMapDTO.getTime(), requestMapDTO.getDistance());
     }
+
+    public void updateTime(Long time) {
+        this.time = time;
+    }
+    public void updateDistance(String distance) {
+        this.distance = distance;
+    }
 }
