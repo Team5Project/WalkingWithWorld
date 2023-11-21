@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import WalkingPathRead from '@/components/walkingpath/WalkingPathRead.vue';
@@ -19,7 +19,6 @@ const compDetailMode = ref('default');
 const modeChange = (changed) => {
 	compDetailMode.value = changed;
 }
-console.log(bearer);
 
 onMounted(()=> {
     if(window.kakao && window.kakao.maps) {

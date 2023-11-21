@@ -146,15 +146,18 @@
 
 </template>
 <script setup>
-  import { defineEmits, ref, onMounted, inject } from 'vue';
+  import { defineEmits, ref, onMounted, defineProps,watch } from 'vue';
 	import axios from 'axios';
-import { useRoute } from 'vue-router';
+	import { useRoute } from 'vue-router';
 
   const emit = defineEmits(['pageMode']);
+	const printMode = ref('');
+	const props = defineProps(['getPrintMode']);
+	console.log(printMode.value);
   const modeToModify = () => {
     emit('pageMode', 'modify');
   }
-	
+
 	// --------------------
 	// 리스트 불러오기 - 전체
 	// --------------------
@@ -166,35 +169,25 @@ import { useRoute } from 'vue-router';
 			const response = await axios.get('http://localhost:8089/walking-path');
 			return response.data;
 		} else {
+			printMode.value = 'search';
 			const response = await axios.get('http://localhost:8089/walking-path/search?keyword=' + keyword);
 			return response.data;
 		}
 	}
 
-	// --------------------
-	// 리스트 불러오기 - 필터링
-	// --------------------
-	// let FilterKeyword = "";
-	// let locationStr = "";
-	// const urlStr = ref(`http://localhost:8089/walking-path/filter?keyword=${FilterKeyword}&filters=location%3A${locationStr}%7C${minTime}%3A5%7C${maxTime}%3A30%7C${minDistance}%3A1%7C${maxDistance}%3A10`)
-	// function getFilteredList(){
-	// 	const fetchListFilter = async () =>{
-	// 		const response = await axios.get(urlStr)
-	// 		return response.data;
-	// 	}
-	// 	const setListFilter = async() => {
-	// 		getList.value = await fetchListFilter();
-	// 	}
-	// }
-
-
-
+	
 	const setList = async() => {
 		getList.value = await fetchList();
 	}
-	setList().then(()=>{
-		console.log(getList.value.data);
-		})
+	setList();
+		
+	watch(() => props.getPrintMode, async () => {
+		printMode.value = props.getPrintMode;
+		const response = await axios.get('http://localhost:8089/walking-path');
+		getList.value = response.data;
+	});
+
+
 	onMounted(() => {
 		import('@/utils/walking_path.js')
 
