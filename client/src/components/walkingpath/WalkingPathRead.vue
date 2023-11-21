@@ -6,7 +6,7 @@
           <h2>{{ getDetail.title }}</h2>
           <div class="up_del">
               <span class="info_modi" @click="modeToModify">수정</span>
-              <span class="info_del">삭제</span>
+              <span class="info_del" @click="removeWalkingPath">삭제</span>
           </div>
       </div>
       <p>
@@ -60,7 +60,7 @@
       </section>
       <section class="map">
           <h3>상세 경로</h3>
-          <h4 id="exist">게시자가 상세 경로를 입력하지 않았습니다.</h4>
+          <h4 v-if="getDetail.map == null">게시자가 상세 경로를 입력하지 않았습니다.</h4>
           <div class="map_wrap">
               <div class="readMap" id="map"></div>
           </div>
@@ -104,6 +104,24 @@ onMounted(()=> {
       loadScript();
   }
 });
+const removeWalkingPath = function() {
+    if(confirm("삭제하시겠습니까?")) {
+        axios.delete('http://localhost:8089/walking-path/' + getDetail.value.id, {
+            headers: {
+                'authorization' : bearer,
+            },
+        })
+        .then(response => {
+            if(response.status  == 205){
+                alert("게시글이 삭제되었습니다.");
+                router.push('/walking-path');
+            }
+        });
+        console.log("왜일까");
+    } else {
+        alert("취소되었습니다.");
+    }
+};
 const loadScript = function() {
   const script = document.createElement("script");
   script.src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d753200077e444dd40df1e458903dfd3&autoload=false";
@@ -160,7 +178,6 @@ setDetail().then(() => {
   import('@/utils/image_list.js')
   console.log(getDetail.value);
   mapAry.value = getDetail.value.mapList;
-  console.log(mapAry.value.length);
   if(mapAry.value.length > 0) {
       drawLine();
   }
