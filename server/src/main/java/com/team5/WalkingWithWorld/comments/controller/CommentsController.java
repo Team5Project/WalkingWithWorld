@@ -79,6 +79,15 @@ public class CommentsController {
 
 //    }
 
+    @PutMapping("/comments/{comments-id}")
+    public ResponseEntity UpdateComments(@PathVariable("comments-id") Long id,
+                                         @RequestBody CommentsDTO dto,
+                                         @AuthenticationPrincipal CustomPrincipal customPrincipal){
+
+        commentService.updateComment(id, dto, customPrincipal.email());
+        return new ResponseEntity(HttpStatus.RESET_CONTENT);
+    }
+
     @DeleteMapping("/comments/{comments-id}")
     public ResponseEntity deleteComments(@PathVariable("comments-id") Long id,
                                          @AuthenticationPrincipal CustomPrincipal customPrincipal) {
