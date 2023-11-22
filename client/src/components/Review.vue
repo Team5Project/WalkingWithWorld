@@ -7,9 +7,9 @@
       <div class="review_none">
         <p>아직 리뷰가 작성되지 않았습니다.</p>
         <p>첫 리뷰를 작성해 주세요!</p>
-        <button @click="clickParam" class="btns btn_write_big">
+        <div @click="clickParam" class="btns btn_write_big">
           리뷰작성
-        </button>
+        </div>
       </div>
     </div>
   </section>
