@@ -193,6 +193,10 @@
 	
 	fetchList(0);
 	
+	// --------------------
+	// 모드 변화 감지
+	// --------------------
+
 	watch(() => props.getPrintMode, async () => {
 		printMode.value = props.getPrintMode;
 		const response = await axios.get('http://localhost:8089/walking-path');
@@ -202,10 +206,20 @@
 	onMounted(() => {
 		import('@/utils/walking_path.js')
 	});
-	// 필터 적용
-	const getFilteredList = function() {
-		const response = axios.get(`http://localhost:8089/walking-path/filter?page=0&size=10&keyword=${keyword}&filters=location%3A%7CminTime%3A5%7CmaxTime%3A100%7CminDistance%3A1%7CmaxDistance%3A5000`);
-		getList.value = response.data;
+
+
+	// --------------------
+	// 필터 리스트
+	// --------------------	
+	
+	async function getFilteredList() {
+		const response = await axios.get(`http://localhost:8089/walking-path/filter?page=0&size=10&keyword=${keyword}&filters=location%3A%7CminTime%3A5%7CmaxTime%3A100%7CminDistance%3A1%7CmaxDistance%3A5000`);
+		const { data, pageInfo, barNumber } = response.data;
+
+		getList.value = data;
+		pagenation.value = pageInfo;
+		pageNum = barNumber;
+
 		if(keyword == null) {
 			router.push(`walking-path/filter?page=0&size=10&keyword=&filters=location%3A%7CminTime%3A5%7CmaxTime%3A100%7CminDistance%3A1%7CmaxDistance%3A5000`);
 		}
