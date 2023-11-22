@@ -38,6 +38,7 @@ public class VisitorsServiceImpl implements VisitorsService {
     public void updateVisitors(Long id, VisitorsUpdateRequestDTO requestDTO){
         Visitors visitors = visitorsRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode. VISITORS_ERROR_FOUND));
         Optional.ofNullable(requestDTO.getContent()).ifPresent((visitors::updateContent));
+        Optional.ofNullable(requestDTO.getName()).ifPresent((visitors::updateName));
         visitorsRepository.save(visitors);
 
 

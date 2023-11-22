@@ -39,7 +39,10 @@ public class Visitors {
     private LocalDateTime modifiedAt; //수정일시
 
     public void updateContent(String content){
-        this.content = content;
+            this.content = content;
+    }
+    public void updateName(String name){
+        this.name = name;
     }
 
 }

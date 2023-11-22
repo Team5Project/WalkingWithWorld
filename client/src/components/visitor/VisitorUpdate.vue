@@ -4,7 +4,7 @@
     <section>
       <div class="visitors_write_wrap">
         <aside class="visitor_logo">
-          <img th:src="@{/images/logo-big.png}" />
+          <img src="/images/logo-big.png" />
         </aside>
         <article>
           <div class="insert_visitor">
@@ -43,9 +43,13 @@
                 ></textarea>
               </p>
               <div class="visitor_mod">
-                <button class="btns btn_vback" @click="modeToList">
+                <router-link
+                  :to="'/visitor'"
+                  class="btns btn_vback"
+                  @click="modeToList"
+                >
                   이전화면
-                </button>
+                </router-link>
 
                 <input type="reset" value="초기화" class="btns btn_vreset" />
                 <input
@@ -57,7 +61,7 @@
                 <input
                   type="button"
                   value="수정"
-                  class="btns btn_vsubmit"
+                  class="btns btn_vreset"
                   @click="submitModifyForm(visitorId)"
                 />
               </div>
@@ -83,39 +87,44 @@ const modeToList = () => {
   emit("pageMode", "list");
 };
 
+let selectedProp;
+
 for (let prop of props.data) {
   if (prop.id == visitorId) {
-    console.log(prop);
+    console.log(prop.password);
     vname.value = prop.name;
     vcontent.value = prop.content;
+    selectedProp = prop;
+    console.log("selectedProp.password: " + selectedProp.password);
   }
 }
 
-/* const visitorId = computed(() => props.id); */
-
-// async function submitModifyForm(visitorId) {
-//   const url = `http://localhost:8089/visitor/${visitorId.value}`;
-//   const data = {
-//     name: vname.value,
-//     password: vpassword.value,
-//     content: vcontent.value,
-//   };
-
-//   await axios
-//     .put(url, data, {
-//       headers: { "Content-Type": "application/json" },
-//     })
-//     .then(function (response) {
-//       console.log(response);
-//       if (response.status == 200) {
-//         alert("게시글이 수정되었습니다.");
-//         modeToList();
-//       }
-//     })
-//     .catch(function (error) {
-//       console.log("error: ", error);
-//     });
-// }
+async function submitModifyForm(visitorId) {
+  const url = `http://localhost:8089/visitor/${visitorId}`;
+  const data = {
+    name: vname.value,
+    password: vpassword.value,
+    content: vcontent.value,
+  };
+  if (vpassword.value == selectedProp.password) {
+    await axios
+      .put(url, data, {
+        headers: { "Content-Type": "application/json" },
+      })
+      .then(function (response) {
+        console.log(response);
+        if (response.status == 205) {
+          alert("게시글이 수정되었습니다.");
+          modeToList();
+        }
+      })
+      .catch(function (error) {
+        console.log("error: ", error);
+      });
+  } else {
+    alert("비밀번호가 일치하지 않습니다.");
+  }
+}
 </script>
 
 <style scoped>
