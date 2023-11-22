@@ -24,7 +24,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/walking-path")
-@CrossOrigin(origins = "http://localhost:5173") // 허용할 오리진을 지정
+@CrossOrigin(origins="http://localhost:5173", allowedHeaders = "*", exposedHeaders="Authorization",
+        allowCredentials = "true") // 허용할 오리진을 지정
 public class WalkingPathsController {
     private final WalkingPathServiceImpl walkingPathService;
     private final PaginationService paginationService;
