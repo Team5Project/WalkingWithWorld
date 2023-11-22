@@ -43,8 +43,7 @@
                         </section>
                         <section class="submit">
                             <input type="submit" value="저장" class="btn-review">
-                            <button class="btn-ref"><a
-                                    th:href="@{/walking-path/{id}(id=${walkingPaths.getId()})}">뒤로가기</a></button>
+                            <span class="cursor" @click="$goBack">뒤로가기</span>
                         </section>
                     </form>
                 </div>

@@ -7,7 +7,7 @@
 									<h3>지역</h3>
 									<div class="cat_location_list">
 											<p id="location_check_all">
-													<i class="check_all_i fa-solid fa-circle-check"></i>
+													<i class="check_all_i fa-solid fa-circle-check cursor"></i>
 													서울 전체
 											</p>
 											<p>
@@ -135,7 +135,7 @@
 							<p class="pagenation">
 								<i class="fa-solid fa-chevron-left"></i>
 								<span v-for="i in pageNum">
-									<b :class="{ 'currentPage': i+1 === pagenation.page }" @click="fetchList(i)">{{ i+1 }}</b>
+									<b :class="{ 'currentPage': i+1 === pagenation.page }" class="cursor" @click="fetchList(i)">{{ i+1 }}</b>
 								</span>
 								<i class="fa-solid fa-chevron-right"></i>
 							</p>
@@ -191,7 +191,6 @@
 	fetchList(0);
 	
 	watch(() => props.getPrintMode, async () => {
-		document.querySelector('.search_title').style.display='none';
 		printMode.value = props.getPrintMode;
 		const response = await axios.get('http://localhost:8089/walking-path');
 		getList.value = response.data.data;

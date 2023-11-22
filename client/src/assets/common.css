@@ -49,7 +49,9 @@ input:-webkit-autofill:active {
     box-shadow: 0 0 0 1000px white inset;
     font-family: inherit;
 }
-
+.cursor{
+    cursor: pointer;
+}
 /* ----- 헤더 스타일 ----- */
 
 .header_wrap {
@@ -187,6 +189,7 @@ footer {
     width: 120px;
     line-height: 40px;
     color: #fff;
+    cursor: pointer;
 }
 
 .btns:hover {
