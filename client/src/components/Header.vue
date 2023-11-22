@@ -22,10 +22,10 @@
         유저네임 바인딩
       </router-link>
       
-      <button class="btns btn_signup" @click="logout()">
+      <div class="btns btn_signup" @click="logout()">
         <i class="sign_icon fa-solid fa-key" ></i>
         Logout
-      </button>
+      </div>
         
       
     </div>

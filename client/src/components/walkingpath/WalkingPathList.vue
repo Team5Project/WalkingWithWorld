@@ -133,9 +133,9 @@
 					<div class="path_ctrl">
 							<!-- <a th:href="@{/walking-path}" class="btns btn_wp_return">전체목록</a> -->
 							<p class="pagenation">&lt;&lt; &lt; 1 2 3 4 5 &gt; &gt;&gt;</p>
-							<button class="btns btn_path_submit" @click="modeToModify">
+							<div class="btns btn_path_submit" @click="modeToModify">
 								산책로 등록
-							</button>
+							</div>
 							<!-- <router-link v-if="{sessionauth == null}" to="/Login" class="btns btn_path_submit">
 								산책로 등록
 							</router-link> -->

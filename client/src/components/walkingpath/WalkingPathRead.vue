@@ -46,9 +46,9 @@
                       <div>
 
                           <!-- <router-link :to="'/'+WalkingPathId + '/reviews'" class="btns btn_write_big"> -->
-                              <button @click="clickParam" class="btns btn_write_big">
+                              <div @click="clickParam" class="btns btn_write_big">
                                   리뷰작성
-                              </button>
+                              </div>
                           <!-- </router-link> -->
                       </div>
                   </div>
