@@ -91,9 +91,7 @@
 							</div>
 					</div>
 					<hr class="cat_hr">
-					<!-- <input class="btns btn_cat" type="button" th:data-word="${keyword}"
-							th:onclick="searchWalkingPath(this.getAttribute('data-word'))" value="검색하기"> -->
-					<input class="btns btn_cat" type="button" value="검색하기" @click="getFilteredList()">
+					<input class="btns btn_cat" type="button" value="검색하기" @click="getFilteredList">
 			</aside>
 
 			<article id="walking-path">
@@ -149,6 +147,7 @@
   import { defineEmits, ref, onMounted, defineProps,watch } from 'vue';
 	import axios from 'axios';
 	import { useRoute } from 'vue-router';
+	import router from '@/router/index.js'
 
   const emit = defineEmits(['pageMode']);
 	const printMode = ref('');
@@ -163,6 +162,7 @@
 	// --------------------
 	const getList = ref([]);
 	const keyword = useRoute().query.keyword;
+	// const addr = useRoute().query.addr;
 	const fetchList = async () =>{
 		if(keyword == null) {
 			const response = await axios.get('http://localhost:8089/walking-path');
@@ -172,9 +172,14 @@
 			const response = await axios.get('http://localhost:8089/walking-path/search?keyword=' + keyword);
 			return response.data;
 		}
+		// } else {
+		// 	console.log(keyword);
+		// 	console.log(addr);
+		// 	const response = await axios.get(`http://localhost:8089/walking-path/filter?page=0&size=10&keyword=&filters=location%3A%7CminTime%3A5%7CmaxTime%3A100%7CminDistance%3A1%7CmaxDistance%3A5000`);
+		// 	return response.data;
+		// }
 	}
 
-	
 	const setList = async() => {
 		getList.value = await fetchList();
 	}
@@ -189,8 +194,18 @@
 
 	onMounted(() => {
 		import('@/utils/walking_path.js')
-
-	})	
+	});
+	// 필터 적용
+	const getFilteredList = function() {
+		const response = axios.get(`http://localhost:8089/walking-path/filter?page=0&size=10&keyword=${keyword}&filters=location%3A%7CminTime%3A5%7CmaxTime%3A100%7CminDistance%3A1%7CmaxDistance%3A5000`);
+		getList.value = response.data;
+		if(keyword == null) {
+			router.push(`walking-path/filter?page=0&size=10&keyword=&filters=location%3A%7CminTime%3A5%7CmaxTime%3A100%7CminDistance%3A1%7CmaxDistance%3A5000`);
+		}
+		else {
+			router.push(`filter?page=0&size=10&keyword=${keyword}&filters=location%3A%7CminTime%3A5%7CmaxTime%3A100%7CminDistance%3A1%7CmaxDistance%3A5000`);
+		}
+	}
 </script>
 <style scoped>
     @import "@/assets/walking_path.css";
