@@ -1,8 +1,8 @@
 <template>
-	<Header @pageMode="modeChange"/>
+	<Header @pageMode="modeChange" @printMode="printModeChange"/>
 	<!-- 헤더 입력 -->
 	<hr class="header_hr">
-	<WalkingPathList v-if="compMode === 'default'" @pageMode="modeChange"/>
+	<WalkingPathList v-if="compMode === 'default'" @pageMode="modeChange" :getPrintMode="printModeToList"/>
 	<WalkingPathCreate v-if="compMode === 'modify'" @pageMode="modeChange"/>
 	<!-- <WalkingPathDetail/> -->
   <!-- 푸터 입력 -->
@@ -19,7 +19,12 @@ import WalkingPathList from '@/components/walkingpath/WalkingPathList.vue';
 import WalkingPathCreate from '@/components/walkingpath/WalkingPathCreate.vue';
 
 const compMode = ref('default');
+const printModeToList = ref('default');
+
 const modeChange = (changed) => {
 	compMode.value = changed;
+}
+const printModeChange = (refresh) => {
+	printModeToList.value = refresh;
 }
 </script>

@@ -12,18 +12,22 @@
                 <span class="date">{{ item.createdAt }}</span>
             </div>
                 <div class="up_del" style="visibility:visible;">
-                    <span id="update" class="info_modi">수정</span>
+                    <span id="update" class="info_modi" @click="changeUpdateMode(item.id, item.content)">수정</span>
                     <span id="delete" class="info_del" @click="deleteComments(item.id)">삭제</span>
                 </div>
           </div>
         </div>
             <p> {{ item.content }} </p>
         </article>
-        <div @click="CommentsRead"> 5개 더 보기 </div>
+        <div class="moreBtn" @click="CommentsRead"> 5개 더 보기 </div>
     </div>
     <form id="comments_write" @submit.prevent="writeComments">
-      <input type="text" id="comment_content" class="comments_input" name="content" placeholder="댓글을 입력해주세요" v-model="comment_content" required/>
+      <input type="text" class="comments_input" name="content" placeholder="댓글을 입력해주세요" v-model="comment_write" required/>
       <input type="button" class="btns btn_comments" value="등록" @click="writeComments"/>
+    </form>
+    <form id="comments_update" @submit.prevent="updateComments" style="display:none;">
+      <input type="text" class="comments_input" name="content" v-model="comment_update" required/>
+      <input type="button" class="btns btn_comments" value="수정" @click="updateComments"/>
     </form>
   </div>
 </template>
@@ -37,7 +41,10 @@ const getComments = ref([]);
 const currentPage = ref(0);
 const totalPages = ref('');
 const commentsUrl = `http://localhost:8089/${props.id}/comments`;
-const comment_content = ref('');
+const comment_write = ref('');
+const comment_update = ref('');
+const updateId = ref('');
+const updateContent = ref('');
 const token = localStorage.getItem('token');
 let bearer;
 
@@ -55,9 +62,18 @@ async function CommentsRead() {
   try {
     const response = await axios.get(`${commentsUrl}?page=${currentPage.value}&size=5`);
     const { data, pageInfo } = response.data;
-    getComments.value = [...getComments.value, ...data];
+    if(getComments.value.length > 0 && currentPage.value === 0){
+      getComments.value = data;
+    }else{
+      getComments.value = [...getComments.value, ...data];
+    }
     totalPages.value = pageInfo.totalPages;
     currentPage.value++ ;
+    if(pageInfo.totalPages == 1 || currentPage.value == pageInfo.totalPages){
+      document.querySelector('.moreBtn').style.display = 'none'
+    }else{
+      document.querySelector('.moreBtn').style.display = 'block'
+    }
   } catch (error) {
     console.error('Error fetching comments:', error);
   }
@@ -66,10 +82,11 @@ async function CommentsRead() {
 async function reGetComments(){
   currentPage.value = 0;
   try {
-    const response = await axios.get(`${commentsUrl}?page=${currentPage.value}&size=5`);
+    const response = await axios.get(`${commentsUrl}?page=0&size=5`);
     const { data, pageInfo } = response.data;
     getComments.value = data;
     totalPages.value = pageInfo.totalPages;
+    await CommentsRead();
   } catch (error) {
     console.error('Error fetching comments:', error);
   }
@@ -83,7 +100,7 @@ CommentsRead();
 
 async function writeComments(){
   const postComments = {
-    "content": comment_content.value
+    "content": comment_write.value
   }
   await axios.post(commentsUrl, postComments, {
     headers: {
@@ -91,10 +108,34 @@ async function writeComments(){
       'authorization': bearer,
     },
   });
-  comment_content.value = '';
+  comment_write.value = '';
   reGetComments();
 }
 
+// ----------------------------------
+// update
+// ----------------------------------
+
+async function changeUpdateMode(id, content){
+  updateId.value = id;
+  updateContent.value = content;
+  comment_update.value = content;
+  document.querySelector('#comments_write').style.display = 'none';
+  document.querySelector('#comments_update').style.display = 'flex';
+}
+
+async function updateComments(){
+  const putComments = {"content": comment_update.value}
+  await axios.put(`http://localhost:8089/comments/${updateId.value}`,putComments,{
+    headers:{
+      'content-type': 'application/json',
+      'authorization': bearer,
+    }
+  });
+  document.querySelector('#comments_write').style.display = 'flex';
+  document.querySelector('#comments_update').style.display = 'none';
+  reGetComments();
+}
 // ----------------------------------
 // delete
 // ----------------------------------
@@ -108,7 +149,7 @@ async function deleteComments(commentsId){
         'authorization': bearer,
       }
     });
-    reGetComments()
+    reGetComments();
   }else{
     return;
   }

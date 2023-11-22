@@ -22,8 +22,6 @@ const compDetailMode = ref('default');
 const modeChange = (changed) => {
 	compDetailMode.value = changed;
 }
-const bearer = localStorage.getItem('token').split('"')[3];
-console.log(bearer);
 
 onMounted(()=> {
     if(window.kakao && window.kakao.maps) {
