@@ -258,7 +258,7 @@ const handleSelectAllChange = () => {
 
 watch(selectedLocations, () => {
   selectAll.value = selectedLocations.value.length === locations.value.length;
-  console.log(selectedLocations.value);
+  console.log(selectedLocations.value[0]);
 });
 
 // --------------------
@@ -277,10 +277,10 @@ onMounted(() => {
   minDistanceRef.value = document.getElementById("minDistance");
   maxDistanceRef.value = document.getElementById("maxDistance");
 });
-let minTimeValue;
-let maxTimeValue;
-let minDistanceValue;
-let maxDistanceValue;
+let minTimeValue=0;
+let maxTimeValue=180;
+let minDistanceValue=0;
+let maxDistanceValue=20000;
 const set = () => {
   // ref로 참조한 DOM 요소의 value를 읽어올 수 있습니다.
   minTimeValue = minTimeRef.value.value;
@@ -327,8 +327,12 @@ watch(
   () => props.getPrintMode,
   async () => {
     printMode.value = props.getPrintMode;
-    const response = await axios.get("http://localhost:8089/walking-path");
-    getList.value = response.data.data;
+    const response = await axios.get("http://localhost:8089/walking-path?page=${i}&size=3");
+    const { data, pageInfo, barNumber } = response.data;
+
+getList.value = data;
+pagenation.value = pageInfo;
+pageNum = barNumber;
   }
 );
 
@@ -342,7 +346,7 @@ onMounted(() => {
 
 async function getFilteredList() {
   const response = await axios.get(
-    `http://localhost:8089/walking-path/filter?page=0&size=10&keyword=${selectedLocations.value}&filters=location%3A%7CminTime%3A${minTimeValue}%7CmaxTime%3A${maxTimeValue}%7CminDistance%3A${minDistanceValue}%7CmaxDistance%3A${maxDistanceValue}`
+    `http://localhost:8089/walking-path/filter?page=0&size=10&keyword=${keyword}&filters=location%3A${selectedLocations.value[0]}%7CminTime%3A${minTimeValue}%7CmaxTime%3A${maxTimeValue}%7CminDistance%3A${minDistanceValue}%7CmaxDistance%3A${maxDistanceValue}`
   );
   const { data, pageInfo, barNumber } = response.data;
 
