@@ -222,6 +222,7 @@ import { defineEmits, ref, onMounted, defineProps, watch, reactive } from "vue";
 import axios from "axios";
 import { useRoute } from "vue-router";
 import router from "@/router/index.js";
+import { setupWalkingPath } from "@/utils/walking_path.js";
 
 const emit = defineEmits(["pageMode"]);
 const printMode = ref("");
@@ -260,7 +261,6 @@ const handleSelectAllChange = () => {
 
 watch(selectedLocations, () => {
   selectAll.value = selectedLocations.value.length === locations.value.length;
-  console.log(selectedLocations.value[0]);
 });
 
 // --------------------
@@ -298,6 +298,10 @@ const setDistance = () => {
 // 리스트 불러오기 - 전체
 // --------------------
 
+onMounted(() => {
+  fetchList(0);
+});
+
 async function fetchList(i) {
   let walkingPathGetUrl;
 
@@ -305,7 +309,7 @@ async function fetchList(i) {
     walkingPathGetUrl = `http://localhost:8089/walking-path?page=${i}&size=3`;
   } else {
     printMode.value = "search";
-    walkingPathGetUrl = `http://localhost:8089/walking-path/search?keyword=${keyword}`;
+    walkingPathGetUrl = `http://localhost:8089/walking-path/search?keyword=${keyword}&page=${i}&size=3`;
   }
 
   const response = await axios.get(walkingPathGetUrl);
@@ -316,8 +320,6 @@ async function fetchList(i) {
   pageNum = barNumber;
 }
 
-fetchList(0);
-
 // --------------------
 // 모드 변화 감지
 // --------------------
@@ -326,18 +328,9 @@ watch(
   () => props.getPrintMode,
   async () => {
     printMode.value = props.getPrintMode;
-    const response = await axios.get(`http://localhost:8089/walking-path?page=${i}&size=3`);
-    const { data, pageInfo, barNumber } = response.data;
-
-getList.value = data;
-pagenation.value = pageInfo;
-pageNum = barNumber;
+    fetchList(0);
   }
 );
-
-onMounted(() => {
-  import("@/utils/walking_path.js");
-});
 
 // --------------------
 // 필터 리스트
@@ -361,6 +354,12 @@ function getFilteredList() {
 		`/walking-path/filter?page=0&size=10&keyword=${keyword}&filters=location%3A${locations}%7CminTime%3A${minTimeValue}%7CmaxTime%3A${maxTimeValue}%7CminDistance%3A${minDistanceValue}%7CmaxDistance%3A${maxDistanceValue}`
 	);
 }
+
+onMounted(() => {
+  setupWalkingPath();
+
+});
+
 </script>
 <style scoped>
 @import "@/assets/walking_path.css";

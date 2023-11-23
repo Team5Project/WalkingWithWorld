@@ -5,7 +5,7 @@
     </div>
     <div id="right" class="login_form">
       <div class="logo-img">
-        <img th:src=@{/images/login_logo.png}>
+        <img src="/images/login_logo.png">
       </div>
       <div class="form">
         <form @submit.prevent="login()">
