@@ -62,6 +62,7 @@
               min="0"
               max="180"
               step="10"
+							@change="set"
             />
             <input
               type="range"
@@ -71,6 +72,7 @@
               min="0"
               max="180"
               step="10"
+							@change="set"
             />
             <!-- 양방향 슬라이더 보여주기 -->
             <div class="slider">
@@ -95,18 +97,20 @@
               class="dist_Slider"
               value="0"
               min="0"
-              max="20000"
+              max="9999"
               step="100"
+							@change="setDistance"
             />
             <input
               type="range"
               name="maxDistance"
               id="maxDistance"
               class="dist_Slider"
-              value="20000"
+              value="9999"
               min="0"
-              max="20000"
+              max="9999"
               step="100"
+							@change="setDistance"
             />
             <!-- 양방향 슬라이더 보여주기 -->
             <div class="distance-slider">
@@ -191,7 +195,6 @@
           </div>
         </div>
         <div class="path_ctrl">
-          <!-- <a th:href="@{/walking-path}" class="btns btn_wp_return">전체목록</a> -->
           <p class="pagenation">
             <i class="fa-solid fa-chevron-left"></i>
             <span v-for="i in pageNum">
@@ -199,8 +202,7 @@
                 :class="{ currentPage: i + 1 === pagenation.page }"
                 class="cursor"
                 @click="fetchList(i)"
-                >{{ i + 1 }}</b
-              >
+                >{{ i + 1 }}</b>
             </span>
             <i class="fa-solid fa-chevron-right"></i>
           </p>
@@ -227,7 +229,7 @@ const props = defineProps(["getPrintMode"]);
 const getList = ref([]);
 const pagenation = ref([]);
 let pageNum = reactive([]);
-const keyword = useRoute().query.keyword;
+const keyword = useRoute().query.keyword != null ? useRoute().query.keyword : "";
 
 const modeToModify = () => {
   emit("pageMode", "modify");
@@ -280,19 +282,16 @@ onMounted(() => {
 let minTimeValue=0;
 let maxTimeValue=180;
 let minDistanceValue=0;
-let maxDistanceValue=20000;
+let maxDistanceValue=9999;
+
 const set = () => {
-  // ref로 참조한 DOM 요소의 value를 읽어올 수 있습니다.
   minTimeValue = minTimeRef.value.value;
   maxTimeValue = maxTimeRef.value.value;
-  // 이하 로직을 원하는 대로 업데이트하세요.
 };
 
 const setDistance = () => {
-  // ref로 참조한 DOM 요소의 value를 읽어올 수 있습니다.
   minDistanceValue = minDistanceRef.value.value;
   maxDistanceValue = maxDistanceRef.value.value;
-  // 이하 로직을 원하는 대로 업데이트하세요.
 };
 
 // --------------------
@@ -327,7 +326,7 @@ watch(
   () => props.getPrintMode,
   async () => {
     printMode.value = props.getPrintMode;
-    const response = await axios.get("http://localhost:8089/walking-path?page=${i}&size=3");
+    const response = await axios.get(`http://localhost:8089/walking-path?page=${i}&size=3`);
     const { data, pageInfo, barNumber } = response.data;
 
 getList.value = data;
@@ -344,25 +343,23 @@ onMounted(() => {
 // 필터 리스트
 // --------------------
 
-async function getFilteredList() {
-  const response = await axios.get(
-    `http://localhost:8089/walking-path/filter?page=0&size=10&keyword=${keyword}&filters=location%3A${selectedLocations.value[0]}%7CminTime%3A${minTimeValue}%7CmaxTime%3A${maxTimeValue}%7CminDistance%3A${minDistanceValue}%7CmaxDistance%3A${maxDistanceValue}`
-  );
-  const { data, pageInfo, barNumber } = response.data;
-
-  getList.value = data;
-  pagenation.value = pageInfo;
-  pageNum = barNumber;
-
-  if (keyword == null) {
-    router.push(
-      `walking-path/filter?page=0&size=10&keyword=&filters=location%3A%7CminTime%3A5%7CmaxTime%3A100%7CminDistance%3A1%7CmaxDistance%3A5000`
-    );
-  } else {
-    router.push(
-      `filter?page=0&size=10&keyword=${keyword}&filters=location%3A%7CminTime%3A${minTimeValue}%7CmaxTime%3A${maxTimeValue}%7CminDistance%3A${minDistanceValue}%7CmaxDistance%3A${maxDistanceValue}`
-    );
-  }
+function getFilteredList() {
+	var locations = "";
+	selectedLocations.value.forEach((word) => locations += word + "%2C");
+  axios.get(
+    `http://localhost:8089/walking-path/filter?page=0&size=10&keyword=${keyword}&filters=location%3A${locations}%7CminTime%3A${minTimeValue}%7CmaxTime%3A${maxTimeValue}%7CminDistance%3A${minDistanceValue}%7CmaxDistance%3A${maxDistanceValue}`
+  )
+	.then((response) => {
+		console.log(response.data);
+		const { data, pageInfo, barNumber } = response.data;
+		getList.value = data;
+		pagenation.value = pageInfo;
+		pageNum = barNumber;
+	})
+  .catch((err) => console.error(err));
+	router.push(
+		`/walking-path/filter?page=0&size=10&keyword=${keyword}&filters=location%3A${locations}%7CminTime%3A${minTimeValue}%7CmaxTime%3A${maxTimeValue}%7CminDistance%3A${minDistanceValue}%7CmaxDistance%3A${maxDistanceValue}`
+	);
 }
 </script>
 <style scoped>

@@ -85,7 +85,9 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
     public PageResponseDto<ResponseWalkingPathDTO> searchConditionPage(String keyword, String filters, Pageable pageable) {
         List<String> locations;
         HashMap<String, Integer> filtersMap;
-        keyword = keyword.isEmpty() ? null : keyword;
+        if(keyword.isEmpty() || keyword.isBlank())
+            keyword = null;
+
         try {
             String[] filterAry = divideFilters(filters);
             locations = readLocation(filterAry[0]);
