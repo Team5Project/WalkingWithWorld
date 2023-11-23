@@ -2,7 +2,7 @@
   <header class="header_wrap">
     <router-link to="/" class="logo"/>
     <nav>
-      <router-link class="header_link" to="/walking-path" @click="modeToDefault">산책로</router-link>
+      <router-link class="header_link" to="/walking-path" @click="modeToDefault"  :key="$route.fullPath + '_walking'">산책로</router-link>
       <router-link class="header_link" to="/visitor">자유게시판</router-link>
     </nav>
 
