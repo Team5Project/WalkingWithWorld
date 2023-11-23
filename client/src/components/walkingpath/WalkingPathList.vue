@@ -103,7 +103,7 @@
 									<!--  -->
 									<!-- 리스트 출력부분 -->
 									<!--  -->
-									<div class="path_wrapper" v-for="item in getList.data">
+									<div class="path_wrapper" v-for="item in getList">
 										<router-link :to="'/walking-path/'+item.id" class="path_img">
 													<img v-if="item.photos == null"
 															src="/images/noimage.png" alt="">
@@ -130,7 +130,13 @@
 					</div> 
 					<div class="path_ctrl">
 							<!-- <a th:href="@{/walking-path}" class="btns btn_wp_return">전체목록</a> -->
-							<p class="pagenation">&lt;&lt; &lt; 1 2 3 4 5 &gt; &gt;&gt;</p>
+							<p class="pagenation">
+								<i class="fa-solid fa-chevron-left"></i>
+								<span v-for="i in pageNum">
+									<b :class="{ 'currentPage': i+1 === pagenation.page }" @click="fetchList(i)">{{ i+1 }}</b>
+								</span>
+								<i class="fa-solid fa-chevron-right"></i>
+							</p>
 							<div class="btns btn_path_submit" @click="modeToModify">
 								산책로 등록
 							</div>
@@ -144,7 +150,7 @@
 
 </template>
 <script setup>
-  import { defineEmits, ref, onMounted, defineProps,watch } from 'vue';
+  import { defineEmits, ref, onMounted, defineProps, watch, reactive } from 'vue';
 	import axios from 'axios';
 	import { useRoute } from 'vue-router';
 	import router from '@/router/index.js'
@@ -152,8 +158,12 @@
   const emit = defineEmits(['pageMode']);
 	const printMode = ref('');
 	const props = defineProps(['getPrintMode']);
-	console.log(printMode.value);
-  const modeToModify = () => {
+	const getList = ref([]);
+	const pagenation = ref([]);
+	let pageNum = reactive([]);
+	const keyword = useRoute().query.keyword;
+
+	const modeToModify = () => {
     emit('pageMode', 'modify');
   }
 
@@ -165,12 +175,10 @@
 	// const filters = useRoute().query.filters;
 	const fetchList = async () =>{
 		if(keyword == null) {
-			const response = await axios.get('http://localhost:8089/walking-path');
-			return response.data;
+			walkingPathGetUrl = `http://localhost:8089/walking-path?page=${i}&size=3`;
 		} else {
 			printMode.value = 'search';
-			const response = await axios.get('http://localhost:8089/walking-path/search?keyword=' + keyword);
-			return response.data;
+			walkingPathGetUrl = `http://localhost:8089/walking-path/search?keyword=${keyword}`;
 		}
 		// } else {
 		// 	console.log(keyword);
@@ -180,8 +188,14 @@
 		// }
 	}
 
-	const setList = async() => {
-		getList.value = await fetchList();
+
+		const response = await axios.get(walkingPathGetUrl);
+		const { data, pageInfo, barNumber } = response.data;
+
+		getList.value = data;
+		pagenation.value = pageInfo;
+		pageNum = barNumber;
+
 	}
 	setList();
 
@@ -189,7 +203,7 @@
 		document.querySelector('.search_title').style.display='none';
 		printMode.value = props.getPrintMode;
 		const response = await axios.get('http://localhost:8089/walking-path');
-		getList.value = response.data;
+		getList.value = response.data.data;
 	});
 
 	onMounted(() => {
@@ -214,4 +228,9 @@
 </script>
 <style scoped>
     @import "@/assets/walking_path.css";
+		.currentPage {
+			color: #97bf04;
+			font-weight: bold;
+			font-size: 1.1em;
+		}
 </style>
