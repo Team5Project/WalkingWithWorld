@@ -5,8 +5,8 @@
       <div class="detail_title">
           <h2>{{ getDetail.title }}</h2>
           <div class="up_del">
-              <span class="info_modi cursor" @click="modeToModify">수정</span>
-              <span class="info_del cursor" @click="removeWalkingPath">삭제</span>
+              <span v-if="user == getDetail.users" class="info_modi cursor" @click="modeToModify">수정</span>
+              <span v-if="user == getDetail.users" class="info_del cursor" @click="removeWalkingPath">삭제</span>
           </div>
       </div>
       <p>
@@ -54,7 +54,7 @@
                   </div>
               </article>
               <!-- 코멘트 컴포넌트 -->
-              <Comments :id="WalkingPathId"/>
+              <Comments :id="WalkingPathId" :user="user"/>
               <!-- 코멘트 컴포넌트 -->
           </div>
       </section>
@@ -66,7 +66,7 @@
           </div>
       </section>
       <!-- 리뷰 컴포넌트 -->
-      <Review :walkingPathdId="WalkingPathId"/>
+      <Review :walkingPathdId="WalkingPathId" :user="user"/>
       <!-- 리뷰 컴포넌트 -->
   </main>
 </template>
@@ -86,6 +86,7 @@ const map = ref(null);
 const mapAry = ref();
 const token = localStorage.getItem('token');
 let bearer;
+let user = ref(null);
 
 const emit = defineEmits(['pageDetailMode']);
   const modeToModify = () => {
@@ -93,7 +94,11 @@ const emit = defineEmits(['pageDetailMode']);
   }
 
 if(token != null){
-bearer = token.split('"')[3]
+    bearer = token.split('"')[3];
+    var base64Payload = token.split('.')[1];
+    var payload = atob(base64Payload);
+    var result = JSON.parse(payload.toString());
+    user.value = result.id;
 }
 console.log(bearer);
 
@@ -177,7 +182,7 @@ const setDetail = async () => {
 setDetail().then(() => {
   import('@/utils/image_list.js')
   console.log(getDetail.value);
-  mapAry.value = getDetail.value.mapList;
+  mapAry.value = getDetail.value.coordinateList;
   if(mapAry.value.length > 0) {
       drawLine();
   }

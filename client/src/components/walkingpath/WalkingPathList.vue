@@ -126,7 +126,7 @@
           class="btns btn_cat"
           type="button"
           value="검색하기"
-          @click="getFilteredList"
+          @click="getFilteredList(0)"
         />
       </aside>
 
@@ -197,7 +197,14 @@
         <div class="path_ctrl">
           <p class="pagenation">
             <i class="fa-solid fa-chevron-left"></i>
-            <span v-for="i in pageNum">
+            <span v-if="filterMode" v-for="i in pageNum">
+              <b
+                :class="{ currentPage: i + 1 === pagenation.page }"
+                class="cursor"
+                @click="getFilteredList(i)"
+                >{{ i + 1 }}</b>
+            </span>
+						<span v-else="filterMode" v-for="i in pageNum">
               <b
                 :class="{ currentPage: i + 1 === pagenation.page }"
                 class="cursor"
@@ -231,6 +238,7 @@ const getList = ref([]);
 const pagenation = ref([]);
 let pageNum = reactive([]);
 const keyword = useRoute().query.keyword != null ? useRoute().query.keyword : "";
+const filterMode = ref(false);
 
 const modeToModify = () => {
   emit("pageMode", "modify");
@@ -304,6 +312,7 @@ onMounted(() => {
 
 async function fetchList(i) {
   let walkingPathGetUrl;
+	filterMode.value = false;
 
   if (keyword == null) {
     walkingPathGetUrl = `http://localhost:8089/walking-path?page=${i}&size=3`;
@@ -336,14 +345,14 @@ watch(
 // 필터 리스트
 // --------------------
 
-function getFilteredList() {
+function getFilteredList(i) {
 	var locations = "";
+	filterMode.value = true;
 	selectedLocations.value.forEach((word) => locations += word + "%2C");
   axios.get(
-    `http://localhost:8089/walking-path/filter?page=0&size=10&keyword=${keyword}&filters=location%3A${locations}%7CminTime%3A${minTimeValue}%7CmaxTime%3A${maxTimeValue}%7CminDistance%3A${minDistanceValue}%7CmaxDistance%3A${maxDistanceValue}`
+    `http://localhost:8089/walking-path/filter?page=${i}&size=3&keyword=${keyword}&filters=location%3A${locations}%7CminTime%3A${minTimeValue}%7CmaxTime%3A${maxTimeValue}%7CminDistance%3A${minDistanceValue}%7CmaxDistance%3A${maxDistanceValue}`
   )
 	.then((response) => {
-		console.log(response.data);
 		const { data, pageInfo, barNumber } = response.data;
 		getList.value = data;
 		pagenation.value = pageInfo;
@@ -351,13 +360,12 @@ function getFilteredList() {
 	})
   .catch((err) => console.error(err));
 	router.push(
-		`/walking-path/filter?page=0&size=10&keyword=${keyword}&filters=location%3A${locations}%7CminTime%3A${minTimeValue}%7CmaxTime%3A${maxTimeValue}%7CminDistance%3A${minDistanceValue}%7CmaxDistance%3A${maxDistanceValue}`
+		`/walking-path/filter?page=${i}&size=3&keyword=${keyword}&filters=location%3A${locations}%7CminTime%3A${minTimeValue}%7CmaxTime%3A${maxTimeValue}%7CminDistance%3A${minDistanceValue}%7CmaxDistance%3A${maxDistanceValue}`
 	);
 }
 
 onMounted(() => {
   setupWalkingPath();
-
 });
 
 </script>

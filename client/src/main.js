@@ -13,6 +13,9 @@ const httpClient = axios.create();
 
 app.config.globalProperties.$http = httpClient;
 app.config.globalProperties.$goBack = () => {
+  router.go(0);
+};
+app.config.globalProperties.$goBackPage = () => {
   router.go(-1);
 };
 app.mount('#app');

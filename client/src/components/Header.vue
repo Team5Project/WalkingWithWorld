@@ -6,27 +6,29 @@
       <router-link class="header_link" to="/visitor">자유게시판</router-link>
     </nav>
 
-    <!-- <div class="member">
+    <div class="member" v-if="isAuth">
+      <div class="header_sign"></div>
       <span class="profile_image">
         
 
       </span>
-      <span class="name">산책마니아1</span>
-      <a href="" class="btns btn_logout">logout</a>
-    </div> -->
-    <div class="header_sign" v-if="isAuth">
-      <router-link class="btns btn_signup" to="/signup"> <!--마이페이지 구현 하면 마이페이지로-->
+      <span class="name">{{  user }}님</span>
+      <div class="btns btn_signup cursor" @click="logout()">
+        <i class="sign_icon fa-solid fa-key" ></i>
+        Logout
+      </div>
+    </div>
+    
+      <!-- <router-link class="btns btn_signup" to="/signup">
         <i class="sign_icon fa-solid fa-user-plus"></i>
-        유저네임 바인딩
+        {{  user }}님
       </router-link>
       
       <div class="btns btn_signup cursor" @click="logout()">
         <i class="sign_icon fa-solid fa-key" ></i>
         Logout
-      </div>
-        
-      
-    </div>
+      </div> -->
+
     <div class="header_sign" v-else="isAuth">
       <router-link class="btns btn_signin" to="/login">
         <i class="sign_icon fa-solid fa-key"></i>
@@ -41,7 +43,15 @@
 </template>
 
 <script setup>
-import { defineEmits } from 'vue';
+import { defineEmits, ref } from 'vue';
+const user = ref(null);
+const token = localStorage.getItem('token');
+if(token != null){
+    var base64Payload = token.split('.')[1];
+    var payload = atob(base64Payload);
+    var result = JSON.parse(payload.toString());
+    user.value = result.email;
+}
 
  const auth = () =>{
   return localStorage.getItem("token")
