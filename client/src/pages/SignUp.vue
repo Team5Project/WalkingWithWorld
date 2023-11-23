@@ -88,7 +88,7 @@ function verifyEmail(){
 		}
 	})
 	.catch((err)=>{
-		alert(err);
+		alert("중복된 이메일입니다.");
 	})
 };
 </script>
