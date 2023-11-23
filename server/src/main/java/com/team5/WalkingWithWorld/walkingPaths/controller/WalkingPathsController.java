@@ -68,11 +68,10 @@ public class WalkingPathsController {
     // 산책로 작성
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity writeWalkingPath(@RequestPart("requestDTO") RequestWalkingPathDTO requestWalkingPathDTO,
-                                           @RequestPart(value = "files",required = false) List<MultipartFile> files) { // @Login UsersDTO usersDTO  @AuthenticationPrincipal CustomPrincipal customPrincipal
-        System.out.println(requestWalkingPathDTO);
-        System.out.println(files);
+                                           @RequestPart(value = "files",required = false) List<MultipartFile> files, @AuthenticationPrincipal CustomPrincipal customPrincipal) {
+        System.out.println(customPrincipal);
 
-        WalkingPathsMapDTO walkingPaths = walkingPathService.createWalkingPath(requestWalkingPathDTO, files);
+        WalkingPathsMapDTO walkingPaths = walkingPathService.createWalkingPath(requestWalkingPathDTO, files, customPrincipal);
         return new ResponseEntity(walkingPaths, HttpStatus.CREATED);
     }
 
