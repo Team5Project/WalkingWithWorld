@@ -162,7 +162,7 @@
 	// --------------------
 	const getList = ref([]);
 	const keyword = useRoute().query.keyword;
-	// const addr = useRoute().query.addr;
+	// const filters = useRoute().query.filters;
 	const fetchList = async () =>{
 		if(keyword == null) {
 			const response = await axios.get('http://localhost:8089/walking-path');
@@ -174,7 +174,7 @@
 		}
 		// } else {
 		// 	console.log(keyword);
-		// 	console.log(addr);
+		// 	console.log(filters);
 		// 	const response = await axios.get(`http://localhost:8089/walking-path/filter?page=0&size=10&keyword=&filters=location%3A%7CminTime%3A5%7CmaxTime%3A100%7CminDistance%3A1%7CmaxDistance%3A5000`);
 		// 	return response.data;
 		// }
@@ -184,7 +184,7 @@
 		getList.value = await fetchList();
 	}
 	setList();
-		
+
 	watch(() => props.getPrintMode, async () => {
 		document.querySelector('.search_title').style.display='none';
 		printMode.value = props.getPrintMode;
@@ -197,8 +197,13 @@
 	});
 	// 필터 적용
 	const getFilteredList = function() {
-		const response = axios.get(`http://localhost:8089/walking-path/filter?page=0&size=10&keyword=${keyword}&filters=location%3A%7CminTime%3A5%7CmaxTime%3A100%7CminDistance%3A1%7CmaxDistance%3A5000`);
-		getList.value = response.data;
+		axios.get(`http://localhost:8089/walking-path/filter?page=0&size=10&keyword=${keyword}&filters=location%3A%7CminTime%3A5%7CmaxTime%3A100%7CminDistance%3A1%7CmaxDistance%3A5000`)
+		.then((response) => {
+			console.log(response.data);
+			getList.value = response.data;
+		})
+		.catch((err) => console.error(err));
+
 		if(keyword == null) {
 			router.push(`walking-path/filter?page=0&size=10&keyword=&filters=location%3A%7CminTime%3A5%7CmaxTime%3A100%7CminDistance%3A1%7CmaxDistance%3A5000`);
 		}
