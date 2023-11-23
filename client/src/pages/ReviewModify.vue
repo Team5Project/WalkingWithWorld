@@ -43,7 +43,7 @@
                         </section>
                         <section class="submit">
                             <input type="submit" value="저장" class="btn-review">
-                            <span class="cursor" @click="$goBack">뒤로가기</span>
+                            <span class="cursor" @click="$goBackPage">뒤로가기</span>
                         </section>
                     </form>
                 </div>
