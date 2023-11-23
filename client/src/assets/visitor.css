@@ -1,86 +1,83 @@
 #article {
-    display: flex;
-    flex-direction: column;
-
+  display: flex;
+  flex-direction: column;
 }
 
-
-.visitors_list_header{
-    margin-top: 60px;
-    margin-left: 20%;
-    font-size: 20px;
+.visitors_list_header {
+  margin-top: 60px;
+  margin-left: 20%;
+  font-size: 20px;
 }
 
 section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 60px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 60px auto;
 }
 
 .vwrapper {
-    width: 940px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 40px;
-    border-radius: 20px;
-    border: 1px solid #d4d9b4;
-    padding: 10px;
+  width: 940px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 40px;
+  border-radius: 20px;
+  border: 1px solid #d4d9b4;
+  padding: 10px;
 }
 
 .vwrapper div {
-    display: flex;
-    line-height: 35px;
+  display: flex;
+  line-height: 35px;
 }
 
 .visit_header {
-    border-bottom: 1px solid #97bf04;
+  border-bottom: 1px solid #97bf04;
 }
 
 .visit_header span:first-child,
 .vname {
-    width: 175px;
+  width: 175px;
 }
 
 .vname {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .vcontent {
-    width: 100%;
-    display: block;
-    background-color: #ccc;
-    padding: 0px 10px 5px 10px;
-    height: 3.5em;
-    border-radius: 10px;
+  width: 100%;
+  display: block;
+  background-color: #ccc;
+  padding: 0px 10px 5px 10px;
+  height: 3.5em;
+  border-radius: 10px;
 }
 
 .visitor_footer {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .visitor_mod {
-    display: flex;
-    gap: 20px;
-
+  display: flex;
+  gap: 20px;
 }
 
 .vcreatedAt {
-    width: 200px;
+  width: 300px;
 }
 
 .btn_write_wrapper {
-    width: 940px;
-    display: flex;
-    justify-content: end;
+  width: 940px;
+  display: flex;
+  justify-content: end;
 }
 
 .btn_vwrite {
-    width: 200px;
-    line-height: 40px;
-    background-color: #97bf04;
-    font-size: 20px;
+  width: 200px;
+  line-height: 40px;
+  background-color: #97bf04;
+  font-size: 20px;
 }

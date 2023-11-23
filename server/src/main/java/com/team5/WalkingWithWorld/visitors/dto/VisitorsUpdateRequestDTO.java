@@ -6,5 +6,6 @@ import lombok.*;
 @Setter
 @ToString
 public class VisitorsUpdateRequestDTO {
+    private String name;
     private String content;
 }
