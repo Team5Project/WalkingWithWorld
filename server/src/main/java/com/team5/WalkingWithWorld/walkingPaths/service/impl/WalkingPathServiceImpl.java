@@ -150,8 +150,8 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
     //TODO 산책로 작성 시 FileIOException이 발생하여도 트랜잭션이 발동하지 않음
     @Override
     @Transactional
-    public WalkingPathsMapDTO createWalkingPath(RequestWalkingPathDTO requestDTO, List<MultipartFile> files) { // , UsersDTO usersDTO
-        Users users = usersRepository.getReferenceById(1);
+    public WalkingPathsMapDTO createWalkingPath(RequestWalkingPathDTO requestDTO, List<MultipartFile> files, CustomPrincipal customPrincipal) {
+        Users users = usersRepository.getReferenceById(customPrincipal.userId());
         WalkingPaths entity = WalkingPaths.builder()
                 .users(users)
                 .title(requestDTO.getTitle())
