@@ -1,6 +1,7 @@
 //-----------------------------------------------------
 //슬라이더 스크립트
 //-----------------------------------------------------
+export function setupWalkingPath() {
 
 // 양방향 슬라이더
 const minTime = document.getElementById("minTime");
@@ -110,7 +111,7 @@ const setMaxDistance = () => {
 
 minDistance.addEventListener("input", setMinDistance);
 maxDistance.addEventListener("input", setMaxDistance);
-
+}
 //-----------------------------------------------------
 //체크박스 컨트롤 스크립트
 //-----------------------------------------------------
@@ -172,33 +173,33 @@ maxDistance.addEventListener("input", setMaxDistance);
 //구 ajax 조건 리스트 스크립트
 //-----------------------------------------------------
 
-function searchWalkingPath(keyword) {
-  var SearchDTO = new Object();
-  var selected = document.querySelectorAll('input[name="location"]:checked');
-  var selectedValue = [];
-  for (let i = 0; i < selected.length; i++) {
-    selectedValue.push(selected[i].value);
-  }
-  SearchDTO.location = selectedValue;
-  SearchDTO.minTime = document.getElementById("minTime").value;
-  SearchDTO.maxTime = document.getElementById("maxTime").value;
-  SearchDTO.minDistance = document.getElementById("minDistance").value;
-  SearchDTO.maxDistance = document.getElementById("maxDistance").value;
-  fetch("/walking-path/condition/" + keyword, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({
-      location: SearchDTO.location,
-      minTime: SearchDTO.minTime,
-      maxTime: SearchDTO.maxTime,
-      minDistance: SearchDTO.minDistance,
-      maxDistance: SearchDTO.maxDistance,
-    }),
-  })
-    .then((response) => response.text())
-    .then((data) => {
-      document.getElementById("walking-path").innerHTML = `${data}`;
-    });
-}
+// function searchWalkingPath(keyword) {
+//   var SearchDTO = new Object();
+//   var selected = document.querySelectorAll('input[name="location"]:checked');
+//   var selectedValue = [];
+//   for (let i = 0; i < selected.length; i++) {
+//     selectedValue.push(selected[i].value);
+//   }
+//   SearchDTO.location = selectedValue;
+//   SearchDTO.minTime = document.getElementById("minTime").value;
+//   SearchDTO.maxTime = document.getElementById("maxTime").value;
+//   SearchDTO.minDistance = document.getElementById("minDistance").value;
+//   SearchDTO.maxDistance = document.getElementById("maxDistance").value;
+//   fetch("/walking-path/condition/" + keyword, {
+//     method: "POST",
+//     headers: {
+//       "content-type": "application/json",
+//     },
+//     body: JSON.stringify({
+//       location: SearchDTO.location,
+//       minTime: SearchDTO.minTime,
+//       maxTime: SearchDTO.maxTime,
+//       minDistance: SearchDTO.minDistance,
+//       maxDistance: SearchDTO.maxDistance,
+//     }),
+//   })
+//     .then((response) => response.text())
+//     .then((data) => {
+//       document.getElementById("walking-path").innerHTML = `${data}`;
+//     });
+// }
