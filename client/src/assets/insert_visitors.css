@@ -1,109 +1,103 @@
 section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-
-.visitors_write_header{
-    margin-top: 60px;
-    margin-left: 20%;
-    font-size: 20px;
+.visitors_write_header {
+  margin-top: 60px;
+  margin-left: 20%;
+  font-size: 20px;
 }
-
-
 
 .visitors_write_wrap {
-
-    font-size: 20px;
-    display: flex;
-    width: 900px;
-    align-items: center;
-    padding-top: 70px;
-    padding-bottom: 70px;
+  font-size: 20px;
+  display: flex;
+  width: 900px;
+  align-items: center;
+  padding-top: 70px;
+  padding-bottom: 70px;
 }
 
 .visitors_write_wrap aside,
 .visitors_write_wrap article {
-    width: 50%;
+  width: 50%;
 }
 
 /*.visitors_write_wrap aside{
     vertical-align: middle;
 }*/
 .visitor_logo {
-    text-align: center;
+  text-align: center;
 }
 
 .visitors_write_wrap article {
-    border: 1px solid #97bf04;
-    border-radius: 10px;
-    padding: 15px;
+  border: 1px solid #97bf04;
+  border-radius: 10px;
+  padding: 15px;
 }
 
 .inline_insert {
-    display: flex;
-    gap: 5px;
+  display: flex;
+  gap: 5px;
 }
 
 .inline_insert * {
-    line-height: 2;
+  line-height: 2;
 }
 
 .inline_insert label {
-    width: 75px;
+  width: 75px;
 }
 
 .inline_insert input {
-    border-bottom: 1px solid #97bf04;
+  border-bottom: 1px solid #97bf04;
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    gap: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
 }
 
 .inline_textarea {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 textarea {
-    border-radius: 10px;
-    border: 1px solid #97bf04;
-    resize: none;
-    width: 430px;
-    height: 150px;
-    padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #97bf04;
+  resize: none;
+  width: 430px;
+  height: 150px;
+  padding: 10px;
 }
 
 .visitor_mod {
-    display: flex;
-    justify-content: end;
-    gap: 10px;
+  display: flex;
+  justify-content: end;
+  gap: 10px;
 }
 
 .btn_vback {
-    width: 80px;
-    line-height: 40px;
-    background-color: #97bf04;
-    font-size: 16px;
+  width: 80px;
+  line-height: 40px;
+  background-color: #97bf04;
+  font-size: 16px;
 }
 
 .btn_vreset {
-    width: 80px;
-    line-height: 40px;
-    background-color: #d4d9b4;
-    font-size: 16px;
-
+  width: 80px;
+  line-height: 40px;
+  background-color: #d4d9b4;
+  font-size: 16px;
 }
 
 .btn_vsubmit {
-    width: 80px;
-    line-height: 40px;
-    background-color: #97bf04;
-    font-size: 16px;
-
+  width: 80px;
+  line-height: 40px;
+  background-color: #97bf04;
+  font-size: 16px;
 }

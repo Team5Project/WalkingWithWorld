@@ -16,7 +16,12 @@
             </div>
             <div class="visitor_footer">
               <p class="vcreatedAt">
-                {{ formatDate(vo.createdAt) }}
+                작성일시 {{ formatDate(vo.createdAt) }}
+                <!-- {{
+                  vo.modifiedAt
+                    ?"수정일시 " + formatDate(vo.modifiedAt)
+                    :"작성일시 " + formatDate(vo.createdAt)
+                }} -->
               </p>
               <div class="visitor_mod">
                 <router-link
@@ -34,10 +39,8 @@
           </div>
         </article>
       </div>
-      <div class="btn_write_wrapper">
-        <button class="visitor_write btns btn_vwrite" @click="modeToCreate()">
-          글쓰기
-        </button>
+      <div class="visitor_write btns btn_vwrite" @click="modeToCreate()">
+        글쓰기
       </div>
     </section>
   </main>

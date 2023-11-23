@@ -8,6 +8,7 @@ import com.team5.WalkingWithWorld.visitors.repository.VisitorsRepository;
 import com.team5.WalkingWithWorld.visitors.service.VisitorsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,9 +33,10 @@ public class VisitorsController {
 
     @GetMapping("/list")
     public ResponseEntity<List<Visitors>> list() {
+        List<Visitors> visitorsList = visitorsRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(visitorsRepository.findAll());
+                .body(visitorsList);
     }
 
     /*     @PostMapping("/visitors/delete")

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 public class VisitorsDTO {
-    private int id;
+    private Long id;
     private String name;
     private String content;
     private LocalDateTime createdAt;

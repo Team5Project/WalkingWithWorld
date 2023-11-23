@@ -4,7 +4,7 @@
     <section>
       <div class="visitors_write_wrap">
         <aside class="visitor_logo">
-          <img th:src="@{/images/logo-big.png}" />
+          <img src="/images/logo-big.png" />
         </aside>
         <article>
           <div class="insert_visitor">
@@ -43,9 +43,9 @@
                 ></textarea>
               </p>
               <div class="visitor_mod">
-                <button class="btns btn_vback" @click="modeToList">
+                <span class="btns btn_vback" @click="modeToList">
                   이전화면
-                </button>
+                </span>
 
                 <input type="reset" value="초기화" class="btns btn_vreset" />
                 <input
@@ -57,7 +57,7 @@
                 <input
                   type="button"
                   value="수정"
-                  class="btns btn_vsubmit"
+                  class="btns btn_vreset"
                   @click="submitModifyForm(visitorId)"
                 />
               </div>
@@ -83,6 +83,10 @@ const vpassword = ref("");
 const vcontent = ref("");
 
 async function submitForm() {
+  if (!vpassword.value || vpassword.value.trim() === "") {
+    alert("비밀번호를 입력하세요.");
+    return;
+  }
   const url = "http://localhost:8089/visitor";
   const data = {
     name: vname.value,
@@ -107,32 +111,31 @@ async function submitForm() {
 }
 
 const props = defineProps(["data"]);
-/* const visitorId = computed(() => props.id); */
 console.log(props.data);
 
-async function submitModifyForm(visitorId) {
-  const url = `http://localhost:8089/visitor/${visitorId.value}`;
-  const data = {
-    name: vname.value,
-    password: vpassword.value,
-    content: vcontent.value,
-  };
+// async function submitModifyForm(visitorId) {
+//   const url = `http://localhost:8089/visitor/${visitorId.value}`;
+//   const data = {
+//     name: vname.value,
+//     password: vpassword.value,
+//     content: vcontent.value,
+//   };
 
-  await axios
-    .put(url, data, {
-      headers: { "Content-Type": "application/json" },
-    })
-    .then(function (response) {
-      console.log(response);
-      if (response.status == 200) {
-        alert("게시글이 수정되었습니다.");
-        modeToList();
-      }
-    })
-    .catch(function (error) {
-      console.log("error: ", error);
-    });
-}
+//   await axios
+//     .put(url, data, {
+//       headers: { "Content-Type": "application/json" },
+//     })
+//     .then(function (response) {
+//       console.log(response);
+//       if (response.status == 200) {
+//         alert("게시글이 수정되었습니다.");
+//         modeToList();
+//       }
+//     })
+//     .catch(function (error) {
+//       console.log("error: ", error);
+//     });
+// }
 </script>
 
 <style scoped>
