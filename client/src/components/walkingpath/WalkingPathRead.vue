@@ -5,8 +5,8 @@
       <div class="detail_title">
           <h2>{{ getDetail.title }}</h2>
           <div class="up_del">
-              <span class="info_modi" @click="modeToModify">수정</span>
-              <span class="info_del" @click="removeWalkingPath">삭제</span>
+              <span class="info_modi cursor" @click="modeToModify">수정</span>
+              <span class="info_del cursor" @click="removeWalkingPath">삭제</span>
           </div>
       </div>
       <p>
