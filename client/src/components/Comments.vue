@@ -12,8 +12,8 @@
                 <span class="date">{{ item.createdAt }}</span>
             </div>
                 <div class="up_del" style="visibility:visible;">
-                    <span id="update" class="info_modi cursor" @click="changeUpdateMode(item.id, item.content)">수정</span>
-                    <span id="delete" class="info_del cursor" @click="deleteComments(item.id)">삭제</span>
+                    <span v-if="user == item.usersId" id="update" class="info_modi cursor" @click="changeUpdateMode(item.id, item.content)">수정</span>
+                    <span v-if="user == item.usersId" id="delete" class="info_del cursor" @click="deleteComments(item.id)">삭제</span>
                 </div>
           </div>
         </div>
@@ -36,7 +36,7 @@
 import { ref, defineProps } from 'vue';
 import axios from 'axios';
 
-const props = defineProps(['id']);
+const props = defineProps(['id', 'user']);
 const getComments = ref([]);
 const currentPage = ref(0);
 const totalPages = ref('');
@@ -67,6 +67,7 @@ async function CommentsRead() {
     }else{
       getComments.value = [...getComments.value, ...data];
     }
+    console.log(getComments.value);
     totalPages.value = pageInfo.totalPages;
     currentPage.value++ ;
     if(pageInfo.totalPages == 1 || currentPage.value == pageInfo.totalPages){

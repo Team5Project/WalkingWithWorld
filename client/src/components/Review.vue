@@ -43,12 +43,12 @@
             <span class="name">{{ review.createdBy }}</span>
             <span class="date">{{ review.createdAt }}</span>
           </div>
-          <th:block th:if="${session.auth!=null && session.auth.getName()== review.createdBy}">
+          <div th:if="${session.auth!=null && session.auth.getName()== review.createdBy}">
             <div class="up_del">
-              <span class="info_modi" @click="modify">수정</span>
-              <span class="info_del" @click="deleteReviews(review.id)">삭제</span>
+              <span v-if="user == review.usersId" class="info_modi" @click="modify">수정</span>
+              <span v-if="user == review.usersId" class="info_del" @click="deleteReviews(review.id)">삭제</span>
             </div>
-          </th:block>
+          </div>
         </div>
         <hr>
         <div class="review_text">
@@ -68,7 +68,7 @@ import { ref, defineProps } from 'vue';
 import router from '@/router/index.js'
 
 
-const props = defineProps(['id', 'walkingPathdId']);
+const props = defineProps(['id', 'walkingPathdId', 'user']);
 
 const clickParam = () => {
   router.push({
@@ -85,7 +85,7 @@ const getReviewList = async () => {
     })
     .then((data) => {
       reviewList.value = data;
-      console.log(reviewList.data);
+      console.log(reviewList.value);
     })
 
 }

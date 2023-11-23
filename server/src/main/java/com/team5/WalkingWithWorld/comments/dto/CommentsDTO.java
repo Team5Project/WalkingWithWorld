@@ -17,6 +17,7 @@ public class CommentsDTO  {
     private Long walkingPathsId;
     private String name;
     private LocalDateTime createdAt;
+    private Long usersId;
 
     @NotBlank(message = "댓글을 입력해주세요.")
     private String content;
@@ -29,6 +30,7 @@ public class CommentsDTO  {
                 .name(comments.getUsers().getName())
                 .content(comments.getContent())
                 .createdAt(comments.getCreatedAt())
+                .usersId(comments.getUsers().getId())
                 .build();
     }
 

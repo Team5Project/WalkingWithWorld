@@ -17,19 +17,18 @@ import java.util.List;
 @AllArgsConstructor
 public class ResponseWalkingPathDetailDTO {
     private Long id;
-    @JsonIgnore
-    private Users users;
+    private Long users;
     private String title;
     private String addr;
     private Map map;
     private List<Coordinate> coordinateList;
     private List<Photos> photosList;
 
-    public static ResponseWalkingPathDetailDTO from(WalkingPaths walkingPaths,
+    public static ResponseWalkingPathDetailDTO from(Long usersId, WalkingPaths walkingPaths,
                                                                      Map map,
                                                                      List<Coordinate> coordinateList,
                                                                      List<Photos> photosList) {
-        return new ResponseWalkingPathDetailDTO(walkingPaths.getId(), walkingPaths.getUsers(), walkingPaths.getTitle(),
+        return new ResponseWalkingPathDetailDTO(walkingPaths.getId(), usersId, walkingPaths.getTitle(),
                 walkingPaths.getAddr(), map, coordinateList, photosList);
     }
 }

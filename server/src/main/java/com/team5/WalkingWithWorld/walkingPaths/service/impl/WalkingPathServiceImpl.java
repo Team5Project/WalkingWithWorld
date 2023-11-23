@@ -142,7 +142,7 @@ public class WalkingPathServiceImpl implements WalkingPathsService {
     @Override
     public ResponseWalkingPathDetailDTO readWalkingPath(long id) {
         WalkingPaths walkingPaths = walkingPathsRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.WALKINGPATHS_NOT_FOUND));
-        ResponseWalkingPathDetailDTO dto = ResponseWalkingPathDetailDTO.from(walkingPaths, mapRepository.findByWalkingPaths(walkingPaths), coordinateRepository.findByWalkingPaths(walkingPaths), photosRepository.findByWalkingPaths(walkingPaths));
+        ResponseWalkingPathDetailDTO dto = ResponseWalkingPathDetailDTO.from(walkingPaths.getUsers().getId(), walkingPaths, mapRepository.findByWalkingPaths(walkingPaths), coordinateRepository.findByWalkingPaths(walkingPaths), photosRepository.findByWalkingPaths(walkingPaths));
         return dto;
     }
 

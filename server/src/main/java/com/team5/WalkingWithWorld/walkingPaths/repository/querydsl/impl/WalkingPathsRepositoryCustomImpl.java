@@ -1,5 +1,6 @@
 package com.team5.WalkingWithWorld.walkingPaths.repository.querydsl.impl;
 
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.team5.WalkingWithWorld.global.entity.QMap;
@@ -58,6 +59,16 @@ public class WalkingPathsRepositoryCustomImpl extends QuerydslRepositorySupport 
     }
 
     private BooleanExpression eqAddr(List<String> location){
-        return location == null ? null : walkingPaths.addr.in(location);
+        if(location == null)
+            return null;
+
+        BooleanExpression result = null;
+
+        for (String loc : location) {
+            BooleanExpression condition = walkingPaths.addr.contains(loc);
+            result = (result == null) ? condition : result.or(condition);
+        }
+
+        return result;
     }
 }
