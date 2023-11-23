@@ -3,7 +3,7 @@
     justify-content: space-between;
 }
 
-body>div {
+.body>div {
     width: 50%;
     height: 100vh;
     overflow: hidden;
@@ -23,7 +23,6 @@ body>div {
     display: flex;
     text-align: center;
 }
-
 
 .input {
     width: 360px;

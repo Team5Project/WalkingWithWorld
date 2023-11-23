@@ -2,7 +2,7 @@
 	<Header @pageMode="modeChange" @printMode="printModeChange"/>
 	<!-- 헤더 입력 -->
 	<hr class="header_hr">
-	<WalkingPathList v-if="compMode === 'default'" @pageMode="modeChange" :getPrintMode="printModeToList"/>
+	<WalkingPathList v-if="compMode === 'default'" @pageMode="modeChange" :getPrintMode="printModeToList" :key="$route.fullPath + '_content'"/>
 	<WalkingPathCreate v-if="compMode === 'modify'" @pageMode="modeChange"/>
 	<!-- <WalkingPathDetail/> -->
   <!-- 푸터 입력 -->
