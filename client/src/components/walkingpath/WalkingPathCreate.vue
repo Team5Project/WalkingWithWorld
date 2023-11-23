@@ -37,7 +37,7 @@
             </div>
             <div id="buttons">
                 <input type="submit" class="submit-button" value="확인">
-                <a>&nbsp; 뒤로가기 &nbsp;</a>
+                <span class="cursor" @click="$goBack">&nbsp; 뒤로가기 &nbsp;</span>
             </div>
         </form>
     </div>

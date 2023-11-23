@@ -12,8 +12,8 @@
                 <span class="date">{{ item.createdAt }}</span>
             </div>
                 <div class="up_del" style="visibility:visible;">
-                    <span id="update" class="info_modi" @click="changeUpdateMode(item.id, item.content)">수정</span>
-                    <span id="delete" class="info_del" @click="deleteComments(item.id)">삭제</span>
+                    <span id="update" class="info_modi cursor" @click="changeUpdateMode(item.id, item.content)">수정</span>
+                    <span id="delete" class="info_del cursor" @click="deleteComments(item.id)">삭제</span>
                 </div>
           </div>
         </div>
